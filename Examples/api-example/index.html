@@ -1,0 +1,59 @@
+<!doctype html>
+<html style="background-color:#3d875a">
+<head>
+    <script src="exoskeleton.js"></script>
+    <script src="example.js"></script>
+
+    <style>
+        h2 {
+            color: #fff;
+        }
+        h3 {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<h2>Exoskeleton API demo page</h2>
+
+<h3>ui</h3>
+
+<button onclick="doFullscreen()">Fullscreen</button>
+<button onclick="doExitFullscreen()">Exit Fullscreen</button>
+<button onclick="doSetWindowTitle()">Set Window title to : </button>
+<input type="text" id="txtTitle" value="My Cool Exoskelton app" style="width:400px"/>
+<br />
+<br />
+<button onclick="doShowNotification()">Show Notification</button>
+
+<h3>media</h3>
+
+<button onclick="doSaySomething()">Say something</button>
+<input type="text" id="txtSpeechMessage" value="This is a test message spoken using exoskeleton" style="width:400px" />
+
+<h3>proc</h3>
+
+<button onclick="doProcStart()">Start Process (calc.exe)</button>
+
+<h3>file</h3>
+
+<button onclick="doGetCurrentDirectory()">Get Current Directory</button>
+<input type="text" id="txtCurrentDir" style="width:400px" />
+<br />
+<br />
+<button onclick="doGetDrives()">Get Logical Drives</button>
+<select id="selDrives"></select>
+<br />
+<br />
+<button onclick="doGetDirectories()">Get Top Level Directories of drive selected above</button>
+<select id="selRootDirectories"></select>
+<br />
+<br />
+<button onclick="doGetFiles()">Get files in directory selected above</button>
+<select id="selFiles"></select>
+<br />
+<br />
+<button onclick="doSaveFile()">Save a file</button>
+<button onclick="doLoadFile()">Load a file</button>
+
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html style="background-color:#3d875a">
+<head>
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="lokijs.js"></script>
+    <script src="exoskeleton.js"></script>
+    <script src="example.js"></script>
+
+    <style>
+        h2 {
+            color: #fff;
+        }
+        h3 {
+            color: #fff;
+        }
+        body {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+  <h2>Exoskeleton database example page</h2>
+
+  <p>
+    <ul>
+      <li>This example uses a javascript database to maintain a queryable javascript object database.</li>
+      <li>We are using lokijs database library, saving the database using exoskelton file api to load and save to a file.</li>
+      <li>The database is configured to autosave/autoload every few seconds and will automatically flush changes on app close</li>
+     </ul>
+  </p>
+  <br/>
+  <p>
+  <span>Users:</span><br/>
+  <select id="selUsers" size=10 style="min-width:200px" onclick="userSelected()">
+  </select><br/>
+  <button onclick="newClicked()">new</button>
+  <button onclick="deleteClicked()">delete</button>
+  <button onclick="refreshUsers()">refresh</button>
+  </p>
+  <table border="1" style="width:300px">
+      <tr>
+          <td>
+              <label>$loki : </label>
+          </td>
+          <td>
+              <label id="lblUsersLoki"/>
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <label>name : </label>
+          </td>
+          <td>
+              <input type="text" id="txtUsersName" value=""/>
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <label>age : </label>
+          </td>
+          <td>
+              <input type="text" id="txtUsersAge"/>
+          </td>
+      </tr>
+  </table><br/>
+  <button onclick="saveClicked()">save</button>
+</body>
+
+</html>

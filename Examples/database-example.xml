@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StartupCommands/>
+  <WindowTitle>Exoskeleton Database Sample</WindowTitle>
+  <WindowWidth>1200</WindowWidth>
+  <WindowHeight>720</WindowHeight>
+  <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
+  <WindowAllowResize>true</WindowAllowResize>
+  <WebServerSelfHost>true</WebServerSelfHost>
+  <WebServerListenPort>8090</WebServerListenPort>
+  <WebServerHostDirectory>./database-example</WebServerHostDirectory>
+  <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
+  <WebBrowserContextMenu>true</WebBrowserContextMenu>
+  <WebBrowserDefaultUrl>http://localhost:{port}</WebBrowserDefaultUrl>
+  <ScriptingEnabled>true</ScriptingEnabled>
+  <ScriptingFilesEnabled>true</ScriptingFilesEnabled>
+  <ScriptingProcessEnabled>true</ScriptingProcessEnabled>
+  <ScriptingMediaEnabled>true</ScriptingMediaEnabled>
+</Settings>
