@@ -7,13 +7,6 @@
  * setup database, and setup ui dom events.
  */
  
-// exoskeleton will try to invoke this method when the app closes...
-// we will use this to flush any pending database changes
-window.exoskeletonShutdown = function() {
-   shutdownApp();
-   return true;
-}
-
 window.addEventListener("load", function load(event){
     window.removeEventListener("load", load, false);
     initializeApp();
@@ -31,7 +24,11 @@ function initializeApp() {
     autoload: true,
     autoloadCallback: initializeDatabase,
     autosave: true,
-    adapter: ExoskeletonKeystoreAdapter 
+    adapter: new ExoClasses.KeyStoreAdapter(exoskeleton)
+  });
+  
+  exoskeleton.events.on("multicast.shutdown", function() {
+    db.close();
   });
 }
 
@@ -46,16 +43,6 @@ function initializeDatabase() {
   }
   
   refreshUsers();
-}
-
-/**
- * When your app is closed, exoskeleton will invoke the exeskeletonShutdown()
- * function above, which will call this method to tell the database to flush any changes to disk.
- */
-function shutdownApp() {
-  if (db) {
-    db.close();
-  }
 }
 
 function userSelected() {

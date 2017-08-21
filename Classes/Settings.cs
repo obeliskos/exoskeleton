@@ -17,6 +17,7 @@ namespace Exoskeleton.Classes
         public int WindowHeight = 512;
         public bool WindowAllowFullscreenF11 = true;
         public bool WindowAllowResize = true;
+        public string WindowIconPath = "";
 
         public bool WebServerSelfHost = false;
         public int WebServerListenPort = 8080;
@@ -25,11 +26,19 @@ namespace Exoskeleton.Classes
         public bool WebBrowserRefreshOnFirstLoad = true;
         public bool WebBrowserContextMenu = true;
         public string WebBrowserDefaultUrl = "";
+        public string WebBrowserBaseUrl = "";
+        public int WebBrowserAutoRefreshSecs = 0;
+        public bool WebBrowserAllowChildWindows = true;
 
+        // will probably want all of these on but when we generate
+        // a default one (if none exists) we will use these defaults 
+        // which are safe enough to run as a sitewrap app
         public bool ScriptingEnabled = true;
-        public bool ScriptingFilesEnabled = true;
-        public bool ScriptingProcessEnabled = true;
         public bool ScriptingMediaEnabled = true;
+        public bool ScriptingFilesEnabled = false;
+        public bool ScriptingProcessEnabled = false;
+        public bool ScriptingSystemEnabled = false;
+        public bool ScriptingLoggerEnabled = false;
 
         public void Save(string filename)
         {

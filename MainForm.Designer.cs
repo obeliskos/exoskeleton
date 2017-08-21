@@ -32,8 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.HostWebBrowser = new System.Windows.Forms.WebBrowser();
             this.ExoskeletonNotification = new System.Windows.Forms.NotifyIcon(this.components);
+            this.RefreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.HostWebBrowser = new System.Windows.Forms.WebBrowser();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,6 +55,17 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
+            // ExoskeletonNotification
+            // 
+            this.ExoskeletonNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("ExoskeletonNotification.Icon")));
+            this.ExoskeletonNotification.Text = "Exoskeleton";
+            this.ExoskeletonNotification.Visible = true;
+            // 
+            // RefreshTimer
+            // 
+            this.RefreshTimer.Interval = 60000;
+            this.RefreshTimer.Tick += new System.EventHandler(this.RefreshTimer_Tick);
+            // 
             // HostWebBrowser
             // 
             this.HostWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -62,16 +74,10 @@
             this.HostWebBrowser.Name = "HostWebBrowser";
             this.HostWebBrowser.ScriptErrorsSuppressed = true;
             this.HostWebBrowser.Size = new System.Drawing.Size(864, 472);
-            this.HostWebBrowser.TabIndex = 5;
+            this.HostWebBrowser.TabIndex = 7;
             this.HostWebBrowser.WebBrowserShortcutsEnabled = false;
             this.HostWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.HostWebBrowser_DocumentCompleted);
             this.HostWebBrowser.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.HostWebBrowser_PreviewKeyDown);
-            // 
-            // ExoskeletonNotification
-            // 
-            this.ExoskeletonNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("ExoskeletonNotification.Icon")));
-            this.ExoskeletonNotification.Text = "Exoskeleton";
-            this.ExoskeletonNotification.Visible = true;
             // 
             // MainForm
             // 
@@ -95,7 +101,8 @@
         #endregion
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.WebBrowser HostWebBrowser;
         private System.Windows.Forms.NotifyIcon ExoskeletonNotification;
+        private System.Windows.Forms.Timer RefreshTimer;
+        private System.Windows.Forms.WebBrowser HostWebBrowser;
     }
 }

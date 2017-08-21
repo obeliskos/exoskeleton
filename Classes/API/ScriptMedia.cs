@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Exoskeleton.Classes
+namespace Exoskeleton.Classes.API
 {
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public class ScriptMedia

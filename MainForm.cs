@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Exoskeleton.Classes;
+using Exoskeleton.Classes.API;
 using System.Diagnostics;
 
 namespace Exoskeleton
@@ -21,24 +22,23 @@ namespace Exoskeleton
     /// We will set up a mime mapping xml file to use when self hosting.
     /// The Classes\ScriptInterface.cs class will serve as a scripting object for our exeskeleton app's javascript.
     /// </summary>
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IHostWindow
     {
-        public bool isAdmin = false;
-        public static MainForm formInstance = null;
+        public static MainForm FormInstance = null;
 
+        private MimeTypeMappings mappings;
+        private Settings settings;
+        private LoggerForm loggerForm = null;
+        private ScriptInterface scriptInterface;
+        private List<IHostWindow> hostWindows = new List<IHostWindow>();
+        private Dictionary<string, bool> cacheRefreshed = new Dictionary<string, bool>();
         private string settingsPath;
         private string mappingsPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mappings.xml";
-        public Settings settings;
-        public MimeTypeMappings mappings;
-
+        private Icon applicationIcon;
         private SimpleHTTPServer simpleServer = null;
-        ScriptInterface scriptInterface;
-
         private bool fullscreen = false;
-        private DateTime lastFsDateTime = DateTime.MinValue;
-
-        private bool cacheIsStale = true;
-
+        // if multiple instances are running with same default port, actual port
+        // will be next available
         private int actualPort = 0;
 
         #region Form Initialization and Shutdown
@@ -140,6 +140,19 @@ namespace Exoskeleton
         }
 
         /// <summary>
+        /// When an external icon is specified in settings file, this will apply it
+        /// </summary>
+        private void InitializeIcon()
+        {
+            if (settings.WindowIconPath != "" && File.Exists(settings.WindowIconPath))
+            {
+                applicationIcon = new Icon(settings.WindowIconPath);
+                this.Icon = applicationIcon;
+                this.ExoskeletonNotification.Icon = this.Icon;
+            }
+        }
+
+        /// <summary>
         /// Form constructor logic where we will establish settings, registry keys, 
         /// (optionally) start self-hosting web server and invoke any configured startup processes 
         /// (in case you want to load a nodejs web server, for example).
@@ -149,11 +162,9 @@ namespace Exoskeleton
             InitializeSettings();
             SetupRegistryKeys();
 
-            formInstance = this;
-            isAdmin = IsAdministrator();
+            FormInstance = this;
 
             mappings = Classes.MimeTypeMappings.Load(mappingsPath);
-            scriptInterface = new ScriptInterface(settings);
 
             if (settings.WebServerSelfHost)
             {
@@ -162,13 +173,16 @@ namespace Exoskeleton
 
             // if configured with startup commands, run them now...
             // we might use this to start a node process like a webserver
-            foreach(string cmd in settings.StartupCommands)
+            foreach (string cmd in settings.StartupCommands)
             {
                 Process.Start(cmd);
             }
 
             InitializeComponent();
 
+            hostWindows.Add(this);
+
+            InitializeIcon();
             this.Width = settings.WindowWidth;
             this.Height = settings.WindowHeight;
             this.Text = settings.WindowTitle;
@@ -181,6 +195,17 @@ namespace Exoskeleton
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (settings.ScriptingLoggerEnabled)
+            {
+                loggerForm = new LoggerForm("main");
+                Rectangle workingArea = Screen.GetWorkingArea(this);
+                loggerForm.Show();
+                loggerForm.Location = new Point(workingArea.Right - loggerForm.Width, 100);
+            }
+
+            scriptInterface = new ScriptInterface(this, settings, loggerForm);
+
+
             if (settings.WebBrowserDefaultUrl == "")
             {
                 StringBuilder sb = new StringBuilder();
@@ -193,6 +218,11 @@ namespace Exoskeleton
             else
             {
                 HostWebBrowser.Url = new Uri(settings.WebBrowserDefaultUrl.Replace("{port}", actualPort.ToString()));
+                if (settings.WebBrowserAutoRefreshSecs > 0)
+                {
+                    RefreshTimer.Interval = settings.WebBrowserAutoRefreshSecs * 1000;
+                    RefreshTimer.Enabled = true;
+                }
             }
 
             HostWebBrowser.ObjectForScripting = scriptInterface;
@@ -211,7 +241,7 @@ namespace Exoskeleton
         {
             if (settings.ScriptingEnabled)
             {
-                var result = scriptInterface.shutdown(HostWebBrowser);
+                MulticastEvent("shutdown", null);
             }
 
 
@@ -221,7 +251,7 @@ namespace Exoskeleton
                 {
                     simpleServer.Stop();
                 }
-                catch {}
+                catch { }
             }
         }
 
@@ -246,7 +276,7 @@ namespace Exoskeleton
 
         #endregion
 
-        #region WebBrowser Event Handlers
+        #region WebBrowser Event Handlers and Eventing
 
         private void HostWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -264,16 +294,57 @@ namespace Exoskeleton
         /// <param name="e"></param>
         private void HostWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (settings.WebBrowserRefreshOnFirstLoad && cacheIsStale)
+            if (settings.WebBrowserRefreshOnFirstLoad && 
+                CheckForStaleCache(HostWebBrowser.Url.ToString()))
             {
-                cacheIsStale = false;
                 HostWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
             }
+        }
+
+        public object WebInvokeScript(string name, params object[] args)
+        {
+            return HostWebBrowser.Document.InvokeScript(name, args);
+        }
+
+        public void MulticastEvent(string name, string data)
+        {
+            foreach(IHostWindow hostWindow in hostWindows)
+            {
+                hostWindow.WebInvokeScript("exoskeletonEmitEvent", "multicast." + name, data);
+            }
+        }
+
+        public void RemoveHostWindow(IHostWindow hostWindow)
+        {
+            hostWindows.Remove(hostWindow);
         }
 
         #endregion
 
         #region Form Level ScriptingHandlers
+
+        public void SetWindowTitle(string title)
+        {
+            this.Text = title;
+        }
+
+        public void OpenNewWindow(string caption, string url, int width, int height)
+        {
+            Uri uri = new Uri(settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url);
+
+            LoggerForm logger = settings.ScriptingLoggerEnabled ? new LoggerForm(uri.ToString()) : null;
+            if (logger != null)
+            {
+                Rectangle workingArea = Screen.GetWorkingArea(this);
+                logger.Show();
+                logger.Location = new Point(workingArea.Right - logger.Width, 100 + 100 * hostWindows.Count);
+            }
+
+
+            ChildWindow childWindow = new ChildWindow(caption, uri, settings, logger, width, height);
+            hostWindows.Add(childWindow);
+            childWindow.Show();
+        }
 
         public void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon)
         {
@@ -310,6 +381,61 @@ namespace Exoskeleton
             HostWebBrowser.Focus();
         }
 
+        public void ShowBalloonNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon)
+        {
+            ExoskeletonNotification.ShowBalloonTip(timeout, tipTitle, tipText, toolTipIcon);
+        }
+
         #endregion
+
+        #region Logging / Console
+
+        public void LogInfo(string source, string message)
+        {
+            if (!settings.ScriptingLoggerEnabled) return;
+
+            loggerForm.LogInfo(source, message);        }
+
+        public void logError(string msg, string url, string line, string col, string error)
+        {
+            if (!settings.ScriptingLoggerEnabled) return;
+
+            loggerForm.logError(msg, url, line, col, error);
+        }
+
+        public void logWarning(string source, string message)
+        {
+            if (!settings.ScriptingLoggerEnabled) return;
+
+            loggerForm.logWarning(source, message);
+        }
+
+        public void logText(string message)
+        {
+            if (!settings.ScriptingLoggerEnabled) return;
+
+            loggerForm.logText(message);
+        }
+
+        #endregion
+
+        public bool CheckForStaleCache(string url)
+        {
+            // if cache is stale, return true but assume caller is
+            // going to refresh and add to our cacheRefreshed dictionary
+            if (!cacheRefreshed.Keys.Contains(url))
+            {
+                cacheRefreshed[url] = true;
+                return true;
+            }
+
+            return false;
+        }
+
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            HostWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
+        }
+
     }
 }

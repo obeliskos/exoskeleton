@@ -13,47 +13,61 @@
         }
     </style>
 </head>
+<body>
+    <h2>Exoskeleton API demo page</h2>
 
-<h2>Exoskeleton API demo page</h2>
+    <h3>main</h3>
 
-<h3>ui</h3>
+    <button onclick="runFullscreen()">Fullscreen</button>
+    <button onclick="runExitFullscreen()">Exit Fullscreen</button>
+    <button onclick="runSetWindowTitle()">Set Window title to : </button>
+    <input type="text" id="txtTitle" value="My Cool Exoskelton app" style="width:400px" />
+    <br />
+    <br />
+    <button onclick="runShowNotification()">Show Notification</button>
+    <button onclick="runOpenNewWindow()">Open 'Eventing' example in new child Window</button>
+    <h3>media</h3>
 
-<button onclick="doFullscreen()">Fullscreen</button>
-<button onclick="doExitFullscreen()">Exit Fullscreen</button>
-<button onclick="doSetWindowTitle()">Set Window title to : </button>
-<input type="text" id="txtTitle" value="My Cool Exoskelton app" style="width:400px"/>
-<br />
-<br />
-<button onclick="doShowNotification()">Show Notification</button>
+    <button onclick="runSaySomething()">Say something</button>
+    <input type="text" id="txtSpeechMessage" value="This is a test message spoken using exoskeleton" style="width:400px" />
 
-<h3>media</h3>
+    <h3>logger</h3>
+    <button onclick="runLogInfo()">Log Info</button>
+    <button onclick="runLogWarning()">Log Warning</button>
+    <button onclick="runLogError()">Log Error</button>
+    <button onclick="runLogText()">Log Text</button>
 
-<button onclick="doSaySomething()">Say something</button>
-<input type="text" id="txtSpeechMessage" value="This is a test message spoken using exoskeleton" style="width:400px" />
+    <h3>proc</h3>
 
-<h3>proc</h3>
+    <button onclick="runProcStart()">Start Process (calc.exe)</button>
 
-<button onclick="doProcStart()">Start Process (calc.exe)</button>
+    <h3>file</h3>
 
-<h3>file</h3>
+    <button onclick="runGetCurrentDirectory()">Get Current Directory</button>
+    <input type="text" id="txtCurrentDir" style="width:400px" />
+    <br />
+    <br />
+    <button onclick="runGetDrives()">Get Logical Drives</button>
+    <select id="selDrives"></select>
+    <button onclick="runGetDriveInfo()">Log Drive Info</button>
+    <br />
+    <br />
+    <button onclick="runGetDirectories()">Get Top Level Directories of drive selected above</button>
+    <select id="selRootDirectories"></select>
+    <br />
+    <br />
+    <button onclick="runGetFiles()">Get files in directory selected above</button>
+    <select id="selFiles"></select>
+    <br />
+    <br />
+    <button onclick="runSaveFile()">Save a file</button>
+    <button onclick="runLoadFile()">Load a file</button>
 
-<button onclick="doGetCurrentDirectory()">Get Current Directory</button>
-<input type="text" id="txtCurrentDir" style="width:400px" />
-<br />
-<br />
-<button onclick="doGetDrives()">Get Logical Drives</button>
-<select id="selDrives"></select>
-<br />
-<br />
-<button onclick="doGetDirectories()">Get Top Level Directories of drive selected above</button>
-<select id="selRootDirectories"></select>
-<br />
-<br />
-<button onclick="doGetFiles()">Get files in directory selected above</button>
-<select id="selFiles"></select>
-<br />
-<br />
-<button onclick="doSaveFile()">Save a file</button>
-<button onclick="doLoadFile()">Load a file</button>
+    <h3>system</h3>
+    <button onclick="runGetSystemInfo()">Get System Info</button>
 
+    <h3>session</h3>
+    <button onclick="runSetSessionKey()">Set Session Key</button>
+    <button onclick="runGetSessionKey()">Get Session Key</button>
+</body>
 </html>

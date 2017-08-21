@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <script src="exoskeleton.js"></script>
+
+    <style>
+        h2 {
+            color: #fff;
+        }
+        h3 {
+            color: #fff;
+        }
+        p {
+            color: #fff;
+        }
+    </style>
+</head>
+<body style="background-color:#566085">
+    <h2>Exoskeleton Eventing demo page</h2>
+
+    <p>
+        Exoskeleton includes a javascript 'event emitter' which allows signalling with each page's javascript.
+        Additionally, exoskeleton adds a multicast functionality which lets your emitted events be multicast
+        to all open exoskeleton host windows.
+
+        With this event emitter, you can listen for events and assign a javascript handler to run when the event
+        fires.  The event may optionally carry data payload which you should accept as parameters to your callback.
+
+        You can also emit events and pass data to all listeners.
+    </p>
+    <h3>eventing</h3>
+
+    <button onclick="runEmitMulticast()">Multicast event</button>
+    <button onclick="runEmitLocal()">Emit only to Local window</button>
+
+    <script type="text/javascript">
+        window.addEventListener("load", function load(event) {
+            window.removeEventListener("load", load, false); //remove listener, no longer needed
+
+            // now let's set up our example page event listener callbacks which we 
+            // will emit in our button handlers
+            exoskeleton.events.on("TestEvent", function (data) {
+                console.info("LOCALLY received our 'TestEvent'");
+            });
+            exoskeleton.events.on("multicast.TestEvent", function (data) {
+                console.info("LOCALLY received the 'multicast.TestEvent'");
+            });
+            exoskeleton.events.on("local.AnotherEvent", function (data) {
+                console.info("LOCALLY received the 'AnotherEvent'");
+            });
+        }, false);
+
+
+        /**
+         * By default we will multicast any event which is emitted to all windows.
+         * Only if they specifically 'listen' to them with the 'on' method, will they
+         * actually do anything when those events fire.
+         */
+        function runEmitMulticast() {
+            exoskeleton.events.emit("TestEvent");
+        }
+
+        function runEmitLocal() {
+            // we want to emit only to current window, we can prefix the name with 'local.'
+            exoskeleton.events.on("multicast.local.TestEvent", function (data) {
+                alert("This event should never fire as we would not multicast a 'local.' event");
+            });
+            // The 'local.' prefix in javascript here, in the name
+            exoskeleton.events.emit("local.AnotherEvent");
+        }
+
+    </script>
+</body>
+</html>
