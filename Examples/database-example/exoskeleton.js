@@ -3,6 +3,7 @@
  *  @author Obeliskos
  *
  *  A wrapper framework for com object functionality exposed by the exoskeleon shell.
+ *  This module self-establishes an instance variable 'exoskeleton'.
  */
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -91,7 +92,7 @@
             if (this.exo.Session) this.session = new Session(this.exo.Session);
             if (this.exo.System) this.system = new System(this.exo.System);
             if (this.exo.Logger) this.logger = new Logger(this.exo.Logger);
-            if (this.exo.Net) this.net = new Net(this.exo.Logger);
+            if (this.exo.Net) this.net = new Net(this.exo.Net);
             if (this.exo.Enc) this.enc = new Enc(this.exo.Enc);
         }
 
@@ -119,15 +120,19 @@
          * Invokes text-to-speech to speak the provided message.
          * @param {string} message - The message to speak.
          * @memberof Media
+         * @example
+         * exoskeleton.media.speak("this is a test");
          */
         Media.prototype.speak = function (message) {
             this.exoMedia.Speak(message);
         };
 
         /**
-         * Invokes text-to-speech to speak the provided message.
+         * Invokes text-to-speech to synchronously speak the provided message.
          * @param {string} message - The message to speak.
          * @memberof Media
+         * @example
+         * exoskeleton.media.speakSync("this is a test");
          */
         Media.prototype.speakSync = function (message) {
             this.exoMedia.SpeakSync(message);
@@ -150,6 +155,8 @@
          * Allows creation of c# singleton for further operations.
          * @param {string} comObjectName - Com class type name to instance.
          * @memberof Com
+         * @example
+         * exoskeleton.com.createInstance("SAPI.SpVoice");
          */
         Com.prototype.createInstance = function (comObjectName) {
             this.exoCom.CreateInstance(comObjectName);
@@ -158,8 +165,11 @@
         /**
          * Allows invocation of a method on the global singleton com object instance.
          * @param {string} methodName - Com interface method to invoke.
-         * @param {string} methodParams - Parameters to pass to com interface method.
+         * @param {any[]} methodParams - Parameters to pass to com interface method.
          * @memberof Com
+         * @example
+         * exoskeleton.com.createInstance("SAPI.SpVoice");
+         * exoskeleton.com.invokeMethod("Speak", ["this is a test message scripting activex from java script", 1])
          */
         Com.prototype.invokeMethod = function (methodName, methodParams) {
             this.exoCom.InvokeMethod(methodName, JSON.stringify(methodParams));
@@ -169,8 +179,11 @@
          * Activates instance to Com type, calls a single method (with params) and then disposes instance.
          * @param {string} comObjectName - Com class type name to instance.
          * @param {string} methodName - Com interface method to invoke.
-         * @param {string} methodParams - Parameters to pass to com interface method.
+         * @param {any[]} methodParams - Parameters to pass to com interface method.
          * @memberof Com
+         * @example
+         * exoskeleton.com.createAndInvokeMethod ("SAPI.SpVoice", "Speak",
+         *     ["this is a test message scripting activex from java script", 1]);
          */
         Com.prototype.createAndInvokeMethod = function (comObjectName, methodName, methodParams) {
             this.exoCom.CreateAndInvokeMethod(comObjectName, methodName, JSON.stringify(methodParams));
@@ -190,13 +203,20 @@
         }
 
         /**
-         * Starts our global singleton watcher on path specified by user.
+         * Starts our container singleton watcher on path specified by user.
          * Events will be emitted as multicast, so if multiple forms load
          * multiple watchers, they should distinguish themselves with the
          * eventBaseName parameter.
          * @param {string} path - Path to 'watch'.
          * @param {string} eventBaseName - Optional base name to emit with.
          * @memberof File
+         * @example
+         * // The following will generate 'download.created', 'download.deleted', and 'download.changed' events.
+         * exoskeleton.file.startWatcher("C:\downloads", "download");
+         * exoskeleton.events.on("download.created", function(data) {
+         *   // data params is json encoded string (for now).
+         *   exoskeleton.logger.logInfo("download.created", data);
+         * });
          */
         File.prototype.startWatcher = function (path, eventBaseName) {
             this.exoFile.StartWatcher(path, eventBaseName);
@@ -205,6 +225,8 @@
         /**
          * Disables the watcher singleton.
          * @memberof File
+         * @example
+         * exoskeleton.file.stopWatcher();
          */
         File.prototype.stopWatcher = function () {
             this.exoFile.StopWatcher();
@@ -213,6 +235,11 @@
         /**
          * Gets information about each of the mounted drives.
          * @memberof File
+         * @example
+         * var driveInfo = exoskeleton.file.getDriveInfo();
+         * driveInfo.forEach(function(drive) {
+         *   console.log(drive.Name + ":" + drive.AvailableFreeSpace);
+         * });
          */
         File.prototype.getDriveInfo = function () {
             return JSON.parse(this.exoFile.GetDriveInfo());
@@ -221,6 +248,10 @@
         /**
          * Gets a list of logical drives.
          * @memberof File
+         * @example
+         * var result = exoskeleton.file.getLogicalDrives();
+         * console.log(result);
+         * // logs : C:\,D:\,Z:\
          */
         File.prototype.getLogicalDrives = function () {
             return JSON.parse(this.exoFile.GetLogicalDrives());
@@ -230,6 +261,9 @@
          * Returns the directory portion of the path without the filename.
          * @param {string} path - The full pathname to get directory portion of.
          * @memberof File
+         * @example
+         * console.log(exoskeleton.file.getDirectoryName("c:\\downloads\\myfile.txt"));
+         * // logs : "c:\downloads"
          */
         File.prototype.getDirectoryName = function (path) {
             return this.exoFile.GetDirectoryName(path);
@@ -239,6 +273,9 @@
          * Returns the filename portion of the path without the directory.
          * @param {string} path - The full pathname to get filename portion of.
          * @memberof File
+         * @example
+         * console.log(exoskeleton.file.getFileName("c:\\downloads\\myfile.txt"));
+         * // logs : "myfile.txt"
          */
         File.prototype.getFileName = function (path) {
             return this.exoFile.GetFileName(path);
@@ -248,6 +285,9 @@
          * Gets the file extension of the fully qualified path.
          * @param {string} path - The filepath to get extension of.
          * @memberof File
+         * @example
+         * console.log(exoskeleton.file.getExtension("c:\\downloads\\myfile.txt"));
+         * // logs : ".txt"
          */
         File.prototype.getExtension = function (path) {
             return this.exoFile.GetExtension(path);
@@ -258,9 +298,14 @@
          * @param {string[]} paths - Array of paths to combine.
          * @returns {string} - Combined path string.
          * @memberof File
+         * @example
+         * var fullyQualifiedPath = exoskeleton.file.combinePaths(["c:\\downloads", "myfile.txt"]);
+         * console.log(fullyQualifiedPath);
+         * // "c:\downloads\myfile.txt"
          */
         File.prototype.combinePaths = function (paths) {
-            return this.exoFile.CombinePaths(paths);
+            var pathsJson = JSON.stringify(paths);
+            return this.exoFile.CombinePaths(pathsJson);
         };
 
         /**
@@ -268,6 +313,8 @@
          * @param {string} path - Name of the directory to get information for.
          * @returns {object} - Object containing directory info as properties.
          * @memberof File
+         * @example
+         * console.dir(exoskeleton.file.getDirectoryInfo("c:\\downloads"));
          */
         File.prototype.getDirectoryInfo = function (path) {
             return JSON.parse(this.exoFile.GetDirectoryInfo(path));
@@ -278,6 +325,15 @@
          * @param {string} parentDir - Directory to list subdirectories for.
          * @returns {string[]} - string array of subdirectories.
          * @memberof File
+         * @example
+         * var result = exoskeleton.file.getDirectories("c:\\downloads");
+         * console.dir(result);
+         * // might log:
+         * // [
+         * // "c:\\downloads\\subdir1",
+         * // "c:\\downloads\\subdir2",
+         * // "c:\\downloads\\subdir3"
+         * // ]
          */
         File.prototype.getDirectories = function (parentDir) {
             return JSON.parse(this.exoFile.GetDirectories(parentDir));
@@ -287,6 +343,8 @@
          * Creates all directories and subdirectories in the specified path unless they already exist.
          * @param {string} path - The directory to create.
          * @memberof File
+         * @example
+         * exoskeleton.file.createDirectory("c:\\downloads\\subdir4");
          */
         File.prototype.createDirectory = function (path) {
             this.exoFile.CreateDirectory(path);
@@ -296,6 +354,8 @@
          * Deletes an empty directory.
          * @param {string} path - The name of the empty directory to delete.
          * @memberof File
+         * @example
+         * exoskeleton.file.deleteDirectory("c:\\downloads\\subdir4");
          */
         File.prototype.deleteDirectory = function (path) {
             this.exoFile.DeleteDirectory(path);
@@ -386,6 +446,8 @@
          * Updates the window title for the host container.
          * @param {string} title - Text to apply to window title.
          * @memberof Main
+         * @example
+         * exoskeleton.main.setWindowTitle("My Editor App - " + filename);
          */
         Main.prototype.setWindowTitle = function (title) {
             this.exoMain.SetWindowTitle(title);
@@ -394,6 +456,8 @@
         /**
          * Signals the host container to enter fullscreen mode.
          * @memberof Main
+         * @example
+         * exoskeleton.main.fullscreen();
          */
         Main.prototype.fullscreen = function () {
             this.exoMain.Fullscreen();
@@ -402,6 +466,8 @@
         /**
          * Signals the host container to exit fullscreen mode.
          * @memberof Main
+         * @example
+         * exoskeleton.main.exitFullscreen();
          */
         Main.prototype.exitFullscreen = function () {
             this.exoMain.ExitFullscreen();
@@ -412,6 +478,8 @@
          * @param {string} title - The notification title.
          * @param {string} message - The notification message.
          * @memberof Main
+         * @example
+         * exoskeleton.main.showNotification("my exo app", "some notification details");
          */
         Main.prototype.showNotification = function (title, message) {
             this.exoMain.ShowNotification(title, message);
@@ -424,6 +492,8 @@
          * @param {int} width - Width (in pixels) to size new window to.
          * @param {int} height - Height (in pixels) to size new window to.
          * @memberof Main
+         * @example
+         * exoskeleton.main.openNewWindow("My App Settings", "settings.htm", 800, 480);
          */
         Main.prototype.openNewWindow = function (caption, url, width, height) {
             this.exoMain.OpenNewWindow(caption, url, width, height);
@@ -446,6 +516,9 @@
          * Starts a process resource by specifying the name of a document or application file.
          * @param {string} procPath - Program to execute.
          * @memberof Proc
+         * @example
+         * exoskeleton.proc.startPath("calc.exe");
+         * exoskeleton.proc.startPath("c:\\windows\\system32\\notepad.exe");
          */
         Proc.prototype.startPath = function (procPath) {
             this.exoProc.StartPath(procPath);
@@ -453,8 +526,20 @@
 
         /**
          * Starts a process resource by providing information in a ProcessStartInfo format.
-         * @param {string} processStartInfo - Serialized javascript object closely resembling a c# ProcessStartInfo object.
+         * @param {object} processStartInfo - Serialized javascript object closely resembling a c# ProcessStartInfo object.
+         * @param {string=} processStartInfo.FileName - filename of program to load.
+         * @param {string=} processStartInfo.Arguments - string containing arguments to launch with.
+         * @param {bool=} processStartInfo.CreateNoWindow - whether to start the process in a new window.
+         * @param {bool=} processStartInfo.ErrorDialog - whether to show error dialog if process could not be started.
+         * @param {bool=} processStartInfo.LoadUserProfile - whether the windows user profile is to be loaded from the registry.
+         * @param {bool=} processStartInfo.UseShellExecute - whether to use the operating system shell to start the process.
+         * @param {bool=} processStartInfo.WorkingDirectory - working dir of proc when UseShellExecute is false. dir containing process when UseShellExecute is true.
          * @memberof Proc
+         * @example
+         * exoskeleton.proc.start({
+         *   FileName: "notepad.exe",
+         *   Arguments: "c:\\docs\\readme.txt"
+         * });
          */
         Proc.prototype.start = function (processStartInfo) {
             return this.exoProc.Start(JSON.stringify(processStartInfo));
@@ -463,6 +548,12 @@
         /**
          * Gets a list of running processes.
          * @memberof Proc
+         * @example
+         * var procList = exoskeleton.proc.getProcesses();
+         * procList.forEach(function(p) {
+         *   // properties available should correlate to .net Process class member properties.
+         *   console.log(p.ProcessName + " : " + p.Id);
+         * });
          */
         Proc.prototype.getProcesses = function () {
             return JSON.parse(this.exoProc.GetProcesses());
@@ -472,6 +563,11 @@
          * Gets a list of processes of the provided name.
          * @param {string} name - name of process to get list of.
          * @memberof Proc
+         * @example
+         * var procList = exoskeleton.proc.getProcessesByName("notepad");
+         * procList.forEach(function(p) {
+         *   console.log(p.ProcessName + " : " + p.Id);
+         * });
          */
         Proc.prototype.getProcessesByName = function (name) {
             return JSON.parse(this.exoProc.GetProcessesByName(name));
@@ -481,6 +577,9 @@
          * Kills a running process.
          * @param {int} id - The id of the process to kill.
          * @memberof Proc
+         * @example
+         * // The id passed can be looked up via calls to getProcesses or getProcessesByName.
+         * exoskeleton.proc.killProcessById(1608);
          */
         Proc.prototype.killProcessById = function (id) {
             return this.exoProc.KillProcessById(id);
@@ -504,6 +603,8 @@
          * @param {string} key - The key name to lookup a value for in the session store.
          * @returns {string} - The value associated with key in string form.
          * @memberof Session
+         * @example
+         * var result = exoskeleton.session.get("username");
          */
         Session.prototype.get = function (key) {
             return this.exoSession.Get(key);
@@ -514,6 +615,8 @@
          * @param {string} key - The name of the session variable to set.
          * @param {string} value - The string value to assign to session variable.
          * @memberof Session
+         * @example
+         * exoskeleton.session.set("username", "jdoe");
          */
         Session.prototype.set = function (key, value) {
             this.exoSession.Set(key, value);
@@ -524,6 +627,9 @@
          * @param {string} key - The key name to lookup a value for in the session store.
          * @returns {object} - The value associated with key parsed into object.
          * @memberof Session
+         * @example
+         * var userInfo = exoskeleton.session.getObject("UserInfo");
+         * console.log(userInfo.name + userInfo.addr + userInfo.phone);
          */
         Session.prototype.getObject = function (key) {
             var result = this.exoSession.Get(key);
@@ -535,6 +641,11 @@
          * @param {string} key - The name of the session variable to set.
          * @param {object} value - The object value to assign to session variable.
          * @memberof Session
+         * exoskeleton.session.setObject("UserInfo", {
+         *   name: "jdoe",
+         *   addr: "123 anystreet",
+         *   phone: "555-1212"
+         * });
          */
         Session.prototype.setObject = function (key, value) {
             this.exoSession.Set(key, JSON.stringify(value));
@@ -544,6 +655,11 @@
          * Obtains a string list of all keys currently in the session store.
          * @returns {string[]} - An array of string 'keys' within the session store.
          * @memberof Session
+         * @example
+         * var result = exoskeleton.session.list();
+         * result.forEach(function(keyname) {
+         *   console.log(exoskeleton.session.get(keyname));
+         * });
          */
         Session.prototype.list = function () {
             return JSON.parse(this.exoSession.list());
@@ -566,6 +682,10 @@
          * Get information about the system which this program is being run on.
          * @returns {object} - Json system information object.
          * @memberof System
+         * @example
+         * var si = exoskeleton.system.getSystemInfo();
+         * console.dir(si);
+         * console.log(si.MachineName);
          */
         System.prototype.getSystemInfo = function () {
             return JSON.parse(this.exoSystem.GetSystemInfo());
@@ -576,6 +696,8 @@
          * @param {string} varName - The name of the environment variable to retrieve value for.
          * @returns {string=} - The string value of the environment variable (if found).
          * @memberof System
+         * @example
+         * var path = exoskeleton.system.getEnvironmentVariable("PATH");
          */
         System.prototype.getEnvironmentVariable = function (varName) {
             return this.exoSystem.GetEnvironmentVariable(varName);
@@ -585,6 +707,11 @@
          * Returns a list of all environment variables as properties and property values.
          * @returns {object} - Json hash object with properties representing variables.
          * @memberof System
+         * @example
+         * var envVariables = exoskeleton.system.getEnvironmentVariables();
+         * Object.keys(envVariables, function(key) {
+         *   console.log("key: " + key + " val : " + exoskeleton.system.getEnvironmentVariable(key));
+         * });
          */
         System.prototype.getEnvironmentVariables = function () {
             return this.exoSystem.GetEnvironmentVariables();
@@ -595,6 +722,9 @@
          * @param {string} varName - The name of the environment variable.
          * @param {string} varValue - The value to assign to the environment variable.
          * @memberof System
+         * @example
+         * var now = new DateTime();
+         * var path = exoskeleton.system.setEnvironmentVariable("LAUNCHTIME", now.toString());
          */
         System.prototype.setEnvironmentVariable = function (varName, varValue) {
             return this.exoSystem.SetEnvironmentVariable(varName, varValue);
@@ -605,6 +735,10 @@
          * @param {string=} className - The class name of the window, or null.
          * @param {string=} windowName - The window name of the window, or null.
          * @memberof System
+         * @example
+         * // assuming notepad is already running :
+         * exoskeleton.system.focusWindow("notepad", null);
+         * exoskeleton.system.focusWindow(null, "readme.txt - Notepad");
          */
         System.prototype.focusWindow = function (className, windowName) {
             this.exoSystem.FocusWindow(className, windowName);
@@ -612,15 +746,20 @@
 
         /**
          * Finds a window and sends keycodes to it.
+         * This uses .Net SendKeys(), for info on key codes read :
+         * https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys(v=vs.110).aspx
          * @param {string=} className - The class name of the window, or null.
          * @param {string=} windowName - The window name of the window, or null.
          * @param {string[]} keys - String array of keys or keycodes to send.
          * @returns {bool} - Whether the window was found.
          * @memberof System
+         * @example
+         * exoskeleton.system.focusAndSendKeys("notepad", null, ["t", "e", "s", "t", "{ENTER}"]);
          */
         System.prototype.focusAndSendKeys = function (className, windowName, keys) {
-            return this.exoSystem.FocusAndSendKeys(className, windowName, keys);
-        }
+            var keysJson = JSON.stringify(keys);
+            return this.exoSystem.FocusAndSendKeys(className, windowName, keysJson);
+        };
 
         // #endregion
 
@@ -640,6 +779,8 @@
          * @param {string} source - Descriptive 'source' of the info.
          * @param {string} message - Info detail message
          * @memberof Logger
+         * @example
+         * exoskeleton.logger.logInfo("myfunction", "something interesting happened");
          */
         Logger.prototype.logInfo = function (source, message) {
             this.exoLogger.LogInfo(source, message);
@@ -650,6 +791,7 @@
          * @param {string} source - Descriptive 'source' of the warning.
          * @param {string} message - Detailed warning message.
          * @memberof Logger
+         * exoskeleton.logger.logInfo("myfunction", "something odd happened");
          */
         Logger.prototype.logWarning = function (source, message) {
             this.exoLogger.LogWarning(source, message);
@@ -658,11 +800,12 @@
         /**
          * Logs an "error" message to the logger's message list.
          * @param {string} msg - Message to log.
-         * @param {string} url - The url of the script where the error occurred.
-         * @param {string} line - Line number of the javascript where the error occurred.
-         * @param {string} col - Column number of the javascript where the error occurred.
-         * @param {string} error - Detailed informatino about the error.
+         * @param {string=} url - The url of the script where the error occurred.
+         * @param {string=} line - Line number of the javascript where the error occurred.
+         * @param {string=} col - Column number of the javascript where the error occurred.
+         * @param {string=} error - Detailed informatino about the error.
          * @memberof Logger
+         * exoskeleton.logger.logError("something dangerous happened", "myfunction");
          */
         Logger.prototype.logError = function (msg, url, line, col, error) {
             this.exoLogger.LogError(msg, url, line, col, error);
@@ -672,6 +815,9 @@
          * Logs text to the logger's console.
          * @param {string} message - Text to append to the console.
          * @memberof Logger
+         * @example
+         * var now = new DateTime();
+         * exoskeleton.logger.logText("started processing at : " + now);
          */
         Logger.prototype.logText = function (message) {
             this.exoLogger.LogText(message);
@@ -696,6 +842,9 @@
          * @param {string} dest - Destination filename on disk.
          * @param {bool} async - Whether to wait until finished before returning.
          * @memberof Net
+         * @example
+         * exoskeleton.net.downloadFile("https://github.com/obeliskos/exoskeleton/archive/0.2.zip",
+         *   "c:\\downloads\\0.2.zip", false);
          */
         Net.prototype.downloadFile = function (url, dest, async) {
             return this.exoNet.DownloadFile(url, dest, async);
@@ -706,6 +855,9 @@
          * @param {string} url - Internet url of text based resource.
          * @returns {string} - String containing text within the retrieved resource.
          * @memberof Net
+         * @example
+         * var readmeText = exoskeleton.net.readUrl("https://raw.githubusercontent.com/obeliskos/exoskeleton/master/README.md");
+         * exoskeleton.logger.logText(readmeText);
          */
         Net.prototype.readUrl = function (url) {
             return this.exoNet.ReadUrl(url);
@@ -729,6 +881,8 @@
          * @param {string} data - The string to encrypt.
          * @param {string} password - The password to encrypt with.
          * @memberof Enc
+         * @example
+         * var encryptedString = exoskeleton.enc.encrypt("some secret msg", "s0m3p4ssw0rd");
          */
         Enc.prototype.encrypt = function (data, password) {
             return this.exoEnc.Encrypt(data, password);
@@ -739,6 +893,12 @@
          * @param {string} data - The string to decrypt.
          * @param {string} password - The password to decrypt with.
          * @memberof Enc
+         * var originalString = "some secret msg";
+         * var encryptedString = exoskeleton.enc.encrypt(originalString, "s0m3p4ssw0rd");
+         * var decryptedString = exoskeleton.enc.decrypt(encryptedString, "s0m3p4ssw0rd");
+         * console.log("original: " + originalString);
+         * console.log("encrypted: " + encryptedString);
+         * console.log("decrypted: " + decryptedString);
          */
         Enc.prototype.decrypt = function (data, password) {
             return this.exoEnc.Decrypt(data, password);
@@ -749,6 +909,10 @@
          * @param {string} filemask - filename or wildcard pattern of files to encrypt.
          * @param {string} password - The password to encrypt with.
          * @memberof Enc
+         * @example
+         * // creates encrypted file(s) with '.enx' suffix
+         * exoskeleton.enc.encryptFiles("c:\\source\\readme.txt", "s0m3p4ssw0rd");
+         * exoskeleton.enc.encryptFiles("c:\\source\\*.doc", "s0m3p4ssw0rd");
          */
         Enc.prototype.encryptFiles = function (filemask, password) {
             return this.exoEnc.EncryptFiles(filemask, password);
@@ -759,8 +923,12 @@
          * @param {string} filemask - filename or wildcard pattern of files to decrypt.
          * @param {string} password - The password to decrypt with.
          * @memberof Enc
+         * @example
+         * // creates decrypted file(s) without the '.enx' suffix
+         * exoskeleton.enc.decryptFiles("c:\\source\\readme.txt.enx", "s0m3p4ssw0rd");
+         * exoskeleton.enc.decryptFiles("c:\\source\\*.doc.enx", "s0m3p4ssw0rd");
          */
-        Enc.prototype.DecryptFiles = function(filemask, password) {
+        Enc.prototype.decryptFiles = function(filemask, password) {
             return this.exoEnc.DecryptFiles(filemask, password);
         };
 
@@ -768,8 +936,10 @@
          * Creates ana MD5 Hash for the file specified by the provided filename.
          * @param {string} filename - The filename of the file to calculate a hash file.
          * @memberof Enc
+         * @example
+         * var hash = exoskeleton.enc.createMD5Hash("c:\\source\\readme.txt");
          */
-        Enc.prototype.CreateMD5Hash = function(filename) {
+        Enc.prototype.createMD5Hash = function(filename) {
             return this.exoEnc.GetBase64EncodedMD5Hash(filename);
         };
 
@@ -777,8 +947,10 @@
          * Creates ana SH1 Hash for the file specified by the provided filename.
          * @param {string} filename : The filename of the file to calculate a hash file.
          * @memberof Enc
+         * @example
+         * var hash = exoskeleton.enc.createSHA1Hash("c:\\source\\readme.txt");
          */
-        Enc.prototype.CreateSHA1Hash = function(filename) {
+        Enc.prototype.createSHA1Hash = function(filename) {
             return this.exoEnc.GetBase64EncodedSHA1Hash(filename);
         };
 
@@ -786,18 +958,25 @@
          * Creates ana SHA256 Hash for the file specified by the provided filename.
          * @param {string} filename - The filename of the file to calculate a hash file.
          * @memberof Enc
+         * @example
+         * var hash = exoskeleton.enc.createSHA256Hash("c:\\source\\readme.txt");
          */
-        Enc.prototype.CreateSHA256Hash = function(filename) {
+        Enc.prototype.createSHA256Hash = function(filename) {
             return this.exoEnc.GetBase64EncodedSHA256Hash(filename);
         };
 
         /**
          * Creates MD5, SHA1, and SHA256 hashes for the file(s) specified.
-         * @param {string} filemask - The filename or filemask for file(s) to calculate hashes for.
+         * @param {string} path - Directory to look in for files to hash.
+         * @param {string} searchPattern - Filename or wildcard of file(s) to hash.
          * @memberof Enc
+         * @example
+         * var detailedHashInfo = exoskeleton.enc.hashFiles("c:\\source", "*.doc");
+         * console.log(detailedHashInfo.length);
+         * console.log(detailedHashInfo[0].sha256);
          */
-        Enc.prototype.HashFiles = function (filemask) {
-            return this.exoEnc.HashFiles(filemask);
+        Enc.prototype.hashFiles = function (path, searchPattern) {
+            return JSON.parse(this.exoEnc.HashFiles(path, searchPattern));
         };
 
         // #endregion
@@ -864,13 +1043,26 @@
         /**
          * Event emitter for listening to or emitting events within your page(s)
          *
-         * While we currently support only one main exoskeleton hosted page/frame, this
-         * may be enhanced in the future to support eventing across all page frames.
+         * This is exposed via exoskeleton.events.
+         * May be used internally to your container or used to emit or listen to
+         * 'multicast' events which are propagated to all host windows.
+         *
+         * Event names starting with 'local.' are not to be multicast,
+         * otherwise the event will be multicast with an eventname prefixed
+         * with 'multicast.'.
+         *
          * @param {object} exo - Instance to the exoskeleton com interface
+         * @param {object} options - options to configure event emitter with.
+         * @param {bool=} [options.asyncListeners=false] - whether events will be emitted asynchronously.
          * @constructor ExoEventEmitter
          */
-        function ExoEventEmitter(exo) {
+        function ExoEventEmitter(exo, options) {
             this.exo = exo;
+
+            options = options || {};
+            if (options.asyncListeners) {
+                this.asyncListeners = options.asyncListeners;
+            }
         }
 
         /**

@@ -232,11 +232,12 @@ namespace Exoskeleton.Classes.API
         /// <summary>
         /// Generates variety of hashes for file(s) represented by filemask.
         /// </summary>
-        /// <param name="filemask">Filename or wildcard of file(s) to hash.</param>
+        /// <param name="path">Directory to look in for files to hash.</param>
+        /// <param name="searchPattern">Filename or wildcard of file(s) to hash.</param>
         /// <returns>Json encoded list of objects containing hash info.</returns>
-        public string HashFiles(string filemask)
+        public string HashFiles(string path, string searchPattern)
         {
-            string[] matchingFiles = Directory.GetFiles(Directory.GetCurrentDirectory(), filemask);
+            string[] matchingFiles = Directory.GetFiles(path, searchPattern);
 
             List<dynamic> hashInfo = new List<dynamic>();
 

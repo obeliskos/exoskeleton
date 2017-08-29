@@ -23,5 +23,6 @@
   <ScriptingProcessEnabled>true</ScriptingProcessEnabled>
   <ScriptingSystemEnabled>true</ScriptingSystemEnabled>
   <ScriptingLoggerEnabled>true</ScriptingLoggerEnabled>
+  <ScriptingNetEnabled>true</ScriptingNetEnabled>
   <ScriptingComObjectsEnabled>true</ScriptingComObjectsEnabled>
 </Settings>

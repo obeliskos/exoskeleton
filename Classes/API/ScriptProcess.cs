@@ -72,7 +72,16 @@ namespace Exoskeleton.Classes.API
         public string GetProcessesByName(string name)
         {
             Process[] result = Process.GetProcessesByName(name);
-            return JsonConvert.SerializeObject(result);
+
+            // Some properties (their accessors) may throw exception if their value is non-applicable in the 
+            // process current state so we will ignore errors by providing our own error delegate.
+            JsonSerializerSettings jss = new JsonSerializerSettings();
+            jss.Error += delegate (object sender, ErrorEventArgs args) 
+            {
+                args.ErrorContext.Handled = true;
+            };
+
+            return JsonConvert.SerializeObject(result, jss);
         }
 
         /// <summary>

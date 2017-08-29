@@ -109,9 +109,9 @@ namespace Exoskeleton.Classes.API
         /// </summary>
         /// <param name="className">The class name of the window, or null.</param>
         /// <param name="windowName">The window name of the window, or null.</param>
-        /// <param name="keys">String array of keys or keycodes to send.</param>
+        /// <param name="keysJson">String array of keys or keycodes to send.</param>
         /// <returns></returns>
-        public bool FocusAndSendKeys(string className, string windowName, string[] keys)
+        public bool FocusAndSendKeys(string className, string windowName, string keysJson)
         {
             IntPtr ip = FindWindow(className, windowName);
 
@@ -119,6 +119,7 @@ namespace Exoskeleton.Classes.API
 
             SetForegroundWindow(ip);
 
+            List<string> keys = JsonConvert.DeserializeObject<List<string>>(keysJson);
             foreach(string key in keys)
             {
                 SendKeys.SendWait(key);

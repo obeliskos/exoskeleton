@@ -425,12 +425,6 @@
                       </a></li>
                     
                       <li><a
-                        href='#sessionsetobject'
-                        class='regular pre-open'>
-                        .setObject
-                      </a></li>
-                    
-                      <li><a
                         href='#sessionlist'
                         class='regular pre-open'>
                         .list
@@ -442,6 +436,16 @@
                   
                   
                 </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#setobject'
+                  class="">
+                  setObject
+                  
+                </a>
                 
                 </li>
               
@@ -523,18 +527,6 @@
                       </a></li>
                     
                       <li><a
-                        href='#loggerlogwarning'
-                        class='regular pre-open'>
-                        .logWarning
-                      </a></li>
-                    
-                      <li><a
-                        href='#loggerlogerror'
-                        class='regular pre-open'>
-                        .logError
-                      </a></li>
-                    
-                      <li><a
                         href='#loggerlogtext'
                         class='regular pre-open'>
                         .logText
@@ -546,6 +538,26 @@
                   
                   
                 </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#logwarning'
+                  class="">
+                  logWarning
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#logerror'
+                  class="">
+                  logError
+                  
+                </a>
                 
                 </li>
               
@@ -603,12 +615,6 @@
                       </a></li>
                     
                       <li><a
-                        href='#encdecrypt'
-                        class='regular pre-open'>
-                        .decrypt
-                      </a></li>
-                    
-                      <li><a
                         href='#encencryptfiles'
                         class='regular pre-open'>
                         .encryptFiles
@@ -617,31 +623,31 @@
                       <li><a
                         href='#encdecryptfiles'
                         class='regular pre-open'>
-                        .DecryptFiles
+                        .decryptFiles
                       </a></li>
                     
                       <li><a
                         href='#enccreatemd5hash'
                         class='regular pre-open'>
-                        .CreateMD5Hash
+                        .createMD5Hash
                       </a></li>
                     
                       <li><a
                         href='#enccreatesha1hash'
                         class='regular pre-open'>
-                        .CreateSHA1Hash
+                        .createSHA1Hash
                       </a></li>
                     
                       <li><a
                         href='#enccreatesha256hash'
                         class='regular pre-open'>
-                        .CreateSHA256Hash
+                        .createSHA256Hash
                       </a></li>
                     
                       <li><a
                         href='#enchashfiles'
                         class='regular pre-open'>
-                        .HashFiles
+                        .hashFiles
                       </a></li>
                     
                     </ul>
@@ -650,6 +656,16 @@
                   
                   
                 </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#decrypt'
+                  class="">
+                  decrypt
+                  
+                </a>
                 
                 </li>
               
@@ -1337,7 +1353,8 @@
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.com.invokeMethod(<span class="hljs-string">"Speak"</span>, [<span class="hljs-string">"this is a test message scripting activex from java script"</span>, <span class="hljs-number">1</span>])</pre>
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.com.createInstance(<span class="hljs-string">"SAPI.SpVoice"</span>);
+exoskeleton.com.invokeMethod(<span class="hljs-string">"Speak"</span>, [<span class="hljs-string">"this is a test message scripting activex from java script"</span>, <span class="hljs-number">1</span>])</pre>
     
   
 
@@ -2877,6 +2894,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.setWindowTitle(<span class="hljs-string">"My Editor App - "</span> + filename);</pre>
+    
+  
 
   
 
@@ -2923,6 +2946,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.fullscreen();</pre>
+    
+  
 
   
 
@@ -2968,6 +2997,12 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.exitFullscreen();</pre>
+    
   
 
   
@@ -3037,6 +3072,12 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.showNotification(<span class="hljs-string">"my exo app"</span>, <span class="hljs-string">"some notification details"</span>);</pre>
+    
   
 
   
@@ -3124,6 +3165,12 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.openNewWindow(<span class="hljs-string">"My App Settings"</span>, <span class="hljs-string">"settings.htm"</span>, <span class="hljs-number">800</span>, <span class="hljs-number">480</span>);</pre>
+    
   
 
   
@@ -3252,6 +3299,13 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.proc.startPath(<span class="hljs-string">"calc.exe"</span>);
+exoskeleton.proc.startPath(<span class="hljs-string">"c:\\windows\\system32\\notepad.exe"</span>);</pre>
+    
+  
 
   
 
@@ -3278,7 +3332,7 @@ If the file already exists, it will be overwritten.</p>
   <p>Starts a process resource by providing information in a ProcessStartInfo format.</p>
 
 
-  <div class='pre p1 fill-light mt0'>start(processStartInfo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>start(processStartInfo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
 
@@ -3295,10 +3349,75 @@ If the file already exists, it will be overwritten.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>processStartInfo</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>processStartInfo</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    Serialized javascript object closely resembling a c# ProcessStartInfo object.
 
           </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>processStartInfo.FileName</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>filename of program to load.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>processStartInfo.Arguments</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>string containing arguments to launch with.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>processStartInfo.CreateNoWindow</span> <code class='quiet'>bool?</code>
+                  </td>
+                  <td class='break-word'><span>whether to start the process in a new window.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>processStartInfo.ErrorDialog</span> <code class='quiet'>bool?</code>
+                  </td>
+                  <td class='break-word'><span>whether to show error dialog if process could not be started.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>processStartInfo.LoadUserProfile</span> <code class='quiet'>bool?</code>
+                  </td>
+                  <td class='break-word'><span>whether the windows user profile is to be loaded from the registry.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>processStartInfo.UseShellExecute</span> <code class='quiet'>bool?</code>
+                  </td>
+                  <td class='break-word'><span>whether to use the operating system shell to start the process.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>processStartInfo.WorkingDirectory</span> <code class='quiet'>bool?</code>
+                  </td>
+                  <td class='break-word'><span>working dir of proc when UseShellExecute is false. dir containing process when UseShellExecute is true.
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
           
         </div>
       
@@ -3311,6 +3430,15 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.proc.start({
+  <span class="hljs-attr">FileName</span>: <span class="hljs-string">"notepad.exe"</span>,
+  <span class="hljs-attr">Arguments</span>: <span class="hljs-string">"c:\\docs\\readme.txt"</span>
+});</pre>
+    
   
 
   
@@ -3357,6 +3485,16 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> procList = exoskeleton.proc.getProcesses();
+procList.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">p</span>) </span>{
+  <span class="hljs-comment">// properties available should correlate to .net Process class member properties.</span>
+  <span class="hljs-built_in">console</span>.log(p.ProcessName + <span class="hljs-string">" : "</span> + p.Id);
+});</pre>
+    
   
 
   
@@ -3418,6 +3556,15 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> procList = exoskeleton.proc.getProcessesByName(<span class="hljs-string">"notepad"</span>);
+procList.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">p</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(p.ProcessName + <span class="hljs-string">" : "</span> + p.Id);
+});</pre>
+    
+  
 
   
 
@@ -3477,6 +3624,13 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// The id passed can be looked up via calls to getProcesses or getProcessesByName.</span>
+exoskeleton.proc.killProcessById(<span class="hljs-number">1608</span>);</pre>
+    
   
 
   
@@ -3613,6 +3767,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> result = exoskeleton.session.get(<span class="hljs-string">"username"</span>);</pre>
+    
+  
 
   
 
@@ -3682,6 +3842,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.session.set(<span class="hljs-string">"username"</span>, <span class="hljs-string">"jdoe"</span>);</pre>
+    
+  
 
   
 
@@ -3750,74 +3916,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='sessionsetobject'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>setObject(key, value)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Assigns a key/value setting within the session store by serializing it.</p>
-
-
-  <div class='pre p1 fill-light mt0'>setObject(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
       
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The name of the session variable to set.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>value</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    The object value to assign to session variable.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> userInfo = exoskeleton.session.getObject(<span class="hljs-string">"UserInfo"</span>);
+<span class="hljs-built_in">console</span>.log(userInfo.name + userInfo.addr + userInfo.phone);</pre>
+    
   
 
   
@@ -3873,6 +3977,15 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> result = exoskeleton.session.list();
+result.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">keyname</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(exoskeleton.session.get(keyname));
+});</pre>
+    
+  
 
   
 
@@ -3885,6 +3998,76 @@ If the file already exists, it will be overwritten.</p>
     </div>
   
 </div>
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='setobject'>
+      setObject
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Assigns a key/value setting within the session store by serializing it.</p>
+
+
+  <div class='pre p1 fill-light mt0'>setObject(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The name of the session variable to set.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>value</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    The object value to assign to session variable.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -3994,6 +4177,14 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> si = exoskeleton.system.getSystemInfo();
+<span class="hljs-built_in">console</span>.dir(si);
+<span class="hljs-built_in">console</span>.log(si.MachineName);</pre>
+    
+  
 
   
 
@@ -4054,6 +4245,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> path = exoskeleton.system.getEnvironmentVariable(<span class="hljs-string">"PATH"</span>);</pre>
+    
+  
 
   
 
@@ -4107,6 +4304,15 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> envVariables = exoskeleton.system.getEnvironmentVariables();
+<span class="hljs-built_in">Object</span>.keys(envVariables, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"key: "</span> + key + <span class="hljs-string">" val : "</span> + exoskeleton.system.getEnvironmentVariable(key));
+});</pre>
+    
   
 
   
@@ -4177,6 +4383,13 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> now = <span class="hljs-keyword">new</span> DateTime();
+<span class="hljs-keyword">var</span> path = exoskeleton.system.setEnvironmentVariable(<span class="hljs-string">"LAUNCHTIME"</span>, now.toString());</pre>
+    
+  
 
   
 
@@ -4246,6 +4459,14 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// assuming notepad is already running :</span>
+exoskeleton.system.focusWindow(<span class="hljs-string">"notepad"</span>, <span class="hljs-literal">null</span>);
+exoskeleton.system.focusWindow(<span class="hljs-literal">null</span>, <span class="hljs-string">"readme.txt - Notepad"</span>);</pre>
+    
+  
 
   
 
@@ -4269,7 +4490,9 @@ If the file already exists, it will be overwritten.</p>
 
   
 
-  <p>Finds a window and sends keycodes to it.</p>
+  <p>Finds a window and sends keycodes to it.
+This uses .Net SendKeys(), for info on key codes read :
+<a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys(v=vs.110).aspx">https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys(v=vs.110).aspx</a></p>
 
 
   <div class='pre p1 fill-light mt0'>focusAndSendKeys(className: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, windowName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, keys: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>): bool</div>
@@ -4331,6 +4554,12 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.system.focusAndSendKeys(<span class="hljs-string">"notepad"</span>, <span class="hljs-literal">null</span>, [<span class="hljs-string">"t"</span>, <span class="hljs-string">"e"</span>, <span class="hljs-string">"s"</span>, <span class="hljs-string">"t"</span>, <span class="hljs-string">"{ENTER}"</span>]);</pre>
+    
   
 
   
@@ -4468,170 +4697,11 @@ If the file already exists, it will be overwritten.</p>
   
 
   
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='loggerlogwarning'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>logWarning(source, message)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Logs a "warning" message to the logger's message list.</p>
-
-
-  <div class='pre p1 fill-light mt0'>logWarning(source: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
       
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>source</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Descriptive 'source' of the warning.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>message</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Detailed warning message.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='loggerlogerror'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>logError(msg, url, line, col, error)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Logs an "error" message to the logger's message list.</p>
-
-
-  <div class='pre p1 fill-light mt0'>logError(msg: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, line: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, col: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Message to log.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>url</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The url of the script where the error occurred.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>line</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Line number of the javascript where the error occurred.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>col</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Column number of the javascript where the error occurred.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>error</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Detailed informatino about the error.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.logger.logInfo(<span class="hljs-string">"myfunction"</span>, <span class="hljs-string">"something interesting happened"</span>);</pre>
+    
   
 
   
@@ -4693,6 +4763,13 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> now = <span class="hljs-keyword">new</span> DateTime();
+exoskeleton.logger.logText(<span class="hljs-string">"started processing at : "</span> + now);</pre>
+    
+  
 
   
 
@@ -4705,6 +4782,173 @@ If the file already exists, it will be overwritten.</p>
     </div>
   
 </div>
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='logwarning'>
+      logWarning
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Logs a "warning" message to the logger's message list.</p>
+
+
+  <div class='pre p1 fill-light mt0'>logWarning(source: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>source</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Descriptive 'source' of the warning.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>message</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Detailed warning message.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='logerror'>
+      logError
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Logs an "error" message to the logger's message list.</p>
+
+
+  <div class='pre p1 fill-light mt0'>logError(msg: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, line: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, col: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Message to log.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>url</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    The url of the script where the error occurred.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>line</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    Line number of the javascript where the error occurred.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>col</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    Column number of the javascript where the error occurred.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>error</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    Detailed informatino about the error.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -4838,6 +5082,13 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.net.downloadFile(<span class="hljs-string">"https://github.com/obeliskos/exoskeleton/archive/0.2.zip"</span>,
+  <span class="hljs-string">"c:\\downloads\\0.2.zip"</span>, <span class="hljs-literal">false</span>);</pre>
+    
+  
 
   
 
@@ -4905,6 +5156,13 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> readmeText = exoskeleton.net.readUrl(<span class="hljs-string">"https://raw.githubusercontent.com/obeliskos/exoskeleton/master/README.md"</span>);
+exoskeleton.logger.logText(readmeText);</pre>
+    
   
 
   
@@ -5042,74 +5300,11 @@ If the file already exists, it will be overwritten.</p>
   
 
   
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='encdecrypt'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>decrypt(data, password)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Decrypts a string using the provided password.</p>
-
-
-  <div class='pre p1 fill-light mt0'>decrypt(data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
       
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The string to decrypt.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>password</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The password to decrypt with.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> encryptedString = exoskeleton.enc.encrypt(<span class="hljs-string">"some secret msg"</span>, <span class="hljs-string">"s0m3p4ssw0rd"</span>);</pre>
+    
   
 
   
@@ -5180,6 +5375,14 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// creates encrypted file(s) with '.enx' suffix</span>
+exoskeleton.enc.encryptFiles(<span class="hljs-string">"c:\\source\\readme.txt"</span>, <span class="hljs-string">"s0m3p4ssw0rd"</span>);
+exoskeleton.enc.encryptFiles(<span class="hljs-string">"c:\\source\\*.doc"</span>, <span class="hljs-string">"s0m3p4ssw0rd"</span>);</pre>
+    
+  
 
   
 
@@ -5195,7 +5398,7 @@ If the file already exists, it will be overwritten.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>DecryptFiles(filemask, password)</span>
+            <span class='code strong strong truncate'>decryptFiles(filemask, password)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5206,7 +5409,7 @@ If the file already exists, it will be overwritten.</p>
   <p>Create decrypted copies of the specified file(s) using the provided password.</p>
 
 
-  <div class='pre p1 fill-light mt0'>DecryptFiles(filemask: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>decryptFiles(filemask: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -5249,6 +5452,14 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// creates decrypted file(s) without the '.enx' suffix</span>
+exoskeleton.enc.decryptFiles(<span class="hljs-string">"c:\\source\\readme.txt.enx"</span>, <span class="hljs-string">"s0m3p4ssw0rd"</span>);
+exoskeleton.enc.decryptFiles(<span class="hljs-string">"c:\\source\\*.doc.enx"</span>, <span class="hljs-string">"s0m3p4ssw0rd"</span>);</pre>
+    
+  
 
   
 
@@ -5264,7 +5475,7 @@ If the file already exists, it will be overwritten.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>CreateMD5Hash(filename)</span>
+            <span class='code strong strong truncate'>createMD5Hash(filename)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5275,7 +5486,7 @@ If the file already exists, it will be overwritten.</p>
   <p>Creates ana MD5 Hash for the file specified by the provided filename.</p>
 
 
-  <div class='pre p1 fill-light mt0'>CreateMD5Hash(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>createMD5Hash(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -5309,6 +5520,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> hash = exoskeleton.enc.createMD5Hash(<span class="hljs-string">"c:\\source\\readme.txt"</span>);</pre>
+    
+  
 
   
 
@@ -5324,7 +5541,7 @@ If the file already exists, it will be overwritten.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>CreateSHA1Hash(filename)</span>
+            <span class='code strong strong truncate'>createSHA1Hash(filename)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5335,7 +5552,7 @@ If the file already exists, it will be overwritten.</p>
   <p>Creates ana SH1 Hash for the file specified by the provided filename.</p>
 
 
-  <div class='pre p1 fill-light mt0'>CreateSHA1Hash(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>createSHA1Hash(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -5369,6 +5586,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> hash = exoskeleton.enc.createSHA1Hash(<span class="hljs-string">"c:\\source\\readme.txt"</span>);</pre>
+    
+  
 
   
 
@@ -5384,7 +5607,7 @@ If the file already exists, it will be overwritten.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>CreateSHA256Hash(filename)</span>
+            <span class='code strong strong truncate'>createSHA256Hash(filename)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5395,7 +5618,7 @@ If the file already exists, it will be overwritten.</p>
   <p>Creates ana SHA256 Hash for the file specified by the provided filename.</p>
 
 
-  <div class='pre p1 fill-light mt0'>CreateSHA256Hash(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>createSHA256Hash(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -5429,6 +5652,12 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> hash = exoskeleton.enc.createSHA256Hash(<span class="hljs-string">"c:\\source\\readme.txt"</span>);</pre>
+    
+  
 
   
 
@@ -5444,7 +5673,7 @@ If the file already exists, it will be overwritten.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>HashFiles(filemask)</span>
+            <span class='code strong strong truncate'>hashFiles(path, searchPattern)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5455,7 +5684,7 @@ If the file already exists, it will be overwritten.</p>
   <p>Creates MD5, SHA1, and SHA256 hashes for the file(s) specified.</p>
 
 
-  <div class='pre p1 fill-light mt0'>HashFiles(filemask: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>hashFiles(path: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, searchPattern: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -5472,8 +5701,17 @@ If the file already exists, it will be overwritten.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>filemask</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The filename or filemask for file(s) to calculate hashes for.
+            <span class='code bold'>path</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Directory to look in for files to hash.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>searchPattern</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Filename or wildcard of file(s) to hash.
 
           </div>
           
@@ -5489,6 +5727,14 @@ If the file already exists, it will be overwritten.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> detailedHashInfo = exoskeleton.enc.hashFiles(<span class="hljs-string">"c:\\source"</span>, <span class="hljs-string">"*.doc"</span>);
+<span class="hljs-built_in">console</span>.log(detailedHashInfo.length);
+<span class="hljs-built_in">console</span>.log(detailedHashInfo[<span class="hljs-number">0</span>].sha256);</pre>
+    
+  
 
   
 
@@ -5501,6 +5747,76 @@ If the file already exists, it will be overwritten.</p>
     </div>
   
 </div>
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='decrypt'>
+      decrypt
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Decrypts a string using the provided password.</p>
+
+
+  <div class='pre p1 fill-light mt0'>decrypt(data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The string to decrypt.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>password</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The password to decrypt with.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
