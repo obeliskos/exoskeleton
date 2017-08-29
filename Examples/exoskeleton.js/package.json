@@ -1,0 +1,15 @@
+{
+  "name": "exoskeleton",
+  "version": "1.0.0",
+  "description": "",
+  "main": "exoskeleton.js",
+  "scripts": {
+    "jsdoc": "jsdoc -c jsdoc-conf.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "obeliskos",
+  "license": "ISC",
+  "dependencies": {
+    "jsdoc": "^3.5.4"
+  }
+}

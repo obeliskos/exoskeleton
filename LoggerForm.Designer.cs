@@ -64,6 +64,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -77,8 +78,9 @@
             this.splitContainer1.Panel2.Controls.Add(this.txtConsole);
             this.splitContainer1.Panel2.Controls.Add(this.textConsoleEval);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip2);
-            this.splitContainer1.Size = new System.Drawing.Size(725, 416);
-            this.splitContainer1.SplitterDistance = 177;
+            this.splitContainer1.Size = new System.Drawing.Size(967, 512);
+            this.splitContainer1.SplitterDistance = 217;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 8;
             // 
             // listViewLog
@@ -92,8 +94,9 @@
             this.listViewLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewLog.FullRowSelect = true;
             this.listViewLog.Location = new System.Drawing.Point(0, 25);
+            this.listViewLog.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listViewLog.Name = "listViewLog";
-            this.listViewLog.Size = new System.Drawing.Size(725, 152);
+            this.listViewLog.Size = new System.Drawing.Size(967, 192);
             this.listViewLog.SmallImageList = this.imageListViewIcons;
             this.listViewLog.TabIndex = 2;
             this.listViewLog.UseCompatibleStateImageBehavior = false;
@@ -128,7 +131,7 @@
             this.toolStripButtonClearLog});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(725, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(967, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -149,19 +152,21 @@
             this.txtConsole.Font = new System.Drawing.Font("Lucida Console", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtConsole.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.txtConsole.Location = new System.Drawing.Point(0, 25);
+            this.txtConsole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.Size = new System.Drawing.Size(725, 187);
+            this.txtConsole.Size = new System.Drawing.Size(967, 242);
             this.txtConsole.TabIndex = 3;
             // 
             // textConsoleEval
             // 
             this.textConsoleEval.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textConsoleEval.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textConsoleEval.Location = new System.Drawing.Point(0, 212);
+            this.textConsoleEval.Location = new System.Drawing.Point(0, 267);
+            this.textConsoleEval.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textConsoleEval.Name = "textConsoleEval";
-            this.textConsoleEval.Size = new System.Drawing.Size(725, 23);
+            this.textConsoleEval.Size = new System.Drawing.Size(967, 23);
             this.textConsoleEval.TabIndex = 2;
             this.textConsoleEval.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textConsoleEval_KeyDown);
             // 
@@ -171,7 +176,7 @@
             this.toolStripButtonClearConsole});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(725, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(967, 25);
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -187,11 +192,13 @@
             // 
             // LoggerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(725, 416);
+            this.ClientSize = new System.Drawing.Size(967, 512);
             this.Controls.Add(this.splitContainer1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "LoggerForm";
             this.Text = "LoggerForm";
             this.splitContainer1.Panel1.ResumeLayout(false);

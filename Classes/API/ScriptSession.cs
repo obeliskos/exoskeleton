@@ -7,45 +7,52 @@ using System.Threading.Tasks;
 
 namespace Exoskeleton.Classes.API
 {
+    /// <summary>
+    /// Implements and exposes a Key/Value Session storage 
+    /// </summary>
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
-    public class ScriptSession
+    public class ScriptSession: IDisposable
     {
         public Dictionary<string, string> SessionHashtable = new Dictionary<string, string>();
 
-        public string get(string key)
+        public void Dispose()
         {
-            if (SessionHashtable.ContainsKey(key))
-            {
-                return SessionHashtable[key];
-            }
-            else
+        }
+
+        /// <summary>
+        /// Lookups the Value for the Session key provided.
+        /// </summary>
+        /// <param name="key">The key name to lookup a value for in the session store.</param>
+        /// <returns></returns>
+        public string Get(string key)
+        {
+            if (!SessionHashtable.ContainsKey(key))
             {
                 return null;
             }
-        }
 
-        public void set(string key, string value)
+            return SessionHashtable[key];
+        }
+        
+        /// <summary>
+        /// Assigns a key/value setting within the session store.
+        /// </summary>
+        /// <param name="key">The name of the session variable.</param>
+        /// <param name="value">The string value of the session variable.</param>
+        public void Set(string key, string value)
         {
             SessionHashtable[key] = value;
         }
 
-        public string list()
+        /// <summary>
+        /// Obtains a string list of all keys currently in the session store.
+        /// </summary>
+        /// <returns>JSON encoded string array of key names.</returns>
+        public string List()
         {
             List<string> result = new List<string>(SessionHashtable.Keys);
 
             return JsonConvert.SerializeObject(result);
-        }
-
-        // TODO: Possibly implement an eventing system which will work across multiple
-        // pages; before this can be used i would need to implement functionality to 
-        // intercept 'open in new window' logic to use a new winform container.  All opened
-        // winform containers will reference the same ScriptInterface object instance.
-        // This will also require javascript object for actual (local) attachment of listeners
-
-        public void Emit(string Eventname, string eventData)
-        {
-            // foreach webbrowser control currently loaded, invokescript
-            // to call matching exoskeleton emit function
         }
     }
 }

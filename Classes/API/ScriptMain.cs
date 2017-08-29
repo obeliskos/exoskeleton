@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Exoskeleton.Classes.API
 {
+    /// <summary>
+    /// General user interface utility methods.
+    /// </summary>
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
-    public class ScriptMain
+    public class ScriptMain: IDisposable
     {
         public IHostWindow host = null;
 
@@ -16,27 +19,53 @@ namespace Exoskeleton.Classes.API
             this.host = host;
         }
 
-        public void fullscreen()
+        public void Dispose()
         {
-            host.EnterFullscreen();
         }
 
-        public void exitFullscreen()
-        {
-            host.ExitFullscreen();
-        }
-
-        public void setWindowTitle(string title)
+        /// <summary>
+        /// Updates the window title for the host container.
+        /// </summary>
+        /// <param name="title">Text to apply to window title.</param>
+        public void SetWindowTitle(string title)
         {
             host.SetWindowTitle(title);
         }
 
-        public void showNotification(string title, string message)
+        /// <summary>
+        /// Signals the host container to enter fullscreen mode.
+        /// </summary>
+        public void Fullscreen()
+        {
+            host.EnterFullscreen();
+        }
+
+        /// <summary>
+        /// Signals the host container to exit fullscreen mode.
+        /// </summary>
+        public void ExitFullscreen()
+        {
+            host.ExitFullscreen();
+        }
+
+        /// <summary>
+        /// Displays a windows system tray notification.
+        /// </summary>
+        /// <param name="title">The notification title.</param>
+        /// <param name="message">The notification message.</param>
+        public void ShowNotification(string title, string message)
         {
             host.ShowNotification(4000, title, message, System.Windows.Forms.ToolTipIcon.Info);
         }
 
-        public void openNewWindow(string caption, string url, int width, int height)
+        /// <summary>
+        /// Opens a new host container with the url and settings provided.
+        /// </summary>
+        /// <param name="caption">Window caption to apply to new window.</param>
+        /// <param name="url">Url to load within the new window.</param>
+        /// <param name="width">Width (in pixels) to size new window to.</param>
+        /// <param name="height">Height (in pixels) to size new window to.</param>
+        public void OpenNewWindow(string caption, string url, int width, int height)
         {
             host.OpenNewWindow(caption, url, width, height);
         }

@@ -34,6 +34,7 @@ namespace Exoskeleton
             if (width.HasValue) this.Width = width.Value;
             if (height.HasValue) this.Height = height.Value;
 
+            ChildWebBrowser.ScriptErrorsSuppressed = settings.WebBrowserScriptErrorsSuppressed;
             ChildWebBrowser.ObjectForScripting = scriptInterface;
             ChildWebBrowser.IsWebBrowserContextMenuEnabled = settings.WebBrowserContextMenu;
         }
@@ -47,6 +48,12 @@ namespace Exoskeleton
         {
             // Window is closing, so no longer need to multicast to us
             MainForm.FormInstance.RemoveHostWindow(this);
+            this.scriptInterface.Dispose();
+        }
+
+        public void MulticastEvent(string name, string data)
+        {
+            MainForm.FormInstance.MulticastEvent(name, data);
         }
 
         #endregion

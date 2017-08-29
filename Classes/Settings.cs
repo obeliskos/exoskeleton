@@ -29,6 +29,7 @@ namespace Exoskeleton.Classes
         public string WebBrowserBaseUrl = "";
         public int WebBrowserAutoRefreshSecs = 0;
         public bool WebBrowserAllowChildWindows = true;
+        public bool WebBrowserScriptErrorsSuppressed = true;
 
         // will probably want all of these on but when we generate
         // a default one (if none exists) we will use these defaults 
@@ -39,6 +40,9 @@ namespace Exoskeleton.Classes
         public bool ScriptingProcessEnabled = false;
         public bool ScriptingSystemEnabled = false;
         public bool ScriptingLoggerEnabled = false;
+        public bool ScriptingComObjectsEnabled = false;
+        public bool ScriptingNetEnabled = false;
+        public bool ScriptingEncryptionEnabled = true;
 
         public void Save(string filename)
         {

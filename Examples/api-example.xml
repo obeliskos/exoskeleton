@@ -16,10 +16,12 @@
   <WebBrowserDefaultUrl>http://localhost:{port}</WebBrowserDefaultUrl>
   <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
   <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
+  <WebBrowserScriptErrorsSuppressed>true</WebBrowserScriptErrorsSuppressed>
   <ScriptingEnabled>true</ScriptingEnabled>
   <ScriptingMediaEnabled>true</ScriptingMediaEnabled>
   <ScriptingFilesEnabled>true</ScriptingFilesEnabled>
   <ScriptingProcessEnabled>true</ScriptingProcessEnabled>
   <ScriptingSystemEnabled>true</ScriptingSystemEnabled>
   <ScriptingLoggerEnabled>true</ScriptingLoggerEnabled>
+  <ScriptingComObjectsEnabled>true</ScriptingComObjectsEnabled>
 </Settings>

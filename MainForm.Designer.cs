@@ -75,7 +75,6 @@
             this.HostWebBrowser.ScriptErrorsSuppressed = true;
             this.HostWebBrowser.Size = new System.Drawing.Size(864, 472);
             this.HostWebBrowser.TabIndex = 7;
-            this.HostWebBrowser.WebBrowserShortcutsEnabled = false;
             this.HostWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.HostWebBrowser_DocumentCompleted);
             this.HostWebBrowser.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.HostWebBrowser_PreviewKeyDown);
             // 

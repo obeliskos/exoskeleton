@@ -7,9 +7,14 @@ using System.Windows.Forms;
 
 namespace Exoskeleton
 {
+    /// <summary>
+    /// Exoskelton host window interface.  
+    /// This allows MainForm and ChildWindow instances to be treated similarly from ScriptInterface.
+    /// </summary>
     public interface IHostWindow
     {
         void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon);
+        void MulticastEvent(string name, string data);
         void ToggleFullscreen();
         void EnterFullscreen();
         void ExitFullscreen();

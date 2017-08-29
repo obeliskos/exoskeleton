@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,9 +10,13 @@ using System.Threading.Tasks;
 namespace Exoskeleton.Classes.API
 {
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
-    public class ScriptMedia
+    public class ScriptMedia : IDisposable
     {
-        public void speak(string textToSpeak)
+        public void Dispose()
+        {
+        }
+
+        public void Speak(string textToSpeak)
         {
             Task.Run(() =>
             {
@@ -31,7 +36,7 @@ namespace Exoskeleton.Classes.API
             });
         }
 
-        public void speakSync(string textToSpeak)
+        public void SpeakSync(string textToSpeak)
         {
             string StringToRead = textToSpeak;
 

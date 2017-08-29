@@ -205,6 +205,7 @@ namespace Exoskeleton
 
             scriptInterface = new ScriptInterface(this, settings, loggerForm);
 
+            this.HostWebBrowser.ScriptErrorsSuppressed = settings.WebBrowserScriptErrorsSuppressed;
 
             if (settings.WebBrowserDefaultUrl == "")
             {

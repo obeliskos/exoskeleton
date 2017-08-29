@@ -2,7 +2,7 @@ window.addEventListener("load", function load(event){
     window.removeEventListener("load", load, false); //remove listener, no longer needed
     // override or edit this to be notified of shutdown;
     exoskeleton.events.on("multicast.shutdown", function() {
-       exo.media.speakSync("example java script shutdown");
+       exoskeleton.media.speakSync("example java script shutdown");
        return true;
     });
     // setup a listener in case they test eventing in 'open in new window' sample
@@ -38,6 +38,15 @@ function runSaySomething() {
     exoskeleton.media.speak(el.value);
 }
 
+function runSaySomethingWithActiveX() {
+    // the first param is the COM object name
+    // the second param is the method on that object
+    // the third param is array of arguments to method
+    // (for speak method first param is message to speak and second is 1 for async or 0 for synchronous)
+    exoskeleton.com.createAndInvokeMethod("SAPI.SpVoice", "Speak",
+        ["this is a test message scripting activex from java script", 1]);
+}
+
 function runLogInfo() {
     console.info("some info");
 }
@@ -56,6 +65,36 @@ function runLogText() {
 
 function runGetSystemInfo() {
     console.dir(exoskeleton.system.getSystemInfo());
+}
+
+function runGetEnvironmentVariable() {
+    var result = exoskeleton.system.getEnvironmentVariable("EXOVAR");
+
+    if (!result) {
+        alert("Variable not found, try clicking set variable to set it");
+    }
+    else {
+        alert(result);
+    }
+}
+
+function runGetEnvironmentVariables() {
+    var resultJson = exoskeleton.system.getEnvironmentVariables();
+    var environmentVars = JSON.parse(resultJson);
+
+    var msg = Object.keys(environmentVars).length + " variables : " + "\n";
+
+    Object.keys(environmentVars).forEach(function(keyname) {
+        msg += keyname + " : " + environmentVars[keyname] + "\n";
+    });
+
+    alert(msg);
+}
+
+function runSetEnvironmentVariable() {
+    exoskeleton.system.setEnvironmentVariable("EXOVAR", "Test Value");
+
+    alert("variable set");
 }
 
 function runGetDrives() {
@@ -113,8 +152,8 @@ function runGetFiles() {
     }
 }
 
-function runGetCurrentDirectory() {
-    var result = exoskeleton.file.getCurrentDirectory();
+function runGetExecutableDirectory() {
+    var result = exoskeleton.file.getExecutableDirectory();
     var el = document.getElementById("txtCurrentDir");
 
     el.value = result;
@@ -136,7 +175,23 @@ function runLoadFile() {
 }
 
 function runProcStart() {
-    exoskeleton.proc.start("calc.exe");
+    exoskeleton.proc.startPath("calc.exe");
+}
+
+function runProcStartInfo() {
+    // you may provide any properties available on a c# ProcessStartInfo class instance
+    var startInfo = {
+        FileName : "mspaint.exe",
+        Arguments : ".\\sitewrap-example\\robot.jpg"
+    }
+
+    var result = exoskeleton.proc.start(startInfo);
+
+    // on success, null will be returned.  
+    // on error, a string description of exception
+    if (result) {
+        alert(result);
+    }
 }
 
 function runSetSessionKey() {

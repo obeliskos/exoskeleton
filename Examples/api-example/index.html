@@ -31,6 +31,9 @@
     <button onclick="runSaySomething()">Say something</button>
     <input type="text" id="txtSpeechMessage" value="This is a test message spoken using exoskeleton" style="width:400px" />
 
+    <h3>com (active x scripting)</h3>
+    <button onclick="runSaySomethingWithActiveX()">Say something with ActiveX</button>
+
     <h3>logger</h3>
     <button onclick="runLogInfo()">Log Info</button>
     <button onclick="runLogWarning()">Log Warning</button>
@@ -40,10 +43,11 @@
     <h3>proc</h3>
 
     <button onclick="runProcStart()">Start Process (calc.exe)</button>
+    <button onclick="runProcStartInfo()">Start Process with info (mspaint)</button>
 
     <h3>file</h3>
 
-    <button onclick="runGetCurrentDirectory()">Get Current Directory</button>
+    <button onclick="runGetExecutableDirectory()">Get Executable Directory</button>
     <input type="text" id="txtCurrentDir" style="width:400px" />
     <br />
     <br />
@@ -65,6 +69,9 @@
 
     <h3>system</h3>
     <button onclick="runGetSystemInfo()">Get System Info</button>
+    <button onclick="runGetEnvironmentVariables()">Get Environment Variables</button>
+    <button onclick="runSetEnvironmentVariable()">Set Environment Variable</button>
+    <button onclick="runGetEnvironmentVariable()">Get Environment Variable</button>
 
     <h3>session</h3>
     <button onclick="runSetSessionKey()">Set Session Key</button>
