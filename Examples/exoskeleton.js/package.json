@@ -4,12 +4,12 @@
   "description": "",
   "main": "exoskeleton.js",
   "scripts": {
-    "jsdoc": "jsdoc -c jsdoc-conf.json",
+    "doc": "node node_modules/documentation/bin/documentation.js build src/exoskeleton.js -f html -o docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "obeliskos",
   "license": "ISC",
   "dependencies": {
-    "jsdoc": "^3.5.4"
+    "documentation": "^5.2.2"
   }
 }

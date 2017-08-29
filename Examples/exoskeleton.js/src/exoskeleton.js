@@ -3,6 +3,7 @@
  *  @author Obeliskos
  *
  *  A wrapper framework for com object functionality exposed by the exoskeleon shell.
+ *  This module self-establishes an instance variable 'exoskeleton'.
  */
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -119,15 +120,19 @@
          * Invokes text-to-speech to speak the provided message.
          * @param {string} message - The message to speak.
          * @memberof Media
+         * @example
+         * exoskeleton.media.speak("this is a test");
          */
         Media.prototype.speak = function (message) {
             this.exoMedia.Speak(message);
         };
 
         /**
-         * Invokes text-to-speech to speak the provided message.
+         * Invokes text-to-speech to synchronously speak the provided message.
          * @param {string} message - The message to speak.
          * @memberof Media
+         * @example
+         * exoskeleton.media.speakSync("this is a test");
          */
         Media.prototype.speakSync = function (message) {
             this.exoMedia.SpeakSync(message);
@@ -150,6 +155,8 @@
          * Allows creation of c# singleton for further operations.
          * @param {string} comObjectName - Com class type name to instance.
          * @memberof Com
+         * @example
+         * exoskeleton.com.createInstance("SAPI.SpVoice");
          */
         Com.prototype.createInstance = function (comObjectName) {
             this.exoCom.CreateInstance(comObjectName);
@@ -158,8 +165,10 @@
         /**
          * Allows invocation of a method on the global singleton com object instance.
          * @param {string} methodName - Com interface method to invoke.
-         * @param {string} methodParams - Parameters to pass to com interface method.
+         * @param {any[]} methodParams - Parameters to pass to com interface method.
          * @memberof Com
+         * @example
+         * exoskeleton.com.invokeMethod("Speak", ["this is a test message scripting activex from java script", 1])
          */
         Com.prototype.invokeMethod = function (methodName, methodParams) {
             this.exoCom.InvokeMethod(methodName, JSON.stringify(methodParams));
@@ -169,8 +178,11 @@
          * Activates instance to Com type, calls a single method (with params) and then disposes instance.
          * @param {string} comObjectName - Com class type name to instance.
          * @param {string} methodName - Com interface method to invoke.
-         * @param {string} methodParams - Parameters to pass to com interface method.
+         * @param {any[]} methodParams - Parameters to pass to com interface method.
          * @memberof Com
+         * @example
+         * exoskeleton.com.createAndInvokeMethod ("SAPI.SpVoice", "Speak",
+         *     ["this is a test message scripting activex from java script", 1]);
          */
         Com.prototype.createAndInvokeMethod = function (comObjectName, methodName, methodParams) {
             this.exoCom.CreateAndInvokeMethod(comObjectName, methodName, JSON.stringify(methodParams));
@@ -190,13 +202,20 @@
         }
 
         /**
-         * Starts our global singleton watcher on path specified by user.
+         * Starts our container singleton watcher on path specified by user.
          * Events will be emitted as multicast, so if multiple forms load
          * multiple watchers, they should distinguish themselves with the
          * eventBaseName parameter.
          * @param {string} path - Path to 'watch'.
          * @param {string} eventBaseName - Optional base name to emit with.
          * @memberof File
+         * @example
+         * // The following will generate 'download.created', 'download.deleted', and 'download.changed' events.
+         * exoskeleton.file.startWatcher("C:\downloads", "download");
+         * exoskeleton.events.on("download.created", function(data) {
+         *   // data params is json encoded string (for now).
+         *   exoskeleton.logger.logInfo("download.created", data);
+         * });
          */
         File.prototype.startWatcher = function (path, eventBaseName) {
             this.exoFile.StartWatcher(path, eventBaseName);
@@ -205,6 +224,8 @@
         /**
          * Disables the watcher singleton.
          * @memberof File
+         * @example
+         * exoskeleton.file.stopWatcher();
          */
         File.prototype.stopWatcher = function () {
             this.exoFile.StopWatcher();
@@ -213,6 +234,11 @@
         /**
          * Gets information about each of the mounted drives.
          * @memberof File
+         * @example
+         * var driveInfo = exoskeleton.file.getDriveInfo();
+         * driveInfo.forEach(function(drive) {
+         *   console.log(drive.Name + ":" + drive.AvailableFreeSpace);
+         * });
          */
         File.prototype.getDriveInfo = function () {
             return JSON.parse(this.exoFile.GetDriveInfo());
@@ -221,6 +247,10 @@
         /**
          * Gets a list of logical drives.
          * @memberof File
+         * @example
+         * var result = exoskeleton.file.getLogicalDrives();
+         * console.log(result);
+         * // logs : C:\,D:\,Z:\
          */
         File.prototype.getLogicalDrives = function () {
             return JSON.parse(this.exoFile.GetLogicalDrives());
@@ -230,6 +260,9 @@
          * Returns the directory portion of the path without the filename.
          * @param {string} path - The full pathname to get directory portion of.
          * @memberof File
+         * @example
+         * console.log(exoskeleton.file.getDirectoryName("c:\\downloads\\myfile.txt"));
+         * // logs : "c:\downloads"
          */
         File.prototype.getDirectoryName = function (path) {
             return this.exoFile.GetDirectoryName(path);
@@ -239,6 +272,9 @@
          * Returns the filename portion of the path without the directory.
          * @param {string} path - The full pathname to get filename portion of.
          * @memberof File
+         * @example
+         * console.log(exoskeleton.file.getFileName("c:\\downloads\\myfile.txt"));
+         * // logs : "myfile.txt"
          */
         File.prototype.getFileName = function (path) {
             return this.exoFile.GetFileName(path);
@@ -248,6 +284,9 @@
          * Gets the file extension of the fully qualified path.
          * @param {string} path - The filepath to get extension of.
          * @memberof File
+         * @example
+         * console.log(exoskeleton.file.getExtension("c:\\downloads\\myfile.txt"));
+         * // logs : ".txt"
          */
         File.prototype.getExtension = function (path) {
             return this.exoFile.GetExtension(path);
@@ -258,6 +297,10 @@
          * @param {string[]} paths - Array of paths to combine.
          * @returns {string} - Combined path string.
          * @memberof File
+         * @example
+         * var fullyQualifiedPath = exoskeleton.file.combinePaths(["c:\\downloads", "myfile.txt"]);
+         * console.log(fullyQualifiedPath);
+         * // "c:\downloads\myfile.txt"
          */
         File.prototype.combinePaths = function (paths) {
             return this.exoFile.CombinePaths(paths);
@@ -268,6 +311,8 @@
          * @param {string} path - Name of the directory to get information for.
          * @returns {object} - Object containing directory info as properties.
          * @memberof File
+         * @example
+         * console.dir(exoskeleton.file.getDirectoryInfo("c:\\downloads"));
          */
         File.prototype.getDirectoryInfo = function (path) {
             return JSON.parse(this.exoFile.GetDirectoryInfo(path));
@@ -278,6 +323,15 @@
          * @param {string} parentDir - Directory to list subdirectories for.
          * @returns {string[]} - string array of subdirectories.
          * @memberof File
+         * @example
+         * var result = exoskeleton.file.getDirectories("c:\\downloads");
+         * console.dir(result);
+         * // might log:
+         * // [
+         * // "c:\\downloads\\subdir1",
+         * // "c:\\downloads\\subdir2",
+         * // "c:\\downloads\\subdir3"
+         * // ]
          */
         File.prototype.getDirectories = function (parentDir) {
             return JSON.parse(this.exoFile.GetDirectories(parentDir));
@@ -287,6 +341,8 @@
          * Creates all directories and subdirectories in the specified path unless they already exist.
          * @param {string} path - The directory to create.
          * @memberof File
+         * @example
+         * exoskeleton.file.createDirectory("c:\\downloads\\subdir4");
          */
         File.prototype.createDirectory = function (path) {
             this.exoFile.CreateDirectory(path);
@@ -296,6 +352,8 @@
          * Deletes an empty directory.
          * @param {string} path - The name of the empty directory to delete.
          * @memberof File
+         * @example
+         * exoskeleton.file.deleteDirectory("c:\\downloads\\subdir4");
          */
         File.prototype.deleteDirectory = function (path) {
             this.exoFile.DeleteDirectory(path);
@@ -864,13 +922,26 @@
         /**
          * Event emitter for listening to or emitting events within your page(s)
          *
-         * While we currently support only one main exoskeleton hosted page/frame, this
-         * may be enhanced in the future to support eventing across all page frames.
+         * This is exposed via exoskeleton.events.
+         * May be used internally to your container or used to emit or listen to
+         * 'multicast' events which are propagated to all host windows.
+         *
+         * Event names starting with 'local.' are not to be multicast,
+         * otherwise the event will be multicast with an eventname prefixed
+         * with 'multicast.'.
+         *
          * @param {object} exo - Instance to the exoskeleton com interface
+         * @param {object} options - options to configure event emitter with.
+         * @param {bool=} [options.asyncListeners=false] - whether events will be emitted asynchronously.
          * @constructor ExoEventEmitter
          */
-        function ExoEventEmitter(exo) {
+        function ExoEventEmitter(exo, options) {
             this.exo = exo;
+
+            options = options || {};
+            if (options.asyncListeners) {
+                this.asyncListeners = options.asyncListeners;
+            }
         }
 
         /**
