@@ -39,3 +39,4 @@ can be used for learning and prototyping javascript use of the exoskeleton libra
 You should be able to run the examples by clicking on the batch files in the examples folder.
 
 [logo]: https://github.com/obeliskos/exoskeleton/raw/master/images/console.png
+![Screenshot](https://github.com/obeliskos/exoskeleton/raw/master/images/console.png)
