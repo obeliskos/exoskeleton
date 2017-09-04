@@ -1,0 +1,58 @@
+// Exoskeleton MessageBox and Dialog example
+
+
+var locations = exoskeleton.main.getLocations();
+// most times you will use console.log and console.dir to log to logger but for exoskeleton
+// interactive console we want to log to output editor.
+xo.logText("locations:");
+xo.logObject(locations);
+var appSettings = exoskeleton.main.getApplicationSettings();
+xo.logText("application settings:");
+xo.logObject(appSettings);
+var sysinfo = exoskeleton.system.getSystemInfo();
+xo.logText("system information:");
+xo.logObject(sysinfo);
+
+var appdataLocation = exoskeleton.file.combinePaths([
+  locations.Current,
+  "appdata"
+]);
+
+
+// Let's open an OpenFileDialog, with an InitialDirectory of our appdata folder
+var result = exoskeleton.main.showOpenFileDialog({
+	InitialDirectory: appdataLocation,
+    Filter: "exo files (*.exo)|*.exo|All files (*.*)|*.*"
+});
+
+// If the result is not null, then the user clicked 'Open' in the open file dialog
+if (result) {
+	exoskeleton.main.showMessageBox("You chose : " + result.FileName, "showOpenFileDialog example", "OKCancel", "Information");
+	xo.logObject(result);
+}
+// otherwise they clicked cancel and we got null back
+else {
+	exoskeleton.main.showMessageBox("You clicked cancel", "showOpenFileDialog example", "OK", "Warning");
+}
+
+// window title
+exoskeleton.main.setWindowTitle("My exoskeleton example");
+
+// fullscreen
+result = exoskeleton.main.showMessageBox("Do you want to go fullscreen?", "Exoskeleton 'main' sample", "YesNo", "Question");
+if (result === "Yes") {
+	exoskeleton.main.fullscreen();
+}
+
+// exit fullscreen
+result = exoskeleton.main.showMessageBox("Do you want to exit fullscreen?", "Exoskeleton 'main' sample", "YesNo", "Question");
+if (result === "Yes") {
+	exoskeleton.main.exitFullscreen();
+}
+
+// show notification
+result = exoskeleton.main.showMessageBox("Do you want to show a notification?", "Exoskeleton 'main' sample", "YesNo", "Question");
+if (result === "Yes") {
+	exoskeleton.main.showNotification("Exoskeleton 'main' sample", "some notification information message");
+}
+

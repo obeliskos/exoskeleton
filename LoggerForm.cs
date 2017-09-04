@@ -101,14 +101,14 @@ namespace Exoskeleton
             txtConsole.Text = "";
         }
 
-        private object WebInvokeScript(string name, params object[] args)
+        private object WebInvokeScript(string name, params string[] args)
         {
             return MainForm.FormInstance.WebInvokeScript(name, args);
         }
 
         private void textConsoleEval_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if ((e.Modifiers == Keys.Control || !textConsoleEval.Multiline) && e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -126,12 +126,23 @@ namespace Exoskeleton
                 }
             }
 
-            if (e.KeyCode == Keys.Up)
+            if ((e.Modifiers == Keys.Control || !textConsoleEval.Multiline) && e.KeyCode == Keys.Up)
             {
                 e.Handled = true;
                 e.SuppressKeyPress = true;
 
                 textConsoleEval.Text = lastCommand;
+                textConsoleEval.SelectionStart = textConsoleEval.Text.Length;
+                textConsoleEval.SelectionLength = 0;
+            }
+        }
+
+        private void toolStripButtonToggleMultiline_Click(object sender, EventArgs e)
+        {
+            textConsoleEval.Multiline = !textConsoleEval.Multiline;
+            if (textConsoleEval.Multiline)
+            {
+                textConsoleEval.Height = 120;
             }
         }
     }

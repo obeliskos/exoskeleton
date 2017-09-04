@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StartupCommands />
+  <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
+  <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
+  <CurrentDirectoryProvidedPath />
+  <WindowTitle>Wikipedia Site Wrapper Sample</WindowTitle>
+  <WindowWidth>1200</WindowWidth>
+  <WindowHeight>720</WindowHeight>
+  <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
+  <WindowAllowResize>true</WindowAllowResize>
+  <WindowIconPath>.\sitewrap-example\Wikipedia globe.ico</WindowIconPath>
+  <WebServerSelfHost>false</WebServerSelfHost>
+  <WebServerListenPort>8080</WebServerListenPort>
+  <WebServerHostDirectory />
+  <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
+  <WebBrowserContextMenu>true</WebBrowserContextMenu>
+  <WebBrowserDefaultUrl>https://en.wikipedia.org/wiki/Main_Page</WebBrowserDefaultUrl>
+  <WebBrowserBaseUrl />
+  <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
+  <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
+  <WebBrowserScriptErrorsSuppressed>true</WebBrowserScriptErrorsSuppressed>
+  <WebBrowserShortcutsEnabled>false</WebBrowserShortcutsEnabled>
+  <ScriptingEnabled>false</ScriptingEnabled>
+  <ScriptingMediaEnabled>false</ScriptingMediaEnabled>
+  <ScriptingFilesEnabled>false</ScriptingFilesEnabled>
+  <ScriptingProcessEnabled>false</ScriptingProcessEnabled>
+  <ScriptingSystemEnabled>false</ScriptingSystemEnabled>
+  <ScriptingLoggerEnabled>false</ScriptingLoggerEnabled>
+  <ScriptingComObjectsEnabled>false</ScriptingComObjectsEnabled>
+  <ScriptingNetEnabled>false</ScriptingNetEnabled>
+  <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
+</Settings>

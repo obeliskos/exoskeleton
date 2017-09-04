@@ -1,0 +1,93 @@
+// Exoskeleton 'File' API example
+
+var result = exoskeleton.file.getLogicalDrives();
+xo.logText("// Current mounted drive letters :");
+xo.logObject(result);
+
+result = exoskeleton.file.getDriveInfo();
+xo.logText("// Current mounted drives information :");
+xo.logObject(result);
+
+// backslash is escape char so we need double backslashes
+var sampleFilename = "C:\\somedir\\somefile.txt";
+
+var dirname = exoskeleton.file.getDirectoryName(sampleFilename);
+xo.logText("// sampleFilename directory portion");
+xo.logText(dirname);
+
+var filename = exoskeleton.file.getFileName(sampleFilename);
+xo.logText("// sampleFilename filename portion");
+xo.logText(filename);
+
+// combinePaths makes joining easier by adding missing
+// backslashes between subpaths
+var recombined = exoskeleton.file.combinePaths([
+	dirname,
+    filename
+]);
+xo.logText("// recombined path");
+xo.logText(recombined);
+
+// lets orient ourselves to current directory
+var appLocations = exoskeleton.main.getLocations();
+var currentDirectory = appLocations.Current;
+
+xo.logText("// Current Directory");
+xo.logText(currentDirectory);
+
+xo.logText("// Current Directory info");
+xo.logObject(exoskeleton.file.getDirectoryInfo(currentDirectory));
+
+result = exoskeleton.file.getFiles(currentDirectory);
+xo.logText("// files in " + currentDirectory);
+xo.logObject(result);
+
+result = exoskeleton.file.getFiles(currentDirectory, "*.js");
+xo.logText("// javascript files in " + currentDirectory);
+xo.logObject(result);
+
+xo.logText("// file info for each");
+result.forEach(function(file) {
+  xo.logObject(exoskeleton.file.getFileInfo(file));
+});
+
+result = exoskeleton.file.getDirectories(currentDirectory);
+xo.logText("// subdirectories in current directory");
+xo.logObject(result);
+
+// lets create a small file in sampledata folder
+// this will be its filename
+var newFilename = exoskeleton.file.combinePaths([
+	currentDirectory,
+    "sampledata",
+    "xo-test.txt"
+]);
+
+// but first let's delete it if it is already there (optional)
+var fi = exoskeleton.file.getFileInfo(newFilename);
+if (fi.Exists) {
+  xo.logText("// found old " + newFilename + "... deleting it");
+  exoskeleton.file.deleteFile(newFilename);
+  
+  fi = exoskeleton.file.getFileInfo(newFilename);  
+  if (!fi.Exists) {
+  	xo.logText("sucessfully deleted old file");
+  }
+  else {
+  	xo.logText("did not sucessfully delete old file ??");
+  }
+}
+
+// now let's add it, this would normally overwrite if it
+// already existed.
+
+var contents = "hello from exoskeleton";
+
+exoskeleton.file.saveFile(newFilename, contents);
+fi = exoskeleton.file.getFileInfo(newFilename);
+if (fi.Exists) {
+  xo.logText("successfully created file");
+}
+else {
+  xo.logText("did not successfully creat file ??");
+}

@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using Exoskeleton.Classes;
 using Exoskeleton.Classes.API;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace Exoskeleton
 {
@@ -32,8 +33,13 @@ namespace Exoskeleton
         private ScriptInterface scriptInterface;
         private List<IHostWindow> hostWindows = new List<IHostWindow>();
         private Dictionary<string, bool> cacheRefreshed = new Dictionary<string, bool>();
+
+        private string environmentLocationSettings;
+        private string environmentLocationCurrent { get { return Environment.CurrentDirectory; } }
+        private string environmentLocationExecutable = Path.GetDirectoryName(Application.ExecutablePath);
+
         private string settingsPath;
-        private string mappingsPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\mappings.xml";
+        private string mappingsPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "mappings.xml");
         private Icon applicationIcon;
         private SimpleHTTPServer simpleServer = null;
         private bool fullscreen = false;
@@ -110,33 +116,66 @@ namespace Exoskeleton
         /// </summary>
         private void InitializeSettings()
         {
-            string settingsFile = "settings.xml";
-
-            // For starters, we will only allow 1 command line argument which is a filename/filepath to a xml settings file
+            string settingsFile = "settings.xos";
+                
+            // If there is at least one command line argument and it is an exoskeleton config file, use it.
+            // If not, we will expect there to be a settings.xml file in the current directory or create one there ourselves.
             if (Environment.GetCommandLineArgs().Count() > 1)
             {
+                string firstArgument = Environment.GetCommandLineArgs()[1];
+                string firstArgExt = Path.GetExtension(firstArgument).ToLower();
 
-                settingsFile = Environment.GetCommandLineArgs()[1];
-                settingsFile.Replace("/", "\\");
-
-                // if it is a path
-                if (settingsFile.Contains("\\"))
+                if (firstArgExt == ".xos" || firstArgExt == ".xml")
                 {
-                    settingsPath = settingsFile;
+                    settingsFile = firstArgument;
+                    settingsFile.Replace("/", "\\");
+                }
+
+            }
+
+            FileInfo fi = new FileInfo(settingsFile);
+            bool createIfNotExists = false;
+            environmentLocationSettings = fi.DirectoryName;
+            settingsPath = fi.FullName;
+
+            if (!fi.Exists)
+            {
+                DialogResult dr = MessageBox.Show(
+                    "Could not find : " + settingsFile + Environment.NewLine + "Do you want to create that settings file?", 
+                    "Could not find settings file", 
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                createIfNotExists = (dr == DialogResult.OK);
+            }
+
+            settings = Settings.Load(settingsPath, createIfNotExists);
+
+            // Uncomment below line to easily 'upgrade' settings file with new settings and their defaults.
+            // settings.Save(settingsPath);
+
+            // Now that settings are loaded, determine if the user has elected to use the 
+            // path containing the settings file as the 'current' directory.
+            if (settings.CurrentDirectoryUseSettingsPath)
+            {
+                Environment.CurrentDirectory = environmentLocationSettings;
+            }
+
+            // Now that settings are loaded, determine if the user has elected to use a specific
+            // (absolute or relative path) to be used as the 'current' directory.
+            if (settings.CurrentDirectoryUseProvidedPath)
+            {
+                DirectoryInfo di;
+                if (Path.IsPathRooted(settings.CurrentDirectoryProvidedPath))
+                {
+                    di = new DirectoryInfo(settings.CurrentDirectoryProvidedPath);
                 }
                 else
                 {
-                    if (!settingsFile.ToLower().Contains(".xml"))
-                    {
-                        settingsFile = settingsFile + ".xml";
-                    }
+                    di = new DirectoryInfo(Path.Combine(environmentLocationSettings, settings.CurrentDirectoryProvidedPath));
+                };
 
-                }
+                Environment.CurrentDirectory = di.FullName;
             }
-
-            settingsPath = Directory.GetCurrentDirectory() + "\\" + settingsFile;
-
-            settings = Settings.Load(settingsPath);
         }
 
         /// <summary>
@@ -206,6 +245,7 @@ namespace Exoskeleton
             scriptInterface = new ScriptInterface(this, settings, loggerForm);
 
             this.HostWebBrowser.ScriptErrorsSuppressed = settings.WebBrowserScriptErrorsSuppressed;
+            this.HostWebBrowser.WebBrowserShortcutsEnabled = settings.WebBrowserShortcutsEnabled;
 
             if (settings.WebBrowserDefaultUrl == "")
             {
@@ -218,7 +258,38 @@ namespace Exoskeleton
             }
             else
             {
-                HostWebBrowser.Url = new Uri(settings.WebBrowserDefaultUrl.Replace("{port}", actualPort.ToString()));
+                string url = settings.WebBrowserDefaultUrl
+                    .Replace("{port}", actualPort.ToString())
+                    .Replace("{ExecutableLocation}", Path.GetDirectoryName(Application.ExecutablePath))
+                    .Replace("{CurrentLocation}", environmentLocationCurrent)
+                    .Replace("{SettingsLocation}", environmentLocationSettings);
+
+                // For (only) filesystem based uri's, convert relative paths to absolute.
+                Uri startingUri = null;
+                try
+                {
+                    startingUri = new Uri(url);
+                    if (startingUri.IsFile)
+                    {
+                        FileInfo fi = new FileInfo(url);
+                        startingUri = new Uri(fi.FullName);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    FileInfo fi = new FileInfo(url);
+                    startingUri = new Uri(fi.FullName);
+                }
+
+                try
+                {
+                    HostWebBrowser.Url = startingUri;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error assigning host browser url", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
                 if (settings.WebBrowserAutoRefreshSecs > 0)
                 {
                     RefreshTimer.Interval = settings.WebBrowserAutoRefreshSecs * 1000;
@@ -232,6 +303,13 @@ namespace Exoskeleton
             HostWebBrowser.Focus();
         }
 
+        private string wrapEventData(string data)
+        {
+            List<string> wrapped = new List<string> { data };
+            return JsonConvert.SerializeObject(wrapped.ToArray());
+        }
+
+
         /// <summary>
         /// Listens to form closing event so that it can shutdown webserver (if self-hosting),
         /// as well as notify the hosted application via javascript in case it needs to shutdown/flush any changes.
@@ -242,7 +320,7 @@ namespace Exoskeleton
         {
             if (settings.ScriptingEnabled)
             {
-                MulticastEvent("shutdown", null);
+                PackageAndMulticast("shutdown", null);
             }
 
 
@@ -281,7 +359,7 @@ namespace Exoskeleton
 
         private void HostWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (e.KeyCode == Keys.F11)
+            if (settings.WindowAllowFullscreenF11 && e.KeyCode == Keys.F11)
             {
                 ToggleFullscreen();
             }
@@ -302,16 +380,62 @@ namespace Exoskeleton
             }
         }
 
-        public object WebInvokeScript(string name, params object[] args)
+        public object WebInvokeScript(string name, string[] args)
         {
+            if (HostWebBrowser.Document == null) return null;
+
             return HostWebBrowser.Document.InvokeScript(name, args);
         }
 
+        /// <summary>
+        /// Preferred method to multicast an event from .net.  This will perform additional serialization to wrap
+        /// parameters similarly to how javascript does it.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void PackageAndMulticast(string name, dynamic[] data)
+        {
+            string wrappedData = null;
+
+            List<string> args = new List<string>();
+            args.Add("multicast." + name);
+
+            if (data != null)
+            {
+                for(int idx=0; idx < data.Length; idx++)
+                {
+                    data[idx] = JsonConvert.SerializeObject(data[idx]);
+                }
+                // now that we have array of strings (of serialized objects or values), serialize that.
+                wrappedData = JsonConvert.SerializeObject(data);
+
+                args.Add(wrappedData);
+            }
+
+            // now tell each IHostWindow to emit that event with those params
+            foreach (IHostWindow hostWindow in hostWindows)
+            {
+                hostWindow.WebInvokeScript("exoskeletonEmitEvent", args.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Used only as javascript API implementation and expects data to be already wrapped.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
         public void MulticastEvent(string name, string data)
         {
-            foreach(IHostWindow hostWindow in hostWindows)
+            List<string> args = new List<string>();
+            args.Add("multicast." + name);
+            if (data != null)
             {
-                hostWindow.WebInvokeScript("exoskeletonEmitEvent", "multicast." + name, data);
+                args.Add(data);
+            }
+
+            foreach (IHostWindow hostWindow in hostWindows)
+            {
+                hostWindow.WebInvokeScript("exoskeletonEmitEvent", args.ToArray());
             }
         }
 
@@ -416,6 +540,99 @@ namespace Exoskeleton
             if (!settings.ScriptingLoggerEnabled) return;
 
             loggerForm.logText(message);
+        }
+
+        #endregion
+
+        #region MessageBox and Dialog Handlers
+
+        /// <summary>
+        /// Display an 'OpenFileDialog'
+        /// </summary>
+        /// <param name="dialogOptions">Optional object containing 'OpenFileDialog' properties to initialize dialog with.</param>
+        /// <returns>'OpenFileDialog' properties after dialog was dismissed, or null if cancelled.</returns>
+        public string ShowOpenFileDialog(string dialogOptions)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dialogOptions != null && dialogOptions != "")
+            {
+                dlg = JsonConvert.DeserializeObject<OpenFileDialog>(dialogOptions);
+            }
+            DialogResult dr = dlg.ShowDialog();
+            if (dr != DialogResult.OK) return null;
+
+            var result = JsonConvert.SerializeObject(dlg);
+            return result;
+        }
+
+        /// <summary>
+        /// Display a 'SaveFileDialog'
+        /// <param name="dialogOptions">Optional object containing 'SaveFileDialog' properties to initialize dialog with.</param>
+        /// </summary>
+        /// <returns>'SaveFileDialog' properties after dialog was dismissed, or null if cancelled.</returns>
+        public string ShowSaveFileDialog(string dialogOptions)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            if (dialogOptions != null && dialogOptions != "")
+            {
+                dlg = JsonConvert.DeserializeObject<SaveFileDialog>(dialogOptions);
+            }
+            DialogResult dr = dlg.ShowDialog();
+            if (dr != DialogResult.OK) return null;
+
+            var result = JsonConvert.SerializeObject(dlg);
+            return result;
+        }
+
+        /// <summary>
+        /// Displays a message box to the user and returns the button they clicked.
+        /// </summary>
+        /// <param name="text">Message to display to user.</param>
+        /// <param name="caption">Caption of message box window.</param>
+        /// <param name="buttons">String representation of a MessageBoxButtons enum.</param>
+        /// <param name="icon">string representation of a MessageBoxIcon enum.</param>
+        /// <returns>Text (ToString) representation of button clicked.</returns>
+        public string ShowMessageBox(string text, string caption, string buttons, string icon)
+        {
+            MessageBoxButtons _buttons = MessageBoxButtons.OK;
+            if (buttons != null && buttons != "")
+            {
+                _buttons = (MessageBoxButtons)Enum.Parse(typeof(MessageBoxButtons), buttons);
+            }
+            MessageBoxIcon _icon = MessageBoxIcon.Information;
+            if (icon != null && icon != "")
+            {
+                _icon = (MessageBoxIcon)Enum.Parse(typeof(MessageBoxIcon), icon);
+            }
+            DialogResult dr = MessageBox.Show(text, caption, _buttons, _icon);
+            return dr.ToString();
+        }
+
+        #endregion
+
+        #region Interface Memebers
+
+        /// <summary>
+        /// Returns the 'active' settings class instance.
+        /// </summary>
+        /// <returns>The 'active' settings class instance.</returns>
+        public Settings GetCurrentSettings()
+        {
+            return settings;
+        }
+
+        /// <summary>
+        /// Returns the important exoskeleton environment locations. (Current, Settings, Executable)
+        /// </summary>
+        /// <returns>Dynamic object containing Executable, Settings, and Current locations.</returns>
+        public dynamic GetLocations()
+        {
+            return new
+            {
+                Executable = this.environmentLocationExecutable,
+                Settings = this.environmentLocationSettings,
+                Current = this.environmentLocationCurrent
+            };
         }
 
         #endregion

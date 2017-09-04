@@ -1,0 +1,46 @@
+// Exoskeleton 'Proc' API example
+
+var procs = exoskeleton.proc.getProcessesSimplified();
+xo.logText("// number of running processes");
+xo.logObject(procs.length);
+
+var dr = exoskeleton.main.showMessageBox(
+	"Do you want to log just the first of the  " + procs.length + 
+    " process information",
+    "Logging details",
+    "YesNo",
+    "Question");
+    
+if (dr === "Yes") {
+	xo.logText("// ok just the first simplified process info");
+	xo.logObject(procs[0]);
+}
+else {
+	xo.logText("// ok here's all the simplified process info");
+	xo.logObject(procs);
+}
+
+var details = exoskeleton.proc.getProcessInfoById(procs[0].Id);
+xo.logText("// detailed process information for first process");
+xo.logObject(details);
+
+// get list of all exoskeleton processes
+var result = exoskeleton.proc.getProcessesByName("exoskeleton");
+xo.logText("// exoskeleton processes information by name");
+xo.logObject(result);
+
+// let's create a new notepad process
+var p = exoskeleton.proc.startPath("notepad.exe");
+xo.logText("// process info for new notepad");
+xo.logObject(p);
+
+// kill process example
+dr = exoskeleton.main.showMessageBox(
+	"Should i kill the new notepad process",
+	"Confirm process kill",
+    "OKCancel",
+    "Question");
+    
+if (dr === "OK") {
+	exoskeleton.proc.killProcessById(p.Id);
+}

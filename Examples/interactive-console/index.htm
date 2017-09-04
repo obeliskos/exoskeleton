@@ -1,0 +1,345 @@
+<!--	
+  Loki Sandbox :
+  To support LokiJS project at  : https://github.com/techfort/LokiJS
+
+  This web page is designed to allow you to experiment with loki and/or inspect existing saved loki database files.
+
+  You can experiment, running queries on the default sample database or load a saved database from
+  your filesystem, and inspect and/or run queries on it to inspect results.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exoskeleton Interactive Console</title>
+
+    <link rel="stylesheet" href="./script/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="./script/codemirror/addon/display/fullscreen.css">
+    <link rel="stylesheet" href="./script/codemirror/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="./script/codemirror/addon/fold/foldgutter.css">
+    <link rel="stylesheet" href="./script/codemirror/addon/hint/show-hint.css">
+    <link rel="stylesheet" href="./script/codemirror/addon/lint/lint.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/3024-day.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/3024-night.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/abcdef.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/ambiance.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/ambiance-mobile.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/base16-dark.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/base16-light.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/bespin.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/blackboard.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/cobalt.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/colorforth.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/dracula.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/duotone-dark.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/duotone-light.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/eclipse.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/elegant.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/erlang-dark.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/hopscotch.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/icecoder.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/isotope.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/lesser-dark.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/liquibyte.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/material.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/mbo.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/mdn-like.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/midnight.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/monokai.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/neat.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/neo.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/night.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/panda-syntax.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/paraiso-dark.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/paraiso-light.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/pastel-on-dark.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/railscasts.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/rubyblue.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/seti.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/solarized.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/the-matrix.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/tomorrow-night-bright.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/tomorrow-night-eighties.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/ttcn.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/twilight.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/vibrant-ink.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/xq-dark.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/xq-light.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/yeti.css">
+    <link rel="stylesheet" href="./script/codemirror/theme/zenburn.css">
+
+    <script src="./script/exoskeleton.js"></script>
+    <script src="./script/jquery-3.2.1.min.js"></script>
+    <script src="./index.js"></script>
+    <script src="./script/codemirror/lib/codemirror.js"></script>
+    <script src="./script/codemirror/mode/xml/xml.js"></script>
+    <script src="./script/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="./script/codemirror/mode/javascript/javascript.js"></script>
+    <script src="./script/codemirror/mode/css/css.js"></script>
+    <script src="./script/codemirror/mode/clike/clike.js"></script>
+    <script src="./script/codemirror/mode/markdown/markdown.js"></script>
+    <script src="./script/codemirror/mode/dtd/dtd.js"></script>
+    <script src="./script/codemirror/mode/coffeescript/coffeescript.js"></script>
+    <script src="./script/codemirror/mode/python/python.js"></script>
+    <script src="./script/codemirror/mode/cypher/cypher.js"></script>
+    <script src="./script/codemirror/addon/display/fullscreen.js"></script>
+    <script src="./script/codemirror/addon/fold/foldcode.js"></script>
+    <script src="./script/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="./script/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="./script/codemirror/addon/fold/xml-fold.js"></script>
+    <script src="./script/codemirror/addon/fold/markdown-fold.js"></script>
+    <script src="./script/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="./script/codemirror/addon/edit/closetag.js"></script>
+    <script src="./script/codemirror/addon/dialog/dialog.js"></script>
+    <script src="./script/codemirror/addon/search/searchcursor.js"></script>
+    <script src="./script/codemirror/addon/search/search.js"></script>
+    <script src="./script/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="./script/codemirror/addon/edit/matchtags.js"></script>
+    <script src="./script/codemirror/addon/hint/show-hint.js"></script>
+    <script src="./script/codemirror/addon/hint/javascript-hint.js"></script>
+
+    <style>
+      body {
+          margin: 0;
+          font-family: 'Segoe UI', 'sans-serif';
+      }
+      a:link
+      {
+        color: #99F;
+        text-decoration: none;
+        font-size: 14pt;
+      }
+      a:hover
+      {
+        color: #77F;
+        text-decoration: underline;
+      }
+      a:visited
+      {
+        color: #99F;
+      }
+
+      input[type="text"] {
+        font-size: 18px;
+        padding: 10px;
+        border: solid 1px #dcdcdc;
+        transition: box-shadow 0.3s, border 0.3s;
+      }
+
+      input[type="text"]:focus,
+      input[type="text"].focus {
+        border: solid 1px #707070;
+        box-shadow: 0 0 5px 1px #969696;
+      }
+
+      select {
+        font-size:12pt;
+      }
+
+      input.vpatel[type=radio], input.vpatel[type=checkbox] {
+        display:none;
+      }
+
+      input.vpatel[type=radio] + label, input.vpatel[type=checkbox] + label {
+        display:inline-block;
+        margin:-2px;
+        padding: 4px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        line-height: 20px;
+        color: #333;
+        text-align: center;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+        vertical-align: middle;
+        cursor: pointer;
+        background-color: #f5f5f5;
+        background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
+        background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
+        background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
+        background-image: -o-linear-gradient(top,#fff,#e6e6e6);
+		    background-image: linear-gradient(to bottom,#fff,#e6e6e6);
+		    background-repeat: repeat-x;
+		    border: 1px solid #ccc;
+		    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+		    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+		    border-bottom-color: #b3b3b3;
+		    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe6e6e6',GradientType=0);
+		    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+		    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+		    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+		    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+      }
+
+      input.vpatel[type=radio]:checked + label, input.vpatel[type=checkbox]:checked + label{
+        background-image: none;
+		    outline: 0;
+		    -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+		    -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+		    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+			    background-color:#c8c8c8;
+      }
+      button.minimal {
+        background: #e3e3e3;
+        border: 1px solid #bbb;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 0 1px 1px #f6f6f6;
+        -moz-box-shadow: inset 0 0 1px 1px #f6f6f6;
+        box-shadow: inset 0 0 1px 1px #f6f6f6;
+        color: #333;
+        font: bold 20px "helvetica neue", helvetica, arial, sans-serif;
+        line-height: 1;
+        padding: 8px 0 9px;
+        text-align: center;
+        text-shadow: 0 1px 0 #fff;
+        width: 150px;
+      }
+      button.minimal:hover {
+        background: #d9d9d9;
+        -webkit-box-shadow: inset 0 0 1px 1px #eaeaea;
+        -moz-box-shadow: inset 0 0 1px 1px #eaeaea;
+        box-shadow: inset 0 0 1px 1px #eaeaea;
+        color: #222;
+        cursor: pointer;
+      }
+      button.minimal:active {
+        background: #d0d0d0;
+        -webkit-box-shadow: inset 0 0 1px 1px #e3e3e3;
+        -moz-box-shadow: inset 0 0 1px 1px #e3e3e3;
+        box-shadow: inset 0 0 1px 1px #e3e3e3;
+        color: #000;
+      }
+    </style>
+</head>
+
+<body style="background-color:#444; color:#fff">
+
+  <h1 style="font-family:'Segoe UI', 'sans-serif'">Exoskeleton Interactive Console</h3>
+
+  <div id="divCode">
+  </div>
+
+  <div style="position: absolute; top:10px; right:10px">
+    <input class="vpatel" type="radio" id="radio1" name="radios" value="all" checked onclick="xo.tabMode(1)">
+    <label for="radio1">Text Output</label>
+    <input class="vpatel" type="radio" id="radio2" name="radios" value="true" onclick="xo.tabMode(2)">
+    <label for="radio2">Save / Load</label>
+    <input class="vpatel" type="radio" id="radio3" name="radios" value="true" onclick="xo.tabMode(3)">
+    <label for="radio3">About</label>
+  </div>
+
+  <table width="100%" style="table-layout:fixed">
+    <tr>
+      <td width="55%" valign="top">
+        <h2 style="font-family:'Segoe UI', 'sans-serif'">Editor</h2>
+        <div id="divEditor">
+          <textarea id="jsedit"></textarea>
+          <br />
+          <button class="minimal" style="width:140px" onclick="xo.runScript();">Run</button>
+          <button class="minimal" style="width:220px" onclick="exoskeleton.main.toggleFullscreen();">Toggle Fullscreen</button>
+          <button class="minimal" style="width:140px" onclick="xo.newScript();">New</button>
+        </div>
+      </td>
+      <td width="40%" valign="top">
+        <div id="divTextOutput">
+          <h2 style="font-family:'Segoe UI', 'sans-serif'">Output</h2>
+          
+          <div id="divText">
+            <textarea id="lsoutput"></textarea>
+          </div>
+        </div>
+        <div id="divSaveLoad" style="display:none;">
+            <h2 style="font-family:'Segoe UI', 'sans-serif'">Save / Load</h2>
+            <label>Filename :</label>
+            <br/>
+            <input id="input-filename" type="text" style="width:300px" />
+            <button class="minimal" style="width:140px" onclick="xo.saveScript();">Save</button>
+            <br/><br/>
+            <label>Scripts saved into the appdata subfolder :</label>
+            <br/>
+            <select id="select-savedscripts" size="10" style="width:100%" onchange="xo.fileSelected();">
+            </select>
+            <br/><br/>
+            <button class="minimal" style="width:140px" onclick="xo.loadScript();">Load</button>
+
+        </div>
+        <div id="divAbout" style="display:none;">
+          <h2>About Exoskeleton Interactive Console</h2>
+          <p style="font-size:18px">
+              This is a simple interactive script runner which lets you experiment with exoskeleton.
+              Technically, this is not a sandbox since exoskeleton's whole purpose is to break out of the sandbox, so use responsibly.
+          </p>
+          <p style="font-size:18px">
+            This utility page is to support the <a href="https://github.com/obeliskos/exoskeleton" target="_blank">Exoskeleton</a> project.<br /><br/>
+          </p>
+          <p>
+            Some example logging commands are :<br/>
+            <code>
+              xo.logText(message);<br/>
+              xo.logObject(obj);<br/>
+            </code>
+          </p>
+          <p>This utilizes <a href="https://codemirror.net/">CodeMirror</a> for the editors and they have code folding, and autocomplete 
+            functionality (available using CTRL-Space).  AutoComplete can allow to explore exoskeleton classes and functions.
+          </p>
+          <p>
+              Choose a CodeMirror theme here :
+              <select onchange="xo.selectTheme()" id='select-theme' style='font-size:16px;'>
+                  <option>default</option>
+                  <option>3024-day</option>
+                  <option>3024-night</option>
+                  <option selected="selected">abcdef</option>
+                  <option>ambiance</option>
+                  <option>base16-dark</option>
+                  <option>base16-light</option>
+                  <option>bespin</option>
+                  <option>blackboard</option>
+                  <option>cobalt</option>
+                  <option>colorforth</option>
+                  <option>dracula</option>
+                  <option>duotone-dark</option>
+                  <option>duotone-light</option>
+                  <option>eclipse</option>
+                  <option>elegant</option>
+                  <option>erlang-dark</option>
+                  <option>hopscotch</option>
+                  <option>icecoder</option>
+                  <option>isotope</option>
+                  <option>lesser-dark</option>
+                  <option>liquibyte</option>
+                  <option>material</option>
+                  <option>mbo</option>
+                  <option>mdn-like</option>
+                  <option>midnight</option>
+                  <option>monokai</option>
+                  <option>neat</option>
+                  <option>neo</option>
+                  <option>night</option>
+                  <option>panda-syntax</option>
+                  <option>paraiso-dark</option>
+                  <option>paraiso-light</option>
+                  <option>pastel-on-dark</option>
+                  <option>railscasts</option>
+                  <option>rubyblue</option>
+                  <option>seti</option>
+                  <option>solarized dark</option>
+                  <option>solarized light</option>
+                  <option>the-matrix</option>
+                  <option>tomorrow-night-bright</option>
+                  <option>tomorrow-night-eighties</option>
+                  <option>ttcn</option>
+                  <option>twilight</option>
+                  <option>vibrant-ink</option>
+                  <option>xq-dark</option>
+                  <option>xq-light</option>
+                  <option>yeti</option>
+                  <option>zenburn</option>
+              </select>
+          </p>
+        </div>
+        <br/>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

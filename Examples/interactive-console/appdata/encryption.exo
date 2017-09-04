@@ -1,0 +1,62 @@
+// Exoskeleton Encryption examples
+
+var input = "Please secure this message";
+xo.logText("// unencrypted string");
+xo.logText(input);
+
+// simple string encryption (in-memory)
+var enc = exoskeleton.enc.encrypt(input, "p4$$w0rd");
+xo.logText("// encrypted string");
+xo.logText(enc);
+
+// simple string decryption (in-memory)
+var dec = exoskeleton.enc.decrypt(enc, "p4$$w0rd");
+xo.logText("// decrypted string");
+xo.logText(dec);
+
+// hmm, lets create a file first to demo file encryption
+var appLocations = exoskeleton.main.getLocations();
+var currentDirectory = appLocations.Current;
+var newFilename = exoskeleton.file.combinePaths([
+	currentDirectory,
+    "sampledata",
+    "file-to-encrypt.txt"
+]);
+
+// cleanup any old copies
+exoskeleton.file.deleteFile(newFilename);
+exoskeleton.file.deleteFile(newFilename + ".enx");
+
+
+// now create it
+exoskeleton.file.saveFile(
+	newFilename,
+    "This is an example file which we will encrypt"
+);
+
+// now create encrypted copy
+var encFolder = exoskeleton.file.combinePaths([
+	currentDirectory,
+    "sampledata"
+]);
+// while we could pass wildcard in second param, we will just
+// encrypt 'file-to-encrypt.txt'
+exoskeleton.enc.encryptFiles(encFolder, 
+	"file-to-encrypt.txt", "$3cr3t");
+
+// let's see if it worked
+var fi = exoskeleton.file.getFileInfo(newFilename);
+xo.logText(fi.Exists?"it worked!":"it did not work :(");
+
+// now let's delete original before decrypting it again
+exoskeleton.file.deleteFile(newFilename);
+fi = exoskeleton.file.getFileInfo(newFilename);
+xo.logText(fi.Exists?"original not deleted :(":
+	"original was deleted");
+
+// let's decrypt file
+exoskeleton.enc.decryptFiles(encFolder, 
+	"file-to-encrypt.txt.enx", "$3cr3t");
+fi = exoskeleton.file.getFileInfo(newFilename);
+xo.logText(fi.Exists?"original was recreated by decripting enx":
+	"original not decrypted correctly :(");

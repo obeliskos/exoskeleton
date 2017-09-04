@@ -6,8 +6,8 @@ window.addEventListener("load", function load(event){
        return true;
     });
     // setup a listener in case they test eventing in 'open in new window' sample
-    exoskeleton.events.on("multicast.TestEvent", function (data) {
-        console.info("Received the 'multicast.TestEvent' event");
+    exoskeleton.events.on("multicast.TestEvent", function (data1, data2) {
+        console.info("Received the 'multicast.TestEvent' event", "data1:" + data1 + " data2:" + JSON.stringify(data2));
     });
 },false);
 

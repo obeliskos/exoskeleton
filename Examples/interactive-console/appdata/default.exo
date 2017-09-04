@@ -1,0 +1,10 @@
+// Welcome to the exoskeleton interactive console
+
+// let's get system info!
+var info = exoskeleton.system.getSystemInfo();
+
+// you can use the xo object to log to the output panel
+xo.logObject(info)
+
+// and since we have no other place to put it, lets say hi
+exoskeleton.media.speak("hello world");

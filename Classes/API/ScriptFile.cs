@@ -42,10 +42,7 @@ namespace Exoskeleton.Classes.API
         /// <param name="eventBaseName">Optional base name to emit with.</param>
         public void StartWatcher(string path, string eventBaseName)
         {
-            if (eventBaseName != null)
-            {
-                watcherBaseName = eventBaseName;
-            }
+            watcherBaseName = (eventBaseName==null)?"watcher":watcherBaseName;
 
             watcher = new FileSystemWatcher();
             watcher.Path = path;
@@ -55,6 +52,7 @@ namespace Exoskeleton.Classes.API
             watcher.Changed += watcher_Changed;
             watcher.Created += watcher_Created;
             watcher.Deleted += watcher_Deleted;
+            watcher.Renamed += watcher_Renamed;
             watcher.EnableRaisingEvents = true;
         }
 
@@ -68,27 +66,15 @@ namespace Exoskeleton.Classes.API
         }
 
         /// <summary>
-        /// 'Deleted' event handler for our watcher singleton (if started).
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void watcher_Deleted(object sender, FileSystemEventArgs e)
-        {
-            string data = JsonConvert.SerializeObject(e);
-
-            host.MulticastEvent(watcherBaseName + ".deleted", data);
-        }
-
-        /// <summary>
         /// 'Created' event handler for our watcher singleton (if started)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void watcher_Created(object sender, FileSystemEventArgs e)
         {
-            string data = JsonConvert.SerializeObject(e);
+            dynamic[] data = new dynamic[] { JsonConvert.SerializeObject(e) };
 
-            host.MulticastEvent(watcherBaseName + ".created", data);
+            host.PackageAndMulticast(watcherBaseName + ".created", data);
         }
 
         /// <summary>
@@ -98,9 +84,33 @@ namespace Exoskeleton.Classes.API
         /// <param name="e"></param>
         private void watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            string data = JsonConvert.SerializeObject(e);
+            dynamic[] data = new dynamic[] { JsonConvert.SerializeObject(e) };
 
-            host.MulticastEvent(watcherBaseName + ".changed", data);
+            host.PackageAndMulticast(watcherBaseName + ".changed", data);
+        }
+
+        /// <summary>
+        /// 'Deleted' event handler for our watcher singleton (if started).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void watcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            dynamic[] data = new dynamic[] { JsonConvert.SerializeObject(e) };
+
+            host.PackageAndMulticast(watcherBaseName + ".deleted", data);
+        }
+
+        /// <summary>
+        /// 'Renamed' event handler for our watcher singleton (if started).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void watcher_Renamed(object sender, RenamedEventArgs e)
+        {
+            dynamic[] data = new dynamic[] { JsonConvert.SerializeObject(e) };
+
+            host.PackageAndMulticast(watcherBaseName + ".renamed", data);
         }
 
         #endregion
@@ -214,7 +224,15 @@ namespace Exoskeleton.Classes.API
                 Name = di.Name
             };
 
-            string json = JsonConvert.SerializeObject(ddi);
+            // Some properties (their accessors) may throw exception if their value is non-applicable in the 
+            // process current state so we will ignore errors by providing our own error delegate.
+            JsonSerializerSettings jss = new JsonSerializerSettings();
+            jss.Error += delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+            {
+                args.ErrorContext.Handled = true;
+            };
+
+            string json = JsonConvert.SerializeObject(ddi, jss);
 
             return json;
         }
@@ -226,16 +244,9 @@ namespace Exoskeleton.Classes.API
         /// <returns>Json encoded string array of subdirectories.</returns>
         public string GetDirectories(string parentDir)
         {
-            try
-            {
-                string[] result = Directory.GetDirectories(parentDir);
+            string[] result = Directory.GetDirectories(parentDir);
 
-                return JsonConvert.SerializeObject(result);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return JsonConvert.SerializeObject(result);
         }
 
         /// <summary>
@@ -277,6 +288,9 @@ namespace Exoskeleton.Classes.API
         public string GetFileInfo(string filename)
         {
             FileInfo fi = new FileInfo(filename);
+
+            long? length = fi.Exists?fi.Length: (long?) null;
+
             dynamic dfi = new
             {
                 Attributes = fi.Attributes,
@@ -291,7 +305,7 @@ namespace Exoskeleton.Classes.API
                 LastAccessTimeUtc = fi.LastAccessTimeUtc,
                 LastWriteTime = fi.LastWriteTime,
                 LastWriteTimeUtc = fi.LastWriteTimeUtc,
-                Length = fi.Length,
+                Length = length,
                 Name = fi.Name
             };
 

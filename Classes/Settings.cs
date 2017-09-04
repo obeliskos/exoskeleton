@@ -12,6 +12,22 @@ namespace Exoskeleton.Classes
     {
         public List<string> StartupCommands = new List<string>();
 
+        /// <summary>
+        /// Whether we should set current directory to settings path (true) 
+        /// or use existing current directory (false)
+        /// </summary>
+        public bool CurrentDirectoryUseSettingsPath = true;
+        /// <summary>
+        /// If true, we will either 
+        /// 'tweak' current directory with relative offset defined in CurrentDirectoryProvidedPath, or
+        /// 'set' current directory with absolute path defined in CurrentDirectoryProvidedPath
+        /// </summary>
+        public bool CurrentDirectoryUseProvidedPath = false;
+        /// <summary>
+        /// Either an absolute path or relative modifer to effective 'current directory'
+        /// </summary>
+        public string CurrentDirectoryProvidedPath = "";
+
         public string WindowTitle = "My Exoskeleton App";
         public int WindowWidth = 820;
         public int WindowHeight = 512;
@@ -30,6 +46,7 @@ namespace Exoskeleton.Classes
         public int WebBrowserAutoRefreshSecs = 0;
         public bool WebBrowserAllowChildWindows = true;
         public bool WebBrowserScriptErrorsSuppressed = true;
+        public bool WebBrowserShortcutsEnabled = false;
 
         // will probably want all of these on but when we generate
         // a default one (if none exists) we will use these defaults 
@@ -55,7 +72,7 @@ namespace Exoskeleton.Classes
             }
         }
 
-        public static Settings Load(string filename)
+        public static Settings Load(string filename, bool createIfNotExists)
         {
             Settings settings = new Settings();
 
@@ -68,7 +85,10 @@ namespace Exoskeleton.Classes
             }
             else
             {
-                settings.Save(filename);
+                if (createIfNotExists)
+                {
+                    settings.Save(filename);
+                }
             }
 
             return settings;

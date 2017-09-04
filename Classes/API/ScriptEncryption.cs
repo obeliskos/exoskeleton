@@ -41,11 +41,17 @@ namespace Exoskeleton.Classes.API
         /// <summary>
         /// Encrypts file(s) with a password as new file(s) with an .enx extension.
         /// </summary>
+        /// <param name="directory">Directory where file(s) to be encrypted reside.</param>
         /// <param name="filemask">Filename which may contain wildcards, representing file(s) to encrypt.</param>
         /// <param name="password">Password to encrypt with</param>
-        public void EncryptFiles(string filemask, string password)
+        public void EncryptFiles(string directory, string filemask, string password)
         {
-            string[] matchingFiles = Directory.GetFiles(Directory.GetCurrentDirectory(), filemask);
+            if (directory == null || directory == "")
+            {
+                directory = Directory.GetCurrentDirectory();
+            }
+
+            string[] matchingFiles = Directory.GetFiles(directory, filemask);
 
             SymmetricAlgorithm sa = new RijndaelManaged();
 
@@ -103,11 +109,17 @@ namespace Exoskeleton.Classes.API
         /// <summary>
         /// Descrypts file(s) with a password as new file(s) without an .enx extension.
         /// </summary>
+        /// <param name="directory">Directory where file(s) to be encrypted reside.</param>
         /// <param name="filemask">Filename which may contain wildcards, representing file(s) to decrypt.</param>
         /// <param name="password">Password to decrypt with</param>
-        public void DecryptFiles(string filemask, string password)
+        public void DecryptFiles(string directory, string filemask, string password)
         {
-            string[] matchingFiles = Directory.GetFiles(Directory.GetCurrentDirectory(), filemask);
+            if (directory == null || directory == "")
+            {
+                directory = Directory.GetCurrentDirectory();
+            }
+
+            string[] matchingFiles = Directory.GetFiles(directory, filemask);
 
             SymmetricAlgorithm sa = new RijndaelManaged();
 

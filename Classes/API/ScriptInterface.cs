@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -41,7 +42,7 @@ namespace Exoskeleton.Classes.API
             this.File = exosettings.ScriptingFilesEnabled ? new ScriptFile(host) : null;
             this.Proc = exosettings.ScriptingProcessEnabled ? new ScriptProcess() : null;
             this.Session = new ScriptSession();
-            this.System = exosettings.ScriptingSystemEnabled ? new ScriptSystem() : null;
+            this.System = exosettings.ScriptingSystemEnabled ? new ScriptSystem(exosettings) : null;
             this.Logger = exosettings.ScriptingLoggerEnabled ? new ScriptLogger(loggerForm) : null;
             this.Com = exosettings.ScriptingComObjectsEnabled ? new ScriptComObjects() : null;
             this.Net = exosettings.ScriptingNetEnabled ? new ScriptNet() : null;
@@ -70,9 +71,9 @@ namespace Exoskeleton.Classes.API
         /// </summary>
         /// <param name="eventName">Event name to multicast</param>
         /// <param name="eventData">Optional string encoded event data to emit with.</param>
-        public void MulticastEvent(string eventName, string eventData)
+        public void MulticastEvent(string eventName, string eventDataJson)
         {
-            host.MulticastEvent(eventName, eventData);
+            host.MulticastEvent(eventName, eventDataJson);
         }
 
         /// <summary>

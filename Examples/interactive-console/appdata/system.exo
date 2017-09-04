@@ -1,0 +1,37 @@
+// Exoskeleton 'System' API examples
+
+var result = exoskeleton.system.getSystemInfo();
+xo.logText("// system info");
+xo.logObject(result);
+
+result = exoskeleton.system.getEnvironmentVariables();
+xo.logText("// environment variables");
+xo.logObject(result);
+
+// get a single variable path...
+// but its an encoded array so split it on semicolon char
+result = exoskeleton.system.getEnvironmentVariable("PATH");
+xo.logText("// path");
+xo.logObject(result.split(';'));
+
+// we won't demonstrate setvariable but it might look like :
+// exoskeleton.system.setEnvironmentVariable("EXOVAR", "exo value");
+
+// to demonstrate focusing windows and sending keys let's
+// open notepad type some keys and focus back to exoskeleton
+
+exoskeleton.proc.startPath("notepad.exe");
+
+// create char array
+var keys = "this is a test".split('');
+keys.push("{ENTER}");
+
+// weird stuff may happen if you dont wait for window to load
+setTimeout(function() {
+	exoskeleton.system.focusAndSendKeys("notepad", null, keys);
+}, 1000);
+
+// and focus back to exoskeleton in 4 seconds
+setTimeout(function() {
+	exoskeleton.system.focusWindow(null, "Exoskeleton Interactive Console");
+}, 4000);

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -19,8 +20,11 @@ namespace Exoskeleton.Classes.API
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        public ScriptSystem()
+        private Settings settings;
+
+        public ScriptSystem(Settings settings)
         {
+            this.settings = settings;
         }
 
         public void Dispose()
@@ -36,16 +40,25 @@ namespace Exoskeleton.Classes.API
             var info = new
             {
                 CommandLine = Environment.CommandLine,
+                CommandLineArguments = Environment.GetCommandLineArgs(),
+                HostedRoot = Path.GetFullPath(
+                    Path.Combine(new[] {
+                        Environment.CurrentDirectory,
+                        settings.WebServerHostDirectory
+                    })
+                ),
+                NewLine = Environment.NewLine,
                 CurrentDirectory = Environment.CurrentDirectory,
                 Is64BitOperatingSystem = Environment.Is64BitOperatingSystem,
                 Is64BitProcess = Environment.Is64BitProcess,
                 MachineName = Environment.MachineName,
+                TickCount = Environment.TickCount,
                 OSVersion = Environment.OSVersion,
                 OSVersionString = Environment.OSVersion.ToString(),
                 ProcessorCount = Environment.ProcessorCount,
                 SystemDirectory = Environment.SystemDirectory,
                 UserDomainName = Environment.UserDomainName,
-                userName = Environment.UserName,
+                UserName = Environment.UserName,
                 DotNetVersion = Environment.Version
             };
 

@@ -1,0 +1,51 @@
+/**
+ * Exoskeleton 'Session' example
+ * 
+ * The exoskeleton session is a memory location kept in the c#
+ * process that survives across html page reloads or even
+ * across multiple windows (if using multiple windows).
+ * It allows you a location to store 'volatile' settings that 
+ * do not need to be saved, but can be used for communication
+ * within your page or across your application.
+ */
+
+// set a string setting to the session
+exoskeleton.session.set("session-sampletest", "some value");
+
+// now let's look it up
+var result = exoskeleton.session.get("session-sampletest");
+// if not null, we found it
+if (result !== null) {
+	// log it within this interactive console
+    // we are using slashes only for this output editor to be pretty
+    // since it will syntax highlight as json format
+	xo.logText("// found session-sampletest, it's value is :");
+	xo.logText(result);
+}
+else {
+	xo.logText("//did not find session-sampletest!");
+}
+
+// add blank line to logged output (interactive console specific)
+xo.logText("");
+
+// now lets store objects, here's a simple object
+var obj = {
+  name: 'exo',
+  age: 21,
+  location: "US"
+};
+
+// now lets set a different session variable to our new object
+exoskeleton.session.setObject("session-sampleobject", obj);
+
+// now let's look up that object
+var copy = exoskeleton.session.getObject("session-sampleobject");
+// if not null, we found it
+if (copy !== null) {
+  xo.logText("// found object:");
+  xo.logObject(copy);
+}
+else {
+  xo.logText("// did not find object!");
+}

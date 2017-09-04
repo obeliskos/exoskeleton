@@ -1,19 +1,21 @@
 # Exoskeleton
-A .net, windows-specific native web app hosting framework
+A .net, windows-specific native web app hosting framework.
 
 # Overview
 This is an experiment creating a minimal, windows native app hosting framework.  It is implemented in .net and exposes an 
 api for your html and javascript apps to invoke via javascript object which maps to a 'Com-Visible' C# object hierarchy.
-This application can optionally serve your app from a self-hosted web server, from filesystem, or from external webserver with all methods 
-able to utilize the exosketon scripting api 'client-side' to control the exoskeleton host.
+Since this applicaton is written in C# and uses the .NET WebBrowser control, it should be noted that the underlying web 
+control is based on Internet Explorer 11.
 
-Some functionality available to your apps include (each category can be individually enabled/disabled) :
-- exoskeleton.main : set window title, enter and exit fullscreen mode, and display notifications.
-- exoskeleton.file : object can be used to load and save files, read directories, get logical drives, etc.
-- exoskeleton.proc :  launch external processes
-- exoskeleton.media : currently used for text-to-speech functionality.
+This application can optionally serve your app from an exoskeleton self-hosted static web server, from filesystem, 
+or from external local or remote webserver with all methods able to utilize the exosketon scripting api 'client-side' to control the exoskeleton host.  The WebBrowser control is assigned the root 
+'Com Visisble' API object which is handed off to a javascript api fascade which handles JSON serialization where needed.  On the 
+C# side, NewtonSoft JSON is used to parse and serialize.  
 
-The above list will be enhance over time, where needed.
+The functionality available to your javascript apps roughly maps to a selection of .net api methods and custom defined methods 
+The above list will be enhance over time, where needed.  You can browse the current state of the API by viewing the documentation.js docs here :
+
+[Exoskeleton.js API Docs](https://rawgit.com/obeliskos/exoskeleton/master/Examples/exoskeleton.js/docs/index.html)
 
 # Building
 This application was build using Visual Studio 2017 Community.  A pre-built binary is included in the 'Prebuilt' folder if you just want to experiment.
@@ -28,5 +30,10 @@ You may create multiple named settings files (for examples see the 'Examples' fo
 argument to the exoskeleton binary.
 
 ```
-exoskeleton myapp.xml
+exoskeleton myapp.xos
 ```
+
+# Interactive Console and Examples
+Exoskeleton provides several sample projects in the 'Examples' folder, one of which is an interactive console which 
+can be used for learning and prototyping javascript use of the exoskeleton libraries and viewing their return values.
+You should be able to run the examples by clicking on the batch files in the examples folder.

@@ -35,16 +35,26 @@ namespace Exoskeleton.Classes.API
         /// </summary>
         /// <param name="procPath">Program to execute.</param>
         /// <returns></returns>
-        public void StartPath(string procPath)
+        public string StartPath(string procPath)
         {
-            Process.Start(procPath);
+            Process p = Process.Start(procPath);
+
+            // Some properties (their accessors) may throw exception if their value is non-applicable in the 
+            // process current state so we will ignore errors by providing our own error delegate.
+            JsonSerializerSettings jss = new JsonSerializerSettings();
+            jss.Error += delegate (object sender, ErrorEventArgs args)
+            {
+                args.ErrorContext.Handled = true;
+            };
+
+            return JsonConvert.SerializeObject(p, jss);
         }
 
         /// <summary>
         /// Starts a process resource by providing information in a ProcessStartInfo format.
         /// </summary>
         /// <param name="startInfo">Serialized javascript object closely resembling a c# ProcessStartInfo object.</param>
-        public void Start(string startInfo)
+        public string Start(string startInfo)
         {
             ProcessStartInfo psi = JsonConvert.DeserializeObject<ProcessStartInfo>(startInfo,
                 new JsonSerializerSettings() { ContractResolver = new SerializableExpandableContractResolver() });
@@ -52,6 +62,16 @@ namespace Exoskeleton.Classes.API
             Process p = new Process();
             p.StartInfo = psi;
             p.Start();
+
+            // Some properties (their accessors) may throw exception if their value is non-applicable in the 
+            // process current state so we will ignore errors by providing our own error delegate.
+            JsonSerializerSettings jss = new JsonSerializerSettings();
+            jss.Error += delegate (object sender, ErrorEventArgs args)
+            {
+                args.ErrorContext.Handled = true;
+            };
+
+            return JsonConvert.SerializeObject(p, jss);
         }
 
         /// <summary>
@@ -61,7 +81,60 @@ namespace Exoskeleton.Classes.API
         public string GetProcesses()
         {
             Process[] result = Process.GetProcesses();
-            return JsonConvert.SerializeObject(result);
+
+            // Some properties (their accessors) may throw exception if their value is non-applicable in the 
+            // process current state so we will ignore errors by providing our own error delegate.
+            JsonSerializerSettings jss = new JsonSerializerSettings();
+            jss.Error += delegate (object sender, ErrorEventArgs args)
+            {
+                args.ErrorContext.Handled = true;
+            };
+
+            return JsonConvert.SerializeObject(result, jss);
+        }
+
+        /// <summary>
+        /// Because GetProcesses takes so long to serialize, this may be more useful.
+        /// </summary>
+        /// <returns>Serialized array of objects containing process id, name, and window title (if applicable)</returns>
+        public string GetProcessesSimplified()
+        {
+            Process[] pi = Process.GetProcesses();
+            List<dynamic> dpi = new List<dynamic>();
+
+            foreach (Process p in pi)
+            {
+                dpi.Add(
+                    new
+                    {
+                        Id = p.Id,
+                        CreationTime = p.ProcessName,
+                        CreationTimeUtc = p.MainWindowTitle,
+                    }
+                );
+            }
+
+            return JsonConvert.SerializeObject(dpi);
+        }
+
+        /// <summary>
+        /// Gets detailed process information by process id.
+        /// </summary>
+        /// <param name="id">The windows process id to get detailed information about.</param>
+        /// <returns>The .net Process object for that process id, serialized as json</returns>
+        public string GetProcessInfoById(int id)
+        {
+            Process pi = Process.GetProcessById(id);
+
+            // Some properties (their accessors) may throw exception if their value is non-applicable in the 
+            // process current state so we will ignore errors by providing our own error delegate.
+            JsonSerializerSettings jss = new JsonSerializerSettings();
+            jss.Error += delegate (object sender, ErrorEventArgs args)
+            {
+                args.ErrorContext.Handled = true;
+            };
+
+            return JsonConvert.SerializeObject(pi, jss);
         }
 
         /// <summary>
