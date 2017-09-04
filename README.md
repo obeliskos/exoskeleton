@@ -37,3 +37,5 @@ exoskeleton myapp.xos
 Exoskeleton provides several sample projects in the 'Examples' folder, one of which is an interactive console which 
 can be used for learning and prototyping javascript use of the exoskeleton libraries and viewing their return values.
 You should be able to run the examples by clicking on the batch files in the examples folder.
+
+[logo]: https://github.com/obeliskos/exoskeleton/raw/master/images/console.png
