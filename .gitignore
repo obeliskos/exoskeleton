@@ -1,5 +1,6 @@
 .vs/
 obj/
 bin/
+Examples/database-example/database-example.json
 Examples/interactive-console/sampledata/
 *.user

@@ -9,7 +9,7 @@
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>false</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath />
+  <WindowIconPath>science.ico</WindowIconPath>
   <WebServerSelfHost>true</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory>.</WebServerHostDirectory>

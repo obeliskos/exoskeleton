@@ -2,6 +2,9 @@ $(document).ready(function () {
     var converter = new showdown.Converter();
     var text, html;
 
+    // enable preset to more closely resemble how github renders
+    converter.setFlavor('github');
+    
     var systeminfo = exoskeleton.system.getSystemInfo();
     var filename = systeminfo.CommandLineArguments[systeminfo.CommandLineArguments.length - 1];
     var ext = exoskeleton.file.getExtension(filename).toLowerCase();
