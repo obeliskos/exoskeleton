@@ -15,21 +15,38 @@ namespace Exoskeleton
 {
     public partial class ChildWindow : Form, IHostWindow
     {
+        private IPrimaryHostWindow parent;
         private ScriptInterface scriptInterface;
         private Settings settings;
         private static Dictionary<string, bool> cacheRefreshed = new Dictionary<string, bool>();
         private bool fullscreen = false;
         private Uri uri;
+        LoggerForm logger;
 
         #region Form Level Constructor and Events
 
-        public ChildWindow(string caption, Uri uri, Settings settings, LoggerForm logger, int? width, int? height)
+        public ChildWindow(IPrimaryHostWindow parent, string caption, Uri uri, Settings settings, int? width, int? height)
         {
+            this.parent = parent;
+
             scriptInterface = new ScriptInterface(this, settings, logger);
+
+            if (settings.ScriptingLoggerEnabled)
+            {
+                logger = new LoggerForm(this, caption);
+                //    Rectangle workingArea = Screen.GetWorkingArea(this);
+                //    logger.Show();
+                //    logger.Location = new Point(workingArea.Right - logger.Width, 100 + 100 * hostWindows.Count);
+            }
+
             this.settings = settings;
             this.uri = uri;
 
             InitializeComponent();
+
+            HostMenuStrip.Visible = settings.ScriptingMenuEnabled;
+            HostToolStrip.Visible = settings.ScriptingToolStripEnabled;
+            HostStatusStrip.Visible = settings.ScriptingStatusStripEnabled;
 
             if (caption != null) this.Text = caption;
             if (width.HasValue) this.Width = width.Value;
@@ -49,19 +66,58 @@ namespace Exoskeleton
 
         private void ChildWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Window is closing, so no longer need to multicast to us
-            MainForm.FormInstance.RemoveHostWindow(this);
+            parent.RemoveHostWindow(this);
             this.scriptInterface.Dispose();
         }
 
         public void PackageAndMulticast(string name, dynamic[] data)
         {
-            MainForm.FormInstance.PackageAndMulticast(name, data);
+            parent.PackageAndMulticast(name, data);
+        }
+
+        /// <summary>
+        /// Used for passing event data as serialized array of serialized data items.  
+        /// Requires the javascript event handler to deserialize (JSON.parse()) data.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void PackageAndUnicast(string name, dynamic[] data)
+        {
+            string wrappedData = null;
+
+            List<string> args = new List<string>();
+            args.Add(name);
+
+            if (data != null)
+            {
+                for (int idx = 0; idx < data.Length; idx++)
+                {
+                    data[idx] = JsonConvert.SerializeObject(data[idx]);
+                }
+                // now that we have array of strings (of serialized objects or values), serialize that.
+                wrappedData = JsonConvert.SerializeObject(data);
+
+                args.Add(wrappedData);
+            }
+
+            this.InvokeScript("exoskeletonEmitEvent", args.ToArray());
         }
 
         public void MulticastEvent(string name, string data)
         {
-            MainForm.FormInstance.MulticastEvent(name, data);
+            parent.MulticastEvent(name, data);
+        }
+
+        public void UnicastEvent(string name, string data)
+        {
+            List<string> args = new List<string>();
+            args.Add(name);
+            if (data != null)
+            {
+                args.Add(data);
+            }
+
+            InvokeScript("exoskeletonEmitEvent", args.ToArray());
         }
 
         #endregion
@@ -75,7 +131,7 @@ namespace Exoskeleton
 
         public void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon)
         {
-            MainForm.FormInstance.ShowNotification(timeout, tipTitle, tipText, toolTipIcon);
+            parent.ShowNotification(timeout, tipTitle, tipText, toolTipIcon);
         }
 
         public void ToggleFullscreen()
@@ -110,7 +166,7 @@ namespace Exoskeleton
 
         public void OpenNewWindow(string caption, string url, int width, int height)
         {
-            MainForm.FormInstance.OpenNewWindow(caption, url, width, height);
+            parent.OpenNewWindow(caption, url, width, height);
         }
 
         #endregion
@@ -147,7 +203,7 @@ namespace Exoskeleton
             }
         }
 
-        public object WebInvokeScript(string name, params string[] args)
+        public object InvokeScript(string name, params string[] args)
         {
             return ChildWebBrowser.Document.InvokeScript(name, args);
         }
@@ -222,6 +278,163 @@ namespace Exoskeleton
 
         #region Interface Memebers
 
+        #endregion
+
+        // Need to determine if i want to attempt to implement base class or mvp instead of just interfaces.  
+        // Winforms designers may not play well with abstract base classes.
+
+        #region IHostWindow : Menu Management
+
+        public void InitializeMenuStrip()
+        {
+            HostMenuStrip.Items.Clear();
+        }
+
+        public void AddMenu(string menuName, string emitEventName)
+        {
+            ToolStripMenuItem newItem = new ToolStripMenuItem
+            {
+                Name = menuName,
+                Tag = emitEventName,
+                Text = menuName
+            };
+
+            if (emitEventName != "")
+            {
+                newItem.Click += menuItem_Click;
+            }
+
+            HostMenuStrip.Items.Add(newItem);
+        }
+
+        public void AddMenuItem(string menuName, string menuItemName, string emitEventName)
+        {
+            ToolStripItem[] results = HostMenuStrip.Items.Find(menuName, true);
+            if (results.Length > 0)
+            {
+                if (menuItemName == "-")
+                {
+                    ((ToolStripMenuItem)results[0]).DropDownItems.Add(new ToolStripSeparator());
+                }
+                else
+                {
+                    ToolStripMenuItem newItem = new ToolStripMenuItem
+                    {
+                        Name = menuItemName,
+                        Tag = emitEventName,
+                        Text = menuItemName
+                    };
+
+                    if (emitEventName != "")
+                    {
+                        newItem.Click += menuItem_Click;
+                    }
+
+                    ((ToolStripMenuItem)results[0]).DropDownItems.Add(newItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Single Menu Handler to be used for all menu item click events
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            // payload (2nd param) may evolve over time
+            this.UnicastEvent((string)item.Tag, item.Name);
+        }
+
+        #endregion
+
+        #region IHostWindow : Toolstrip Management
+
+        /// <summary>
+        /// Clears the toolstrip labels
+        /// </summary>
+        public void InitializeToolstrip()
+        {
+            HostToolStrip.Items.Clear();
+        }
+
+        /// <summary>
+        /// Add a button to the hostwindow toolstrip 
+        /// </summary>
+        /// <param name="text">Tooltip text to display on the toolstrip button</param>
+        /// <param name="eventName">Name of event to fire when button is clicked</param>
+        /// <param name="imagePath">Filepath of (rougly 32x32 px) image to display on button.</param>
+        public void AddToolStripButton(string text, string eventName, string imagePath)
+        {
+            ToolStripButton tsb = new ToolStripButton();
+
+            tsb.Tag = eventName;
+            tsb.Text = text;
+            tsb.ToolTipText = text;
+
+            if (eventName != "")
+            {
+                tsb.Image = Image.FromFile(eventName);
+            }
+            tsb.Click += toolStripButton_Click;
+
+            HostToolStrip.Items.Add(tsb);
+        }
+
+        /// <summary>
+        /// Adds a visual separator for toolstrip control groups
+        /// </summary>
+        public void AddToolStripSeparator()
+        {
+            ToolStripSeparator sep = new ToolStripSeparator();
+            HostToolStrip.Items.Add(sep);
+        }
+
+        /// <summary>
+        /// Single ToolStripButton Handler to be used for all button click events 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripButton_Click(object sender, EventArgs e)
+        {
+            ToolStripButton item = (ToolStripButton)sender;
+
+            // payload (2nd param) may evolve over time
+            this.UnicastEvent((string)item.Tag, item.Text);
+        }
+
+        #endregion
+
+        #region IHostWindow : Statusstrip Management
+
+        public void InitializeStatusstrip()
+        {
+            SetLeftStatusstripLabel("");
+            SetRightStatusstripLabel("");
+        }
+
+        /// <summary>
+        /// Update the text displayed in the left toolstrip label
+        /// </summary>
+        /// <param name="text"></param>
+        public void SetLeftStatusstripLabel(string text)
+        {
+            toolStripLeftLabel.Text = text;
+        }
+
+        /// <summary>
+        /// Update the text displayed in the right toolstrip label
+        /// </summary>
+        /// <param name="text"></param>
+        public void SetRightStatusstripLabel(string text)
+        {
+            toolStripRightLabel.Text = text;
+        }
+
+        #endregion
+
         /// <summary>
         /// Returns the 'active' settings class instance.
         /// </summary>
@@ -237,9 +450,12 @@ namespace Exoskeleton
         /// <returns>Dynamic object containing Executable, Settings, and Current locations.</returns>
         public dynamic GetLocations()
         {
-            return MainForm.FormInstance.GetLocations();
+            return parent.GetLocations();
         }
 
-        #endregion
+        public void Shutdown()
+        {
+            parent.Shutdown();
+        }
     }
 }

@@ -23,10 +23,8 @@ namespace Exoskeleton
     /// We will set up a mime mapping xml file to use when self hosting.
     /// The Classes\ScriptInterface.cs class will serve as a scripting object for our exeskeleton app's javascript.
     /// </summary>
-    public partial class MainForm : Form, IHostWindow
+    public partial class MainForm : Form, IPrimaryHostWindow
     {
-        public static MainForm FormInstance = null;
-
         private MimeTypeMappings mappings;
         private Settings settings;
         private LoggerForm loggerForm = null;
@@ -201,8 +199,6 @@ namespace Exoskeleton
             InitializeSettings();
             SetupRegistryKeys();
 
-            FormInstance = this;
-
             mappings = Classes.MimeTypeMappings.Load(mappingsPath);
 
             if (settings.WebServerSelfHost)
@@ -218,6 +214,10 @@ namespace Exoskeleton
             }
 
             InitializeComponent();
+
+            HostMenuStrip.Visible = settings.ScriptingMenuEnabled;
+            HostToolStrip.Visible = settings.ScriptingToolStripEnabled;
+            HostStatusStrip.Visible = settings.ScriptingStatusStripEnabled;
 
             hostWindows.Add(this);
 
@@ -236,7 +236,7 @@ namespace Exoskeleton
         {
             if (settings.ScriptingLoggerEnabled)
             {
-                loggerForm = new LoggerForm("main");
+                loggerForm = new LoggerForm(this, "Main");
                 Rectangle workingArea = Screen.GetWorkingArea(this);
                 loggerForm.Show();
                 loggerForm.Location = new Point(workingArea.Right - loggerForm.Width, 100);
@@ -380,64 +380,22 @@ namespace Exoskeleton
             }
         }
 
-        public object WebInvokeScript(string name, string[] args)
+        public bool CheckForStaleCache(string url)
         {
-            if (HostWebBrowser.Document == null) return null;
+            // if cache is stale, return true but assume caller is
+            // going to refresh and add to our cacheRefreshed dictionary
+            if (!cacheRefreshed.Keys.Contains(url))
+            {
+                cacheRefreshed[url] = true;
+                return true;
+            }
 
-            return HostWebBrowser.Document.InvokeScript(name, args);
+            return false;
         }
 
-        /// <summary>
-        /// Preferred method to multicast an event from .net.  This will perform additional serialization to wrap
-        /// parameters similarly to how javascript does it.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="data"></param>
-        public void PackageAndMulticast(string name, dynamic[] data)
-        {
-            string wrappedData = null;
+        #endregion
 
-            List<string> args = new List<string>();
-            args.Add("multicast." + name);
-
-            if (data != null)
-            {
-                for(int idx=0; idx < data.Length; idx++)
-                {
-                    data[idx] = JsonConvert.SerializeObject(data[idx]);
-                }
-                // now that we have array of strings (of serialized objects or values), serialize that.
-                wrappedData = JsonConvert.SerializeObject(data);
-
-                args.Add(wrappedData);
-            }
-
-            // now tell each IHostWindow to emit that event with those params
-            foreach (IHostWindow hostWindow in hostWindows)
-            {
-                hostWindow.WebInvokeScript("exoskeletonEmitEvent", args.ToArray());
-            }
-        }
-
-        /// <summary>
-        /// Used only as javascript API implementation and expects data to be already wrapped.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="data"></param>
-        public void MulticastEvent(string name, string data)
-        {
-            List<string> args = new List<string>();
-            args.Add("multicast." + name);
-            if (data != null)
-            {
-                args.Add(data);
-            }
-
-            foreach (IHostWindow hostWindow in hostWindows)
-            {
-                hostWindow.WebInvokeScript("exoskeletonEmitEvent", args.ToArray());
-            }
-        }
+        #region IPrimaryHostWindow implementation methods
 
         public void RemoveHostWindow(IHostWindow hostWindow)
         {
@@ -446,7 +404,9 @@ namespace Exoskeleton
 
         #endregion
 
-        #region Form Level ScriptingHandlers
+        #region IHostWindow implementation methods
+
+        #region IHostWindow : Main UI methods
 
         public void SetWindowTitle(string title)
         {
@@ -457,16 +417,7 @@ namespace Exoskeleton
         {
             Uri uri = new Uri(settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url);
 
-            LoggerForm logger = settings.ScriptingLoggerEnabled ? new LoggerForm(uri.ToString()) : null;
-            if (logger != null)
-            {
-                Rectangle workingArea = Screen.GetWorkingArea(this);
-                logger.Show();
-                logger.Location = new Point(workingArea.Right - logger.Width, 100 + 100 * hostWindows.Count);
-            }
-
-
-            ChildWindow childWindow = new ChildWindow(caption, uri, settings, logger, width, height);
+            ChildWindow childWindow = new ChildWindow(this, caption, uri, settings, width, height);
             hostWindows.Add(childWindow);
             childWindow.Show();
         }
@@ -506,45 +457,9 @@ namespace Exoskeleton
             HostWebBrowser.Focus();
         }
 
-        public void ShowBalloonNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon)
-        {
-            ExoskeletonNotification.ShowBalloonTip(timeout, tipTitle, tipText, toolTipIcon);
-        }
-
         #endregion
 
-        #region Logging / Console
-
-        public void LogInfo(string source, string message)
-        {
-            if (!settings.ScriptingLoggerEnabled) return;
-
-            loggerForm.LogInfo(source, message);        }
-
-        public void logError(string msg, string url, string line, string col, string error)
-        {
-            if (!settings.ScriptingLoggerEnabled) return;
-
-            loggerForm.logError(msg, url, line, col, error);
-        }
-
-        public void logWarning(string source, string message)
-        {
-            if (!settings.ScriptingLoggerEnabled) return;
-
-            loggerForm.logWarning(source, message);
-        }
-
-        public void logText(string message)
-        {
-            if (!settings.ScriptingLoggerEnabled) return;
-
-            loggerForm.logText(message);
-        }
-
-        #endregion
-
-        #region MessageBox and Dialog Handlers
+        #region IHostWindow : MessageBox and Dialog Handlers
 
         /// <summary>
         /// Display an 'OpenFileDialog'
@@ -610,7 +525,269 @@ namespace Exoskeleton
 
         #endregion
 
-        #region Interface Memebers
+        #region IHostWindow : Eventing and InvokeScript
+
+        /// <summary>
+        /// Preferred method to multicast an event from .net.  This will perform additional serialization to wrap
+        /// parameters similarly to how javascript does it.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void PackageAndMulticast(string name, dynamic[] data)
+        {
+            string wrappedData = null;
+
+            List<string> args = new List<string>();
+            args.Add("multicast." + name);
+
+            if (data != null)
+            {
+                for(int idx=0; idx < data.Length; idx++)
+                {
+                    data[idx] = JsonConvert.SerializeObject(data[idx]);
+                }
+                // now that we have array of strings (of serialized objects or values), serialize that.
+                wrappedData = JsonConvert.SerializeObject(data);
+
+                args.Add(wrappedData);
+            }
+
+            // now tell each IHostWindow to emit that event with those params
+            foreach (IHostWindow hostWindow in hostWindows)
+            {
+                hostWindow.InvokeScript("exoskeletonEmitEvent", args.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Used for passing event data as serialized array of serialized data items.  
+        /// Requires the javascript event handler to deserialize (JSON.parse()) data.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void PackageAndUnicast(string name, dynamic[] data)
+        {
+            string wrappedData = null;
+
+            List<string> args = new List<string>();
+            args.Add(name);
+
+            if (data != null)
+            {
+                for (int idx = 0; idx < data.Length; idx++)
+                {
+                    data[idx] = JsonConvert.SerializeObject(data[idx]);
+                }
+                // now that we have array of strings (of serialized objects or values), serialize that.
+                wrappedData = JsonConvert.SerializeObject(data);
+
+                args.Add(wrappedData);
+            }
+
+            this.InvokeScript("exoskeletonEmitEvent", args.ToArray());
+        }
+
+        /// <summary>
+        /// Used only as javascript API implementation and expects data to be already wrapped.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void MulticastEvent(string name, string data)
+        {
+            List<string> args = new List<string>();
+            args.Add("multicast." + name);
+            if (data != null)
+            {
+                args.Add(data);
+            }
+
+            foreach (IHostWindow hostWindow in hostWindows)
+            {
+                hostWindow.InvokeScript("exoskeletonEmitEvent", args.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Interface method so that host can broadcast events only to its own container.
+        /// </summary>
+        /// <param name="name">Event name</param>
+        /// <param name="data">String encoded event data</param>
+        public void UnicastEvent(string name, string data)
+        {
+            List<string> args = new List<string>();
+            args.Add(name);
+            if (data != null)
+            {
+                args.Add(data);
+            }
+
+            InvokeScript("exoskeletonEmitEvent", args.ToArray());
+        }
+
+        public object InvokeScript(string name, string[] args)
+        {
+            if (HostWebBrowser.Document == null) return null;
+
+            return HostWebBrowser.Document.InvokeScript(name, args);
+        }
+
+        #endregion
+
+        #region IHostWindow : Menu Management
+
+        public void InitializeMenuStrip()
+        {
+            HostMenuStrip.Items.Clear();
+        }
+
+        public void AddMenu(string menuName, string emitEventName)
+        {
+            ToolStripMenuItem newItem = new ToolStripMenuItem
+            {
+                Name = menuName,
+                Tag = emitEventName,
+                Text = menuName
+            };
+
+            if (emitEventName != "")
+            {
+                newItem.Click += menuItem_Click;
+            }
+
+            HostMenuStrip.Items.Add(newItem); 
+        }
+
+        public void AddMenuItem(string menuName, string menuItemName, string emitEventName)
+        {
+            ToolStripItem[] results = HostMenuStrip.Items.Find(menuName, true);
+            if (results.Length > 0)
+            {
+                if (menuItemName == "-")
+                {
+                    ((ToolStripMenuItem)results[0]).DropDownItems.Add(new ToolStripSeparator());
+                }
+                else
+                {
+                    ToolStripMenuItem newItem = new ToolStripMenuItem
+                    {
+                        Name = menuItemName,
+                        Tag = emitEventName,
+                        Text = menuItemName
+                    };
+
+                    if (emitEventName != "")
+                    {
+                        newItem.Click += menuItem_Click;
+                    }
+
+                    ((ToolStripMenuItem)results[0]).DropDownItems.Add(newItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Single Menu Handler to be used for all menu item click events
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            // payload (2nd param) may evolve over time
+            this.UnicastEvent((string) item.Tag, item.Name);
+        }
+
+        #endregion
+
+        #region IHostWindow : Toolstrip Management
+
+        /// <summary>
+        /// Clears the toolstrip labels
+        /// </summary>
+        public void InitializeToolstrip()
+        {
+            HostToolStrip.Items.Clear();
+        }
+
+        /// <summary>
+        /// Add a button to the hostwindow toolstrip 
+        /// </summary>
+        /// <param name="text">Tooltip text to display on the toolstrip button</param>
+        /// <param name="eventName">Name of event to fire when button is clicked</param>
+        /// <param name="imagePath">Filepath of (rougly 32x32 px) image to display on button.</param>
+        public void AddToolStripButton(string text, string eventName, string imagePath)
+        {
+            ToolStripButton tsb = new ToolStripButton();
+
+            tsb.Tag = eventName;
+            tsb.Text = text;
+            tsb.ToolTipText = text;
+            tsb.DisplayStyle = ToolStripItemDisplayStyle.Image;
+
+            if (eventName != "")
+            {
+                tsb.Image = Image.FromFile(imagePath);
+            }
+            tsb.Click += toolStripButton_Click;
+
+            HostToolStrip.Items.Add(tsb);
+        }
+
+        /// <summary>
+        /// Adds a visual separator for toolstrip control groups
+        /// </summary>
+        public void AddToolStripSeparator()
+        {
+            ToolStripSeparator sep = new ToolStripSeparator();
+            HostToolStrip.Items.Add(sep);
+        }
+
+        /// <summary>
+        /// Single ToolStripButton Handler to be used for all button click events 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripButton_Click(object sender, EventArgs e)
+        {
+            ToolStripButton item = (ToolStripButton)sender;
+
+            // payload (2nd param) may evolve over time
+            this.UnicastEvent((string)item.Tag, item.Text);
+        }
+
+        #endregion
+
+        #region IHostWindow : Statusstrip Management
+
+        /// <summary>
+        /// Clears the text of both status strip labels
+        /// </summary>
+        public void InitializeStatusstrip()
+        {
+            SetLeftStatusstripLabel("");
+            SetRightStatusstripLabel("");
+        }
+
+        /// <summary>
+        /// Update the text displayed in the left toolstrip label
+        /// </summary>
+        /// <param name="text"></param>
+        public void SetLeftStatusstripLabel(string text)
+        {
+            toolStripLeftLabel.Text = text;
+        }
+
+        /// <summary>
+        /// Update the text displayed in the right toolstrip label
+        /// </summary>
+        /// <param name="text"></param>
+        public void SetRightStatusstripLabel(string text)
+        {
+            toolStripRightLabel.Text = text;
+        }
+
+        #endregion
 
         /// <summary>
         /// Returns the 'active' settings class instance.
@@ -635,25 +812,24 @@ namespace Exoskeleton
             };
         }
 
+        /// <summary>
+        /// This method can be called to shut down the exoskeleton application.
+        /// </summary>
+        public void Shutdown()
+        {
+            this.Close();
+        }
+
         #endregion
 
-        public bool CheckForStaleCache(string url)
-        {
-            // if cache is stale, return true but assume caller is
-            // going to refresh and add to our cacheRefreshed dictionary
-            if (!cacheRefreshed.Keys.Contains(url))
-            {
-                cacheRefreshed[url] = true;
-                return true;
-            }
-
-            return false;
-        }
+        #region UI Event Handlers
 
         private void RefreshTimer_Tick(object sender, EventArgs e)
         {
             HostWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
         }
+
+        #endregion
 
     }
 }

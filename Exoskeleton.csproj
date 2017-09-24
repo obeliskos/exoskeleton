@@ -58,7 +58,10 @@
     </Compile>
     <Compile Include="Classes\API\ScriptComObjects.cs" />
     <Compile Include="Classes\API\ScriptEncryption.cs" />
+    <Compile Include="Classes\API\ScriptMenu.cs" />
     <Compile Include="Classes\API\ScriptNet.cs" />
+    <Compile Include="Classes\API\ScriptStatusstrip.cs" />
+    <Compile Include="Classes\API\ScriptToolstrip.cs" />
     <Compile Include="Classes\MimeTypeMappings.cs" />
     <Compile Include="Classes\API\ScriptMain.cs" />
     <Compile Include="Classes\API\ScriptSession.cs" />
@@ -66,6 +69,7 @@
     <Compile Include="Classes\API\ScriptLogger.cs" />
     <Compile Include="Classes\StringCipher.cs" />
     <Compile Include="IHostWindow.cs" />
+    <Compile Include="IPrimaryHostWindow.cs" />
     <Compile Include="LoggerForm.cs">
       <SubType>Form</SubType>
     </Compile>

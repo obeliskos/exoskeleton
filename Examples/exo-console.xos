@@ -30,4 +30,7 @@
   <ScriptingComObjectsEnabled>true</ScriptingComObjectsEnabled>
   <ScriptingNetEnabled>true</ScriptingNetEnabled>
   <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
+  <ScriptingMenuEnabled>true</ScriptingMenuEnabled>
+  <ScriptingToolStripEnabled>true</ScriptingToolStripEnabled>
+  <ScriptingStatusStripEnabled>true</ScriptingStatusStripEnabled>
 </Settings>

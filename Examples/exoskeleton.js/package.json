@@ -1,10 +1,10 @@
 {
-  "name": "exoskeleton",
-  "version": "1.0.0",
+  "name": "exoskeleton.js",
+  "version": "0.4.0",
   "description": "",
   "main": "exoskeleton.js",
   "scripts": {
-    "doc": "node node_modules/documentation/bin/documentation.js build src/exoskeleton.js -f html -o docs",
+    "doc": "node node_modules/documentation/bin/documentation.js --config documentation.yml build src/exoskeleton.js -f html -o docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "obeliskos",

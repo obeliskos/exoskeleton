@@ -60,6 +60,9 @@ namespace Exoskeleton.Classes
         public bool ScriptingComObjectsEnabled = false;
         public bool ScriptingNetEnabled = false;
         public bool ScriptingEncryptionEnabled = true;
+        public bool ScriptingMenuEnabled = false;
+        public bool ScriptingToolStripEnabled = false;
+        public bool ScriptingStatusStripEnabled = false;
 
         public void Save(string filename)
         {

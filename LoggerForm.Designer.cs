@@ -194,7 +194,8 @@
             this.toolStripButtonClearConsole.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonClearConsole.Name = "toolStripButtonClearConsole";
             this.toolStripButtonClearConsole.Size = new System.Drawing.Size(23, 36);
-            this.toolStripButtonClearConsole.Text = "toolStripButton1";
+            this.toolStripButtonClearConsole.Text = "Clear output";
+            this.toolStripButtonClearConsole.ToolTipText = "Clear output";
             this.toolStripButtonClearConsole.Click += new System.EventHandler(this.toolStripButtonClearConsole_Click);
             // 
             // toolStripButtonToggleMultiline
@@ -205,7 +206,7 @@
             this.toolStripButtonToggleMultiline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonToggleMultiline.Name = "toolStripButtonToggleMultiline";
             this.toolStripButtonToggleMultiline.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButtonToggleMultiline.Text = "toolStripButton1";
+            this.toolStripButtonToggleMultiline.Text = "Toggles multi-line input";
             this.toolStripButtonToggleMultiline.ToolTipText = "Toggles multi-line input";
             this.toolStripButtonToggleMultiline.Click += new System.EventHandler(this.toolStripButtonToggleMultiline_Click);
             // 

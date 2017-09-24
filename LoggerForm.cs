@@ -13,14 +13,16 @@ namespace Exoskeleton
     public partial class LoggerForm : Form
     {
         private string lastCommand = "";
+        IHostWindow host = null;
 
         public LoggerForm()
         {
             InitializeComponent();
         }
 
-        public LoggerForm(string title) : this()
+        public LoggerForm(IHostWindow host, string title) : this()
         {
+            this.host = host;
             this.Text = title;
         }
 
@@ -101,9 +103,11 @@ namespace Exoskeleton
             txtConsole.Text = "";
         }
 
-        private object WebInvokeScript(string name, params string[] args)
+        private object InvokeScript(string name, params string[] args)
         {
-            return MainForm.FormInstance.WebInvokeScript(name, args);
+            if (host == null) return "no host attached";
+
+            return host.InvokeScript(name, args);
         }
 
         private void textConsoleEval_KeyDown(object sender, KeyEventArgs e)
@@ -118,7 +122,7 @@ namespace Exoskeleton
                 textConsoleEval.Text = "";
                 this.logText(cmd);
 
-                object result = WebInvokeScript("eval", cmd);
+                object result = InvokeScript("eval", cmd);
 
                 if (result != null)
                 {

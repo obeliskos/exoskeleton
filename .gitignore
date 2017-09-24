@@ -3,4 +3,5 @@ obj/
 bin/
 Examples/database-example/database-example.json
 Examples/interactive-console/sampledata/
+!Examples/interactive-console/sampledata/placeholder.txt
 *.user

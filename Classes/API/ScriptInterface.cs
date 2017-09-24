@@ -24,6 +24,9 @@ namespace Exoskeleton.Classes.API
         public ScriptComObjects Com = null;
         public ScriptNet Net = null;
         public ScriptEncryption Enc = null;
+        public ScriptMenu Menu = null;
+        public ScriptToolstrip Toolbar = null;
+        public ScriptStatusstrip Statusbar = null;
 
         public IHostWindow host;
 
@@ -46,7 +49,10 @@ namespace Exoskeleton.Classes.API
             this.Logger = exosettings.ScriptingLoggerEnabled ? new ScriptLogger(loggerForm) : null;
             this.Com = exosettings.ScriptingComObjectsEnabled ? new ScriptComObjects() : null;
             this.Net = exosettings.ScriptingNetEnabled ? new ScriptNet() : null;
-            this.Enc = exosettings.ScriptingEncryptionEnabled ? new ScriptEncryption() : null;  
+            this.Enc = exosettings.ScriptingEncryptionEnabled ? new ScriptEncryption() : null;
+            this.Menu = exosettings.ScriptingMenuEnabled ? new ScriptMenu(host) : null;
+            this.Toolbar = exosettings.ScriptingToolStripEnabled ? new ScriptToolstrip(host) : null;
+            this.Statusbar = exosettings.ScriptingStatusStripEnabled ? new ScriptStatusstrip(host) : null;
         }
 
         /// <summary>
@@ -81,8 +87,7 @@ namespace Exoskeleton.Classes.API
         /// </summary>
         public void Shutdown()
         {
-            // this should also automatically emit the shutdown event
-            MainForm.FormInstance.Close();
+            host.Shutdown();
         }
     }
 }

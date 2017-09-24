@@ -1,0 +1,40 @@
+// Let's just reapply the exact toolbar so you can see how the existing toolbar was coded.
+
+var imagesPath = exoskeleton.file.combinePaths([
+  xo.locations.Current,
+  "images"
+]);
+
+var newIconPath = exoskeleton.file.combinePaths([imagesPath,"new.png"]);
+var openIconPath = exoskeleton.file.combinePaths([imagesPath, "open.png"]);
+var exitIconPath = exoskeleton.file.combinePaths([imagesPath,"door_exit.png"]);
+var fullscreenIconPath = exoskeleton.file.combinePaths([imagesPath,"fullscreen.png"]);
+var runIconPath = exoskeleton.file.combinePaths([imagesPath,"run.png"]);
+var saveIconPath = exoskeleton.file.combinePaths([imagesPath,"save.png"]);
+var saveAsIconPath = exoskeleton.file.combinePaths([imagesPath,"saveas.png"]);
+var helpIconPath = exoskeleton.file.combinePaths([imagesPath,"help.png"]);
+
+exoskeleton.toolbar.initialize();
+exoskeleton.toolbar.addButton("New", "NewScriptEvent", newIconPath);
+exoskeleton.toolbar.addButton("Open", "OpenEvent", openIconPath);
+exoskeleton.toolbar.addSeparator();
+exoskeleton.toolbar.addButton("Save", "SaveEvent", saveIconPath);
+exoskeleton.toolbar.addButton("Save as...", "SaveAsScriptEvent", saveAsIconPath);
+exoskeleton.toolbar.addSeparator();
+exoskeleton.toolbar.addSeparator();
+exoskeleton.toolbar.addButton("Run", "RunScriptEvent", runIconPath);
+exoskeleton.toolbar.addButton("Toggle Fullscreen", "ToggleFullscreenEvent", fullscreenIconPath);
+exoskeleton.toolbar.addSeparator();
+exoskeleton.toolbar.addButton("Help", "LocalHelpEvent", helpIconPath);
+exoskeleton.toolbar.addSeparator();
+exoskeleton.toolbar.addButton("Exit", "ExitEvent", exitIconPath);
+
+exoskeleton.events.on("ToggleFullscreenEvent", function () {
+  exoskeleton.main.toggleFullscreen();
+});
+exoskeleton.events.on("RunScriptEvent", xo.runScript);
+exoskeleton.events.on("NewScriptEvent", xo.newHandler);
+exoskeleton.events.on("SaveAsScriptEvent", function () {
+  // emulate menu save as click
+  xo.saveHandler("Save &as...");
+});

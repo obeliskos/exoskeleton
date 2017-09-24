@@ -267,15 +267,6 @@ namespace Exoskeleton.Classes.API
             Directory.Delete(path);
         }
 
-        /// <summary>
-        /// Gets the directory where the exoskeleton executable was loaded from.
-        /// </summary>
-        /// <returns></returns>
-        public string GetExecutableDirectory()
-        {
-            return Path.GetDirectoryName(Application.ExecutablePath);
-        }
-
         #endregion
 
         #region Files
