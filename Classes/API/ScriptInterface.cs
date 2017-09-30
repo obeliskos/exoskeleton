@@ -27,6 +27,7 @@ namespace Exoskeleton.Classes.API
         public ScriptMenu Menu = null;
         public ScriptToolstrip Toolbar = null;
         public ScriptStatusstrip Statusbar = null;
+        public ScriptUtility Util = null;
 
         public IHostWindow host;
 
@@ -53,6 +54,7 @@ namespace Exoskeleton.Classes.API
             this.Menu = exosettings.ScriptingMenuEnabled ? new ScriptMenu(host) : null;
             this.Toolbar = exosettings.ScriptingToolStripEnabled ? new ScriptToolstrip(host) : null;
             this.Statusbar = exosettings.ScriptingStatusStripEnabled ? new ScriptStatusstrip(host) : null;
+            this.Util = new ScriptUtility();
         }
 
         /// <summary>

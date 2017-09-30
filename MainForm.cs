@@ -646,8 +646,7 @@ namespace Exoskeleton
             {
                 Name = menuName,
                 Tag = emitEventName,
-                Text = menuName
-            };
+                Text = menuName            };
 
             if (emitEventName != "")
             {
@@ -657,7 +656,7 @@ namespace Exoskeleton
             HostMenuStrip.Items.Add(newItem); 
         }
 
-        public void AddMenuItem(string menuName, string menuItemName, string emitEventName)
+        public void AddMenuItem(string menuName, string menuItemName, string emitEventName, string shortcutKeys)
         {
             ToolStripItem[] results = HostMenuStrip.Items.Find(menuName, true);
             if (results.Length > 0)
@@ -674,6 +673,18 @@ namespace Exoskeleton
                         Tag = emitEventName,
                         Text = menuItemName
                     };
+
+                    if (shortcutKeys != "")
+                    {
+                        string[] keyCodes = JsonConvert.DeserializeObject<string[]>(shortcutKeys);
+                        Keys keys=0;
+
+                        foreach(string keyCode in keyCodes)
+                        {
+                            keys = keys | (Keys)Enum.Parse(typeof(Keys), keyCode, true);
+                        }
+                        newItem.ShortcutKeys = keys;
+                    }
 
                     if (emitEventName != "")
                     {

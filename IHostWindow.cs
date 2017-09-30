@@ -33,7 +33,7 @@ namespace Exoskeleton
 
         void InitializeMenuStrip();
         void AddMenu(string menuName, string emitEventName);
-        void AddMenuItem(string menuName, string menuItemName, string emitEventName);
+        void AddMenuItem(string menuName, string menuItemName, string emitEventName, string shortcutKeys);
 
         void InitializeToolstrip();
         void AddToolStripButton(string text, string eventName, string imagePath);

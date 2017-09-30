@@ -26,9 +26,9 @@ namespace Exoskeleton.Classes.API
             host.AddMenu(menuName, emitEventName);
         }
 
-        public void AddMenuItem(string menuName, string menuItemName, string emitEventName)
+        public void AddMenuItem(string menuName, string menuItemName, string emitEventName, string shortcutKeys)
         {
-            host.AddMenuItem(menuName, menuItemName, emitEventName);
+            host.AddMenuItem(menuName, menuItemName, emitEventName, shortcutKeys);
         }
 
         public void Dispose()

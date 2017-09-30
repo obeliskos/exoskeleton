@@ -34,10 +34,10 @@
             this.ExoskeletonNotification = new System.Windows.Forms.NotifyIcon(this.components);
             this.RefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.HostStatusStrip = new System.Windows.Forms.StatusStrip();
-            this.HostToolStrip = new System.Windows.Forms.ToolStrip();
-            this.HostWebBrowser = new System.Windows.Forms.WebBrowser();
             this.toolStripLeftLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripRightLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.HostToolStrip = new System.Windows.Forms.ToolStrip();
+            this.HostWebBrowser = new System.Windows.Forms.WebBrowser();
             this.HostStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,6 +73,18 @@
             this.HostStatusStrip.Text = "statusStrip1";
             this.HostStatusStrip.Visible = false;
             // 
+            // toolStripLeftLabel
+            // 
+            this.toolStripLeftLabel.Name = "toolStripLeftLabel";
+            this.toolStripLeftLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripRightLabel
+            // 
+            this.toolStripRightLabel.Name = "toolStripRightLabel";
+            this.toolStripRightLabel.Size = new System.Drawing.Size(849, 17);
+            this.toolStripRightLabel.Spring = true;
+            this.toolStripRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // HostToolStrip
             // 
             this.HostToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
@@ -86,26 +98,14 @@
             // HostWebBrowser
             // 
             this.HostWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HostWebBrowser.Location = new System.Drawing.Point(0, 25);
+            this.HostWebBrowser.Location = new System.Drawing.Point(0, 24);
             this.HostWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.HostWebBrowser.Name = "HostWebBrowser";
             this.HostWebBrowser.ScriptErrorsSuppressed = true;
-            this.HostWebBrowser.Size = new System.Drawing.Size(864, 447);
+            this.HostWebBrowser.Size = new System.Drawing.Size(864, 448);
             this.HostWebBrowser.TabIndex = 10;
             this.HostWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.HostWebBrowser_DocumentCompleted);
             this.HostWebBrowser.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.HostWebBrowser_PreviewKeyDown);
-            // 
-            // toolStripLeftLabel
-            // 
-            this.toolStripLeftLabel.Name = "toolStripLeftLabel";
-            this.toolStripLeftLabel.Size = new System.Drawing.Size(0, 17);
-            // 
-            // toolStripRightLabel
-            // 
-            this.toolStripRightLabel.Name = "toolStripRightLabel";
-            this.toolStripRightLabel.Size = new System.Drawing.Size(818, 17);
-            this.toolStripRightLabel.Spring = true;
-            this.toolStripRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MainForm
             // 

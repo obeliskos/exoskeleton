@@ -1,54 +1,70 @@
-var result = exoskeleton.main.showMessageBox(
-"This will replace the existing menu with a sample menu.\r\nYou will need to restart to recover menu.\r\nAre you sure?",
-"Confirm replacing existing menu",
-"OKCancel",
-"Question"
-);
+// Let's just reapply the exact same menu so you can see how the existing menu was coded.
 
-if (result === "OK") {
-	// since the menu bar's lifetime may exceed the page hosted within webbrowser control,
-    // you should reinitialize it on page loads or reloads to clear it first.
-	exoskeleton.menu.initialize();
-    
-    // add a menu with no event
-    exoskeleton.menu.addMenu("Menu1")
-    // let's add a menu item with its own event
-    exoskeleton.menu.addMenuItem("Menu1", "Item1", "Menu1Item1Event");
-    // let's add a submenu with two items and reuse same event
-    exoskeleton.menu.addMenuItem("Menu1", "Item2");
-    exoskeleton.menu.addMenuItem("Item2", "Item21", "Item2Event");
-    exoskeleton.menu.addMenuItem("Item2", "Item22", "Item2Event");
-    
-    // add a menu which raises event when clicked on 
-    exoskeleton.menu.addMenu("Menu2", "Menu2Event");
-    
-    
-    // use keyboard accelerator (alt key)
-    exoskeleton.menu.addMenu("&Menu3");
-    exoskeleton.menu.addMenuItem("&Menu3", "&Item31", "Item3Event");
-    exoskeleton.menu.addMenuItem("&Menu3", "I&tem32", "Item3Event");
-    // add a separator
-    exoskeleton.menu.addMenuItem("&Menu3", "-");
-    
-    exoskeleton.menu.addMenuItem("&Menu3", "It&em33", "Item3Event");
-    
-    // now let's set up our event handlers
-    exoskeleton.events.on("Menu1Item1Event", function() {
-    	xo.logText("Menu1Item1 Clicked!");
-    });
-    // when sharing event you should accept the text input we provide
-    exoskeleton.events.on("Item2Event", function(itemText) {
-    	xo.logText("Item2 subitem clicked : " + itemText);
-    });
-    exoskeleton.events.on("Menu2Event", function() {
-    	xo.logText("Menu2 Clicked");
-    });
-    exoskeleton.events.on("Item3Event", function(itemText) {
-    	switch(itemText) {
-        	case "&Item31": xo.logText("Item31 clicked"); break;
-            case "I&tem32": xo.logText("Item32 clicked"); break;
-            case "It&em33": xo.logText("Item33 clicked"); break;
-            default: break;
-        }
-    });
-}
+exoskeleton.menu.initialize();
+exoskeleton.menu.addMenu("&File");
+exoskeleton.menu.addMenuItem("&File", "&New", "NewEvent", ["Control", "N"]);
+exoskeleton.menu.addMenuItem("&File", "&Open...", "OpenEvent", ["Control", "Shift", "O"]);
+exoskeleton.menu.addMenuItem("&File", "&Save", "SaveEvent", ["Control", "S"]);
+exoskeleton.menu.addMenuItem("&File", "Save &as...", "SaveEvent");
+exoskeleton.menu.addMenuItem("&File", "-");
+exoskeleton.menu.addMenuItem("&File", "&Explore samples folder...", "ExploreSamplesEvent");
+exoskeleton.menu.addMenuItem("&File", "-");
+exoskeleton.menu.addMenuItem("&File", "&Run", "RunScriptEvent", ["Control", "R"]);
+exoskeleton.menu.addMenuItem("&File", "-");
+exoskeleton.menu.addMenuItem("&File", "E&xit", "ExitEvent");
+exoskeleton.menu.addMenu("&Themes");
+xo.themes.forEach(function (name) {
+  exoskeleton.menu.addMenuItem("&Themes", name, "SetThemeEvent");
+});
+exoskeleton.menu.addMenu("&Help");
+exoskeleton.menu.addMenuItem("&Help", "&View local Exoskeleton.js help docs", "LocalHelpEvent", ["F1"]);
+exoskeleton.menu.addMenuItem("&Help", "Browse Exoskeleton &GitHub page", "ShowGithubEvent");
+exoskeleton.menu.addMenuItem("&Help", "-");
+exoskeleton.menu.addMenuItem("&Help", "&About", "AboutEvent", ["Control", "F1"]);
+
+exoskeleton.events.on("NewEvent", xo.newHandler);
+exoskeleton.events.on("OpenEvent", xo.openHandler);
+exoskeleton.events.on("SaveEvent", xo.saveHandler);
+
+exoskeleton.events.on("LocalHelpEvent", function () {
+  exoskeleton.proc.start({
+    FileName: "..\\exoskeleton.js\\docs\\index.html"
+  });
+});
+exoskeleton.events.on("ShowGithubEvent", function () {
+  exoskeleton.proc.start({
+    FileName: "https://github.com/obeliskos/exoskeleton"
+  });
+});
+exoskeleton.events.on("ExploreSamplesEvent", function () {
+  var sampleDirectory = exoskeleton.file.combinePaths([
+    xo.locations.Current,
+    "appdata"
+  ]);
+
+  exoskeleton.proc.start({
+    FileName: "explorer.exe",
+    Arguments: sampleDirectory
+  });
+});
+
+exoskeleton.events.on("ExitEvent", function () {
+  exoskeleton.shutdown();
+});
+
+exoskeleton.events.on("AboutEvent", function () {
+  var msg = "This application was written entirely using html/javascript + exoskeleton.  " +
+      "It's dual purpose is to act not only as example itself, but an ide for loading existing example " +
+      "exoskeleton.js scripts and creating your own new scripts.  You might then include them in a real " +
+      "exoskeleton application, separate from this interactive console app.";
+
+  exoskeleton.main.showMessageBox(msg, "About Exoskeleton Interactive Console", "OK", "Information");
+});
+
+exoskeleton.events.on("SetThemeEvent", function (menuText) {
+  if (localStorage) {
+    localStorage["xo.editorTheme"] = menuText;
+  }
+
+  xo.applyTheme(menuText);
+});

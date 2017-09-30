@@ -42,12 +42,14 @@ $(document).ready(function () {
 xo.initializeMenu = function () {
     exoskeleton.menu.initialize();
     exoskeleton.menu.addMenu("&File");
-    exoskeleton.menu.addMenuItem("&File", "&New", "NewEvent");
-    exoskeleton.menu.addMenuItem("&File", "&Open...", "OpenEvent");
-    exoskeleton.menu.addMenuItem("&File", "&Save", "SaveEvent");
+    exoskeleton.menu.addMenuItem("&File", "&New", "NewEvent", ["Control", "N"]);
+    exoskeleton.menu.addMenuItem("&File", "&Open...", "OpenEvent", ["Control", "Shift", "O"]);
+    exoskeleton.menu.addMenuItem("&File", "&Save", "SaveEvent", ["Control", "S"]);
     exoskeleton.menu.addMenuItem("&File", "Save &as...", "SaveEvent");
     exoskeleton.menu.addMenuItem("&File", "-");
     exoskeleton.menu.addMenuItem("&File", "&Explore samples folder...", "ExploreSamplesEvent");
+    exoskeleton.menu.addMenuItem("&File", "-");
+    exoskeleton.menu.addMenuItem("&File", "&Run", "RunScriptEvent", ["Control", "R"]);
     exoskeleton.menu.addMenuItem("&File", "-");
     exoskeleton.menu.addMenuItem("&File", "E&xit", "ExitEvent");
     exoskeleton.menu.addMenu("&Themes");
@@ -55,10 +57,10 @@ xo.initializeMenu = function () {
         exoskeleton.menu.addMenuItem("&Themes", name, "SetThemeEvent");
     });
     exoskeleton.menu.addMenu("&Help");
-    exoskeleton.menu.addMenuItem("&Help", "&View local Exoskeleton.js help docs", "LocalHelpEvent");
+    exoskeleton.menu.addMenuItem("&Help", "&View local Exoskeleton.js help docs", "LocalHelpEvent", ["F1"]);
     exoskeleton.menu.addMenuItem("&Help", "Browse Exoskeleton &GitHub page", "ShowGithubEvent");
     exoskeleton.menu.addMenuItem("&Help", "-");
-    exoskeleton.menu.addMenuItem("&Help", "&About", "AboutEvent");
+    exoskeleton.menu.addMenuItem("&Help", "&About", "AboutEvent", ["Control", "F1"]);
 
     exoskeleton.events.on("NewEvent", xo.newHandler);
     exoskeleton.events.on("OpenEvent", xo.openHandler);
@@ -155,7 +157,7 @@ xo.initializeStatusbar = function () {
     exoskeleton.statusbar.setLeftLabel("Welcome to Exoskeleton Interactive Console!");
 
     var now = new Date();
-    var formattedDate = exoskeleton.main.formatUnixDate(now, "MM/dd/yy  hh:mm:ss tt");
+    var formattedDate = exoskeleton.util.formatUnixDate(now, "MM/dd/yy  hh:mm:ss tt");
     exoskeleton.statusbar.setRightLabel("Started : " + formattedDate);
 };
 
@@ -227,7 +229,7 @@ xo.saveHandler = function (data) {
         exoskeleton.file.saveFile(saveFilename, content);
 
         var now = new Date();
-        var formattedDate = exoskeleton.main.formatUnixDate(now, "hh:mm:ss tt");
+        var formattedDate = exoskeleton.util.formatUnixDate(now, "hh:mm:ss tt");
         exoskeleton.statusbar.setLeftLabel("Saved " + shortFilename + " (" + formattedDate + ")");
 
         exoskeleton.main.setWindowTitle(xo.settings.WindowTitle + " - " + shortFilename);

@@ -5,11 +5,13 @@
   "main": "exoskeleton.js",
   "scripts": {
     "doc": "node node_modules/documentation/bin/documentation.js --config documentation.yml build src/exoskeleton.js -f html -o docs",
+    "jshint": "jshint src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "obeliskos",
   "license": "ISC",
   "dependencies": {
-    "documentation": "^5.2.2"
+    "documentation": "^5.2.2",
+    "jshint": "^2.9.5"
   }
 }

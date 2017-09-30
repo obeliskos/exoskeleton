@@ -44,7 +44,7 @@ namespace Exoskeleton.Classes.API
             object voice = Activator.CreateInstance(t);
             object[] sargs = new Object[2];
             sargs[0] = StringToRead;
-            sargs[1] = 1; // 0 synchronous, 1 asynchronous
+            sargs[1] = 0; // 0 synchronous, 1 asynchronous
             t.InvokeMember("Speak", BindingFlags.InvokeMethod, null, voice, sargs);
             object[] wargs = new Object[1];
             wargs[0] = 999000; // 10 second timeout?

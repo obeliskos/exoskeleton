@@ -62,6 +62,7 @@
     <Compile Include="Classes\API\ScriptNet.cs" />
     <Compile Include="Classes\API\ScriptStatusstrip.cs" />
     <Compile Include="Classes\API\ScriptToolstrip.cs" />
+    <Compile Include="Classes\API\ScriptUtility.cs" />
     <Compile Include="Classes\MimeTypeMappings.cs" />
     <Compile Include="Classes\API\ScriptMain.cs" />
     <Compile Include="Classes\API\ScriptSession.cs" />
