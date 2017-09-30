@@ -153,10 +153,11 @@ function runGetFiles() {
 }
 
 function runGetExecutableDirectory() {
-    var result = exoskeleton.file.getExecutableDirectory();
+    var appLocations = exoskeleton.main.getLocations();
+  
     var el = document.getElementById("txtCurrentDir");
 
-    el.value = result;
+    el.value = appLocations.Executable;
 }
 
 function runSaveFile() {

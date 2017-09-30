@@ -29,15 +29,15 @@ namespace Exoskeleton
         {
             this.parent = parent;
 
-            scriptInterface = new ScriptInterface(this, settings, logger);
-
             if (settings.ScriptingLoggerEnabled)
             {
                 logger = new LoggerForm(this, caption);
                 //    Rectangle workingArea = Screen.GetWorkingArea(this);
-                //    logger.Show();
+                logger.Show();
                 //    logger.Location = new Point(workingArea.Right - logger.Width, 100 + 100 * hostWindows.Count);
             }
+
+            scriptInterface = new ScriptInterface(this, settings, logger);
 
             this.settings = settings;
             this.uri = uri;
