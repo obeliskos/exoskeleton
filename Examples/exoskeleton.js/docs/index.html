@@ -58,6 +58,18 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
+                        href='#exoskeletongetapplicationsettings'
+                        class='regular pre-open'>
+                        #getApplicationSettings
+                      </a></li>
+                      
+                      <li><a
+                        href='#exoskeletongetlocations'
+                        class='regular pre-open'>
+                        #getLocations
+                      </a></li>
+                      
+                      <li><a
                         href='#exoskeletonshutdown'
                         class='regular pre-open'>
                         #shutdown
@@ -84,6 +96,18 @@
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#exoskeletongetapplicationsettings'
+                        class='regular pre-open'>
+                        #getApplicationSettings
+                      </a></li>
+                      
+                      <li><a
+                        href='#exoskeletongetlocations'
+                        class='regular pre-open'>
+                        #getLocations
+                      </a></li>
                       
                       <li><a
                         href='#exoskeletonshutdown'
@@ -314,9 +338,21 @@
                       </a></li>
                       
                       <li><a
+                        href='#fileloadfilebase64'
+                        class='regular pre-open'>
+                        #loadFileBase64
+                      </a></li>
+                      
+                      <li><a
                         href='#filesavefile'
                         class='regular pre-open'>
                         #saveFile
+                      </a></li>
+                      
+                      <li><a
+                        href='#filesavefilebase64'
+                        class='regular pre-open'>
+                        #saveFileBase64
                       </a></li>
                       
                       <li><a
@@ -424,18 +460,6 @@
                       </a></li>
                       
                       <li><a
-                        href='#maingetapplicationsettings'
-                        class='regular pre-open'>
-                        #getApplicationSettings
-                      </a></li>
-                      
-                      <li><a
-                        href='#maingetlocations'
-                        class='regular pre-open'>
-                        #getLocations
-                      </a></li>
-                      
-                      <li><a
                         href='#mainopennewwindow'
                         class='regular pre-open'>
                         #openNewWindow
@@ -532,6 +556,18 @@
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#menushow'
+                        class='regular pre-open'>
+                        #show
+                      </a></li>
+                      
+                      <li><a
+                        href='#menuhide'
+                        class='regular pre-open'>
+                        #hide
+                      </a></li>
                       
                       <li><a
                         href='#menuinitialize'
@@ -724,6 +760,18 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
+                        href='#statusbarshow'
+                        class='regular pre-open'>
+                        #show
+                      </a></li>
+                      
+                      <li><a
+                        href='#statusbarhide'
+                        class='regular pre-open'>
+                        #hide
+                      </a></li>
+                      
+                      <li><a
                         href='#statusbarinitialize'
                         class='regular pre-open'>
                         #initialize
@@ -820,6 +868,18 @@
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#toolbarshow'
+                        class='regular pre-open'>
+                        #show
+                      </a></li>
+                      
+                      <li><a
+                        href='#toolbarhide'
+                        class='regular pre-open'>
+                        #hide
+                      </a></li>
                       
                       <li><a
                         href='#toolbarinitialize'
@@ -954,6 +1014,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#exoeventemitterclear'
+                        class='regular pre-open'>
+                        #clear
+                      </a></li>
+                      
+                      <li><a
                         href='#exoeventemitteron'
                         class='regular pre-open'>
                         #on
@@ -1058,6 +1124,133 @@ This exoskeleton.js javascript library is what this documentation will cover.</p
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
+    <div class='border-bottom' id='exoskeletongetapplicationsettings'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getApplicationSettings()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns the currently active settings (xos file), converted to a json string.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getApplicationSettings(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        The current application settings
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> settings = exoskeleton.getApplicationSettings();
+
+<span class="hljs-keyword">if</span> (settings.ScriptingMediaEnabled) {
+  exoskeleton.speech.speak(<span class="hljs-string">"hello"</span>);
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='exoskeletongetlocations'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getLocations()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns the important exoskeleton environment locations. (Current, Settings, Executable)</p>
+
+
+  <div class='pre p1 fill-light mt0'>getLocations(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        Object containing 'Executable', 'Settings' and 'Current' properties.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> locations = exoskeleton.getLocations();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"current directory : "</span> + locations.Current);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) settings file : "</span> + locations.Settings);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) exoskeleton executable : "</span> + locations.Executable);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='exoskeletonshutdown'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -1156,6 +1349,133 @@ This exoskeleton.js javascript library is what this documentation will cover.</p
   
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
+  
+    <div class='border-bottom' id='exoskeletongetapplicationsettings'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getApplicationSettings()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns the currently active settings (xos file), converted to a json string.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getApplicationSettings(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        The current application settings
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> settings = exoskeleton.getApplicationSettings();
+
+<span class="hljs-keyword">if</span> (settings.ScriptingMediaEnabled) {
+  exoskeleton.speech.speak(<span class="hljs-string">"hello"</span>);
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='exoskeletongetlocations'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getLocations()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns the important exoskeleton environment locations. (Current, Settings, Executable)</p>
+
+
+  <div class='pre p1 fill-light mt0'>getLocations(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        Object containing 'Executable', 'Settings' and 'Current' properties.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> locations = exoskeleton.getLocations();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"current directory : "</span> + locations.Current);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) settings file : "</span> + locations.Settings);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) exoskeleton executable : "</span> + locations.Executable);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
   
     <div class='border-bottom' id='exoskeletonshutdown'>
       <div class="clearfix small pointer toggle-sibling">
@@ -3348,6 +3668,82 @@ driveInfo.forEach(<span class="hljs-function"><span class="hljs-keyword">functio
       </div>
     </div>
   
+    <div class='border-bottom' id='fileloadfilebase64'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>loadFileBase64(filename)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Reads a binary file into a Base64 string.  Can be used for encoding data urls.</p>
+
+
+  <div class='pre p1 fill-light mt0'>loadFileBase64(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>filename</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The file to read from.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        Base64 encoded binary content.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> img1 = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"img1"</span>);
+<span class="hljs-keyword">var</span> pic1 = exoskeleton.file.loadFileBase64(<span class="hljs-string">"c:\\images\\pic1.png"</span>);
+img1.src = <span class="hljs-string">'data:image/png;base64,'</span> + pic1;</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='filesavefile'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -3406,6 +3802,84 @@ If the file already exists, it will be overwritten.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='filesavefilebase64'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>saveFileBase64(filename, contents)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Writes a binary file with bytes derived from the provided base64 string.</p>
+
+
+  <div class='pre p1 fill-light mt0'>saveFileBase64(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, contents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>filename</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Filename to write to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>contents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Base64 encoded binary content.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> canvas = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'canvas'</span>);
+<span class="hljs-keyword">var</span> b64Text = canvas.toDataURL();
+b64Text = b64Text.replace(<span class="hljs-string">'data:;image/png;base64,'</span>,<span class="hljs-string">''</span>);
+exoskeleton.file.saveFileBase64(<span class="hljs-string">'canvas1.png'</span>, b64Text);</pre>
+    
   
 
   
@@ -4229,133 +4703,6 @@ exoskeleton.logger.logObject(obj);</pre>
       </div>
     </div>
   
-    <div class='border-bottom' id='maingetapplicationsettings'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getApplicationSettings()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Returns the currently active settings (xos file), converted to a json string.</p>
-
-
-  <div class='pre p1 fill-light mt0'>getApplicationSettings(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
-        The current application settings
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> settings = exoskeleton.main.getApplicationSettings();
-
-<span class="hljs-keyword">if</span> (settings.ScriptingMediaEnabled) {
-  exoskeleton.speech.speak(<span class="hljs-string">"hello"</span>);
-}</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='maingetlocations'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getLocations()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Returns the important exoskeleton environment locations. (Current, Settings, Executable)</p>
-
-
-  <div class='pre p1 fill-light mt0'>getLocations(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
-        Object containing 'Executable', 'Settings' and 'Current' properties.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> locations = exoskeleton.main.getLocations();
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"current directory : "</span> + locations.Current);
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) settings file : "</span> + locations.Settings);
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) exoskeleton executable : "</span> + locations.Executable);</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='mainopennewwindow'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -4435,7 +4782,13 @@ exoskeleton.logger.logObject(obj);</pre>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.openNewWindow(<span class="hljs-string">"My App Settings"</span>, <span class="hljs-string">"settings.htm"</span>, <span class="hljs-number">800</span>, <span class="hljs-number">480</span>);</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// relative pathname</span>
+exoskeleton.main.openNewWindow(<span class="hljs-string">"My App Settings"</span>, <span class="hljs-string">"settings.htm"</span>, <span class="hljs-number">800</span>, <span class="hljs-number">480</span>);
+<span class="hljs-comment">// external internet address</span>
+exoskeleton.main.openNewWindow(<span class="hljs-string">"My App Settings"</span>, <span class="hljs-string">"https://en.wikipedia.org/wiki/Main_Page"</span>, <span class="hljs-number">800</span>, <span class="hljs-number">480</span>);
+<span class="hljs-comment">// You might also pass raw html, prefixed with '@' symbol.</span>
+<span class="hljs-keyword">var</span> html = <span class="hljs-string">"@&lt;html&gt;&lt;body&gt;&lt;h3&gt;Hello World&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;"</span>;
+exoskeleton.main.openNewWindow(<span class="hljs-string">"My dynamic page"</span>, html, <span class="hljs-number">400</span>, <span class="hljs-number">400</span>);</pre>
     
   
 
@@ -5272,6 +5625,110 @@ documented here, any 'SaveFileDialog' properties may be attempted to be passed.<
   
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
+  
+    <div class='border-bottom' id='menushow'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>show()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Enables visibility of the window's menu</p>
+
+
+  <div class='pre p1 fill-light mt0'>show()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.menu.show();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='menuhide'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>hide()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Hides visibility of the window's menu</p>
+
+
+  <div class='pre p1 fill-light mt0'>hide()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.menu.hide();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
   
     <div class='border-bottom' id='menuinitialize'>
       <div class="clearfix small pointer toggle-sibling">
@@ -6867,6 +7324,110 @@ result.forEach(<span class="hljs-function"><span class="hljs-keyword">function</
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
+    <div class='border-bottom' id='statusbarshow'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>show()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Enables visibility of the window's status bar.</p>
+
+
+  <div class='pre p1 fill-light mt0'>show()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.statusbar.show();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='statusbarhide'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>hide()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Hides visibility of the window's status bar.</p>
+
+
+  <div class='pre p1 fill-light mt0'>hide()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.statusbar.hide();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='statusbarinitialize'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -7621,6 +8182,110 @@ This uses .Net SendKeys(), for info on key codes read :
   
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
+  
+    <div class='border-bottom' id='toolbarshow'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>show()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Enables visibility of the window's toolbar.</p>
+
+
+  <div class='pre p1 fill-light mt0'>show()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.toolbar.show();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='toolbarhide'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>hide()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Hides visibility of the window's toolbar.</p>
+
+
+  <div class='pre p1 fill-light mt0'>hide()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.toolbar.hide();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
   
     <div class='border-bottom' id='toolbarinitialize'>
       <div class="clearfix small pointer toggle-sibling">
@@ -8594,6 +9259,77 @@ with 'multicast.'.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='exoeventemitterclear'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>clear(eventName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Clears all event listeners</p>
+
+
+  <div class='pre p1 fill-light mt0'>clear(eventName: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>eventName</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?)</code>
+	    event(s) to clear listeners, or all if nothing passed.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// clear event listeners for all registered events</span>
+exoskeleton.events.clear();
+<span class="hljs-comment">// clear event listeners for a single event</span>
+exoskeleton.events.clear(<span class="hljs-string">"FileMenuClicked"</span>);
+<span class="hljs-comment">// clear event listeners for multiple named events</span>
+exoskeleton.events.clear([<span class="hljs-string">"FileMenuClicked"</span>, <span class="hljs-string">"HelpMenuClicked"</span>]);</pre>
+    
   
 
   

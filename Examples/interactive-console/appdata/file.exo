@@ -29,7 +29,7 @@ xo.logText("// recombined path");
 xo.logText(recombined);
 
 // lets orient ourselves to current directory
-var appLocations = exoskeleton.main.getLocations();
+var appLocations = exoskeleton.getLocations();
 var currentDirectory = appLocations.Current;
 
 xo.logText("// Current Directory");

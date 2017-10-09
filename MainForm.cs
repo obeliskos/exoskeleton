@@ -408,6 +408,11 @@ namespace Exoskeleton
 
         #region IHostWindow : Main UI methods
 
+        public Form GetForm()
+        {
+            return this;
+        }
+
         public void SetWindowTitle(string title)
         {
             this.Text = title;
@@ -415,9 +420,13 @@ namespace Exoskeleton
 
         public void OpenNewWindow(string caption, string url, int width, int height)
         {
-            Uri uri = new Uri(settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url);
+            //Uri uri = new Uri(settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url);
 
-            ChildWindow childWindow = new ChildWindow(this, caption, uri, settings, width, height);
+            if (!url.StartsWith("@") && url.Contains("{port}"))
+            {
+                url = settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url;
+            }
+            ChildWindow childWindow = new ChildWindow(this, caption, url, settings, width, height);
             hostWindows.Add(childWindow);
             childWindow.Show();
         }
@@ -635,6 +644,22 @@ namespace Exoskeleton
 
         #region IHostWindow : Menu Management
 
+        /// <summary>
+        /// Enables visibility of the window's menustrip
+        /// </summary>
+        public void ShowMenu()
+        {
+            this.HostMenuStrip.Visible = true;
+        }
+
+        /// <summary>
+        /// Hides visibility of the window's menustrip
+        /// </summary>
+        public void HideMenu()
+        {
+            this.HostMenuStrip.Visible = false;
+        }
+
         public void InitializeMenuStrip()
         {
             HostMenuStrip.Items.Clear();
@@ -714,6 +739,22 @@ namespace Exoskeleton
         #region IHostWindow : Toolstrip Management
 
         /// <summary>
+        /// Enables visibility of the window's toolstrip
+        /// </summary>
+        public void ShowToolstrip()
+        {
+            this.HostToolStrip.Visible = true;
+        }
+
+        /// <summary>
+        /// Hides visibility of the window's toolstrip
+        /// </summary>
+        public void HideToolstrip()
+        {
+            this.HostToolStrip.Visible = false;
+        }
+
+        /// <summary>
         /// Clears the toolstrip labels
         /// </summary>
         public void InitializeToolstrip()
@@ -770,6 +811,22 @@ namespace Exoskeleton
         #endregion
 
         #region IHostWindow : Statusstrip Management
+
+        /// <summary>
+        /// Enables visibility of the window's status strip
+        /// </summary>
+        public void ShowStatusstrip()
+        {
+            this.HostStatusStrip.Visible = true;
+        }
+
+        /// <summary>
+        /// Hides visibility of the window's status strip
+        /// </summary>
+        public void HideStatusstrip()
+        {
+            this.HostStatusStrip.Visible = false;
+        }
 
         /// <summary>
         /// Clears the text of both status strip labels

@@ -63,6 +63,7 @@ namespace Exoskeleton.Classes
         public bool ScriptingMenuEnabled = false;
         public bool ScriptingToolStripEnabled = false;
         public bool ScriptingStatusStripEnabled = false;
+        public bool ScriptingDialogEnabled = true;
 
         public void Save(string filename)
         {

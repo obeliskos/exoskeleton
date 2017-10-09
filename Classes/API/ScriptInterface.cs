@@ -28,6 +28,7 @@ namespace Exoskeleton.Classes.API
         public ScriptToolstrip Toolbar = null;
         public ScriptStatusstrip Statusbar = null;
         public ScriptUtility Util = null;
+        public ScriptDialog Dialog = null;
 
         public IHostWindow host;
 
@@ -55,6 +56,7 @@ namespace Exoskeleton.Classes.API
             this.Toolbar = exosettings.ScriptingToolStripEnabled ? new ScriptToolstrip(host) : null;
             this.Statusbar = exosettings.ScriptingStatusStripEnabled ? new ScriptStatusstrip(host) : null;
             this.Util = new ScriptUtility();
+            this.Dialog = exosettings.ScriptingDialogEnabled ? new ScriptDialog(host) : null;
         }
 
         /// <summary>
@@ -82,6 +84,30 @@ namespace Exoskeleton.Classes.API
         public void MulticastEvent(string eventName, string eventDataJson)
         {
             host.MulticastEvent(eventName, eventDataJson);
+        }
+
+        /// <summary>
+        /// Returns the currently active settings, converted to a json string.
+        /// </summary>
+        /// <returns>Application Settings, serialized as json.</returns>
+        public string GetApplicationSettings()
+        {
+            Settings settings = host.GetCurrentSettings();
+
+            string json = JsonConvert.SerializeObject(settings);
+
+            return json;
+        }
+
+        /// <summary>
+        /// Returns the important exoskeleton environment locations. (Current, Settings, Executable)
+        /// </summary>
+        /// <returns>Serialized locations object.</returns>
+        public string GetLocations()
+        {
+            dynamic locs = host.GetLocations();
+            string json = JsonConvert.SerializeObject(locs);
+            return json;
         }
 
         /// <summary>

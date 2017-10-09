@@ -1,5 +1,10 @@
 // Let's just reapply the exact same menu so you can see how the existing menu was coded.
 
+// since we will re-add all events in this example
+// without reloading the window, lets clear out all
+// existing event handlers before re-applying them.
+exoskeleton.events.clear();
+
 exoskeleton.menu.initialize();
 exoskeleton.menu.addMenu("&File");
 exoskeleton.menu.addMenuItem("&File", "&New", "NewEvent", ["Control", "N"]);
@@ -68,3 +73,11 @@ exoskeleton.events.on("SetThemeEvent", function (menuText) {
 
   xo.applyTheme(menuText);
 });
+
+
+// for this example, it removed our toolbar handlers, so we
+// will just call out to our exoskeleton interactive console
+// global javascript to rewire its handlers.
+xo.initializeToolbar();
+
+xo.logText("Menu was re-created.");

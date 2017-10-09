@@ -17,6 +17,7 @@ namespace Exoskeleton
         void ToggleFullscreen();
         void EnterFullscreen();
         void ExitFullscreen();
+        Form GetForm();
         void SetWindowTitle(string title);
         void OpenNewWindow(string caption, string url, int width, int height);
         void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon);
@@ -31,14 +32,20 @@ namespace Exoskeleton
         void PackageAndUnicast(string name, dynamic[] data);
         object InvokeScript(string name, params string[] args);
 
+        void ShowMenu();
+        void HideMenu();
         void InitializeMenuStrip();
         void AddMenu(string menuName, string emitEventName);
         void AddMenuItem(string menuName, string menuItemName, string emitEventName, string shortcutKeys);
 
+        void ShowToolstrip();
+        void HideToolstrip();
         void InitializeToolstrip();
         void AddToolStripButton(string text, string eventName, string imagePath);
         void AddToolStripSeparator();
 
+        void ShowStatusstrip();
+        void HideStatusstrip();
         void InitializeStatusstrip();
         void SetLeftStatusstripLabel(string text);
         void SetRightStatusstripLabel(string text);

@@ -119,30 +119,6 @@ namespace Exoskeleton.Classes.API
         }
 
         /// <summary>
-        /// Returns the currently active settings, converted to a json string.
-        /// </summary>
-        /// <returns>Application Settings, serialized as json.</returns>
-        public string GetApplicationSettings()
-        {
-            Settings settings = host.GetCurrentSettings();
-
-            string json = JsonConvert.SerializeObject(settings);
-
-            return json;
-        }
-
-        /// <summary>
-        /// Returns the important exoskeleton environment locations. (Current, Settings, Executable)
-        /// </summary>
-        /// <returns>Serialized locations object.</returns>
-        public string GetLocations()
-        {
-            dynamic locs = host.GetLocations();
-            string json = JsonConvert.SerializeObject(locs);
-            return json;
-        }
-
-        /// <summary>
         /// Process all Windows messages currently in the message queue.
         /// </summary>
         public void DoEvents()

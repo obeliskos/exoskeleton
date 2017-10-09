@@ -1,0 +1,26 @@
+var listBox = {
+    Name: 'PickList',
+	Top: 10,
+    Left: 10,
+	Height : 240,
+    Dock: 'Top',
+    Items: ['one', 'two', 'three']
+};
+
+var json = JSON.stringify(listBox);
+
+var ok = {
+  Name: 'OkButton',
+  Dock: 'Bottom',
+  Height: 30,
+  Text: "OK"
+};
+
+var okJson = JSON.stringify(ok);
+
+exoskeleton.exo.Dialog.Initialize('test', 400, 300);
+exoskeleton.exo.Dialog.AddDialogButton(okJson, "OK", null);
+exoskeleton.exo.Dialog.AddListBox(json, null);
+
+var result = exoskeleton.exo.Dialog.showDialog();
+xo.logText(result);

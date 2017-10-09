@@ -21,6 +21,16 @@ namespace Exoskeleton.Classes.API
             host.InitializeMenuStrip();
         }
 
+        public void Show()
+        {
+            host.ShowMenu();
+        }
+
+        public void Hide()
+        {
+            host.HideMenu();
+        }
+
         public void AddMenu(string menuName, string emitEventName)
         {
             host.AddMenu(menuName, emitEventName);

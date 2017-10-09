@@ -5,12 +5,12 @@
  *  
  */
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define === 'function' && define.amd) { // jshint ignore:line
         // AMD
-        define([], factory);
+        define([], factory); // jshint ignore:line
     } else if (typeof exports === 'object') {
         // Node, CommonJS-like
-        module.exports = factory();
+        module.exports = factory(); // jshint ignore:line
     } else {
         // Browser globals (root is window)
         root.Exoskeleton = factory();
@@ -123,11 +123,43 @@
             if (this.exo.Toolbar) this.toolbar = new Toolbar(this.exo.Toolbar);
             if (this.exo.Statusbar) this.statusbar = new Statusbar(this.exo.Statusbar);
             if (this.exo.Util) this.util = new Util(this.exo.Util);
+            if (this.exo.Dialog) this.dialog = new Dialog(this.exo.Dialog);
 
             // go ahead and instance the keystore adapter for peristable key/value store 
             // and / or to use as a LokiJS persistence adapter.
             this.keystore = new KeyStoreAdapter(this.exo.File);
         }
+
+        /**
+         * Returns the currently active settings (xos file), converted to a json string.
+         * @returns {object} The current application settings
+         * @memberof Exoskeleton
+         * @instance
+         * @example
+         * var settings = exoskeleton.getApplicationSettings();
+         *
+         * if (settings.ScriptingMediaEnabled) {
+	     *   exoskeleton.speech.speak("hello");
+         * }
+         */
+        Exoskeleton.prototype.getApplicationSettings = function () {
+            return JSON.parse(this.exo.GetApplicationSettings());
+        };
+
+        /**
+         * Returns the important exoskeleton environment locations. (Current, Settings, Executable)
+         * @returns {object} Object containing 'Executable', 'Settings' and 'Current' properties.
+         * @memberof Exoskeleton
+         * @instance
+         * @example
+         * var locations = exoskeleton.getLocations();
+         * console.log("current directory : " + locations.Current);
+         * console.log("location of (active) settings file : " + locations.Settings);
+         * console.log("location of (active) exoskeleton executable : " + locations.Executable);
+         */
+        Exoskeleton.prototype.getLocations = function () {
+            return JSON.parse(this.exo.GetLocations());
+        };
 
         /**
          * Initiates shutdown of this exoskeleton app by notifying the container.
@@ -320,6 +352,34 @@
          */
         Enc.prototype.hashFiles = function (path, searchPattern) {
             return JSON.parse(this.exoEnc.HashFiles(path, searchPattern));
+        };
+
+        // #endregion
+
+        // #region Dialog
+
+        /**
+         * Dialog API class for creating and interfacing with WinForms dialogs.
+         * @param {any} exoDialog
+         * @constructor Dialog
+         */
+        function Dialog(exoDialog) {
+            this.exoDialog = exoDialog;
+        }
+
+        /**
+         * Show simple dialog to prompt user for a string.
+         */
+        Dialog.prototype.initialize = function (title, width, height) {
+            this.exoDialog.Initialize(title, width, height);
+        };
+
+        Dialog.prototype.addPanel = function (panel, parentId) {
+            if (typeof panel === 'object') {
+                panel = JSON.stringify(panel);
+            }
+
+            this.exoDialog.AddPanel(panel, parentId);
         };
 
         // #endregion
@@ -539,6 +599,21 @@
         };
 
         /**
+         * Reads a binary file into a Base64 string.  Can be used for encoding data urls.
+         * @param {string} filename - The file to read from.
+         * @returns {string} Base64 encoded binary content.
+         * @memberof File
+         * @instance
+         * @example
+         * var img1 = document.getElementById("img1");
+         * var pic1 = exoskeleton.file.loadFileBase64("c:\\images\\pic1.png");
+         * img1.src = 'data:image/png;base64,' + pic1;
+         */
+        File.prototype.loadFileBase64 = function (filename) {
+            return this.exoFile.LoadFileBase64(filename);
+        };
+
+        /**
          * Writes a text file with the provided contents string.
          * If the file already exists, it will be overwritten.
          * @param {string} filename - Filename to write to.
@@ -548,6 +623,22 @@
          */
         File.prototype.saveFile = function (filename, contents) {
             this.exoFile.SaveFile(filename, contents);
+        };
+
+        /**
+         * Writes a binary file with bytes derived from the provided base64 string.
+         * @param {string} filename - Filename to write to.
+         * @param {string} contents - Base64 encoded binary content.
+         * @memberof File
+         * @instance
+         * @example
+         * var canvas = document.getElementById('canvas');
+         * var b64Text = canvas.toDataURL();
+         * b64Text = b64Text.replace('data:;image/png;base64,','');
+         * exoskeleton.file.saveFileBase64('canvas1.png', b64Text);
+         */
+        File.prototype.saveFileBase64 = function (filename, contents) {
+            this.exoFile.SaveFileBase64(filename, contents);
         };
 
         /**
@@ -712,37 +803,6 @@
         };
 
         /**
-         * Returns the currently active settings (xos file), converted to a json string.
-         * @returns {object} The current application settings
-         * @memberof Main
-         * @instance
-         * @example
-         * var settings = exoskeleton.main.getApplicationSettings();
-         *
-         * if (settings.ScriptingMediaEnabled) {
-	     *   exoskeleton.speech.speak("hello");
-         * }
-         */
-        Main.prototype.getApplicationSettings = function () {
-            return JSON.parse(this.exoMain.GetApplicationSettings());
-        };
-
-        /**
-         * Returns the important exoskeleton environment locations. (Current, Settings, Executable)
-         * @returns {object} Object containing 'Executable', 'Settings' and 'Current' properties.
-         * @memberof Main
-         * @instance
-         * @example
-         * var locations = exoskeleton.main.getLocations();
-         * console.log("current directory : " + locations.Current);
-         * console.log("location of (active) settings file : " + locations.Settings);
-         * console.log("location of (active) exoskeleton executable : " + locations.Executable);
-         */
-        Main.prototype.getLocations = function () {
-            return JSON.parse(this.exoMain.GetLocations());
-        };
-
-        /**
          * Opens a new host container with the url and settings provided.
          * @param {string} caption - Window caption to apply to new window.
          * @param {string} url - Url to load within the new window.
@@ -751,7 +811,13 @@
          * @memberof Main
          * @instance
          * @example
+         * // relative pathname
          * exoskeleton.main.openNewWindow("My App Settings", "settings.htm", 800, 480);
+         * // external internet address
+         * exoskeleton.main.openNewWindow("My App Settings", "https://en.wikipedia.org/wiki/Main_Page", 800, 480);
+         * // You might also pass raw html, prefixed with '@' symbol.
+         * var html = "@<html><body><h3>Hello World</h3></body></html>";
+         * exoskeleton.main.openNewWindow("My dynamic page", html, 400, 400);
          */
         Main.prototype.openNewWindow = function (caption, url, width, height) {
             this.exoMain.OpenNewWindow(caption, url, width, height);
@@ -937,6 +1003,28 @@
         }
 
         /**
+         * Enables visibility of the window's menu
+         * @memberof Menu
+         * @instance
+         * @example
+         * exoskeleton.menu.show();
+         */
+        Menu.prototype.show = function () {
+            this.exoMenu.Show();
+        };
+
+        /**
+         * Hides visibility of the window's menu
+         * @memberof Menu
+         * @instance
+         * @example
+         * exoskeleton.menu.hide();
+         */
+        Menu.prototype.hide = function () {
+            this.exoMenu.Hide();
+        };
+
+        /**
          * Removes all menu items for reinitialization.  Host window survives across inner page
          * (re)loads or redirects so menus would need to be (re)initialized on page loads.
          * @memberof Menu
@@ -970,14 +1058,14 @@
          * Any event emitted on click will be passed the menu item text as parameter.
          * @param {string} menuName - The text of the parent menu or submenu to add subitem to
          * @param {string} menuItemName - The text of the new subitem to add
-         * @param {string=} emitEventName - The local event name to unicast when the menu is clicked.
+         * @param {string=} emitEventName - The optional (local) event name to unicast when the menu is clicked.
          * @param {string[]=} shortcutKeys - Optional array of shortcut key codes.
          * @memberof Menu
          * @instance
          * @example
          * exoskeleton.menu.initialize();
          * exoskeleton.menu.addMenu("File");
-         * exoskeleton.menu.addMenuItem("File", "Open", "FileOpenEvent");
+         * exoskeleton.menu.addMenuItem("File", "Open", "FileOpenEvent", ["Control", "Shift", "O"]);
          * exoskeleton.menu.addMenuItem("File", "New");
          * // for this example we will use the same common event name for submenu items
          * // these can also be different
@@ -1266,6 +1354,28 @@
         }
 
         /**
+         * Enables visibility of the window's status bar.
+         * @memberof Statusbar
+         * @instance
+         * @example
+         * exoskeleton.statusbar.show();
+         */
+        Statusbar.prototype.show = function () {
+            this.exoStatusbar.Show();
+        };
+
+        /**
+         * Hides visibility of the window's status bar.
+         * @memberof Statusbar
+         * @instance
+         * @example
+         * exoskeleton.statusbar.hide();
+         */
+        Statusbar.prototype.hide = function () {
+            this.exoStatusbar.Hide();
+        };
+
+        /**
          * Clears both left and right status labels
          * @memberof Statusbar
          * @instance
@@ -1412,6 +1522,28 @@
         function Toolbar(exoToolbar) {
             this.exoToolbar = exoToolbar;
         }
+
+        /**
+         * Enables visibility of the window's toolbar.
+         * @memberof Toolbar
+         * @instance
+         * @example
+         * exoskeleton.toolbar.show();
+         */
+        Toolbar.prototype.show = function () {
+            this.exoToolbar.Show();
+        };
+
+        /**
+         * Hides visibility of the window's toolbar.
+         * @memberof Toolbar
+         * @instance
+         * @example
+         * exoskeleton.toolbar.hide();
+         */
+        Toolbar.prototype.hide = function () {
+            this.exoToolbar.Hide();
+        };
 
         /**
          * Empties the host window toolstrip of all controls
@@ -1617,6 +1749,38 @@
         ExoEventEmitter.prototype.asyncListeners = false;
 
         /**
+         * Clears all event listeners
+         * @param {string|string[]=} eventName - event(s) to clear listeners, or all if nothing passed.
+         * @memberof ExoEventEmitter
+         * @instance
+         * @example
+         * // clear event listeners for all registered events
+         * exoskeleton.events.clear();
+         * // clear event listeners for a single event
+         * exoskeleton.events.clear("FileMenuClicked");
+         * // clear event listeners for multiple named events
+         * exoskeleton.events.clear(["FileMenuClicked", "HelpMenuClicked"]);
+         */
+        ExoEventEmitter.prototype.clear = function (eventName) {
+            var self = this;
+
+            // if nothing passed, clear all
+            if (!eventName) {
+                this.events = {};
+                return;
+            }
+
+            if (Array.isArray(eventName)) {
+                eventName.forEach(function (currentEventName) {
+                    self.clear(currentEventName);
+                });
+                return;
+            }
+
+            this.events[eventName] = [];
+        };
+
+        /**
          * Used to register a listener to an event.
          * @param {string} eventName - name of the event to listen for.
          * @param {function|function[]} listener - a callback to invoke when event is emitted.
@@ -1688,4 +1852,4 @@
     }());
 }));
 
-var exoskeleton = new Exoskeleton();
+var exoskeleton = new Exoskeleton(); // jshint ignore:line

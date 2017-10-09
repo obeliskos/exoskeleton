@@ -16,6 +16,16 @@ namespace Exoskeleton.Classes.API
             this.host = host;
         }
 
+        public void Show()
+        {
+            host.ShowStatusstrip();
+        }
+
+        public void Hide()
+        {
+            host.HideStatusstrip();
+        }
+
         public void Initialize()
         {
             host.InitializeStatusstrip();

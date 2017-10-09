@@ -16,6 +16,16 @@ namespace Exoskeleton.Classes.API
             this.host = host;
         }
 
+        public void Show()
+        {
+            host.ShowToolstrip();
+        }
+
+        public void Hide()
+        {
+            host.HideToolstrip();
+        }
+
         /// <summary>
         /// Empties the host window toolstrip of all controls
         /// </summary>

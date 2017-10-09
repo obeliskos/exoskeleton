@@ -343,6 +343,16 @@ namespace Exoskeleton.Classes.API
         }
 
         /// <summary>
+        /// Reads a binary file into a Base64 string.
+        /// </summary>
+        /// <param name="filename">The file to read from.</param>
+        /// <returns></returns>
+        public string LoadFileBase64(string filename)
+        {
+            return Convert.ToBase64String(File.ReadAllBytes(filename));
+        }
+
+        /// <summary>
         /// Writes a text file with the provided contents string. 
         /// If the file already exists, it will be overwritten.
         /// </summary>
@@ -351,6 +361,16 @@ namespace Exoskeleton.Classes.API
         public void SaveFile(string filename, string contents)
         {
             File.WriteAllText(filename, contents);
+        }
+
+        /// <summary>
+        /// Writes a binary file with bytes derived from the provided base64 string.
+        /// </summary>
+        /// <param name="filename">Filename to write to.</param>
+        /// <param name="contents">Base64 encoded binary content</param>
+        public void SaveFileBase64(string filename, string contents)
+        {
+            File.WriteAllBytes(filename, Convert.FromBase64String(contents));
         }
 
         /// <summary>

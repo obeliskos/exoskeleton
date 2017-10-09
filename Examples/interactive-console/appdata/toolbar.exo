@@ -1,5 +1,10 @@
 // Let's just reapply the exact toolbar so you can see how the existing toolbar was coded.
 
+// since we will re-add all events in this example
+// without reloading the window, lets clear out all
+// existing event handlers before re-applying them.
+exoskeleton.events.clear();
+
 var imagesPath = exoskeleton.file.combinePaths([
   xo.locations.Current,
   "images"
@@ -38,3 +43,10 @@ exoskeleton.events.on("SaveAsScriptEvent", function () {
   // emulate menu save as click
   xo.saveHandler("Save &as...");
 });
+
+// for this example, it removed our menu handlers, so we
+// will just call out to our exoskeleton interactive console
+// global javascript to rewire its handlers.
+xo.initializeMenu();
+
+xo.logText("Toolbar was re-created.");

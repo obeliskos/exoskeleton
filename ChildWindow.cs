@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +21,12 @@ namespace Exoskeleton
         private Settings settings;
         private static Dictionary<string, bool> cacheRefreshed = new Dictionary<string, bool>();
         private bool fullscreen = false;
-        private Uri uri;
+        private string uri;
         LoggerForm logger;
 
         #region Form Level Constructor and Events
 
-        public ChildWindow(IPrimaryHostWindow parent, string caption, Uri uri, Settings settings, int? width, int? height)
+        public ChildWindow(IPrimaryHostWindow parent, string caption, string uri, Settings settings, int? width, int? height)
         {
             this.parent = parent;
 
@@ -40,9 +41,16 @@ namespace Exoskeleton
             scriptInterface = new ScriptInterface(this, settings, logger);
 
             this.settings = settings;
+
             this.uri = uri;
 
             InitializeComponent();
+
+            if (settings.WindowIconPath != "" && File.Exists(settings.WindowIconPath))
+            {
+                this.Icon = new Icon(settings.WindowIconPath);
+            }
+
 
             HostMenuStrip.Visible = settings.ScriptingMenuEnabled;
             HostToolStrip.Visible = settings.ScriptingToolStripEnabled;
@@ -61,7 +69,14 @@ namespace Exoskeleton
 
         private void ChildWindow_Load(object sender, EventArgs e)
         {
-            ChildWebBrowser.Url = uri;
+            if (uri.StartsWith("@"))
+            {
+                ChildWebBrowser.DocumentText = uri.Substring(1);
+            }
+            else
+            {
+                ChildWebBrowser.Url = new Uri(uri);
+            }
         }
 
         private void ChildWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -124,6 +139,11 @@ namespace Exoskeleton
 
         #region Form Level ScriptingHandlers
 
+        public Form GetForm()
+        {
+            return this;
+        }
+
         public void SetWindowTitle(string title)
         {
             this.Text = title;
@@ -175,6 +195,11 @@ namespace Exoskeleton
 
         public bool CheckForStaleCache(string url)
         {
+            if (url.StartsWith("@"))
+            {
+                return false;
+            }
+
             // if cache is stale, return true but assume caller is
             // going to refresh and add to our cacheRefreshed dictionary
             if (!cacheRefreshed.Keys.Contains(url))
@@ -196,6 +221,11 @@ namespace Exoskeleton
 
         private void ChildWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            if (ChildWebBrowser.Url.AbsolutePath == "blank")
+            {
+                return;
+            }
+
             if (settings.WebBrowserRefreshOnFirstLoad && 
                 CheckForStaleCache(ChildWebBrowser.Url.ToString()))
             {
@@ -285,6 +315,22 @@ namespace Exoskeleton
 
         #region IHostWindow : Menu Management
 
+        /// <summary>
+        /// Enables visibility of the window's menustrip
+        /// </summary>
+        public void ShowMenu()
+        {
+            this.HostMenuStrip.Visible = true;
+        }
+
+        /// <summary>
+        /// Hides visibility of the window's menustrip
+        /// </summary>
+        public void HideMenu()
+        {
+            this.HostMenuStrip.Visible = false;
+        }
+
         public void InitializeMenuStrip()
         {
             HostMenuStrip.Items.Clear();
@@ -365,6 +411,22 @@ namespace Exoskeleton
         #region IHostWindow : Toolstrip Management
 
         /// <summary>
+        /// Enables visibility of the window's toolstrip
+        /// </summary>
+        public void ShowToolstrip()
+        {
+            this.HostToolStrip.Visible = true;
+        }
+
+        /// <summary>
+        /// Hides visibility of the window's toolstrip
+        /// </summary>
+        public void HideToolstrip()
+        {
+            this.HostToolStrip.Visible = false ;
+        }
+
+        /// <summary>
         /// Clears the toolstrip labels
         /// </summary>
         public void InitializeToolstrip()
@@ -420,6 +482,22 @@ namespace Exoskeleton
         #endregion
 
         #region IHostWindow : Statusstrip Management
+
+        /// <summary>
+        /// Enables visibility of the window's status strip
+        /// </summary>
+        public void ShowStatusstrip()
+        {
+            this.HostStatusStrip.Visible = true;
+        }
+
+        /// <summary>
+        /// Hides visibility of the window's status strip
+        /// </summary>
+        public void HideStatusstrip()
+        {
+            this.HostStatusStrip.Visible = false;
+        }
 
         public void InitializeStatusstrip()
         {

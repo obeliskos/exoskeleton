@@ -1,0 +1,44 @@
+// Base64 data / file conversion is provided mainly to support
+// working with binary files.  Base64 can be used as an interim
+// format for converting into or from DataURI or blobs.
+
+// DataURI can be substituted for an external resource like
+// a png/jpg (for the image src property) or possibly mp3 file 
+// for media element src.
+
+// This example will just load a small image, open a new window
+// to display it.  Code to resave back into binary can be
+// uncommented if you wish to additionally do that.
+
+var appLocations = exoskeleton.getLocations();
+var currentDirectory = appLocations.Current;
+var imagesFolder = exoskeleton.file.combinePaths([
+	currentDirectory,
+    "images"
+]);
+
+var oldFilename = exoskeleton.file.combinePaths([
+	imagesFolder,
+    "door_exit.png"
+]);
+
+var imageData = exoskeleton.file.loadFileBase64(oldFilename);
+
+// Open new window with the following dynamically generated html.
+// Note the data url requires additional wrapping
+var html = "@<html><body><img src='data:image/png;base64," + 
+	imageData + "' /></body></html>";
+    
+exoskeleton.main.openNewWindow("Loaded Image", html, 640, 640);
+
+// Uncomment the below line to save the previously loaded
+// base64 data to a new (binary) file
+
+/*
+var newFilename = exoskeleton.file.combinePaths([
+	imagesFolder,
+    "door_exit2.png"
+]);
+
+exoskeleton.file.saveFileBase64(newFilename, imageData);
+*/

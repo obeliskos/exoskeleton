@@ -15,7 +15,7 @@ xo.logText("// decrypted string");
 xo.logText(dec);
 
 // hmm, lets create a file first to demo file encryption
-var appLocations = exoskeleton.main.getLocations();
+var appLocations = exoskeleton.getLocations();
 var currentDirectory = appLocations.Current;
 var newFilename = exoskeleton.file.combinePaths([
 	currentDirectory,

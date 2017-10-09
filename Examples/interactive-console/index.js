@@ -25,8 +25,8 @@ $(document).ready(function () {
         }).prop('selected', true);
     }
 
-    xo.locations = exoskeleton.main.getLocations();
-    xo.settings = exoskeleton.main.getApplicationSettings();
+    xo.locations = exoskeleton.getLocations();
+    xo.settings = exoskeleton.getApplicationSettings();
 
     xo.initializeMenu();
     xo.initializeToolbar();
