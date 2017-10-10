@@ -299,7 +299,8 @@ xo.loadScript = function () {
 
     var content = exoskeleton.file.loadFile(fullpath);
     xo.editorJS.setValue(content);
-
+	
+    xo.currentFilepath = fullpath;
 };
 
 xo.saveScript = function () {

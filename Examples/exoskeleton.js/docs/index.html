@@ -35,16 +35,6 @@
               
                 
                 <li><a
-                  href='#navigation'
-                  class="h5 bold black caps">
-                  Navigation
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#exoskeleton'
                   class=" toggle-sibling">
                   Exoskeleton
@@ -153,6 +143,106 @@
                         href='#comcreateandinvokemethod'
                         class='regular pre-open'>
                         #createAndInvokeMethod
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#dialog'
+                  class=" toggle-sibling">
+                  Dialog
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#dialogaddcheckbox'
+                        class='regular pre-open'>
+                        #addCheckBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddcombobox'
+                        class='regular pre-open'>
+                        #addComboBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogadddialogbutton'
+                        class='regular pre-open'>
+                        #addDialogButton
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddlabel'
+                        class='regular pre-open'>
+                        #addLabel
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddlistbox'
+                        class='regular pre-open'>
+                        #addListBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddnumericupdown'
+                        class='regular pre-open'>
+                        #addNumericUpDown
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddpanel'
+                        class='regular pre-open'>
+                        #addPanel
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddpropertygrid'
+                        class='regular pre-open'>
+                        #addPropertyGrid
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddradiobutton'
+                        class='regular pre-open'>
+                        #addRadioButton
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddtextbox'
+                        class='regular pre-open'>
+                        #addTextBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialoginitialize'
+                        class='regular pre-open'>
+                        #initialize
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogshowdialog'
+                        class='regular pre-open'>
+                        #showDialog
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogshowinputdialog'
+                        class='regular pre-open'>
+                        #showInputDialog
                       </a></li>
                       
                     </ul>
@@ -1066,21 +1156,6 @@ This exoskeleton.js javascript library is what this documentation will cover.</p
           
         
           
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='navigation' class='mt0'>
-    Navigation
-  </h2>
-
-  
-    <p>Here are some helper functions for navigation.</p>
-
-  
-</section>
-</div>
-          
-        
-          
             <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1804,6 +1879,1143 @@ exoskeleton.com.invokeMethod(<span class="hljs-string">"Speak"</span>, [<span cl
       
       <pre class='p1 overflow-auto round fill-light'>exoskeleton.com.createAndInvokeMethod (<span class="hljs-string">"SAPI.SpVoice"</span>, <span class="hljs-string">"Speak"</span>,
     [<span class="hljs-string">"this is a test message scripting activex from java script"</span>, <span class="hljs-number">1</span>]);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='dialog'>
+      Dialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Dialog API class for creating and interfacing with WinForms dialogs.
+Several predefined dialogs exist or you can compose your own using
+a global dialog singleton.</p>
+
+
+  <div class='pre p1 fill-light mt0'>new Dialog(exoDialog: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>exoDialog</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='dialogaddcheckbox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addCheckBox(checkbox, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a CheckBox to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addCheckBox(checkbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>checkbox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to checkbox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addCheckbox({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"StudentCheckbox"</span>,
+  <span class="hljs-attr">Text</span>: <span class="hljs-string">"Student"</span>,
+  <span class="hljs-attr">Checked</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>
+}, <span class="hljs-string">"TopPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddcombobox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addComboBox(comboBox, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a ComboBox to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addComboBox(comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>comboBox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to ComboBox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addComboBox({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryDropDown"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Items</span>: [<span class="hljs-string">'United States'</span>, <span class="hljs-string">'United Kingdom'</span>, <span class="hljs-string">'Germany'</span>, <span class="hljs-string">'France'</span>, <span class="hljs-string">'Japan'</span>],
+  <span class="hljs-attr">SelectedItem</span> : <span class="hljs-string">'United States'</span>
+}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogadddialogbutton'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addDialogButton(button, dialogResult, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a 'dismiss dialog' Button to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addDialogButton(button: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), dialogResult: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>button</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to button
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dialogResult</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    dismiss result ('OK', 'Cancel', 'Yes', 'No')
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addDialogButton({
+  <span class="hljs-attr">Text</span>: <span class="hljs-string">"OK"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">200</span>
+}, <span class="hljs-string">"OK"</span>, <span class="hljs-string">"BottomPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddlabel'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addLabel(label, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a Label to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addLabel(label: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>label</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to label
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addLabel({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"AddressTextBox"</span>,
+  <span class="hljs-attr">Text</span>: <span class="hljs-string">"Address:"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>
+}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddlistbox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addListBox(listbox, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a ListBox to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addListBox(listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listbox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to ListBox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addListBox({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryList"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>
+  Items: [<span class="hljs-string">'United States'</span>, <span class="hljs-string">'United Kingdom'</span>, <span class="hljs-string">'Germany'</span>, <span class="hljs-string">'France'</span>, <span class="hljs-string">'Japan'</span>],
+  <span class="hljs-attr">SelectedItem</span> : <span class="hljs-string">'United States'</span>
+}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddnumericupdown'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addNumericUpDown(numericUpDown, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a NumericUpDown control to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addNumericUpDown(numericUpDown: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>numericUpDown</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to ListBox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addNumericUpDown({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"AgeNumeric"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Minimum</span>: <span class="hljs-number">13</span>,
+  <span class="hljs-attr">Maximum</span>: <span class="hljs-number">120</span>
+}, <span class="hljs-string">"UserInfoPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddpanel'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addPanel(panel, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a Panel to the Dialog singleton Form for layout and nesting purposes.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addPanel(panel: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>panel</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to panel
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addPanel({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"FillPanel"</span>,
+  <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>
+});
+exoskeleton.dialog.addPanel({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"TopPanel"</span>,
+  <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Top'</span>,
+  <span class="hljs-attr">Height</span>: <span class="hljs-number">100</span>
+});
+exoskeleton.dialog.addPanel({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"BottomPanel"</span>,
+  <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Bottom'</span>,
+  <span class="hljs-attr">Height</span>: <span class="hljs-number">100</span>
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddpropertygrid'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addPropertyGrid(propertyGrid, objectJson, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a PropertyGrid to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addPropertyGrid(propertyGrid: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), objectJson: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>propertyGrid</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to PropertyGrid
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>objectJson</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object to display in property grid
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addPropertyGrid({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"AddressProperties"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>
+}, { <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">c</span>: { <span class="hljs-attr">x</span>: <span class="hljs-number">9</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">z</span>: <span class="hljs-number">11</span> } }, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddradiobutton'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addRadioButton(radioButton, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a RadioButton to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addRadioButton(radioButton: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>radioButton</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to RadioButton
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addRadioButton({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"GenderMale"</span>, <span class="hljs-attr">Text</span>: <span class="hljs-string">"Male"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">Checked</span>: <span class="hljs-literal">true</span>
+});
+exoskeleton.dialog.addRadioButton({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"GenderFemale"</span>, <span class="hljs-attr">Text</span>: <span class="hljs-string">"Female"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">140</span>, <span class="hljs-attr">Checked</span>: <span class="hljs-literal">false</span>
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddtextbox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addTextBox(textbox, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a TextBox to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addTextBox(textbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>textbox</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to TextBox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addTextBox({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"Street (1)"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">Text</span>: user.addr1
+}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialoginitialize'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>initialize(title, width, height)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Initialize global dialog singleton.</p>
+
+
+  <div class='pre p1 fill-light mt0'>initialize(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, width: int, height: int)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Caption to display on dialog window
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>width</span> <code class='quiet'>(int)</code>
+	    sets the width of the dialog
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>height</span> <code class='quiet'>(int)</code>
+	    sets the height of the dialog
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.initialize(<span class="hljs-string">"Verify address information"</span>, <span class="hljs-number">600</span>, <span class="hljs-number">400</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogshowdialog'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showDialog()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Displays the singleton dialog which you have just configured.</p>
+
+
+  <div class='pre p1 fill-light mt0'>showDialog(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        An object containing dialog result and form content.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> dialogResult = exoskeleton.dialog.showDialog();
+<span class="hljs-keyword">if</span> (dialogResult.Result === <span class="hljs-string">'OK'</span>) {
+  <span class="hljs-built_in">console</span>.log(dialogResult.UserNameTextBox.Text);
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogshowinputdialog'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showInputDialog(title, prompt, defaultText?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Displays a predefined dialog allowing user to input a string.</p>
+
+
+  <div class='pre p1 fill-light mt0'>showInputDialog(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, defaultText: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The caption to display on the input dialog window
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prompt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The text to display above, and describing the textbox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>defaultText</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional text to initialize textbox with.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> phoneNumber = exoskeleton.dialog.showInputDialog(
+  <span class="hljs-string">"Confirm Information"</span>,
+  <span class="hljs-string">"Enter your telephone number"</span>,
+  user.PhoneNumber
+);
+
+<span class="hljs-keyword">if</span> (phoneNumber !== <span class="hljs-literal">null</span>) {
+  user.PhoneNumber = phoneNumber;
+}</pre>
     
   
 

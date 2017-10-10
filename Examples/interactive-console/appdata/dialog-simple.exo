@@ -1,0 +1,7 @@
+var result = exoskeleton.dialog.showInputDialog(
+	"Test Dialog", 
+    "Enter text : ", 
+    "some stuff"
+);
+
+xo.logText("You entered : " + result);

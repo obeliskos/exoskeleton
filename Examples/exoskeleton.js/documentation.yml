@@ -1,9 +1,3 @@
 toc:
   - name: Exoskeleton.js
     file: overview.md
-  - name: Navigation
-    description: |
-      Here are some helper functions for navigation.
-    children:
-      - shortestPath
-      - salesman

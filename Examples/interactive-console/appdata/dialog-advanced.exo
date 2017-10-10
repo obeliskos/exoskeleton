@@ -1,19 +1,23 @@
-// Dialog API Example - This demonstrates how your html/javascript
-// can create .net winforms dialogs and receive user input.
+/*
+Dialog API Example - This demonstrates how your html/javascript
+can create .net winforms dialogs and receive user input.
 
-// This dialog api leverages and relies heavily on Json.NET's 
-// ability to deserialize control data which we pass as json 
-// objects for it to create.
+This dialog api leverages and relies heavily on Json.NET's 
+ability to deserialize control data which we pass as json 
+objects for it to create.
 
-// Finding syntax for encoding some of the custom .net datatypes
-// usually involves me serializing similar type in actual 
-// vs debugger, but the examples below should be good start.
+Finding syntax for encoding some of the custom .net datatypes
+usually involves me serializing similar type in actual 
+vs debugger, but the examples below should be good start.
+*/
 
 // Let's begin by (re)initializing our dialog singleton.
-// This will ensure old dialog contents are cleared out.
+//This will ensure old dialog contents are cleared out.
+
 exoskeleton.dialog.initialize('Exoskeleton Dialog Example', 520, 400);
 
-// We top level panels to do docking and add our controls to those.
+// We will use top level panels to do docking and add our controls 
+// to those.
 
 // Render Middle (Fill) Panel first, no parent name supplied so
 // this is a 'root' control added directly to dialog form controls.
@@ -35,6 +39,7 @@ exoskeleton.dialog.addListBox({
 	Top: 10,
     Left: 10,
 	Height : 200,
+	TabIndex: 1,
     Items: ['Guest', 'Normal', 'Administrator'],
     SelectedItem: 'Normal'  // let's default to one of our items
 }, "MiddlePanel");
@@ -54,27 +59,74 @@ exoskeleton.dialog.addPanel({
   Dock: "Top",
   Name: "TopPanel",
   BackColor: "PaleGreen",	// .net named colors are also valid
-  Height: 80,
+  Height: 84,
   Padding: "10, 10, 10, 10" // 'Padding' left, top, right, bottom
 });
 
 exoskeleton.dialog.addLabel({
-  Dock: "Top",
   Name: "NameLabel",
   Text: "Enter your name:",
   Font: "Microsoft Sans Serif, 10pt",
-  Top: 0,
-  Height: 26
+  Top: 10,
+  Left: 10,
+  Height: 20,
+  Width: 140
 }, "TopPanel");
 
 exoskeleton.dialog.addTextBox({
   Name: "NameTextBox",
   Text: "Some User",
   Font: "Microsoft Sans Serif, 10pt",
-  Top: 40,
+  Top: 32,
   Left: 10,
   Height: 30,
-  Dock: "Bottom"
+  Width: 300,
+  TabIndex: 0
+}, "TopPanel");
+
+exoskeleton.dialog.addCheckBox({
+  Name: "EmployeeCheckBox",
+  Text: "Employee",
+  Checked: true,
+  Top: 58,
+  Left: 10
+}, "TopPanel");
+
+exoskeleton.dialog.addRadioButton({
+  Name: "GenderMale",
+  Text: "Male",
+  Checked: false,
+  Top: 58,
+  Left: 120,
+  Width: 60
+}, "TopPanel");
+
+exoskeleton.dialog.addRadioButton({
+  Name: "GenderFemale",
+  Text: "Female",
+  Checked: false,
+  Top: 58,
+  Left: 180,
+  Width: 120
+}, "TopPanel");
+
+exoskeleton.dialog.addLabel({
+  Name: "AgeLabel",
+  Text: "Enter your age:",
+  Width: 140,
+  Font: "Microsoft Sans Serif, 10pt",
+  Top: 10,
+  Left: 340,
+  Height: 20
+}, "TopPanel");
+
+exoskeleton.dialog.addNumericUpDown({
+  Name: "AgeNumeric",
+  Left: 340,
+  Top: 30,
+  Minimum: 13,
+  Maximum: 120,
+  Value: 21
 }, "TopPanel");
 
 // Render Bottom Panel
@@ -92,6 +144,7 @@ exoskeleton.dialog.addDialogButton({
   Height: 30,
   Width: 100,
   UseVisualStyleBackColor: true,
+  TabIndex: 2,
   Text: "OK"
 }, "OK", "BottomPanel");
 
@@ -102,10 +155,14 @@ exoskeleton.dialog.addDialogButton({
   Left: 390,
   Height: 30,
   Width: 100,
+  TabIndex: 3,
   UseVisualStyleBackColor: true
 }, "Cancel", "BottomPanel");
 
 // We get a result with control contents no matter which
 // DialogButton's DialogResult was clicked.
 var result = exoskeleton.dialog.showDialog();
+
+xo.logText("You clicked : " + result.Result);
+xo.logText("Entire result object : ");
 xo.logObject(result);

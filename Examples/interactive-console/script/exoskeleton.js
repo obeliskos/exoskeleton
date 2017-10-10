@@ -223,6 +223,361 @@
 
         // #endregion
 
+        // #region Dialog
+
+        /**
+         * Dialog API class for creating and interfacing with WinForms dialogs.
+         * Several predefined dialogs exist or you can compose your own using
+         * a global dialog singleton.
+         * @param {any} exoDialog
+         * @constructor Dialog
+         */
+        function Dialog(exoDialog) {
+            this.exoDialog = exoDialog;
+        }
+
+        /**
+         * Adds a CheckBox to the Dialog singleton Form.
+         * @param {object|string} checkbox - initial properties to assign to checkbox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addCheckbox({
+         *   Name: "StudentCheckbox",
+         *   Text: "Student",
+         *   Checked: true,
+         *   Top: 100,
+         *   Left: 10
+         * }, "TopPanel");
+         */
+        Dialog.prototype.addCheckBox = function (checkbox, parentName) {
+            if (typeof checkbox === "object") {
+                checkbox = JSON.stringify(checkbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddCheckBox(checkbox, parentName);
+        };
+
+        /**
+         * Adds a ComboBox to the Dialog singleton Form.
+         * @param {object|string} comboBox - initial properties to assign to ComboBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addComboBox({
+         *   Name: "CountryDropDown",
+         *   Top: 10,
+         *   Left: 10,
+         *   Items: ['United States', 'United Kingdom', 'Germany', 'France', 'Japan'],
+         *   SelectedItem : 'United States'
+         * }, "AddressPanel");
+         */
+        Dialog.prototype.addComboBox = function (comboBox, parentName) {
+            if (typeof comboBox === "object") {
+                listbox = JSON.stringify(listbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddComboBox(comboBox, parentName);
+        };
+
+        /**
+         * Adds a 'dismiss dialog' Button to the Dialog singleton Form.
+         * @param {object|string} button - initial properties to assign to button
+         * @param {string} dialogResult - dismiss result ('OK', 'Cancel', 'Yes', 'No')
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addDialogButton({
+         *   Text: "OK",
+         *   Top: 10,
+         *   Left: 200
+         * }, "OK", "BottomPanel");
+         */
+        Dialog.prototype.addDialogButton = function (button, dialogResult, parentName) {
+            if (typeof button === "object") {
+                button = JSON.stringify(button);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddDialogButton(button, dialogResult, parentName);
+        };
+
+        /**
+         * Adds a Label to the Dialog singleton Form.
+         * @param {object|string} label - initial properties to assign to label
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addLabel({
+         *   Name: "AddressTextBox",
+         *   Text: "Address:",
+         *   Top: 100,
+         *   Left: 10
+         * }, "AddressPanel");
+         */
+        Dialog.prototype.addLabel = function (label, parentName) {
+            if (typeof label === "object") {
+                label = JSON.stringify(label);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddLabel(label, parentName);
+        };
+
+        /**
+         * Adds a ListBox to the Dialog singleton Form.
+         * @param {object|string} listbox - initial properties to assign to ListBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addListBox({
+         *   Name: "CountryList",
+         *   Top: 10,
+         *   Left: 10,
+         *   Dock: 'Fill'
+         *   Items: ['United States', 'United Kingdom', 'Germany', 'France', 'Japan'],
+         *   SelectedItem : 'United States'
+         * }, "AddressPanel");
+         */
+        Dialog.prototype.addListBox = function (listbox, parentName) {
+            if (typeof listbox === "object") {
+                listbox = JSON.stringify(listbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddListBox(listbox, parentName);
+        };
+
+        /**
+         * Adds a NumericUpDown control to the Dialog singleton Form.
+         * @param {object|string} numericUpDown - initial properties to assign to ListBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addNumericUpDown({
+         *   Name: "AgeNumeric",
+         *   Top: 10,
+         *   Left: 10,
+         *   Minimum: 13,
+         *   Maximum: 120
+         * }, "UserInfoPanel");
+         */
+        Dialog.prototype.addNumericUpDown = function (numericUpDown, parentName) {
+            if (typeof numericUpDown === "object") {
+                numericUpDown = JSON.stringify(numericUpDown);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddNumericUpDown(numericUpDown, parentName);
+        };
+
+        /**
+         * Adds a Panel to the Dialog singleton Form for layout and nesting purposes.
+         * @param {object|string} panel - initial properties to assign to panel
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addPanel({
+         *   Name: "FillPanel",
+         *   Dock: 'Fill'
+         * });
+         * exoskeleton.dialog.addPanel({
+         *   Name: "TopPanel",
+         *   Dock: 'Top',
+         *   Height: 100
+         * });
+         * exoskeleton.dialog.addPanel({
+         *   Name: "BottomPanel",
+         *   Dock: 'Bottom',
+         *   Height: 100
+         * });
+         */
+        Dialog.prototype.addPanel = function (panel, parentName) {
+            if (typeof panel === "object") {
+                panel = JSON.stringify(panel);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddPanel(panel, parentName);
+        };
+
+        /**
+         * Adds a PropertyGrid to the Dialog singleton Form.
+         * @param {object|string} propertyGrid - initial properties to assign to PropertyGrid
+         * @param {object} objectJson - object to display in property grid
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addPropertyGrid({
+         *   Name: "AddressProperties",
+         *   Top: 10,
+         *   Left: 10,
+         *   Dock: 'Fill'
+         * }, { a: 1, b: 2, c: { x: 9, y: 10, z: 11 } }, "AddressPanel");
+         */
+        Dialog.prototype.addPropertyGrid = function (propertyGrid, objectJson, parentName) {
+            if (typeof propertyGrid === "object") {
+                propertyGrid = JSON.stringify(propertyGrid);
+            }
+
+            if (typeof objectJson === "object") {
+                objectJson = JSON.stringify(objectJson);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddPropertyGrid(propertyGrid, objectJson, parentName);
+        };
+
+        /**
+         * Adds a RadioButton to the Dialog singleton Form.
+         * @param {object} radioButton - initial properties to assign to RadioButton
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addRadioButton({
+         *   Name: "GenderMale", Text: "Male", Top: 40, Left: 100, Checked: true
+         * });
+         * exoskeleton.dialog.addRadioButton({
+         *   Name: "GenderFemale", Text: "Female", Top: 40, Left: 140, Checked: false
+         * });
+         */
+        Dialog.prototype.addRadioButton = function (radioButton, parentName) {
+            if (typeof radioButton === "object") {
+                radioButton = JSON.stringify(radioButton);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddRadioButton(radioButton, parentName);
+        };
+
+        /**
+         * Adds a TextBox to the Dialog singleton Form.
+         * @param {object} textbox - initial properties to assign to TextBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addTextBox({
+         *   Name: "Street (1)",
+         *   Top: 40,
+         *   Left: 100,
+         *   Text: user.addr1
+         * }, "AddressPanel");
+         */
+        Dialog.prototype.addTextBox = function (textbox, parentName) {
+            if (typeof textbox === "object") {
+                textbox = JSON.stringify(textbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddTextBox(textbox, parentName);
+        };
+
+        /**
+         * Initialize global dialog singleton.
+         * @param {string} title - Caption to display on dialog window
+         * @param {int} width - sets the width of the dialog
+         * @param {int} height - sets the height of the dialog
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.initialize("Verify address information", 600, 400);
+         */
+        Dialog.prototype.initialize = function (title, width, height) {
+            this.exoDialog.Initialize(title, width, height);
+        };
+
+        /**
+         * Displays the singleton dialog which you have just configured.
+         * @returns {object} An object containing dialog result and form content.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var dialogResult = exoskeleton.dialog.showDialog();
+         * if (dialogResult.Result === 'OK') {
+         *   console.log(dialogResult.UserNameTextBox.Text);
+         * }
+         */
+        Dialog.prototype.showDialog = function () {
+            var resultJson = this.exoDialog.ShowDialog();
+
+            return JSON.parse(resultJson);
+        };
+
+        /**
+         * Displays a predefined dialog allowing user to input a string.
+         * @param {string} title - The caption to display on the input dialog window
+         * @param {string} prompt - The text to display above, and describing the textbox
+         * @param {string=} defaultText - optional text to initialize textbox with.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var phoneNumber = exoskeleton.dialog.showInputDialog(
+         *   "Confirm Information",
+         *   "Enter your telephone number",
+         *   user.PhoneNumber
+         * );
+         *
+         * if (phoneNumber !== null) {
+         *   user.PhoneNumber = phoneNumber;
+         * }
+         */
+        Dialog.prototype.showInputDialog = function (title, prompt, defaultText) {
+            if (typeof title === "undefined") {
+                title = "Enter text:";
+            }
+            if (typeof prompt === "undefined") {
+                prompt = "";
+            }
+            if (typeof defaultText === "undefined") {
+                defaultText = "";
+            }
+            return this.exoDialog.ShowInputDialog(title, prompt, defaultText);
+        };
+
+        // #endregion
+
         // #region Enc
 
         /**
@@ -352,34 +707,6 @@
          */
         Enc.prototype.hashFiles = function (path, searchPattern) {
             return JSON.parse(this.exoEnc.HashFiles(path, searchPattern));
-        };
-
-        // #endregion
-
-        // #region Dialog
-
-        /**
-         * Dialog API class for creating and interfacing with WinForms dialogs.
-         * @param {any} exoDialog
-         * @constructor Dialog
-         */
-        function Dialog(exoDialog) {
-            this.exoDialog = exoDialog;
-        }
-
-        /**
-         * Show simple dialog to prompt user for a string.
-         */
-        Dialog.prototype.initialize = function (title, width, height) {
-            this.exoDialog.Initialize(title, width, height);
-        };
-
-        Dialog.prototype.addPanel = function (panel, parentId) {
-            if (typeof panel === 'object') {
-                panel = JSON.stringify(panel);
-            }
-
-            this.exoDialog.AddPanel(panel, parentId);
         };
 
         // #endregion
