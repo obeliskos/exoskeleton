@@ -280,7 +280,7 @@
          */
         Dialog.prototype.addComboBox = function (comboBox, parentName) {
             if (typeof comboBox === "object") {
-                listbox = JSON.stringify(listbox);
+                comboBox = JSON.stringify(comboBox);
             }
 
             if (typeof parentName === "undefined") {
@@ -573,7 +573,64 @@
             if (typeof defaultText === "undefined") {
                 defaultText = "";
             }
-            return this.exoDialog.ShowInputDialog(title, prompt, defaultText);
+
+            var result = this.exoDialog.ShowInputDialog(title, prompt, defaultText);
+
+            if (typeof result === "undefined") {
+                result = null;
+            }
+
+            return result;
+        };
+
+        /**
+         * Displays a predefined dialog allowing user to select item(s) from a list.
+         * @param {string} title - The caption to display on the input dialog window
+         * @param {string} prompt - The text to display above, and describing the textbox
+         * @param {string[]} values - An array of strings to load picklist with.
+         * @param {string|string[]=} selectedItem - string or string[] (if multi) to default selection to.
+         * @param {bool} multiselect - Whether to allow multiple selections
+         * @memberof Dialog
+         * @instance
+         * @example
+         * // display picklist with no default selection and no multiselection
+         * var result = exoskeleton.dialog.showPickList(
+         *   "Country Selection",
+         *   "Enter your country of residence",
+         *   ["United States", "United Kingdom", "Germany", "France", "Australia", "Japan", "China", "India"]
+         * );
+         *
+         * // since no multiselect, result is a string and not array of strings
+         * if (result !== null) {
+         *   console.log("user picked : " + result);
+         * }
+         */
+        Dialog.prototype.showPickList = function (title, prompt, values, selectedItem, multiselect) {
+            if (typeof title === "undefined") {
+                title = "Item Picklist";
+            }
+            if (typeof prompt === "undefined") {
+                prompt = "Enter an item";
+            }
+            if (typeof values === "undefined") {
+                values = [];
+            }
+            values = JSON.stringify(values);
+
+            if (typeof selectedItem === "undefined") {
+                selectedItem = null;
+            }
+            if (!multiselect) {
+                multiselect = false;
+            }
+
+            var result = this.exoDialog.ShowPickList(title, prompt, values, selectedItem, multiselect);
+
+            if (typeof result === 'undefined') {
+                result = null;
+            }
+
+            return multiselect ? JSON.parse(result) : result;
         };
 
         // #endregion

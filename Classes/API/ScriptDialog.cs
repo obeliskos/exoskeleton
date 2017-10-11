@@ -34,6 +34,7 @@ namespace Exoskeleton.Classes.API
             Initialize(title, 360, 200);
 
             Label l = new Label();
+            l.AutoSize = true;
             l.Text = prompt;
             l.Left = 10;
             l.Top = 20;
@@ -71,6 +72,67 @@ namespace Exoskeleton.Classes.API
             DialogResult dr = dialog.ShowDialog();
 
             return (dr == DialogResult.OK) ? tb.Text : null;
+        }
+
+        public string ShowPickList(string title, string prompt, string values, string selectedItem, bool multiselect)
+        {
+            Initialize(title, 360, 300);
+
+            Label l = new Label();
+            l.AutoSize = true;
+            l.Text = prompt;
+            l.Left = 10;
+            l.Top = 20;
+
+            dialog.Controls.Add(l);
+
+            string[] vals = JsonConvert.DeserializeObject<string[]>(values);
+
+            ListBox lb = new ListBox();
+            lb.Width = 300;
+            lb.Height = 160;
+            lb.Left = 15;
+            lb.Top = 48;
+            lb.Items.AddRange(vals);
+            if (selectedItem != null && selectedItem != "")
+            {
+                lb.SelectedItem = selectedItem;
+            }
+            if (multiselect == true)
+            {
+                lb.SelectionMode = SelectionMode.MultiSimple;
+            }
+
+            dialog.Controls.Add(lb);
+
+            Button ok = new Button();
+            ok.Text = "OK";
+            ok.Top = 220;
+            ok.Left = 98;
+            ok.Width = 100;
+            ok.Height = 30;
+            ok.Click += (sender, args) => { dialog.DialogResult = DialogResult.OK; };
+
+            dialog.Controls.Add(ok);
+
+            Button cancel = new Button();
+            cancel.Text = "Cancel";
+            cancel.Top = 220;
+            cancel.Left = 210;
+            cancel.Width = 100;
+            cancel.Height = 30;
+            cancel.Click += (sender, args) => { dialog.DialogResult = DialogResult.Cancel; };
+
+            dialog.Controls.Add(cancel);
+
+            DialogResult dr = dialog.ShowDialog();
+
+            if (dr != DialogResult.OK)
+            {
+                return null;
+            }
+
+            return (multiselect)?JsonConvert.SerializeObject(lb.SelectedItems):lb.SelectedItem.ToString();
         }
 
         /// <summary>

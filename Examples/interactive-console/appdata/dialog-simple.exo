@@ -1,3 +1,13 @@
+/**
+ * Examples using predefined dialogs.
+ * 
+ * These predefined dialogs can be called upon to quickly
+ * enter or choose various types of data.
+ */
+ 
+// showInputDialog can be used to quickly ask the user to
+// input a string.
+
 var result = exoskeleton.dialog.showInputDialog(
 	"Test Dialog", 
     "Enter text : ", 
@@ -5,3 +15,18 @@ var result = exoskeleton.dialog.showInputDialog(
 );
 
 xo.logText("You entered : " + result);
+
+// showPickList can be used to quickly ask the user to pick
+// a value from a list
+
+var countries = [
+	'United States','United Kingdom','Germany', 'France', 
+    	'Australia', 'Other'
+];
+
+result = exoskeleton.dialog.showPickList(
+	"Country Selector", "Select your country of residence :", 
+    countries, "United States", false
+);
+
+xo.logText(result);

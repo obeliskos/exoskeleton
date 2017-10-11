@@ -245,6 +245,12 @@
                         #showInputDialog
                       </a></li>
                       
+                      <li><a
+                        href='#dialogshowpicklist'
+                        class='regular pre-open'>
+                        #showPickList
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -3015,6 +3021,118 @@ exoskeleton.dialog.addRadioButton({
 
 <span class="hljs-keyword">if</span> (phoneNumber !== <span class="hljs-literal">null</span>) {
   user.PhoneNumber = phoneNumber;
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogshowpicklist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showPickList(title, prompt, values, selectedItem?, multiselect)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Displays a predefined dialog allowing user to select item(s) from a list.</p>
+
+
+  <div class='pre p1 fill-light mt0'>showPickList(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, values: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, selectedItem: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?, multiselect: bool)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The caption to display on the input dialog window
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prompt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The text to display above, and describing the textbox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>values</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+	    An array of strings to load picklist with.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>selectedItem</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?)</code>
+	    string or string[] (if multi) to default selection to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>multiselect</span> <code class='quiet'>(bool)</code>
+	    Whether to allow multiple selections
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// display picklist with no default selection and no multiselection</span>
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.showPickList(
+  <span class="hljs-string">"Country Selection"</span>,
+  <span class="hljs-string">"Enter your country of residence"</span>,
+  [<span class="hljs-string">"United States"</span>, <span class="hljs-string">"United Kingdom"</span>, <span class="hljs-string">"Germany"</span>, <span class="hljs-string">"France"</span>, <span class="hljs-string">"Australia"</span>, <span class="hljs-string">"Japan"</span>, <span class="hljs-string">"China"</span>, <span class="hljs-string">"India"</span>]
+);
+
+<span class="hljs-comment">// since no multiselect, result is a string and not array of strings</span>
+<span class="hljs-keyword">if</span> (result !== <span class="hljs-literal">null</span>) {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"user picked : "</span> + result);
 }</pre>
     
   
