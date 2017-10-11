@@ -29,4 +29,4 @@ result = exoskeleton.dialog.showPickList(
     countries, "United States", false
 );
 
-xo.logText(result);
+xo.logText("You picked : " + result);

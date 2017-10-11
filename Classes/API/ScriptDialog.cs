@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,52 @@ namespace Exoskeleton.Classes.API
             this.host = host;
         }
         
+        /// <summary>
+        /// Initializes the Dialog singleton Form.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public void Initialize(string formJson)
+        {
+            dialog = new Form();
+            JsonConvert.PopulateObject(formJson, dialog);
+
+            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
+            dialog.ControlBox = false;
+            dialog.MinimizeBox = false;
+            dialog.MaximizeBox = false;
+            dialog.StartPosition = FormStartPosition.CenterParent;
+            dialog.SuspendLayout();
+
+            controlDictionary = new Dictionary<string, Control>();
+        }
+
+        /// <summary>
+        /// Private overload to initialize predefined dialogs
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        private void Initialize(string title, int width, int height)
+        {
+            dialog = new Form();
+            dialog.Text = title;
+            dialog.Width = width;
+            dialog.Height = height;
+
+            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
+            dialog.ControlBox = false;
+            dialog.MinimizeBox = false;
+            dialog.MaximizeBox = false;
+            dialog.StartPosition = FormStartPosition.CenterParent;
+            dialog.SuspendLayout();
+
+            controlDictionary = new Dictionary<string, Control>();
+        }
+
+        #region Predefined Dialogs
+
         /// <summary>
         /// Displays a predefined dialog to allow user to input a string.
         /// </summary>
@@ -135,28 +182,46 @@ namespace Exoskeleton.Classes.API
             return (multiselect)?JsonConvert.SerializeObject(lb.SelectedItems):lb.SelectedItem.ToString();
         }
 
-        /// <summary>
-        /// Initializes the Dialog singleton Form.
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public void Initialize(string title, int width, int height)
+        public void ShowPropertyGrid(string title, string caption, string objectJson)
         {
-            dialog = new Form();
-            dialog.Text = title;
-            dialog.Width = width;
-            dialog.Height = height;
-            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
-            dialog.ControlBox = false;
-            dialog.MinimizeBox = false;
-            dialog.MaximizeBox = false;
-            dialog.StartPosition = FormStartPosition.CenterParent;
-            dialog.SuspendLayout();
+            Initialize(title, 460, 400);
 
-            controlDictionary = new Dictionary<string, Control>();
+            Label l = new Label();
+            l.AutoSize = true;
+            l.Text = caption;
+            l.Left = 10;
+            l.Top = 20;
+
+            dialog.Controls.Add(l);
+
+            dynamic obj = JsonConvert.DeserializeObject(objectJson);
+
+            PropertyGrid pg = new PropertyGrid();
+            pg.Width = 400;
+            pg.Height = 260;
+            pg.Left = 15;
+            pg.Top = 48;
+            pg.SelectedObject = obj;
+ 
+            dialog.Controls.Add(pg);
+
+            Button ok = new Button();
+            ok.Text = "OK";
+            ok.Top = 320;
+            ok.Left = 210;
+            ok.Width = 100;
+            ok.Height = 30;
+            ok.Click += (sender, args) => { dialog.DialogResult = DialogResult.OK; };
+
+            dialog.Controls.Add(ok);
+
+            DialogResult dr = dialog.ShowDialog();
+
+            return;
         }
-        
+
+        #endregion
+
         /// <summary>
         /// Adds a Panel to the Dialog singleton Form.
         /// </summary>
@@ -328,6 +393,28 @@ namespace Exoskeleton.Classes.API
         }
 
         /// <summary>
+        /// Adds a DateTimePicker control to the global dialog singleton
+        /// </summary>
+        /// <param name="dateTimePicker"></param>
+        /// <param name="parentName"></param>
+        public void AddDateTimePicker(string dateTimePicker, string parentName)
+        {
+            DateTimePicker dtp = JsonConvert.DeserializeObject<DateTimePicker>(dateTimePicker);
+            dtp.SuspendLayout();
+
+            controlDictionary[dtp.Name] = dtp;
+
+            if (parentName == null)
+            {
+                dialog.Controls.Add(dtp);
+            }
+            else
+            {
+                controlDictionary[parentName].Controls.Add(dtp);
+            }
+        }
+
+        /// <summary>
         /// Adds a Button to the Dialog and wires up an event to dismiss dialog with a result.
         /// </summary>
         /// <param name="buttonJson"></param>
@@ -465,6 +552,23 @@ namespace Exoskeleton.Classes.API
 
                     dynamic nudval = new { Name = nud.Name, Value = nud.Value };
                     dyn.Add(nud.Name, JObject.FromObject(nudval));
+                }
+
+                if (control.GetType() == typeof(DateTimePicker))
+                {
+                    DateTimePicker dtp = (DateTimePicker)control;
+                    TimeSpan ts = dtp.Value - new DateTime(1970, 1, 1);
+                    TimeSpan tsu = dtp.Value.ToUniversalTime() - new DateTime(1970, 1, 1);
+                    dynamic dtpval = new {
+                        Name = dtp.Name,
+                        Value = dtp.Value,
+                        Date = dtp.Value.Date,
+                        TimeOfDay = dtp.Value.TimeOfDay,
+                        Epoch = (long)ts.TotalMilliseconds,
+                        UniversalTime = dtp.Value.ToUniversalTime(),
+                        UniversalEpoch = (long)tsu.TotalMilliseconds
+                    };
+                    dyn.Add(dtp.Name, JObject.FromObject(dtpval));
                 }
 
             }

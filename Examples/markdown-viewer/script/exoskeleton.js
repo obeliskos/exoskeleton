@@ -291,6 +291,32 @@
         };
 
         /**
+         * Adds a DateTimePicker to the Dialog singleton Form.
+         * @param {object|string} comboBox - initial properties to assign to ComboBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addDateTimePicker({
+         *   Name: "StartDate",
+         *   Top: 100,
+         *   Left: 100,
+         *   Value: "12/13/2014"
+         * }, "AddressPanel");
+         */
+        Dialog.prototype.addDateTimePicker = function (dateTimePicker, parentName) {
+            if (typeof dateTimePicker === "object") {
+                dateTimePicker = JSON.stringify(dateTimePicker);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddDateTimePicker(dateTimePicker, parentName);
+        };
+
+        /**
          * Adds a 'dismiss dialog' Button to the Dialog singleton Form.
          * @param {object|string} button - initial properties to assign to button
          * @param {string} dialogResult - dismiss result ('OK', 'Cancel', 'Yes', 'No')
@@ -524,8 +550,12 @@
          * @example
          * exoskeleton.dialog.initialize("Verify address information", 600, 400);
          */
-        Dialog.prototype.initialize = function (title, width, height) {
-            this.exoDialog.Initialize(title, width, height);
+        Dialog.prototype.initialize = function (formJson) {
+            if (typeof formJson === "object") {
+                formJson = JSON.stringify(formJson);
+            }
+
+            this.exoDialog.Initialize(formJson);
         };
 
         /**

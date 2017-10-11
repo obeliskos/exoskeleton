@@ -1,20 +1,28 @@
-/*
-Dialog API Example - This demonstrates how your html/javascript
-can create .net winforms dialogs and receive user input.
-
-This dialog api leverages and relies heavily on Json.NET's 
-ability to deserialize control data which we pass as json 
-objects for it to create.
-
-Finding syntax for encoding some of the custom .net datatypes
-usually involves me serializing similar type in actual 
-vs debugger, but the examples below should be good start.
-*/
+/**
+ * Dialog API Example - This demonstrates how your html/javascript
+ * can create .net winforms dialogs and receive user input.
+ *
+ * This dialog api leverages and relies heavily on Json.NET's 
+ * ability to deserialize control data which we pass as json 
+ * objects for it to create.
+ *
+ * Finding syntax for encoding some of the custom .net datatypes
+ * usually involves me serializing similar type in actual 
+ * vs debugger, but the examples below should be good start.
+ */
 
 // Let's begin by (re)initializing our dialog singleton.
-//This will ensure old dialog contents are cleared out.
+// This will ensure old dialog contents are cleared out
+//   and new defaults are set.  
+// Setting font at dialog initialization will default all 
+//   controls to that font size.
 
-exoskeleton.dialog.initialize('Exoskeleton Dialog Example', 520, 400);
+exoskeleton.dialog.initialize({
+  Text: 'Exoskeleton Dialog Example', 
+  Font: "Microsoft Sans Serif, 11pt", // json.net can parse this
+  Width: 720, 
+  Height: 400
+});
 
 // We will use top level panels to do docking and add our controls 
 // to those.
@@ -49,7 +57,6 @@ exoskeleton.dialog.addLabel({
   Dock: "Top",
   Name: "NameLabel",
   Text: "Select your user type :",
-  Font: "Microsoft Sans Serif, 10pt", // json.net can parse this
   Top: 0,
   Height: 26
 }, "MiddlePanel");
@@ -65,10 +72,9 @@ exoskeleton.dialog.addPanel({
 
 exoskeleton.dialog.addLabel({
   Name: "NameLabel",
-  Text: "Enter your name:",
-  Font: "Microsoft Sans Serif, 10pt",
-  Top: 10,
-  Left: 10,
+  Text: "Enter your name :",
+  Top: 8,
+  Left: 7,
   Height: 20,
   Width: 140
 }, "TopPanel");
@@ -76,11 +82,10 @@ exoskeleton.dialog.addLabel({
 exoskeleton.dialog.addTextBox({
   Name: "NameTextBox",
   Text: "Some User",
-  Font: "Microsoft Sans Serif, 10pt",
   Top: 32,
   Left: 10,
   Height: 30,
-  Width: 300,
+  Width: 140,
   TabIndex: 0
 }, "TopPanel");
 
@@ -96,37 +101,67 @@ exoskeleton.dialog.addRadioButton({
   Name: "GenderMale",
   Text: "Male",
   Checked: false,
-  Top: 58,
-  Left: 120,
-  Width: 60
+  Top: 57,
+  Left: 165,
+  AutoSize: true
 }, "TopPanel");
 
 exoskeleton.dialog.addRadioButton({
   Name: "GenderFemale",
   Text: "Female",
   Checked: false,
-  Top: 58,
-  Left: 180,
-  Width: 120
+  Top: 57,
+  Left: 225,
+  AutoSize: true
 }, "TopPanel");
 
 exoskeleton.dialog.addLabel({
   Name: "AgeLabel",
   Text: "Enter your age:",
-  Width: 140,
-  Font: "Microsoft Sans Serif, 10pt",
+  AutoSize:true,
   Top: 10,
-  Left: 340,
-  Height: 20
+  Left: 170,
 }, "TopPanel");
 
 exoskeleton.dialog.addNumericUpDown({
   Name: "AgeNumeric",
-  Left: 340,
+  Left: 170,
   Top: 30,
   Minimum: 13,
   Maximum: 120,
   Value: 21
+}, "TopPanel");
+
+exoskeleton.dialog.addLabel({
+  Name: "DateLabel",
+  Text: "Pick some date :",
+  AutoSize: true,
+  Top: 10,
+  Left: 310,
+}, "TopPanel");
+
+exoskeleton.dialog.addDateTimePicker({
+  Name: "StartDate",
+  Top: 30,
+  Left: 310,
+  Width: 240,
+  Value: "12/1/2014"
+}, "TopPanel");
+
+exoskeleton.dialog.addLabel({
+  Name: "DateLabel",
+  Text: "Pick some value :",
+  AutoSize: true,
+  Top: 10,
+  Left: 565,
+}, "TopPanel");
+
+exoskeleton.dialog.addComboBox({
+  Name: "TestComboBox",
+  AutoSize:true,
+  Top: 30,
+  Left: 565,
+  Items: ["one", "two", "three"]
 }, "TopPanel");
 
 // Render Bottom Panel

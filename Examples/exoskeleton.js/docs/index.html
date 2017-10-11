@@ -180,6 +180,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#dialogadddatetimepicker'
+                        class='regular pre-open'>
+                        #addDateTimePicker
+                      </a></li>
+                      
+                      <li><a
                         href='#dialogadddialogbutton'
                         class='regular pre-open'>
                         #addDialogButton
@@ -2128,6 +2134,94 @@ a global dialog singleton.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='dialogadddatetimepicker'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addDateTimePicker(dateTimePicker, parentName?, comboBox)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a DateTimePicker to the Dialog singleton Form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addDateTimePicker(dateTimePicker: any, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dateTimePicker</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>comboBox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to ComboBox
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addDateTimePicker({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"StartDate"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">Value</span>: <span class="hljs-string">"12/13/2014"</span>
+}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='dialogadddialogbutton'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -2800,7 +2894,7 @@ exoskeleton.dialog.addRadioButton({
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>initialize(title, width, height)</span>
+            <span class='code strong strong truncate'>initialize(formJson, title, width, height)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2811,7 +2905,7 @@ exoskeleton.dialog.addRadioButton({
   <p>Initialize global dialog singleton.</p>
 
 
-  <div class='pre p1 fill-light mt0'>initialize(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, width: int, height: int)</div>
+  <div class='pre p1 fill-light mt0'>initialize(formJson: any, title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, width: int, height: int)</div>
   
   
 
@@ -2825,6 +2919,14 @@ exoskeleton.dialog.addRadioButton({
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formJson</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
