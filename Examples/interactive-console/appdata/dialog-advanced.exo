@@ -40,17 +40,25 @@ exoskeleton.dialog.addPanel({
   Padding: "10, 10, 10, 10"
 });
 
+exoskeleton.dialog.addPanel({
+  Dock: "Fill",
+  Name: "MiddleLeft",
+}, "MiddlePanel");
+
+exoskeleton.dialog.addPanel({
+  Dock: "Right",
+  Name: "MiddleRight",
+  Width: 360
+}, "MiddlePanel");
+
 // Add ListBox to middle panel first since it will fill to expand
 exoskeleton.dialog.addListBox({
-    Name: "PickList",
+    Name: "UserTypeList",
     Dock: "Fill",
-	Top: 10,
-    Left: 10,
-	Height : 200,
 	TabIndex: 1,
     Items: ['Guest', 'Normal', 'Administrator'],
     SelectedItem: 'Normal'  // let's default to one of our items
-}, "MiddlePanel");
+}, "MiddleLeft");
 
 // add label to middle panel and dock it top (above 'fill' listbox)
 exoskeleton.dialog.addLabel({
@@ -59,7 +67,24 @@ exoskeleton.dialog.addLabel({
   Text: "Select your user type :",
   Top: 0,
   Height: 26
-}, "MiddlePanel");
+}, "MiddleLeft");
+
+exoskeleton.dialog.addCheckedListBox({
+  Dock: "Fill",
+  Name: "CountryChecklist",
+  CheckOnClick: true,
+  Items: ["United States", "United Kingdom", "Germany", "France", "Australia", 
+  	"Japan", "India", "Russia", "Other"]
+}, [1, 4], "MiddleRight");
+
+// add label to middle panel and dock it top (above 'fill' listbox)
+exoskeleton.dialog.addLabel({
+  Dock: "Top",
+  Name: "CountriesLabel",
+  Text: "Select countries of residence :",
+  Top: 0,
+  Height: 26
+}, "MiddleRight");
 
 // Render Top Panel
 exoskeleton.dialog.addPanel({

@@ -392,6 +392,9 @@ xo.setupEditor = function (theme) {
 };
 
 xo.logText = function(message) {
+    if (typeof message === "undefined") {
+      message = "";
+    }
     var oldText = xo.editorOutput.getValue();
     oldText += message + "\r\n";
     xo.editorOutput.setValue(oldText);

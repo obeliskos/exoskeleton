@@ -16,7 +16,22 @@ var result = exoskeleton.dialog.showInputDialog(
 
 xo.logText("You entered : " + result);
 
-// showPickList can be used to quickly ask the user to pick
+// showDatePicker can be used to select a date from a calendar
+result = exoskeleton.dialog.showDatePicker(
+	"Date Selection",
+    "Please choose a start date :",
+    "12/21/2017"
+);
+
+xo.logText();
+xo.logText("You picked this start date:");
+xo.logObject(result);
+if (result) {
+	xo.logText("// Your selected date, converted to js date :");
+    xo.logText(new Date(result.UniversalEpoch));
+}
+
+// showList can be used to quickly ask the user to pick
 // a value from a list
 
 var countries = [
@@ -24,9 +39,46 @@ var countries = [
     	'Australia', 'Other'
 ];
 
-result = exoskeleton.dialog.showPickList(
+result = exoskeleton.dialog.showList(
 	"Country Selector", "Select your country of residence :", 
     countries, "United States", false
 );
 
+xo.logText();
 xo.logText("You picked : " + result);
+
+// showCheckedList can be used to more easily select multiple items
+// from a list of values
+
+var result = exoskeleton.dialog.showCheckedList(
+  "CheckedListBox example",
+  "Select a few items",
+  ["one", "two", "three", "four", "five"],
+  [1, 4]
+  );
+
+xo.logText();
+xo.logText("// you checked these items :");
+xo.logObject(result);
+
+// showDataGridView can be used to display array of similar objects
+// within a grid and allow selection of their rows.
+var users = [
+  { name: "john", age: 24, address: "123 alpha street" },
+  { name: "mary", age: 22, address: "222 gamma street" },
+  { name: "tom", age: 28, address: "587 delta street" },
+  { name: "jane", age: 26, address: "428 beta street" }
+];
+
+var result = exoskeleton.dialog.showDataGridView("Users", "Select users to invite :", users);
+
+xo.logText();
+xo.logText("raw results from grid selection dialog :");
+xo.logObject(result);
+
+// result might contain [0,1,2] for john, mary, and jane indices
+if (result) {
+  result.forEach(function(idx) {
+    xo.logText("invited: " + users[idx].name);
+  });
+}

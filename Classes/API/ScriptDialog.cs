@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -56,6 +57,7 @@ namespace Exoskeleton.Classes.API
             dialog.Text = title;
             dialog.Width = width;
             dialog.Height = height;
+            dialog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
             dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
             dialog.ControlBox = false;
@@ -121,7 +123,84 @@ namespace Exoskeleton.Classes.API
             return (dr == DialogResult.OK) ? tb.Text : null;
         }
 
-        public string ShowPickList(string title, string prompt, string values, string selectedItem, bool multiselect)
+        /// <summary>
+        /// Displays a predefined dialog to allow user to pick a date.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="prompt"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public string ShowDatePicker(string title, string prompt, string defaultValue)
+        {
+            Initialize(title, 360, 200);
+
+            Label l = new Label();
+            l.AutoSize = true;
+            l.Text = prompt;
+            l.Left = 10;
+            l.Top = 20;
+
+            dialog.Controls.Add(l);
+
+            DateTimePicker dtp = new DateTimePicker();
+            dtp.Width = 300;
+            dtp.Left = 15;
+            dtp.Top = 48;
+            if (!String.IsNullOrEmpty(defaultValue))
+            {
+                dtp.Value = DateTime.Parse(defaultValue);
+            }
+
+            dialog.Controls.Add(dtp);
+
+            Button ok = new Button();
+            ok.Text = "OK";
+            ok.Top = 100;
+            ok.Left = 98;
+            ok.Width = 100;
+            ok.Height = 30;
+            ok.Click += (sender, args) => { dialog.DialogResult = DialogResult.OK; };
+
+            dialog.Controls.Add(ok);
+
+            Button cancel = new Button();
+            cancel.Text = "Cancel";
+            cancel.Top = 100;
+            cancel.Left = 210;
+            cancel.Width = 100;
+            cancel.Height = 30;
+            cancel.Click += (sender, args) => { dialog.DialogResult = DialogResult.Cancel; };
+
+            dialog.Controls.Add(cancel);
+
+            DialogResult dr = dialog.ShowDialog();
+
+            TimeSpan ts = dtp.Value - new DateTime(1970, 1, 1);
+            TimeSpan tsu = dtp.Value.ToUniversalTime() - new DateTime(1970, 1, 1);
+            dynamic dtpval = new
+            {
+                Value = dtp.Value,
+                Date = dtp.Value.Date,
+                Short = dtp.Value.ToShortDateString(),
+                TimeOfDay = dtp.Value.TimeOfDay,
+                Epoch = (long)ts.TotalMilliseconds,
+                UniversalTime = dtp.Value.ToUniversalTime(),
+                UniversalEpoch = (long)tsu.TotalMilliseconds
+            };
+
+            return (dr == DialogResult.OK) ? JsonConvert.SerializeObject(dtpval) : null;
+        }
+
+        /// <summary>
+        /// Displays a predefined dialog to allow user to select item(s) from a listbox.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="prompt"></param>
+        /// <param name="values"></param>
+        /// <param name="selectedItem"></param>
+        /// <param name="multiselect"></param>
+        /// <returns></returns>
+        public string ShowList(string title, string prompt, string values, string selectedItem, bool multiselect)
         {
             Initialize(title, 360, 300);
 
@@ -182,6 +261,77 @@ namespace Exoskeleton.Classes.API
             return (multiselect)?JsonConvert.SerializeObject(lb.SelectedItems):lb.SelectedItem.ToString();
         }
 
+        /// <summary>
+        /// Displays a predefined dialog to allow user to select item(s) from a checkedlistbox.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="prompt"></param>
+        /// <param name="values"></param>
+        /// <param name="checkedIndices"></param>
+        /// <returns></returns>
+        public string ShowCheckedList(string title, string prompt, string values, string checkedIndices)
+        {
+            Initialize(title, 360, 300);
+
+            Label l = new Label();
+            l.AutoSize = true;
+            l.Text = prompt;
+            l.Left = 10;
+            l.Top = 20;
+
+            dialog.Controls.Add(l);
+
+            string[] vals = JsonConvert.DeserializeObject<string[]>(values);
+
+            CheckedListBox clb = new CheckedListBox();
+            clb.Width = 300;
+            clb.Height = 160;
+            clb.Left = 15;
+            clb.Top = 48;
+            clb.CheckOnClick = true;
+            clb.Items.AddRange(vals);
+            if (!String.IsNullOrEmpty(checkedIndices))
+            {
+                int[] items = JsonConvert.DeserializeObject<int[]>(checkedIndices);
+                foreach(int item in items)
+                {
+                    clb.SetItemChecked(item, true);
+                }
+            }
+
+            dialog.Controls.Add(clb);
+
+            Button ok = new Button();
+            ok.Text = "OK";
+            ok.Top = 220;
+            ok.Left = 98;
+            ok.Width = 100;
+            ok.Height = 30;
+            ok.Click += (sender, args) => { dialog.DialogResult = DialogResult.OK; };
+
+            dialog.Controls.Add(ok);
+
+            Button cancel = new Button();
+            cancel.Text = "Cancel";
+            cancel.Top = 220;
+            cancel.Left = 210;
+            cancel.Width = 100;
+            cancel.Height = 30;
+            cancel.Click += (sender, args) => { dialog.DialogResult = DialogResult.Cancel; };
+
+            dialog.Controls.Add(cancel);
+
+            DialogResult dr = dialog.ShowDialog();
+
+            if (dr != DialogResult.OK)
+            {
+                return null;
+            }
+
+            return JsonConvert.SerializeObject(clb.CheckedItems);
+        }
+
+        // experimental
         public void ShowPropertyGrid(string title, string caption, string objectJson)
         {
             Initialize(title, 460, 400);
@@ -214,10 +364,69 @@ namespace Exoskeleton.Classes.API
             ok.Click += (sender, args) => { dialog.DialogResult = DialogResult.OK; };
 
             dialog.Controls.Add(ok);
-
             DialogResult dr = dialog.ShowDialog();
 
             return;
+        }
+
+        /// <summary>
+        /// Displays a predefined dialog to allow user to select item(s) from a DataGridView.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="caption"></param>
+        /// <param name="objectJson"></param>
+        /// <returns></returns>
+        public string ShowDataGridView(string title, string caption, string objectJson)
+        {
+            Initialize(title, 720, 480);
+
+            dynamic obj = JsonConvert.DeserializeObject(objectJson);
+
+            DataGridView dgv = new DataGridView();
+            dgv.Dock = DockStyle.Fill;
+            dgv.DataSource = obj;
+            //dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.AllowUserToAddRows = false;
+            dgv.ReadOnly = true;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dialog.Controls.Add(dgv);
+
+            Label l = new Label();
+            l.Dock = DockStyle.Top;
+            l.Padding = new Padding(10);
+            l.Height = 40;
+            l.Text = caption;
+            dialog.Controls.Add(l);
+
+            Button ok = new Button();
+            ok.Dock = DockStyle.Bottom;
+            ok.Text = "OK";
+            ok.Click += (sender, args) => { dialog.DialogResult = DialogResult.OK; };
+            dialog.Controls.Add(ok);
+
+            dialog.ResumeLayout(false);
+            dialog.PerformLayout();
+
+            DialogResult dr = dialog.ShowDialog();
+
+            var result = JsonConvert.SerializeObject(dgv.SelectedRows);
+
+            Int32 selectedRowCount = dgv.Rows.GetRowCount(DataGridViewElementStates.Selected);
+            if (selectedRowCount == 0)
+            {
+                return null;
+            }
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            List<int> selectedIndices = new List<int>();
+
+            for (int i = 0; i < selectedRowCount; i++)
+            {
+                selectedIndices.Add(dgv.SelectedRows[i].Index);
+            }
+
+            return JsonConvert.SerializeObject(selectedIndices);
         }
 
         #endregion
@@ -287,6 +496,11 @@ namespace Exoskeleton.Classes.API
             }
         }
 
+        /// <summary>
+        /// Adds a RadioButton to the Dialog singleton Form.
+        /// </summary>
+        /// <param name="radiobuttonJson"></param>
+        /// <param name="parentName"></param>
         public void AddRadioButton(string radiobuttonJson, string parentName = null)
         {
             RadioButton rb = JsonConvert.DeserializeObject<RadioButton>(radiobuttonJson);
@@ -345,6 +559,36 @@ namespace Exoskeleton.Classes.API
             else
             {
                 controlDictionary[parentName].Controls.Add(lb);
+            }
+        }
+
+        /// <summary>
+        /// Adds a CheckedListBox to the Dialog singeton Form.
+        /// </summary>
+        /// <param name="checklistJson"></param>
+        /// <param name="parentName"></param>
+        public void AddCheckedListBox(string checklistJson, string checkedIndices, string parentName = null)
+        {
+            CheckedListBox clb = JsonConvert.DeserializeObject<CheckedListBox>(checklistJson);
+            clb.SuspendLayout();
+            if (!String.IsNullOrEmpty(checkedIndices))
+            {
+                int[] items = JsonConvert.DeserializeObject<int[]>(checkedIndices);
+                foreach (int item in items)
+                {
+                    clb.SetItemChecked(item, true);
+                }
+            }
+
+            controlDictionary[clb.Name] = clb;
+
+            if (parentName == null)
+            {
+                dialog.Controls.Add(clb);
+            }
+            else
+            {
+                controlDictionary[parentName].Controls.Add(clb);
             }
         }
 
@@ -466,6 +710,23 @@ namespace Exoskeleton.Classes.API
             }
         }
 
+        public void AddDataGridView(string gridViewJson, string objectArrayJson, string parentName = null)
+        {
+            DataGridView dgv = new DataGridView();
+            dgv.SuspendLayout();
+
+            controlDictionary[dgv.Name] = dgv;
+
+            if (parentName == null)
+            {
+                dialog.Controls.Add(dgv);
+            }
+            else
+            {
+                controlDictionary[parentName].Controls.Add(dgv);
+            }
+        }
+
         protected void FinalizeLayout()
         {
             foreach (KeyValuePair<string, Control> controlKV in controlDictionary)
@@ -538,6 +799,18 @@ namespace Exoskeleton.Classes.API
                     dyn.Add(lb.Name, JObject.FromObject(lbval));
                 }
 
+                if (control.GetType() == typeof(CheckedListBox))
+                {
+                    CheckedListBox clb = (CheckedListBox)control;
+
+                    dynamic clbval = new {
+                        Name = clb.Name,
+                        Selected = clb.CheckedItems,
+                        SelectedIndices = clb.CheckedIndices
+                    };
+                    dyn.Add(clb.Name, JObject.FromObject(clbval));
+                }
+
                 if (control.GetType() == typeof(ComboBox))
                 {
                     ComboBox cb = (ComboBox)control;
@@ -563,6 +836,7 @@ namespace Exoskeleton.Classes.API
                         Name = dtp.Name,
                         Value = dtp.Value,
                         Date = dtp.Value.Date,
+                        Short = dtp.Value.ToShortDateString(),
                         TimeOfDay = dtp.Value.TimeOfDay,
                         Epoch = (long)ts.TotalMilliseconds,
                         UniversalTime = dtp.Value.ToUniversalTime(),
@@ -571,6 +845,24 @@ namespace Exoskeleton.Classes.API
                     dyn.Add(dtp.Name, JObject.FromObject(dtpval));
                 }
 
+                if (control.GetType() == typeof(DataGridView))
+                {
+                    DataGridView dgv = (DataGridView)control;
+
+                    List<int> selectedIndices = new List<int>();
+
+                    Int32 selectedRowCount = dgv.Rows.GetRowCount(DataGridViewElementStates.Selected);
+                    if (selectedRowCount > 0)
+                    {
+                        for (int i = 0; i < selectedRowCount; i++)
+                        {
+                            selectedIndices.Add(dgv.SelectedRows[i].Index);
+                        }
+                    }
+
+                    dynamic dgvval = new { Name = dgv.Name, SelectedIndices = selectedIndices };
+                    dyn.Add(dgv.Name, JObject.FromObject(dgvval));
+                }
             }
 
             dynamic result = new

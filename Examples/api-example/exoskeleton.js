@@ -264,6 +264,40 @@
         };
 
         /**
+         * Adds a CheckedListBox to the Dialog singleton Form.
+         * @param {object|string} listbox - initial properties to assign to ListBox
+         * @param {int[]=} checkedIndices - optional indices of selected items.
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addCheckedListBox({
+         *   Name: "CountryChecklist",
+         *   Top: 10,
+         *   Left: 10,
+         *   Dock: 'Fill'
+         *   Items: ['United States', 'United Kingdom', 'Germany', 'France', 'Japan'],
+         *   CheckedIndices : [0, 2]
+         * }, "AddressPanel");
+         */
+        Dialog.prototype.addCheckedListBox = function (checkedlistbox, checkedIndices, parentName) {
+            if (typeof checkedlistbox === "object") {
+                checkedlistbox = JSON.stringify(checkedlistbox);
+            }
+
+            if (typeof checkedIndices === "undefined") {
+                checkedIndices = [];
+            }
+            checkedIndices = JSON.stringify(checkedIndices);
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddCheckedListBox(checkedlistbox, checkedIndices, parentName);
+        };
+
+        /**
          * Adds a ComboBox to the Dialog singleton Form.
          * @param {object|string} comboBox - initial properties to assign to ComboBox
          * @param {string=} parentName - optional name of parent control to nest within
@@ -559,6 +593,121 @@
         };
 
         /**
+         * Displays a predefined dialog allowing user to select item(s) from a checklist.
+         * @param {string} title - The caption to display on the input dialog window
+         * @param {string} prompt - The text to display above, and describing the textbox
+         * @param {string[]} values - An array of strings to load checkedlistbox with.
+         * @param {int[]=} checkedIndices - Optional array of item indices to default to checked state.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * // display picklist with no default selection and no multiselection
+         * var result = exoskeleton.dialog.showCheckedList(
+         *   "Country Selection",
+         *   "Enter all countries of residence",
+         *   ["United States", "United Kingdom", "Germany", "France", "Australia", "Japan", "China", "India"],
+         *   [0, 2, 3]
+         * );
+         *
+         * // since no multiselect, result is a string and not array of strings
+         * if (result !== null) {
+         *   console.log("user picked : " + result);
+         * }
+         */
+        Dialog.prototype.showCheckedList = function (title, prompt, values, checkedIndices) {
+            title = title || "";
+            prompt = prompt || "";
+            values = values || [];
+            checkedIndices = checkedIndices || [];
+
+            values = JSON.stringify(values);
+            checkedIndices = JSON.stringify(checkedIndices);
+
+            var result = this.exoDialog.ShowCheckedList(title, prompt, values, checkedIndices);
+
+            return (typeof result === "undefined") ? null : JSON.parse(result);
+        };
+
+        /**
+         * Allows display and row selection of an array of similar objects within a .net DataGridView
+         * @param {string} title - The caption to display on the input dialog window
+         * @param {string} prompt - The text to display above, and describing the textbox
+         * @param {object[]} objectArray - An array of object to display and/or select in grid.
+         * @returns {int[]} Array of selected row indices
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var users = [
+         *   { name: "john", age: 24, address: "123 alpha street" },
+         *   { name: "mary", age: 22, address: "222 gamma street" },
+         *   { name: "tom", age: 28, address: "587 delta street" },
+         *   { name: "jane", age: 26, address: "428 beta street" }
+         * ];
+         *
+         * var result = exoskeleton.dialog.showDataGridView("Users", "Select users to invite :", users);
+         *
+         * // result might contain [0,1,2] for john, mary, and jane indices
+         * if (result) {
+         *   result.forEach(function(idx) {
+         *     console.log("invited: " + users[idx].name);
+         *   });
+         * }
+         */
+        Dialog.prototype.showDataGridView = function (title, prompt, objectArray) {
+            if (typeof title === "undefined") {
+                title = "DataGridView Selection Dialog";
+            }
+            if (typeof prompt === "undefined") {
+                prompt = "Browser or select a row :";
+            }
+            if (typeof objectArray === "undefined") {
+                objectArray = [];
+            }
+            objectArray = JSON.stringify(objectArray);
+
+            var result = this.exoDialog.showDataGridView(title, prompt, objectArray);
+
+            return (result === "undefined" || result === null) ? null : JSON.parse(result);
+        };
+
+        /**
+         * Displays a predefined dialog allowing user to pick a date from a calendar.
+         * @param {string} title - The caption to display on the input dialog window
+         * @param {string} prompt - The text to display above, and describing the textbox
+         * @param {string=} defaultValue - A string encoded date to default selection to.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * // display picklist with no default selection and no multiselection
+         * var result = exoskeleton.dialog.showDatePicker(
+         *   "Date Selection Example",
+         *   "Please choose a start date :",
+         *   "12/21/2017"
+         * );
+         *
+         * if (result !== null) {
+         *   console.log(".net date" + result.Value);
+         *   var jsDate = new Date(result.UniversalEpoch);
+         *   console.log("javascript date : " + jsDate);
+         * }
+         */
+        Dialog.prototype.showDatePicker = function (title, prompt, defaultValue) {
+            if (typeof title === "undefined") {
+                title = "Date Selection";
+            }
+            if (typeof prompt === "undefined") {
+                prompt = prompt || "Please select a date : ";
+            }
+            if (typeof defaultValue === "undefined") {
+                defaultValue = null;
+            }
+
+            var result = this.exoDialog.ShowDatePicker(title, prompt, defaultValue);
+
+            return (typeof result === "undefined") ? null : JSON.parse(result);
+        };
+
+        /**
          * Displays the singleton dialog which you have just configured.
          * @returns {object} An object containing dialog result and form content.
          * @memberof Dialog
@@ -617,14 +766,14 @@
          * Displays a predefined dialog allowing user to select item(s) from a list.
          * @param {string} title - The caption to display on the input dialog window
          * @param {string} prompt - The text to display above, and describing the textbox
-         * @param {string[]} values - An array of strings to load picklist with.
+         * @param {string[]} values - An array of strings to load listbox with.
          * @param {string|string[]=} selectedItem - string or string[] (if multi) to default selection to.
          * @param {bool} multiselect - Whether to allow multiple selections
          * @memberof Dialog
          * @instance
          * @example
-         * // display picklist with no default selection and no multiselection
-         * var result = exoskeleton.dialog.showPickList(
+         * // display listbox with no default selection and no multiselection
+         * var result = exoskeleton.dialog.showList(
          *   "Country Selection",
          *   "Enter your country of residence",
          *   ["United States", "United Kingdom", "Germany", "France", "Australia", "Japan", "China", "India"]
@@ -635,7 +784,7 @@
          *   console.log("user picked : " + result);
          * }
          */
-        Dialog.prototype.showPickList = function (title, prompt, values, selectedItem, multiselect) {
+        Dialog.prototype.showList = function (title, prompt, values, selectedItem, multiselect) {
             if (typeof title === "undefined") {
                 title = "Item Picklist";
             }
@@ -654,7 +803,7 @@
                 multiselect = false;
             }
 
-            var result = this.exoDialog.ShowPickList(title, prompt, values, selectedItem, multiselect);
+            var result = this.exoDialog.ShowList(title, prompt, values, selectedItem, multiselect);
 
             if (typeof result === 'undefined') {
                 result = null;
