@@ -1,0 +1,58 @@
+/**
+ *  Native .NET Dialogs examples
+ *
+ *  These dialogs are provided by .NET and include :
+ *  - ColorDialog
+ *  - FontDialog
+ *  - MessageBox
+ *  - OpenFileDialog
+ *  - SaveFileDialog
+ */
+ 
+// Color Dialog Example
+var result = exoskeleton.dialog.showColorDialog();
+xo.logObject(result);
+
+// Font Dialog example
+result = exoskeleton.dialog.showFontDialog();
+xo.logObject(result);
+
+// MessageBox example
+result = exoskeleton.dialog.showMessageBox(
+	"Here is some sample message", 
+    "MessageBox example",
+    "OKCancel",
+    "Information"
+);
+
+var locations = exoskeleton.getLocations();
+var appSettings = exoskeleton.getApplicationSettings();
+
+var appdataLocation = exoskeleton.file.combinePaths([
+  locations.Current,
+  "appdata"
+]);
+
+// Let's open an OpenFileDialog, with an InitialDirectory of our appdata folder
+result = exoskeleton.dialog.showOpenFileDialog({
+	InitialDirectory: appdataLocation,
+    Filter: "exo files (*.exo)|*.exo|All files (*.*)|*.*"
+});
+
+// If the result is not null, then the user clicked 'Open' in the open file dialog
+if (result) {
+	exoskeleton.dialog.showMessageBox("You chose : " + result.FileName, "showOpenFileDialog example", "OKCancel", "Information");
+	xo.logObject(result);
+}
+
+// showSaveFileDialog example (with initialfolder and filter set)
+result = exoskeleton.dialog.showSaveFileDialog({
+	InitialDirectory: appdataLocation,
+    Filter: "exo files (*.exo)|*.exo|All files (*.*)|*.*"
+});
+
+// If the result is not null, then the user clicked 'Open' in the open file dialog
+if (result) {
+	exoskeleton.dialog.showMessageBox("You chose : " + result.FileName, "showSaveFileDialog example", "OKCancel", "Information");
+	xo.logObject(result);
+}

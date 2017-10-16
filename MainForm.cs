@@ -420,8 +420,6 @@ namespace Exoskeleton
 
         public void OpenNewWindow(string caption, string url, int width, int height)
         {
-            //Uri uri = new Uri(settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url);
-
             if (!url.StartsWith("@") && url.Contains("{port}"))
             {
                 url = settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url;
@@ -464,72 +462,6 @@ namespace Exoskeleton
             this.WindowState = FormWindowState.Normal;
 
             HostWebBrowser.Focus();
-        }
-
-        #endregion
-
-        #region IHostWindow : MessageBox and Dialog Handlers
-
-        /// <summary>
-        /// Display an 'OpenFileDialog'
-        /// </summary>
-        /// <param name="dialogOptions">Optional object containing 'OpenFileDialog' properties to initialize dialog with.</param>
-        /// <returns>'OpenFileDialog' properties after dialog was dismissed, or null if cancelled.</returns>
-        public string ShowOpenFileDialog(string dialogOptions)
-        {
-            OpenFileDialog dlg = new OpenFileDialog();
-            if (dialogOptions != null && dialogOptions != "")
-            {
-                dlg = JsonConvert.DeserializeObject<OpenFileDialog>(dialogOptions);
-            }
-            DialogResult dr = dlg.ShowDialog();
-            if (dr != DialogResult.OK) return null;
-
-            var result = JsonConvert.SerializeObject(dlg);
-            return result;
-        }
-
-        /// <summary>
-        /// Display a 'SaveFileDialog'
-        /// <param name="dialogOptions">Optional object containing 'SaveFileDialog' properties to initialize dialog with.</param>
-        /// </summary>
-        /// <returns>'SaveFileDialog' properties after dialog was dismissed, or null if cancelled.</returns>
-        public string ShowSaveFileDialog(string dialogOptions)
-        {
-            SaveFileDialog dlg = new SaveFileDialog();
-            if (dialogOptions != null && dialogOptions != "")
-            {
-                dlg = JsonConvert.DeserializeObject<SaveFileDialog>(dialogOptions);
-            }
-            DialogResult dr = dlg.ShowDialog();
-            if (dr != DialogResult.OK) return null;
-
-            var result = JsonConvert.SerializeObject(dlg);
-            return result;
-        }
-
-        /// <summary>
-        /// Displays a message box to the user and returns the button they clicked.
-        /// </summary>
-        /// <param name="text">Message to display to user.</param>
-        /// <param name="caption">Caption of message box window.</param>
-        /// <param name="buttons">String representation of a MessageBoxButtons enum.</param>
-        /// <param name="icon">string representation of a MessageBoxIcon enum.</param>
-        /// <returns>Text (ToString) representation of button clicked.</returns>
-        public string ShowMessageBox(string text, string caption, string buttons, string icon)
-        {
-            MessageBoxButtons _buttons = MessageBoxButtons.OK;
-            if (buttons != null && buttons != "")
-            {
-                _buttons = (MessageBoxButtons)Enum.Parse(typeof(MessageBoxButtons), buttons);
-            }
-            MessageBoxIcon _icon = MessageBoxIcon.Information;
-            if (icon != null && icon != "")
-            {
-                _icon = (MessageBoxIcon)Enum.Parse(typeof(MessageBoxIcon), icon);
-            }
-            DialogResult dr = MessageBox.Show(text, caption, _buttons, _icon);
-            return dr.ToString();
         }
 
         #endregion

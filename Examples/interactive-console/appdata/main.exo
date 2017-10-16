@@ -18,44 +18,39 @@ var appdataLocation = exoskeleton.file.combinePaths([
   "appdata"
 ]);
 
-
-// Let's open an OpenFileDialog, with an InitialDirectory of our appdata folder
-var result = exoskeleton.main.showOpenFileDialog({
-	InitialDirectory: appdataLocation,
-    Filter: "exo files (*.exo)|*.exo|All files (*.*)|*.*"
-});
-
-// If the result is not null, then the user clicked 'Open' in the open file dialog
-if (result) {
-	exoskeleton.main.showMessageBox("You chose : " + result.FileName, "showOpenFileDialog example", "OKCancel", "Information");
-	xo.logObject(result);
-}
-// otherwise they clicked cancel and we got null back
-else {
-	exoskeleton.main.showMessageBox("You clicked cancel", "showOpenFileDialog example", "OK", "Warning");
-}
-
 // window title
 exoskeleton.main.setWindowTitle("My exoskeleton example");
 
 // fullscreen
-result = exoskeleton.main.showMessageBox("Do you want to go fullscreen?", "Exoskeleton 'main' sample", "YesNo", "Question");
+result = exoskeleton.dialog.showMessageBox("Do you want to go fullscreen?", "Exoskeleton 'main' sample", "YesNo", "Question");
 if (result === "Yes") {
 	exoskeleton.main.fullscreen();
 }
 
 // exit fullscreen
-result = exoskeleton.main.showMessageBox("Do you want to exit fullscreen?", "Exoskeleton 'main' sample", "YesNo", "Question");
+result = exoskeleton.dialog.showMessageBox("Do you want to exit fullscreen?", "Exoskeleton 'main' sample", "YesNo", "Question");
 if (result === "Yes") {
 	exoskeleton.main.exitFullscreen();
 }
 
 // show notification
-result = exoskeleton.main.showMessageBox("Do you want to show a notification?", "Exoskeleton 'main' sample", "YesNo", "Question");
+result = exoskeleton.dialog.showMessageBox("Do you want to show a notification?", "Exoskeleton 'main' sample", "YesNo", "Question");
 if (result === "Yes") {
 	exoskeleton.main.showNotification("Exoskeleton 'main' sample", "some notification information message");
 }
 
 // open dynamic html in new (exoskeleton) child window
-var html = "@<html><body><h3>This is a test</h3></body></html>";
-exoskeleton.main.openNewWindow("Test Window", html, 400, 400);
+var html = "@<html><body><h3>This is dynamically generated html dumped to new window</h3></body></html>";
+exoskeleton.main.openNewWindow("Test Window", html, 600, 300);
+
+
+// apply form properties (Opacity for this example)
+result = exoskeleton.dialog.showMessageBox("Do you want to want to make the form partially transparent?", "Exoskeleton 'main' sample", "YesNo", "Question");
+if (result === "Yes") {
+  exoskeleton.main.applyFormProperties({
+    Opacity: 0.9
+  });
+}
+else {
+  exoskeleton.main.applyFormProperties({ Opacity: 1.0 });
+}

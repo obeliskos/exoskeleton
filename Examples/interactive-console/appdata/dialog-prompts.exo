@@ -1,14 +1,14 @@
 /**
- * Examples using predefined dialogs.
+ * Examples using predefined dialog 'prompts'.
  * 
  * These predefined dialogs can be called upon to quickly
  * enter or choose various types of data.
  */
  
-// showInputDialog can be used to quickly ask the user to
+// promptInput can be used to quickly ask the user to
 // input a string.
 
-var result = exoskeleton.dialog.showInputDialog(
+var result = exoskeleton.dialog.promptInput(
 	"Test Dialog", 
     "Enter text : ", 
     "some stuff"
@@ -16,8 +16,8 @@ var result = exoskeleton.dialog.showInputDialog(
 
 xo.logText("You entered : " + result);
 
-// showDatePicker can be used to select a date from a calendar
-result = exoskeleton.dialog.showDatePicker(
+// promptDatePicker can be used to select a date from a calendar
+result = exoskeleton.dialog.promptDatePicker(
 	"Date Selection",
     "Please choose a start date :",
     "12/21/2017"
@@ -31,7 +31,7 @@ if (result) {
     xo.logText(new Date(result.UniversalEpoch));
 }
 
-// showList can be used to quickly ask the user to pick
+// promptList can be used to quickly ask the user to pick
 // a value from a list
 
 var countries = [
@@ -39,7 +39,7 @@ var countries = [
     	'Australia', 'Other'
 ];
 
-result = exoskeleton.dialog.showList(
+result = exoskeleton.dialog.promptList(
 	"Country Selector", "Select your country of residence :", 
     countries, "United States", false
 );
@@ -47,10 +47,10 @@ result = exoskeleton.dialog.showList(
 xo.logText();
 xo.logText("You picked : " + result);
 
-// showCheckedList can be used to more easily select multiple items
-// from a list of values
+// promptCheckedList can be used to more easily select 
+// multiple items from a list of values
 
-var result = exoskeleton.dialog.showCheckedList(
+var result = exoskeleton.dialog.promptCheckedList(
   "CheckedListBox example",
   "Select a few items",
   ["one", "two", "three", "four", "five"],
@@ -61,8 +61,8 @@ xo.logText();
 xo.logText("// you checked these items :");
 xo.logObject(result);
 
-// showDataGridView can be used to display array of similar objects
-// within a grid and allow selection of their rows.
+// prompt DataGridView can be used to display array of similar 
+// objects within a grid and allow selection of their rows.
 var users = [
   { name: "john", age: 24, address: "123 alpha street" },
   { name: "mary", age: 22, address: "222 gamma street" },
@@ -70,7 +70,11 @@ var users = [
   { name: "jane", age: 26, address: "428 beta street" }
 ];
 
-var result = exoskeleton.dialog.showDataGridView("Users", "Select users to invite :", users);
+var result = exoskeleton.dialog.promptDataGridView(
+	"Users", 
+    "Select users to invite :", 
+    users
+);
 
 xo.logText();
 xo.logText("raw results from grid selection dialog :");

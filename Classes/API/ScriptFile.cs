@@ -262,9 +262,9 @@ namespace Exoskeleton.Classes.API
         /// Deletes an empty directory.
         /// </summary>
         /// <param name="path">The name of the empty directory to delete.</param>
-        public void DeleteDirectory(string path)
+        public void DeleteDirectory(string path, bool recursive)
         {
-            Directory.Delete(path);
+            Directory.Delete(path, recursive);
         }
 
         #endregion

@@ -85,37 +85,10 @@ namespace Exoskeleton.Classes.API
             host.OpenNewWindow(caption, url, width, height);
         }
 
-        /// <summary>
-        /// Display an 'OpenFileDialog'
-        /// </summary>
-        /// <param name="dialogOptions">Optional object containing 'OpenFileDialog' properties to initialize dialog with.</param>
-        /// <returns>'OpenFileDialog' properties after dialog was dismissed, or null if cancelled.</returns>
-        public string ShowOpenFileDialog(string dialogOptions)
+        // Allows updating properties of the host window Form object
+        public void ApplyFormProperties(string formProperties)
         {
-            return host.ShowOpenFileDialog(dialogOptions);
-        }
-
-        /// <summary>
-        /// Display a 'SaveFileDialog'
-        /// <param name="dialogOptions">Optional object containing 'SaveFileDialog' properties to initialize dialog with.</param>
-        /// </summary>
-        /// <returns>'SaveFileDialog' properties after dialog was dismissed, or null if cancelled.</returns>
-        public string ShowSaveFileDialog(string dialogOptions)
-        {
-            return host.ShowSaveFileDialog(dialogOptions);
-        }
-
-        /// <summary>
-        /// Displays a message box to the user and returns the button they clicked.
-        /// </summary>
-        /// <param name="text">Message to display to user.</param>
-        /// <param name="caption">Caption of message box window.</param>
-        /// <param name="buttons">String representation of a MessageBoxButtons enum.</param>
-        /// <param name="icon">string representation of a MessageBoxIcon enum.</param>
-        /// <returns>Text (ToString) representation of button clicked.</returns>
-        public string ShowMessageBox(string text, string caption, string buttons, string icon)
-        {
-            return host.ShowMessageBox(text, caption, buttons, icon);
+            JsonConvert.PopulateObject(formProperties, host.GetForm());
         }
 
         /// <summary>

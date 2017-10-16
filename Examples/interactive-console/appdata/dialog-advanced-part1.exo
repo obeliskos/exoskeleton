@@ -219,6 +219,23 @@ exoskeleton.dialog.addDialogButton({
   UseVisualStyleBackColor: true
 }, "Cancel", "BottomPanel");
 
+// Now let's consider that we may want to do the above dialog multiple times with different 
+// initialization data.  We can use the 'applyControlProperties' method to set properties on 
+// controls already added.
+exoskeleton.dialog.applyControlProperties({
+  NameTextBox : { Text: "TestUser" },
+  EmployeeCheckBox : { Checked: false },
+  AgeNumeric : { Value: 19 },
+  GenderFemale: { Checked: true },
+  UserTypeList: { SelectedItem: 'Administrator' },
+  StartDate: { Value: '1/2/2017' },
+  TestComboBox : { SelectedItem: 'three' },
+  CountryChecklist: { 
+    CheckedIndices: [0, 1, 2],
+    BackColor: "LightBlue" 
+  }
+});
+
 // We get a result with control contents no matter which
 // DialogButton's DialogResult was clicked.
 var result = exoskeleton.dialog.showDialog();

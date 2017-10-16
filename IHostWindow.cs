@@ -22,10 +22,6 @@ namespace Exoskeleton
         void OpenNewWindow(string caption, string url, int width, int height);
         void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon);
 
-        string ShowOpenFileDialog(string dialogOptions);
-        string ShowSaveFileDialog(string dialogOptions);
-        string ShowMessageBox(string text, string caption, string buttons, string icon);
-
         void MulticastEvent(string name, string data);
         void UnicastEvent(string name, string data);
         void PackageAndMulticast(string name, dynamic[] data);

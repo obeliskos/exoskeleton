@@ -186,6 +186,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#dialogadddatagridview'
+                        class='regular pre-open'>
+                        #addDataGridView
+                      </a></li>
+                      
+                      <li><a
                         href='#dialogadddatetimepicker'
                         class='regular pre-open'>
                         #addDateTimePicker
@@ -210,6 +216,18 @@
                       </a></li>
                       
                       <li><a
+                        href='#dialogaddmaskedtextbox'
+                        class='regular pre-open'>
+                        #addMaskedTextBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddmonthcalendar'
+                        class='regular pre-open'>
+                        #addMonthCalendar
+                      </a></li>
+                      
+                      <li><a
                         href='#dialogaddnumericupdown'
                         class='regular pre-open'>
                         #addNumericUpDown
@@ -219,12 +237,6 @@
                         href='#dialogaddpanel'
                         class='regular pre-open'>
                         #addPanel
-                      </a></li>
-                      
-                      <li><a
-                        href='#dialogaddpropertygrid'
-                        class='regular pre-open'>
-                        #addPropertyGrid
                       </a></li>
                       
                       <li><a
@@ -240,27 +252,63 @@
                       </a></li>
                       
                       <li><a
+                        href='#dialogapplycontrolproperties'
+                        class='regular pre-open'>
+                        #applyControlProperties
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogapplydialogdefinition'
+                        class='regular pre-open'>
+                        #applyDialogDefinition
+                      </a></li>
+                      
+                      <li><a
                         href='#dialoginitialize'
                         class='regular pre-open'>
                         #initialize
                       </a></li>
                       
                       <li><a
-                        href='#dialogshowcheckedlist'
+                        href='#dialogpromptcheckedlist'
                         class='regular pre-open'>
-                        #showCheckedList
+                        #promptCheckedList
                       </a></li>
                       
                       <li><a
-                        href='#dialogshowdatagridview'
+                        href='#dialogpromptdatagridview'
                         class='regular pre-open'>
-                        #showDataGridView
+                        #promptDataGridView
                       </a></li>
                       
                       <li><a
-                        href='#dialogshowdatepicker'
+                        href='#dialogpromptdatepicker'
                         class='regular pre-open'>
-                        #showDatePicker
+                        #promptDatePicker
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogpromptinput'
+                        class='regular pre-open'>
+                        #promptInput
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogpromptlist'
+                        class='regular pre-open'>
+                        #promptList
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogpromptpropertygrid'
+                        class='regular pre-open'>
+                        #promptPropertyGrid
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogshowcolordialog'
+                        class='regular pre-open'>
+                        #showColorDialog
                       </a></li>
                       
                       <li><a
@@ -270,15 +318,27 @@
                       </a></li>
                       
                       <li><a
-                        href='#dialogshowinputdialog'
+                        href='#dialogshowfontdialog'
                         class='regular pre-open'>
-                        #showInputDialog
+                        #showFontDialog
                       </a></li>
                       
                       <li><a
-                        href='#dialogshowlist'
+                        href='#dialogshowopenfiledialog'
                         class='regular pre-open'>
-                        #showList
+                        #showOpenFileDialog
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogshowmessagebox'
+                        class='regular pre-open'>
+                        #showMessageBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogshowsavefiledialog'
+                        class='regular pre-open'>
+                        #showSaveFileDialog
                       </a></li>
                       
                     </ul>
@@ -568,6 +628,12 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
+                        href='#mainapplyformproperties'
+                        class='regular pre-open'>
+                        #applyFormProperties
+                      </a></li>
+                      
+                      <li><a
                         href='#maindoevents'
                         class='regular pre-open'>
                         #doEvents
@@ -598,27 +664,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#mainshowopenfiledialog'
-                        class='regular pre-open'>
-                        #showOpenFileDialog
-                      </a></li>
-                      
-                      <li><a
-                        href='#mainshowmessagebox'
-                        class='regular pre-open'>
-                        #showMessageBox
-                      </a></li>
-                      
-                      <li><a
                         href='#mainshownotification'
                         class='regular pre-open'>
                         #showNotification
-                      </a></li>
-                      
-                      <li><a
-                        href='#mainshowsavefiledialog'
-                        class='regular pre-open'>
-                        #showSaveFileDialog
                       </a></li>
                       
                       <li><a
@@ -1952,8 +2000,9 @@ exoskeleton.com.invokeMethod(<span class="hljs-string">"Speak"</span>, [<span cl
   
 
   <p>Dialog API class for creating and interfacing with WinForms dialogs.
-Several predefined dialogs exist or you can compose your own using
-a global dialog singleton.</p>
+This API exposes native .NET dialogs, several exoskeleton 'prompt' dialogs or you can compose your own using a global dialog singleton.
+Dialogs are executed synchronously, so your javascript will wait until dialog is dismissed before
+continuing or receiving its returned result.</p>
 
 
   <div class='pre p1 fill-light mt0'>new Dialog(exoDialog: any)</div>
@@ -2008,7 +2057,8 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a CheckBox to the Dialog singleton Form.</p>
+  <p>Adds a CheckBox to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.checkbox(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addCheckBox(checkbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2089,7 +2139,8 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a CheckedListBox to the Dialog singleton Form.</p>
+  <p>Adds a CheckedListBox to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.checkedlistbox(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addCheckedListBox(checkedlistbox: any, checkedIndices: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int>?, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</div>
@@ -2188,7 +2239,8 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a ComboBox to the Dialog singleton Form.</p>
+  <p>Adds a ComboBox to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addComboBox(comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2257,11 +2309,11 @@ a global dialog singleton.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='dialogadddatetimepicker'>
+    <div class='border-bottom' id='dialogadddatagridview'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addDateTimePicker(dateTimePicker, parentName?, comboBox)</span>
+            <span class='code strong strong truncate'>addDataGridView(gridView, objectArray, parentName?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2269,10 +2321,11 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a DateTimePicker to the Dialog singleton Form.</p>
+  <p>Adds a DataGridView to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datagridview(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addDateTimePicker(dateTimePicker: any, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</div>
+  <div class='pre p1 fill-light mt0'>addDataGridView(gridView: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, objectArray: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -2289,8 +2342,18 @@ a global dialog singleton.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>dateTimePicker</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>gridView</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to DataGridView
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>objectArray</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+	    array of 'similar' objects to display in grid view
+
           </div>
           
         </div>
@@ -2304,10 +2367,90 @@ a global dialog singleton.</p>
           
         </div>
       
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> users = [
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">"john"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">24</span>, <span class="hljs-attr">address</span>: <span class="hljs-string">"123 alpha street"</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">"mary"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">22</span>, <span class="hljs-attr">address</span>: <span class="hljs-string">"222 gamma street"</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">"tom"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">28</span>, <span class="hljs-attr">address</span>: <span class="hljs-string">"587 delta street"</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">"jane"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">26</span>, <span class="hljs-attr">address</span>: <span class="hljs-string">"428 beta street"</span> }
+];
+
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.addDataGridView({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"UserGridView"</span>,
+  <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>,
+  <span class="hljs-attr">ReadOnly</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">AllowUserToAddRows</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">SelectionMode</span>: <span class="hljs-string">'FullRowSelect'</span>
+}, users, <span class="hljs-string">"DetailsPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogadddatetimepicker'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addDateTimePicker(dateTimePicker, parentName?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a DateTimePicker to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datetimepicker(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>addDateTimePicker(dateTimePicker: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>comboBox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
-	    initial properties to assign to ComboBox
+            <span class='code bold'>dateTimePicker</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to DateTimePicker
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
 
           </div>
           
@@ -2357,7 +2500,9 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a 'dismiss dialog' Button to the Dialog singleton Form.</p>
+  <p>Adds a 'dismiss dialog' Button to the Dialog singleton Form.
+This is a standard .net button with hardcoded event handler to dismiss dialog.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.button(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addDialogButton(button: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), dialogResult: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2445,7 +2590,8 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a Label to the Dialog singleton Form.</p>
+  <p>Adds a Label to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addLabel(label: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2525,7 +2671,8 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a ListBox to the Dialog singleton Form.</p>
+  <p>Adds a ListBox to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addListBox(listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2595,6 +2742,172 @@ a global dialog singleton.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='dialogaddmaskedtextbox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addMaskedTextBox(maskedtextbox, parentName)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a MaskedTextBox to the Dialog singleton form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.maskedtextbox(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>addMaskedTextBox(maskedtextbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>maskedtextbox</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing properties to apply to the MaskedTextBox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addMaskedTextBox({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"PhoneNumberMaskedEdit"</span>,
+  <span class="hljs-attr">Mask</span>: <span class="hljs-string">"(999)-000-0000"</span>,
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">124</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">48</span>,
+  <span class="hljs-attr">Width</span>: <span class="hljs-number">100</span>
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddmonthcalendar'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addMonthCalendar(monthcalendar, parentName)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a MonthCalendar to the Dialog singleton form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.monthcalendar(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>addMonthCalendar(monthcalendar: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>monthcalendar</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing properties to apply to the MonthCalendar
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addMonthCalendar({
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"MonthCalendar"</span>,
+  <span class="hljs-attr">ShowToday</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">ShowTodayCircle</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">MonthlyBoldedDates</span>: [<span class="hljs-string">"1/1/2017"</span>, <span class="hljs-string">"1/15/2017"</span>],  <span class="hljs-comment">// bolds 1st and 15th days of every month,</span>
+  AnnuallyBoldedDates: [<span class="hljs-string">"3/20/2017"</span>, <span class="hljs-string">"6/1/2017"</span>, <span class="hljs-string">"9/22/2017"</span>, <span class="hljs-string">"12/22/2017"</span>], 
+  <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>,
+  <span class="hljs-attr">Left</span>: <span class="hljs-number">40</span>
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='dialogaddnumericupdown'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -2607,7 +2920,8 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a NumericUpDown control to the Dialog singleton Form.</p>
+  <p>Adds a NumericUpDown control to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.numericupdown(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addNumericUpDown(numericUpDown: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2688,7 +3002,8 @@ a global dialog singleton.</p>
 
   
 
-  <p>Adds a Panel to the Dialog singleton Form for layout and nesting purposes.</p>
+  <p>Adds a Panel to the Dialog singleton Form for layout and nesting purposes.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addPanel(panel: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2764,95 +3079,6 @@ exoskeleton.dialog.addPanel({
       </div>
     </div>
   
-    <div class='border-bottom' id='dialogaddpropertygrid'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addPropertyGrid(propertyGrid, objectJson, parentName?)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Adds a PropertyGrid to the Dialog singleton Form.</p>
-
-
-  <div class='pre p1 fill-light mt0'>addPropertyGrid(propertyGrid: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), objectJson: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>propertyGrid</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
-	    initial properties to assign to PropertyGrid
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>objectJson</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    object to display in property grid
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    optional name of parent control to nest within
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addPropertyGrid({
-  <span class="hljs-attr">Name</span>: <span class="hljs-string">"AddressProperties"</span>,
-  <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>
-}, { <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">c</span>: { <span class="hljs-attr">x</span>: <span class="hljs-number">9</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">z</span>: <span class="hljs-number">11</span> } }, <span class="hljs-string">"AddressPanel"</span>);</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='dialogaddradiobutton'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -2865,7 +3091,8 @@ exoskeleton.dialog.addPanel({
 
   
 
-  <p>Adds a RadioButton to the Dialog singleton Form.</p>
+  <p>Adds a RadioButton to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addRadioButton(radioButton: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -2945,7 +3172,8 @@ exoskeleton.dialog.addRadioButton({
 
   
 
-  <p>Adds a TextBox to the Dialog singleton Form.</p>
+  <p>Adds a TextBox to the Dialog singleton Form.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textbox(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addTextBox(textbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
@@ -3013,11 +3241,11 @@ exoskeleton.dialog.addRadioButton({
       </div>
     </div>
   
-    <div class='border-bottom' id='dialoginitialize'>
+    <div class='border-bottom' id='dialogapplycontrolproperties'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>initialize(formJson, title, width, height)</span>
+            <span class='code strong strong truncate'>applyControlProperties(controlValues)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3025,10 +3253,11 @@ exoskeleton.dialog.addRadioButton({
 
   
 
-  <p>Initialize global dialog singleton.</p>
+  <p>Applies property values to controls which have already been added.
+Can be used for separating control layout and data initialization.</p>
 
 
-  <div class='pre p1 fill-light mt0'>initialize(formJson: any, title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, width: int, height: int)</div>
+  <div class='pre p1 fill-light mt0'>applyControlProperties(controlValues: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
 
@@ -3045,34 +3274,162 @@ exoskeleton.dialog.addRadioButton({
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>formJson</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Caption to display on dialog window
+            <span class='code bold'>controlValues</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing properties to apply to dialog controls.
 
           </div>
           
         </div>
       
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.applyControlProperties({
+  <span class="hljs-attr">NameTextBox</span> : { <span class="hljs-attr">Text</span>: <span class="hljs-string">"TestUser"</span> },
+  <span class="hljs-attr">EmployeeCheckBox</span> : { <span class="hljs-attr">Checked</span>: <span class="hljs-literal">false</span> }
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogapplydialogdefinition'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>applyDialogDefinition(definition)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Applies a dialog defintion to the current dialog.
+Dialog definitions allow representation of a series of controls, nesting, and property attributes
+within a single json object definition.</p>
+
+
+  <div class='pre p1 fill-light mt0'>applyDialogDefinition(definition: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>width</span> <code class='quiet'>(int)</code>
-	    sets the width of the dialog
+            <span class='code bold'>definition</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing dialog definition.
 
           </div>
           
         </div>
       
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.initialize({ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Test Dialog"</span>, <span class="hljs-attr">Width</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">Height</span>: <span class="hljs-number">300</span> });
+exoskeleton.dialog.applyDialogDefinition({
+  <span class="hljs-attr">SampleList</span>: {
+    <span class="hljs-attr">Type</span>: <span class="hljs-string">"ListBox"</span>,
+    <span class="hljs-attr">Properties</span>: {
+      <span class="hljs-attr">Dock</span>: <span class="hljs-string">"Fill"</span>,
+      <span class="hljs-attr">Items</span>: [<span class="hljs-string">"one"</span>, <span class="hljs-string">"two"</span>, <span class="hljs-string">"three"</span>]
+    }
+  },
+  <span class="hljs-attr">BottomPanel</span>: { <span class="hljs-attr">Type</span>: <span class="hljs-string">"Panel"</span>, <span class="hljs-attr">Properties</span>: { <span class="hljs-attr">Dock</span>: <span class="hljs-string">"Bottom"</span>, <span class="hljs-attr">Height</span>: <span class="hljs-number">30</span> } },
+  <span class="hljs-attr">OkButton</span>: {
+    <span class="hljs-attr">Type</span>: <span class="hljs-string">"DialogButton"</span>,
+    <span class="hljs-attr">Parent</span>: <span class="hljs-string">"BottomPanel"</span>,
+    <span class="hljs-attr">DialogResult</span>: <span class="hljs-string">"OK"</span>,
+    <span class="hljs-attr">Properties</span>: { <span class="hljs-attr">Text</span>: <span class="hljs-string">"OK"</span>, <span class="hljs-attr">Width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">Height</span>: <span class="hljs-number">30</span> }
+  }
+});
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.showDialog();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialoginitialize'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>initialize(formJson)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Initialize global dialog singleton.</p>
+
+
+  <div class='pre p1 fill-light mt0'>initialize(formJson: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>height</span> <code class='quiet'>(int)</code>
-	    sets the height of the dialog
+            <span class='code bold'>formJson</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    object containing properties to initialize dialog form with.
 
           </div>
           
@@ -3105,11 +3462,11 @@ exoskeleton.dialog.addRadioButton({
       </div>
     </div>
   
-    <div class='border-bottom' id='dialogshowcheckedlist'>
+    <div class='border-bottom' id='dialogpromptcheckedlist'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showCheckedList(title, prompt, values, checkedIndices?)</span>
+            <span class='code strong strong truncate'>promptCheckedList(title, prompt, values, checkedIndices?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3120,7 +3477,7 @@ exoskeleton.dialog.addRadioButton({
   <p>Displays a predefined dialog allowing user to select item(s) from a checklist.</p>
 
 
-  <div class='pre p1 fill-light mt0'>showCheckedList(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, values: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, checkedIndices: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int>?)</div>
+  <div class='pre p1 fill-light mt0'>promptCheckedList(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, values: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, checkedIndices: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int>?)</div>
   
   
 
@@ -3185,7 +3542,7 @@ exoskeleton.dialog.addRadioButton({
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// display picklist with no default selection and no multiselection</span>
-<span class="hljs-keyword">var</span> result = exoskeleton.dialog.showCheckedList(
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.promptCheckedList(
   <span class="hljs-string">"Country Selection"</span>,
   <span class="hljs-string">"Enter all countries of residence"</span>,
   [<span class="hljs-string">"United States"</span>, <span class="hljs-string">"United Kingdom"</span>, <span class="hljs-string">"Germany"</span>, <span class="hljs-string">"France"</span>, <span class="hljs-string">"Australia"</span>, <span class="hljs-string">"Japan"</span>, <span class="hljs-string">"China"</span>, <span class="hljs-string">"India"</span>],
@@ -3209,11 +3566,11 @@ exoskeleton.dialog.addRadioButton({
       </div>
     </div>
   
-    <div class='border-bottom' id='dialogshowdatagridview'>
+    <div class='border-bottom' id='dialogpromptdatagridview'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showDataGridView(title, prompt, objectArray)</span>
+            <span class='code strong strong truncate'>promptDataGridView(title, prompt, objectArray, autoSizeColumns)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3224,7 +3581,7 @@ exoskeleton.dialog.addRadioButton({
   <p>Allows display and row selection of an array of similar objects within a .net DataGridView</p>
 
 
-  <div class='pre p1 fill-light mt0'>showDataGridView(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, objectArray: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int></div>
+  <div class='pre p1 fill-light mt0'>promptDataGridView(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, objectArray: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>, autoSizeColumns: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int></div>
   
   
 
@@ -3266,6 +3623,15 @@ exoskeleton.dialog.addRadioButton({
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>autoSizeColumns</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    (default:true) Whether to automatically size columns.
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -3294,7 +3660,7 @@ exoskeleton.dialog.addRadioButton({
   { <span class="hljs-attr">name</span>: <span class="hljs-string">"jane"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">26</span>, <span class="hljs-attr">address</span>: <span class="hljs-string">"428 beta street"</span> }
 ];
 
-<span class="hljs-keyword">var</span> result = exoskeleton.dialog.showDataGridView(<span class="hljs-string">"Users"</span>, <span class="hljs-string">"Select users to invite :"</span>, users);
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.promptDataGridView(<span class="hljs-string">"Users"</span>, <span class="hljs-string">"Select users to invite :"</span>, users);
 
 <span class="hljs-comment">// result might contain [0,1,2] for john, mary, and jane indices</span>
 <span class="hljs-keyword">if</span> (result) {
@@ -3315,11 +3681,11 @@ exoskeleton.dialog.addRadioButton({
       </div>
     </div>
   
-    <div class='border-bottom' id='dialogshowdatepicker'>
+    <div class='border-bottom' id='dialogpromptdatepicker'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showDatePicker(title, prompt, defaultValue?)</span>
+            <span class='code strong strong truncate'>promptDatePicker(title, prompt, defaultValue?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3330,7 +3696,7 @@ exoskeleton.dialog.addRadioButton({
   <p>Displays a predefined dialog allowing user to pick a date from a calendar.</p>
 
 
-  <div class='pre p1 fill-light mt0'>showDatePicker(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, defaultValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>promptDatePicker(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, defaultValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -3386,7 +3752,7 @@ exoskeleton.dialog.addRadioButton({
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// display picklist with no default selection and no multiselection</span>
-<span class="hljs-keyword">var</span> result = exoskeleton.dialog.showDatePicker(
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.promptDatePicker(
   <span class="hljs-string">"Date Selection Example"</span>,
   <span class="hljs-string">"Please choose a start date :"</span>,
   <span class="hljs-string">"12/21/2017"</span>
@@ -3396,6 +3762,395 @@ exoskeleton.dialog.addRadioButton({
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">".net date"</span> + result.Value);
   <span class="hljs-keyword">var</span> jsDate = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(result.UniversalEpoch);
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"javascript date : "</span> + jsDate);
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogpromptinput'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>promptInput(title, prompt, defaultText?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Displays a predefined dialog allowing user to input a string.</p>
+
+
+  <div class='pre p1 fill-light mt0'>promptInput(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, defaultText: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The caption to display on the input dialog window
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prompt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The text to display above, and describing the textbox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>defaultText</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional text to initialize textbox with.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> phoneNumber = exoskeleton.dialog.promptInput(
+  <span class="hljs-string">"Confirm Information"</span>,
+  <span class="hljs-string">"Enter your telephone number"</span>,
+  user.PhoneNumber
+);
+
+<span class="hljs-keyword">if</span> (phoneNumber !== <span class="hljs-literal">null</span>) {
+  user.PhoneNumber = phoneNumber;
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogpromptlist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>promptList(title, prompt, values, selectedItem?, multiselect)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Displays a predefined dialog allowing user to select item(s) from a list.</p>
+
+
+  <div class='pre p1 fill-light mt0'>promptList(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, values: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, selectedItem: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?, multiselect: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The caption to display on the input dialog window
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prompt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The text to display above, and describing the textbox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>values</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+	    An array of strings to load listbox with.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>selectedItem</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?)</code>
+	    string or string[] (if multi) to default selection to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>multiselect</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    Whether to allow multiple selections
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// display listbox with no default selection and no multiselection</span>
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.promptList(
+  <span class="hljs-string">"Country Selection"</span>,
+  <span class="hljs-string">"Enter your country of residence"</span>,
+  [<span class="hljs-string">"United States"</span>, <span class="hljs-string">"United Kingdom"</span>, <span class="hljs-string">"Germany"</span>, <span class="hljs-string">"France"</span>, <span class="hljs-string">"Australia"</span>, <span class="hljs-string">"Japan"</span>, <span class="hljs-string">"China"</span>, <span class="hljs-string">"India"</span>]
+);
+
+<span class="hljs-comment">// since no multiselect, result is a string and not array of strings</span>
+<span class="hljs-keyword">if</span> (result !== <span class="hljs-literal">null</span>) {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"user picked : "</span> + result);
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogpromptpropertygrid'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>promptPropertyGrid(title, caption, objectJson, assemblyName, typeName)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Displays a predefined dialog allowing user create an instance of a .net datatype,
+inspect and modify it, and view it's serialized result.
+This method is mostly for diagnostic purposes during development.</p>
+
+
+  <div class='pre p1 fill-light mt0'>promptPropertyGrid(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, caption: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, objectJson: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, assemblyName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, typeName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The title to display on the input dialog window
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>caption</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The text to display above, and describing the textbox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>objectJson</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    An object containing properties to apply to new typed instance.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>assemblyName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Name of assembly where type is defined.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>typeName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    A name of a .NET datatype.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Let's just inspect an unitialized ListBox object</span>
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.promptPropertyGrid(
+  <span class="hljs-string">"PropertyGrid Inspector"</span>,
+  <span class="hljs-string">"Some Listbox"</span>,
+  {}, <span class="hljs-comment">// we could apply some properties, but we won't for this example</span>
+  <span class="hljs-string">"System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"</span>,
+  <span class="hljs-string">"System.Windows.Forms.ListBox"</span>
+);
+
+<span class="hljs-comment">// we can inspect the structure of the object and what properties look like when serialized</span>
+xo.logObject(result);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogshowcolordialog'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showColorDialog(dialogOptions)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Display a dialog to allow the user to select a color.
+See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.colordialog(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>showColorDialog(dialogOptions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dialogOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to ColorDialog
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> result = exoskeleton.dialog.showColorDialog();
+<span class="hljs-keyword">if</span> (result) {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"color : "</span> + result.Color);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"hex color : "</span> + result.HexColor);
 }</pre>
     
   
@@ -3473,11 +4228,11 @@ exoskeleton.dialog.addRadioButton({
       </div>
     </div>
   
-    <div class='border-bottom' id='dialogshowinputdialog'>
+    <div class='border-bottom' id='dialogshowfontdialog'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showInputDialog(title, prompt, defaultText?)</span>
+            <span class='code strong strong truncate'>showFontDialog(dialogOptions)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3485,10 +4240,11 @@ exoskeleton.dialog.addRadioButton({
 
   
 
-  <p>Displays a predefined dialog allowing user to input a string.</p>
+  <p>Display a dialog to allow the user to select a font.
+See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.fontdialog(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>showInputDialog(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, defaultText: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>showFontDialog(dialogOptions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
 
@@ -3505,26 +4261,8 @@ exoskeleton.dialog.addRadioButton({
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The caption to display on the input dialog window
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>prompt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The text to display above, and describing the textbox
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>defaultText</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    optional text to initialize textbox with.
+            <span class='code bold'>dialogOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to ColorDialog
 
           </div>
           
@@ -3543,14 +4281,10 @@ exoskeleton.dialog.addRadioButton({
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> phoneNumber = exoskeleton.dialog.showInputDialog(
-  <span class="hljs-string">"Confirm Information"</span>,
-  <span class="hljs-string">"Enter your telephone number"</span>,
-  user.PhoneNumber
-);
-
-<span class="hljs-keyword">if</span> (phoneNumber !== <span class="hljs-literal">null</span>) {
-  user.PhoneNumber = phoneNumber;
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> result = exoskeleton.dialog.showFontDialog();
+<span class="hljs-keyword">if</span> (result) {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"font : "</span> + result.Font);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"fontJson : "</span> + result.FontJson);
 }</pre>
     
   
@@ -3565,11 +4299,11 @@ exoskeleton.dialog.addRadioButton({
       </div>
     </div>
   
-    <div class='border-bottom' id='dialogshowlist'>
+    <div class='border-bottom' id='dialogshowopenfiledialog'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showList(title, prompt, values, selectedItem?, multiselect)</span>
+            <span class='code strong strong truncate'>showOpenFileDialog(dialogOptions?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3577,10 +4311,12 @@ exoskeleton.dialog.addRadioButton({
 
   
 
-  <p>Displays a predefined dialog allowing user to select item(s) from a list.</p>
+  <p>Allows user to pick a file to 'open' and returns that filename.  Although only a few options are
+documented here, any 'OpenFileDialog' properties may be attempted to be passed.
+See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.openfiledialog(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>showList(title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, prompt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, values: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, selectedItem: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?, multiselect: bool)</div>
+  <div class='pre p1 fill-light mt0'>showOpenFileDialog(dialogOptions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
 
@@ -3597,46 +4333,67 @@ exoskeleton.dialog.addRadioButton({
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The caption to display on the input dialog window
+            <span class='code bold'>dialogOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    optional object containing 'OpenFileDialog' properties
 
           </div>
           
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>prompt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The text to display above, and describing the textbox
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>values</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
-	    An array of strings to load listbox with.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>selectedItem</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)?)</code>
-	    string or string[] (if multi) to default selection to.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>multiselect</span> <code class='quiet'>(bool)</code>
-	    Whether to allow multiple selections
-
-          </div>
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.Title</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>title to display on open file dialog
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.InitialDirectory</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>initial directory to pick file(s) from
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.Filter</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>filtering options such as "txt files (
+<em>.txt)|</em>
+.txt|All files (
+<em>.</em>
+)|
+<em>.</em>
+"
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.FilterIndex</span> <code class='quiet'>int?</code>
+                  </td>
+                  <td class='break-word'><span>the index of the filter currently selected in the file dialog box
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.Multiselect</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
+                  </td>
+                  <td class='break-word'><span>whether to allow user to select multiple files
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
           
         </div>
       
@@ -3653,16 +4410,248 @@ exoskeleton.dialog.addRadioButton({
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// display listbox with no default selection and no multiselection</span>
-<span class="hljs-keyword">var</span> result = exoskeleton.dialog.showList(
-  <span class="hljs-string">"Country Selection"</span>,
-  <span class="hljs-string">"Enter your country of residence"</span>,
-  [<span class="hljs-string">"United States"</span>, <span class="hljs-string">"United Kingdom"</span>, <span class="hljs-string">"Germany"</span>, <span class="hljs-string">"France"</span>, <span class="hljs-string">"Australia"</span>, <span class="hljs-string">"Japan"</span>, <span class="hljs-string">"China"</span>, <span class="hljs-string">"India"</span>]
-);
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// example passing a few (optional) dialog initialization settings</span>
+<span class="hljs-keyword">var</span> dialogValues = exoskeleton.dialog.showOpenFileDialog({
+  <span class="hljs-attr">Title</span>: <span class="hljs-string">"Select myapp data file to open"</span>,
+  <span class="hljs-attr">InitialDirectory</span>: <span class="hljs-string">"c:\\mydatafolder"</span>,
+  <span class="hljs-attr">Filter</span>: <span class="hljs-string">"dat files (*.dat)|*.dat|All files (*.*)|*.*"</span>
+});
+<span class="hljs-comment">// if user did not cancel</span>
+<span class="hljs-keyword">if</span> (dialogValues) {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"selected file (name) : "</span> + dialogValues.FileName);
+}</pre>
+    
+  
 
-<span class="hljs-comment">// since no multiselect, result is a string and not array of strings</span>
-<span class="hljs-keyword">if</span> (result !== <span class="hljs-literal">null</span>) {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"user picked : "</span> + result);
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogshowmessagebox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showMessageBox(text, caption, buttons?, icon?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Displays a message box to the user and returns the button they clicked.</p>
+
+
+  <div class='pre p1 fill-light mt0'>showMessageBox(text: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, caption: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, buttons: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, icon: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>text</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Message to display to user.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>caption</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Caption of message box window
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>buttons</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    "OK"||"OKCancel"||"YesNo"||"YesNoCancel"||"AbortRetryIgnore"||"RetryCancel"
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>icon</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    "None"||"Information"||"Question"||"Warning"||"Exclamation"||"Hand"||"Error"||"Stop"||"Asterisk"
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        Text (ToString) representation of button clicked.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> dialogResultString = exoskeleton.dialog.showMessageBox(
+   <span class="hljs-string">"An error has occured"</span>, <span class="hljs-string">"MyApp error"</span>, <span class="hljs-string">"OKCancel"</span>, <span class="hljs-string">"Exclamation"</span>
+);
+<span class="hljs-keyword">if</span> (dialogResultString === <span class="hljs-string">"OK"</span>) {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"user clicked ok"</span>);
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogshowsavefiledialog'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showSaveFileDialog(dialogOptions?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Allows user to pick a file to 'save' and returns that filename.  Although only a few options are
+documented here, any 'SaveFileDialog' properties may be attempted to be passed.
+See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.savefiledialog(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>showSaveFileDialog(dialogOptions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dialogOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    optional object containing 'OpenFileDialog' properties
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.Title</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>title to display on save file dialog
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.InitialDirectory</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>initial directory to pick file(s) from
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.Filter</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+                  </td>
+                  <td class='break-word'><span>filtering options such as "txt files (
+<em>.txt)|</em>
+.txt|All files (
+<em>.</em>
+)|
+<em>.</em>
+"
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>dialogOptions.FilterIndex</span> <code class='quiet'>int?</code>
+                  </td>
+                  <td class='break-word'><span>the index of the filter currently selected in the file dialog box
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// example passing a few (optional) dialog initialization settings</span>
+<span class="hljs-keyword">var</span> dialogValues = exoskeleton.dialog.showSaveFileDialog({
+  <span class="hljs-attr">Title</span>: <span class="hljs-string">"Pick data file to save to"</span>,
+  <span class="hljs-attr">InitialDirectory</span>: <span class="hljs-string">"c:\\mydatafolder"</span>,
+  <span class="hljs-attr">Filter</span>: <span class="hljs-string">"dat files (*.dat)|*.dat|All files (*.*)|*.*"</span>
+});
+<span class="hljs-comment">// if user did not cancel</span>
+<span class="hljs-keyword">if</span> (dialogValues) {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"selected file (name) : "</span> + dialogValues.FileName);
 }</pre>
     
   
@@ -4682,7 +5671,7 @@ exoskeleton.enc.decryptFiles(<span class="hljs-string">"c:\\source"</span>, <spa
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>deleteDirectory(path)</span>
+            <span class='code strong strong truncate'>deleteDirectory(path, recursive)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -4690,10 +5679,11 @@ exoskeleton.enc.decryptFiles(<span class="hljs-string">"c:\\source"</span>, <spa
 
   
 
-  <p>Deletes an empty directory.</p>
+  <p>Deletes an empty directory (if recursive is false),
+or recursively deletes subfolders and files (if recursive is true).</p>
 
 
-  <div class='pre p1 fill-light mt0'>deleteDirectory(path: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>deleteDirectory(path: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, recursive: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
   
   
 
@@ -4717,6 +5707,15 @@ exoskeleton.enc.decryptFiles(<span class="hljs-string">"c:\\source"</span>, <spa
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>recursive</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    Whether delete should remove files and subdirectories.
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -4730,7 +5729,10 @@ exoskeleton.enc.decryptFiles(<span class="hljs-string">"c:\\source"</span>, <spa
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.file.deleteDirectory(<span class="hljs-string">"c:\\downloads\\subdir"</span>);</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// this will only work if the 'subdir' folder is empty</span>
+exoskeleton.file.deleteDirectory(<span class="hljs-string">"c:\\downloads\\subdir"</span>);
+<span class="hljs-comment">// this will wipe out the whole 'subdir' folder even if it has files or subdirectories</span>
+exoskeleton.file.deleteDirectory(<span class="hljs-string">"c:\\downloads\\subdir"</span>, <span class="hljs-literal">true</span>);</pre>
     
   
 
@@ -6407,6 +7409,76 @@ exoskeleton.logger.logObject(obj);</pre>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
+    <div class='border-bottom' id='mainapplyformproperties'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>applyFormProperties(formProperties)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Allows updating properties of the host window (.Net) Form object
+See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>applyFormProperties(formProperties: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formProperties</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing properties to apply to host window's Form
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.applyFormProperties({
+  <span class="hljs-attr">WindowState</span>: <span class="hljs-string">"Maximized"</span>,
+  <span class="hljs-attr">Opacity</span>: <span class="hljs-number">0.9</span>
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='maindoevents'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -6728,245 +7800,6 @@ exoskeleton.main.openNewWindow(<span class="hljs-string">"My dynamic page"</span
       </div>
     </div>
   
-    <div class='border-bottom' id='mainshowopenfiledialog'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showOpenFileDialog(dialogOptions?)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Allows user to pick a file to 'open' and returns that filename.  Although only a few options are
-documented here, any 'OpenFileDialog' properties may be attempted to be passed.</p>
-
-
-  <div class='pre p1 fill-light mt0'>showOpenFileDialog(dialogOptions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>dialogOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
-	    optional object containing 'OpenFileDialog' properties
-
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.Title</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>title to display on open file dialog
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.InitialDirectory</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>initial directory to pick file(s) from
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.Filter</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>filtering options such as "txt files (
-<em>.txt)|</em>
-.txt|All files (
-<em>.</em>
-)|
-<em>.</em>
-"
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.FilterIndex</span> <code class='quiet'>int?</code>
-                  </td>
-                  <td class='break-word'><span>the index of the filter currently selected in the file dialog box
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.Multiselect</span> <code class='quiet'>bool?</code>
-                  </td>
-                  <td class='break-word'><span>whether to allow user to select multiple files
-</span></td>
-                </tr>
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// example passing a few (optional) dialog initialization settings</span>
-<span class="hljs-keyword">var</span> dialogValues = exoskeleton.main.showOpenFileDialog({
-  <span class="hljs-attr">Title</span>: <span class="hljs-string">"Select myapp data file to open"</span>,
-  <span class="hljs-attr">InitialDirectory</span>: <span class="hljs-string">"c:\\mydatafolder"</span>,
-  <span class="hljs-attr">Filter</span>: <span class="hljs-string">"dat files (*.dat)|*.dat|All files (*.*)|*.*"</span>
-});
-<span class="hljs-comment">// if user did not cancel</span>
-<span class="hljs-keyword">if</span> (dialogValues) {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"selected file (name) : "</span> + dialogValues.FileName);
-}</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='mainshowmessagebox'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showMessageBox(text, caption, buttons?, icon?)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Displays a message box to the user and returns the button they clicked.</p>
-
-
-  <div class='pre p1 fill-light mt0'>showMessageBox(text: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, caption: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, buttons: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, icon: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>text</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Message to display to user.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>caption</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Caption of message box window
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>buttons</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    "OK"||"OKCancel"||"YesNo"||"YesNoCancel"||"AbortRetryIgnore"||"RetryCancel"
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>icon</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    "None"||"Information"||"Question"||"Warning"||"Exclamation"||"Hand"||"Error"||"Stop"||"Asterisk"
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        Text (ToString) representation of button clicked.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> dialogResultString = exoskeleton.main.showMessageBox(
-   <span class="hljs-string">"An error has occured"</span>, <span class="hljs-string">"MyApp error"</span>, <span class="hljs-string">"OKCancel"</span>, <span class="hljs-string">"Exclamation"</span>
-);
-<span class="hljs-keyword">if</span> (dialogResultString === <span class="hljs-string">"OK"</span>) {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"user clicked ok"</span>);
-}</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='mainshownotification'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -7029,132 +7862,6 @@ documented here, any 'OpenFileDialog' properties may be attempted to be passed.<
     
       
       <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.showNotification(<span class="hljs-string">"my exo app"</span>, <span class="hljs-string">"some notification details"</span>);</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='mainshowsavefiledialog'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showSaveFileDialog(dialogOptions?)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Allows user to pick a file to 'save' and returns that filename.  Although only a few options are
-documented here, any 'SaveFileDialog' properties may be attempted to be passed.</p>
-
-
-  <div class='pre p1 fill-light mt0'>showSaveFileDialog(dialogOptions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>dialogOptions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
-	    optional object containing 'OpenFileDialog' properties
-
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.Title</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>title to display on save file dialog
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.InitialDirectory</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>initial directory to pick file(s) from
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.Filter</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>filtering options such as "txt files (
-<em>.txt)|</em>
-.txt|All files (
-<em>.</em>
-)|
-<em>.</em>
-"
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>dialogOptions.FilterIndex</span> <code class='quiet'>int?</code>
-                  </td>
-                  <td class='break-word'><span>the index of the filter currently selected in the file dialog box
-</span></td>
-                </tr>
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// example passing a few (optional) dialog initialization settings</span>
-<span class="hljs-keyword">var</span> dialogValues = exoskeleton.main.showSaveFileDialog({
-  <span class="hljs-attr">Title</span>: <span class="hljs-string">"Pick data file to save to"</span>,
-  <span class="hljs-attr">InitialDirectory</span>: <span class="hljs-string">"c:\\mydatafolder"</span>,
-  <span class="hljs-attr">Filter</span>: <span class="hljs-string">"dat files (*.dat)|*.dat|All files (*.*)|*.*"</span>
-});
-<span class="hljs-comment">// if user did not cancel</span>
-<span class="hljs-keyword">if</span> (dialogValues) {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"selected file (name) : "</span> + dialogValues.FileName);
-}</pre>
     
   
 
@@ -7908,7 +8615,7 @@ exoskeleton.on(<span class="hljs-string">"FileNewEvent"</span>, <span class="hlj
   <p>Downloads from an internet url and saves to disk.</p>
 
 
-  <div class='pre p1 fill-light mt0'>downloadFile(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, dest: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, async: bool)</div>
+  <div class='pre p1 fill-light mt0'>downloadFile(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, dest: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, async: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
   
   
 
@@ -7943,7 +8650,7 @@ exoskeleton.on(<span class="hljs-string">"FileNewEvent"</span>, <span class="hlj
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>async</span> <code class='quiet'>(bool)</code>
+            <span class='code bold'>async</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
 	    Whether to wait until finished before returning.
 
           </div>
@@ -8260,35 +8967,35 @@ exoskeleton.proc.startPath(<span class="hljs-string">"c:\\windows\\system32\\not
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>processStartInfo.CreateNoWindow</span> <code class='quiet'>bool?</code>
+                  <td class='break-word'><span class='code bold'>processStartInfo.CreateNoWindow</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
                   </td>
                   <td class='break-word'><span>whether to start the process in a new window.
 </span></td>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>processStartInfo.ErrorDialog</span> <code class='quiet'>bool?</code>
+                  <td class='break-word'><span class='code bold'>processStartInfo.ErrorDialog</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
                   </td>
                   <td class='break-word'><span>whether to show error dialog if process could not be started.
 </span></td>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>processStartInfo.LoadUserProfile</span> <code class='quiet'>bool?</code>
+                  <td class='break-word'><span class='code bold'>processStartInfo.LoadUserProfile</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
                   </td>
                   <td class='break-word'><span>whether the windows user profile is to be loaded from the registry.
 </span></td>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>processStartInfo.UseShellExecute</span> <code class='quiet'>bool?</code>
+                  <td class='break-word'><span class='code bold'>processStartInfo.UseShellExecute</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
                   </td>
                   <td class='break-word'><span>whether to use the operating system shell to start the process.
 </span></td>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>processStartInfo.WorkingDirectory</span> <code class='quiet'>bool?</code>
+                  <td class='break-word'><span class='code bold'>processStartInfo.WorkingDirectory</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
                   </td>
                   <td class='break-word'><span>working dir of proc when UseShellExecute is false. dir containing process when UseShellExecute is true.
 </span></td>
@@ -8625,7 +9332,7 @@ procList.forEach(<span class="hljs-function"><span class="hljs-keyword">function
   <p>Kills a running process.</p>
 
 
-  <div class='pre p1 fill-light mt0'>killProcessById(id: int): bool</div>
+  <div class='pre p1 fill-light mt0'>killProcessById(id: int): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
   
 
@@ -8657,7 +9364,7 @@ procList.forEach(<span class="hljs-function"><span class="hljs-keyword">function
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>bool</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
         whether process was found or not.
 
       
@@ -9900,7 +10607,7 @@ This uses .Net SendKeys(), for info on key codes read :
 <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys(v=vs.110).aspx">https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys(v=vs.110).aspx</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>focusAndSendKeys(className: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, windowName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, keys: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>): bool</div>
+  <div class='pre p1 fill-light mt0'>focusAndSendKeys(className: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, windowName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, keys: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
   
 
@@ -9950,7 +10657,7 @@ This uses .Net SendKeys(), for info on key codes read :
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>bool</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
         Whether the window was found.
 
       
@@ -10558,15 +11265,15 @@ See <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>var now = new Date();
-// 24 hr date and time
-var result = exoskeleton.main.formatUnixDate(now, "MM/dd/yy H:mm:ss");
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> now = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+<span class="hljs-comment">// 24 hr date and time</span>
+<span class="hljs-keyword">var</span> result = exoskeleton.util.formatUnixDate(now, <span class="hljs-string">"MM/dd/yy H:mm:ss"</span>);
 alert(result);
-// formatted date only
-result = exoskeleton.main.formatUnixDate(now.getTime(), ""MMMM dd, yyyy");
+<span class="hljs-comment">// formatted date only</span>
+result = exoskeleton.util.formatUnixDate(now.getTime(), <span class="hljs-string">"MMMM dd, yyyy"</span>);
 alert(result);
-// formatted time only
-result = exoskeleton.main.formatUnixDate(now, "hh:mm:ss tt");</pre>
+<span class="hljs-comment">// formatted time only</span>
+result = exoskeleton.util.formatUnixDate(now, <span class="hljs-string">"hh:mm:ss tt"</span>);</pre>
     
   
 
@@ -11009,7 +11716,7 @@ with 'multicast.'.</p>
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>options.asyncListeners</span> <code class='quiet'>bool</code>
+                  <td class='break-word'><span class='code bold'>options.asyncListeners</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
                   
                     (default <code>false</code>)
                   </td>

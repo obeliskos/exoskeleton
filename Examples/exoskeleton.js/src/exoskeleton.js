@@ -227,8 +227,9 @@
 
         /**
          * Dialog API class for creating and interfacing with WinForms dialogs.
-         * Several predefined dialogs exist or you can compose your own using
-         * a global dialog singleton.
+         * This API exposes native .NET dialogs, several exoskeleton 'prompt' dialogs or you can compose your own using a global dialog singleton.
+         * Dialogs are executed synchronously, so your javascript will wait until dialog is dismissed before
+         * continuing or receiving its returned result.
          * @param {any} exoDialog
          * @constructor Dialog
          */
@@ -238,6 +239,7 @@
 
         /**
          * Adds a CheckBox to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkbox(v=vs.110).aspx ms docs}
          * @param {object|string} checkbox - initial properties to assign to checkbox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -265,6 +267,7 @@
 
         /**
          * Adds a CheckedListBox to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkedlistbox(v=vs.110).aspx ms docs}
          * @param {object|string} listbox - initial properties to assign to ListBox
          * @param {int[]=} checkedIndices - optional indices of selected items.
          * @param {string=} parentName - optional name of parent control to nest within
@@ -299,6 +302,7 @@
 
         /**
          * Adds a ComboBox to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx ms docs}
          * @param {object|string} comboBox - initial properties to assign to ComboBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -325,8 +329,47 @@
         };
 
         /**
+         * Adds a DataGridView to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datagridview(v=vs.110).aspx ms docs}
+         * @param {object} gridView - initial properties to assign to DataGridView
+         * @param {object[]} objectArray - array of 'similar' objects to display in grid view
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var users = [
+         *   { name: "john", age: 24, address: "123 alpha street" },
+         *   { name: "mary", age: 22, address: "222 gamma street" },
+         *   { name: "tom", age: 28, address: "587 delta street" },
+         *   { name: "jane", age: 26, address: "428 beta street" }
+         * ];
+         *
+         * var result = exoskeleton.dialog.addDataGridView({
+         *   Name: "UserGridView",
+         *   Dock: 'Fill',
+         *   ReadOnly: true,
+         *   AllowUserToAddRows: false,
+         *   SelectionMode: 'FullRowSelect'
+         * }, users, "DetailsPanel");
+         */
+        Dialog.prototype.addDataGridView = function (gridView, objectArray, parentName) {
+            if (typeof gridView === "object") {
+                gridView = JSON.stringify(gridView);
+            }
+            if (typeof objectArray === "object") {
+                objectArray = JSON.stringify(objectArray);
+            }
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddDataGridView(gridView, objectArray, parentName);
+        };
+
+        /**
          * Adds a DateTimePicker to the Dialog singleton Form.
-         * @param {object|string} comboBox - initial properties to assign to ComboBox
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datetimepicker(v=vs.110).aspx ms docs}
+         * @param {object} dateTimePicker - initial properties to assign to DateTimePicker
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
          * @instance
@@ -352,6 +395,8 @@
 
         /**
          * Adds a 'dismiss dialog' Button to the Dialog singleton Form.
+         * This is a standard .net button with hardcoded event handler to dismiss dialog.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.button(v=vs.110).aspx ms docs}
          * @param {object|string} button - initial properties to assign to button
          * @param {string} dialogResult - dismiss result ('OK', 'Cancel', 'Yes', 'No')
          * @param {string=} parentName - optional name of parent control to nest within
@@ -378,6 +423,7 @@
 
         /**
          * Adds a Label to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.label(v=vs.110).aspx ms docs}
          * @param {object|string} label - initial properties to assign to label
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -404,6 +450,7 @@
 
         /**
          * Adds a ListBox to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx ms docs}
          * @param {object|string} listbox - initial properties to assign to ListBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -431,7 +478,66 @@
         };
 
         /**
+         * Adds a MaskedTextBox to the Dialog singleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.maskedtextbox(v=vs.110).aspx ms docs}
+         * @param {object} maskedtextbox - object containing properties to apply to the MaskedTextBox
+         * @param {string} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addMaskedTextBox({
+         *   Name: "PhoneNumberMaskedEdit",
+         *   Mask: "(999)-000-0000",
+         *   Top: 124,
+         *   Left: 48,
+         *   Width: 100
+         * });
+         */
+        Dialog.prototype.addMaskedTextBox = function (maskedtextbox, parentName) {
+            if (typeof maskedtextbox === "object") {
+                maskedtextbox = JSON.stringify(maskedtextbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddMaskedTextBox(maskedtextbox, parentName);
+        };
+
+        /**
+         * Adds a MonthCalendar to the Dialog singleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.monthcalendar(v=vs.110).aspx ms docs}
+         * @param {object} monthcalendar - object containing properties to apply to the MonthCalendar
+         * @param {string} parentName - optional name of parent control to nest within
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addMonthCalendar({
+         *   Name: "MonthCalendar",
+         *   ShowToday: true,
+         *   ShowTodayCircle: true,
+         *   MonthlyBoldedDates: ["1/1/2017", "1/15/2017"],  // bolds 1st and 15th days of every month,
+         *   AnnuallyBoldedDates: ["3/20/2017", "6/1/2017", "9/22/2017", "12/22/2017"], 
+         *   Top: 40,
+         *   Left: 40
+         * });
+         */
+        Dialog.prototype.addMonthCalendar = function (monthcalendar, parentName) {
+            if (typeof monthcalendar === "object") {
+                monthcalendar = JSON.stringify(monthcalendar);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoDialog.AddMonthCalendar(monthcalendar, parentName);
+        };
+
+        /**
          * Adds a NumericUpDown control to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.numericupdown(v=vs.110).aspx ms docs}
          * @param {object|string} numericUpDown - initial properties to assign to ListBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -459,6 +565,7 @@
 
         /**
          * Adds a Panel to the Dialog singleton Form for layout and nesting purposes.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
          * @param {object|string} panel - initial properties to assign to panel
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -492,38 +599,8 @@
         };
 
         /**
-         * Adds a PropertyGrid to the Dialog singleton Form.
-         * @param {object|string} propertyGrid - initial properties to assign to PropertyGrid
-         * @param {object} objectJson - object to display in property grid
-         * @param {string=} parentName - optional name of parent control to nest within
-         * @memberof Dialog
-         * @instance
-         * @example
-         * exoskeleton.dialog.addPropertyGrid({
-         *   Name: "AddressProperties",
-         *   Top: 10,
-         *   Left: 10,
-         *   Dock: 'Fill'
-         * }, { a: 1, b: 2, c: { x: 9, y: 10, z: 11 } }, "AddressPanel");
-         */
-        Dialog.prototype.addPropertyGrid = function (propertyGrid, objectJson, parentName) {
-            if (typeof propertyGrid === "object") {
-                propertyGrid = JSON.stringify(propertyGrid);
-            }
-
-            if (typeof objectJson === "object") {
-                objectJson = JSON.stringify(objectJson);
-            }
-
-            if (typeof parentName === "undefined") {
-                parentName = null;
-            }
-
-            this.exoDialog.AddPropertyGrid(propertyGrid, objectJson, parentName);
-        };
-
-        /**
          * Adds a RadioButton to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx ms docs}
          * @param {object} radioButton - initial properties to assign to RadioButton
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -550,6 +627,7 @@
 
         /**
          * Adds a TextBox to the Dialog singleton Form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.textbox(v=vs.110).aspx ms docs}
          * @param {object} textbox - initial properties to assign to TextBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -575,10 +653,66 @@
         };
 
         /**
+         * Applies property values to controls which have already been added.
+         * Can be used for separating control layout and data initialization.
+         * @param {object} controlValues - object containing properties to apply to dialog controls.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.applyControlProperties({
+         *   NameTextBox : { Text: "TestUser" },
+         *   EmployeeCheckBox : { Checked: false }
+         * });
+         */
+        Dialog.prototype.applyControlProperties = function (controlValues) {
+            controlValues = controlValues || {};
+
+            if (typeof controlValues === "object") {
+                controlValues = JSON.stringify(controlValues);
+            }
+
+            this.exoDialog.ApplyControlProperties(controlValues);
+        };
+
+        /**
+         * Applies a dialog defintion to the current dialog.
+         * Dialog definitions allow representation of a series of controls, nesting, and property attributes
+         * within a single json object definition.
+         * @param {object} definition - object containing dialog definition.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.initialize({ Text: "Test Dialog", Width: 400, Height: 300 });
+         * exoskeleton.dialog.applyDialogDefinition({
+         *   SampleList: {
+         *     Type: "ListBox",
+         *     Properties: {
+         *       Dock: "Fill",
+         *       Items: ["one", "two", "three"]
+         *     }
+         *   },
+         *   BottomPanel: { Type: "Panel", Properties: { Dock: "Bottom", Height: 30 } },
+         *   OkButton: {
+         *     Type: "DialogButton",
+         *     Parent: "BottomPanel",
+         *     DialogResult: "OK",
+         *     Properties: { Text: "OK", Width: 100, Height: 30 }
+         *   }
+         * });
+         * var result = exoskeleton.dialog.showDialog();
+         */
+        Dialog.prototype.applyDialogDefinition = function (definition) {
+            definition = definition || {};
+            if (typeof definition === "object") {
+                definition = JSON.stringify(definition);
+            }
+
+            this.exoDialog.ApplyDialogDefinition(definition);
+        };
+
+        /**
          * Initialize global dialog singleton.
-         * @param {string} title - Caption to display on dialog window
-         * @param {int} width - sets the width of the dialog
-         * @param {int} height - sets the height of the dialog
+         * @param {string} formJson - object containing properties to initialize dialog form with.
          * @memberof Dialog
          * @instance
          * @example
@@ -602,7 +736,7 @@
          * @instance
          * @example
          * // display picklist with no default selection and no multiselection
-         * var result = exoskeleton.dialog.showCheckedList(
+         * var result = exoskeleton.dialog.promptCheckedList(
          *   "Country Selection",
          *   "Enter all countries of residence",
          *   ["United States", "United Kingdom", "Germany", "France", "Australia", "Japan", "China", "India"],
@@ -614,7 +748,7 @@
          *   console.log("user picked : " + result);
          * }
          */
-        Dialog.prototype.showCheckedList = function (title, prompt, values, checkedIndices) {
+        Dialog.prototype.promptCheckedList = function (title, prompt, values, checkedIndices) {
             title = title || "";
             prompt = prompt || "";
             values = values || [];
@@ -623,7 +757,7 @@
             values = JSON.stringify(values);
             checkedIndices = JSON.stringify(checkedIndices);
 
-            var result = this.exoDialog.ShowCheckedList(title, prompt, values, checkedIndices);
+            var result = this.exoDialog.PromptCheckedList(title, prompt, values, checkedIndices);
 
             return (typeof result === "undefined") ? null : JSON.parse(result);
         };
@@ -633,6 +767,7 @@
          * @param {string} title - The caption to display on the input dialog window
          * @param {string} prompt - The text to display above, and describing the textbox
          * @param {object[]} objectArray - An array of object to display and/or select in grid.
+         * @param {boolean} autoSizeColumns - (default:true) Whether to automatically size columns.
          * @returns {int[]} Array of selected row indices
          * @memberof Dialog
          * @instance
@@ -644,7 +779,7 @@
          *   { name: "jane", age: 26, address: "428 beta street" }
          * ];
          *
-         * var result = exoskeleton.dialog.showDataGridView("Users", "Select users to invite :", users);
+         * var result = exoskeleton.dialog.promptDataGridView("Users", "Select users to invite :", users);
          *
          * // result might contain [0,1,2] for john, mary, and jane indices
          * if (result) {
@@ -653,7 +788,7 @@
          *   });
          * }
          */
-        Dialog.prototype.showDataGridView = function (title, prompt, objectArray) {
+        Dialog.prototype.promptDataGridView = function (title, prompt, objectArray, autoSizeColumns) {
             if (typeof title === "undefined") {
                 title = "DataGridView Selection Dialog";
             }
@@ -663,9 +798,12 @@
             if (typeof objectArray === "undefined") {
                 objectArray = [];
             }
+            if (typeof autoSizeColumns === "undefined") {
+                autoSizeColumns = true;
+            }
             objectArray = JSON.stringify(objectArray);
 
-            var result = this.exoDialog.showDataGridView(title, prompt, objectArray);
+            var result = this.exoDialog.PromptDataGridView(title, prompt, objectArray, autoSizeColumns);
 
             return (result === "undefined" || result === null) ? null : JSON.parse(result);
         };
@@ -679,7 +817,7 @@
          * @instance
          * @example
          * // display picklist with no default selection and no multiselection
-         * var result = exoskeleton.dialog.showDatePicker(
+         * var result = exoskeleton.dialog.promptDatePicker(
          *   "Date Selection Example",
          *   "Please choose a start date :",
          *   "12/21/2017"
@@ -691,7 +829,7 @@
          *   console.log("javascript date : " + jsDate);
          * }
          */
-        Dialog.prototype.showDatePicker = function (title, prompt, defaultValue) {
+        Dialog.prototype.promptDatePicker = function (title, prompt, defaultValue) {
             if (typeof title === "undefined") {
                 title = "Date Selection";
             }
@@ -702,9 +840,175 @@
                 defaultValue = null;
             }
 
-            var result = this.exoDialog.ShowDatePicker(title, prompt, defaultValue);
+            var result = this.exoDialog.PromptDatePicker(title, prompt, defaultValue);
 
             return (typeof result === "undefined") ? null : JSON.parse(result);
+        };
+
+        /**
+         * Displays a predefined dialog allowing user to input a string.
+         * @param {string} title - The caption to display on the input dialog window
+         * @param {string} prompt - The text to display above, and describing the textbox
+         * @param {string=} defaultText - optional text to initialize textbox with.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var phoneNumber = exoskeleton.dialog.promptInput(
+         *   "Confirm Information",
+         *   "Enter your telephone number",
+         *   user.PhoneNumber
+         * );
+         *
+         * if (phoneNumber !== null) {
+         *   user.PhoneNumber = phoneNumber;
+         * }
+         */
+        Dialog.prototype.promptInput = function (title, prompt, defaultText) {
+            if (typeof title === "undefined") {
+                title = "Enter text:";
+            }
+            if (typeof prompt === "undefined") {
+                prompt = "";
+            }
+            if (typeof defaultText === "undefined") {
+                defaultText = "";
+            }
+
+            var result = this.exoDialog.PromptInput(title, prompt, defaultText);
+
+            if (typeof result === "undefined") {
+                result = null;
+            }
+
+            return result;
+        };
+
+        /**
+         * Displays a predefined dialog allowing user to select item(s) from a list.
+         * @param {string} title - The caption to display on the input dialog window
+         * @param {string} prompt - The text to display above, and describing the textbox
+         * @param {string[]} values - An array of strings to load listbox with.
+         * @param {string|string[]=} selectedItem - string or string[] (if multi) to default selection to.
+         * @param {boolean} multiselect - Whether to allow multiple selections
+         * @memberof Dialog
+         * @instance
+         * @example
+         * // display listbox with no default selection and no multiselection
+         * var result = exoskeleton.dialog.promptList(
+         *   "Country Selection",
+         *   "Enter your country of residence",
+         *   ["United States", "United Kingdom", "Germany", "France", "Australia", "Japan", "China", "India"]
+         * );
+         *
+         * // since no multiselect, result is a string and not array of strings
+         * if (result !== null) {
+         *   console.log("user picked : " + result);
+         * }
+         */
+        Dialog.prototype.promptList = function (title, prompt, values, selectedItem, multiselect) {
+            if (typeof title === "undefined") {
+                title = "Item Picklist";
+            }
+            if (typeof prompt === "undefined") {
+                prompt = "Enter an item";
+            }
+            if (typeof values === "undefined") {
+                values = [];
+            }
+            values = JSON.stringify(values);
+
+            if (typeof selectedItem === "undefined") {
+                selectedItem = null;
+            }
+            if (!multiselect) {
+                multiselect = false;
+            }
+
+            var result = this.exoDialog.PromptList(title, prompt, values, selectedItem, multiselect);
+
+            if (typeof result === 'undefined') {
+                result = null;
+            }
+
+            return multiselect ? JSON.parse(result) : result;
+        };
+
+        /**
+         * Displays a predefined dialog allowing user create an instance of a .net datatype,
+         * inspect and modify it, and view it's serialized result.
+         * This method is mostly for diagnostic purposes during development.
+         * @param {string} title - The title to display on the input dialog window
+         * @param {string} caption - The text to display above, and describing the textbox
+         * @param {object} objectJson - An object containing properties to apply to new typed instance.
+         * @param {string} assemblyName - Name of assembly where type is defined.
+         * @param {string} typeName - A name of a .NET datatype.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * // Let's just inspect an unitialized ListBox object
+         * var result = exoskeleton.dialog.promptPropertyGrid(
+         *   "PropertyGrid Inspector",
+         *   "Some Listbox",
+         *   {}, // we could apply some properties, but we won't for this example
+         *   "System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+         *   "System.Windows.Forms.ListBox"
+         * );
+         *
+         * // we can inspect the structure of the object and what properties look like when serialized
+         * xo.logObject(result);
+         */
+        Dialog.prototype.promptPropertyGrid = function (title, caption, objectJson, assemblyName, typeName) {
+            if (typeof title === "undefined") {
+                title = "PropertyGrid inspector";
+            }
+
+            if (typeof caption === "undefined") {
+                caption = "Inspecting object of type : " + typeName;
+            }
+
+            objectJson = objectJson || {};
+            if (typeof objectJson === "object") {
+                objectJson = JSON.stringify(objectJson);
+            }
+
+            if (typeof assemblyName === "undefined") {
+                assemblyName = null;
+            }
+
+            if (typeof typeName === "undefined") {
+                typeName = null;
+            }
+
+            var result = this.exoDialog.PromptPropertyGrid(title, caption, objectJson, assemblyName, typeName);
+
+            return result ? JSON.parse(result) : null;
+        };
+
+        /**
+         * Display a dialog to allow the user to select a color.
+         * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.colordialog(v=vs.110).aspx ms docs}
+         * @param {object} dialogOptions - initial properties to assign to ColorDialog
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var result = exoskeleton.dialog.showColorDialog();
+         * if (result) {
+         *   console.log("color : " + result.Color);
+         *   console.log("hex color : " + result.HexColor);
+         * }
+         */
+        Dialog.prototype.showColorDialog = function (dialogOptions) {
+            dialogOptions = dialogOptions || {};
+            if (typeof dialogOptions === "object") {
+                dialogOptions = JSON.stringify(dialogOptions);
+            }
+
+            var result = this.exoDialog.ShowColorDialog(dialogOptions);
+            if (result) {
+                result = JSON.parse(result);
+            }
+
+            return result;
         };
 
         /**
@@ -725,91 +1029,124 @@
         };
 
         /**
-         * Displays a predefined dialog allowing user to input a string.
-         * @param {string} title - The caption to display on the input dialog window
-         * @param {string} prompt - The text to display above, and describing the textbox
-         * @param {string=} defaultText - optional text to initialize textbox with.
+         * Display a dialog to allow the user to select a font.
+         * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.fontdialog(v=vs.110).aspx ms docs}
+         * @param {object} dialogOptions - initial properties to assign to ColorDialog
          * @memberof Dialog
          * @instance
          * @example
-         * var phoneNumber = exoskeleton.dialog.showInputDialog(
-         *   "Confirm Information",
-         *   "Enter your telephone number",
-         *   user.PhoneNumber
-         * );
-         *
-         * if (phoneNumber !== null) {
-         *   user.PhoneNumber = phoneNumber;
+         * var result = exoskeleton.dialog.showFontDialog();
+         * if (result) {
+         *   console.log("font : " + result.Font);
+         *   console.log("fontJson : " + result.FontJson);
          * }
          */
-        Dialog.prototype.showInputDialog = function (title, prompt, defaultText) {
-            if (typeof title === "undefined") {
-                title = "Enter text:";
-            }
-            if (typeof prompt === "undefined") {
-                prompt = "";
-            }
-            if (typeof defaultText === "undefined") {
-                defaultText = "";
+        Dialog.prototype.showFontDialog = function (dialogOptions) {
+            dialogOptions = dialogOptions || {};
+            if (typeof dialogOptions === "object") {
+                dialogOptions = JSON.stringify(dialogOptions);
             }
 
-            var result = this.exoDialog.ShowInputDialog(title, prompt, defaultText);
-
-            if (typeof result === "undefined") {
-                result = null;
+            var result = this.exoDialog.ShowFontDialog(dialogOptions);
+            if (result) {
+                result = JSON.parse(result);
             }
 
             return result;
         };
 
         /**
-         * Displays a predefined dialog allowing user to select item(s) from a list.
-         * @param {string} title - The caption to display on the input dialog window
-         * @param {string} prompt - The text to display above, and describing the textbox
-         * @param {string[]} values - An array of strings to load listbox with.
-         * @param {string|string[]=} selectedItem - string or string[] (if multi) to default selection to.
-         * @param {bool} multiselect - Whether to allow multiple selections
+         * Allows user to pick a file to 'open' and returns that filename.  Although only a few options are
+         * documented here, any 'OpenFileDialog' properties may be attempted to be passed.
+         * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.openfiledialog(v=vs.110).aspx ms docs}
+         * @param {object=} dialogOptions - optional object containing 'OpenFileDialog' properties
+         * @param {string=} dialogOptions.Title - title to display on open file dialog
+         * @param {string=} dialogOptions.InitialDirectory - initial directory to pick file(s) from
+         * @param {string=} dialogOptions.Filter - filtering options such as "txt files (*.txt)|*.txt|All files (*.*)|*.*"
+         * @param {int=} dialogOptions.FilterIndex - the index of the filter currently selected in the file dialog box
+         * @param {boolean=} dialogOptions.Multiselect - whether to allow user to select multiple files
+         * @returns {object=} 'OpenFileDialog' properties after dialog was dismissed, or null if cancelled.
          * @memberof Dialog
          * @instance
          * @example
-         * // display listbox with no default selection and no multiselection
-         * var result = exoskeleton.dialog.showList(
-         *   "Country Selection",
-         *   "Enter your country of residence",
-         *   ["United States", "United Kingdom", "Germany", "France", "Australia", "Japan", "China", "India"]
-         * );
-         *
-         * // since no multiselect, result is a string and not array of strings
-         * if (result !== null) {
-         *   console.log("user picked : " + result);
+         * // example passing a few (optional) dialog initialization settings
+         * var dialogValues = exoskeleton.dialog.showOpenFileDialog({
+         *   Title: "Select myapp data file to open",
+         *   InitialDirectory: "c:\\mydatafolder",
+         *   Filter: "dat files (*.dat)|*.dat|All files (*.*)|*.*"
+         * });
+         * // if user did not cancel
+         * if (dialogValues) {
+         *   console.log("selected file (name) : " + dialogValues.FileName);
          * }
          */
-        Dialog.prototype.showList = function (title, prompt, values, selectedItem, multiselect) {
-            if (typeof title === "undefined") {
-                title = "Item Picklist";
-            }
-            if (typeof prompt === "undefined") {
-                prompt = "Enter an item";
-            }
-            if (typeof values === "undefined") {
-                values = [];
-            }
-            values = JSON.stringify(values);
-
-            if (typeof selectedItem === "undefined") {
-                selectedItem = null;
-            }
-            if (!multiselect) {
-                multiselect = false;
+        Dialog.prototype.showOpenFileDialog = function (dialogOptions) {
+            if (dialogOptions) {
+                dialogOptions = JSON.stringify(dialogOptions);
             }
 
-            var result = this.exoDialog.ShowList(title, prompt, values, selectedItem, multiselect);
+            var result = this.exoDialog.ShowOpenFileDialog(dialogOptions);
+            if (result) {
+                result = JSON.parse(result);
+            }
+            return result;
+        };
 
-            if (typeof result === 'undefined') {
-                result = null;
+        /**
+         * Displays a message box to the user and returns the button they clicked.
+         * @param {string} text - Message to display to user.
+         * @param {string} caption - Caption of message box window
+         * @param {string=} buttons - "OK"||"OKCancel"||"YesNo"||"YesNoCancel"||"AbortRetryIgnore"||"RetryCancel"
+         * @param {string=} icon - "None"||"Information"||"Question"||"Warning"||"Exclamation"||"Hand"||"Error"||"Stop"||"Asterisk"
+         * @returns {string} Text (ToString) representation of button clicked.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var dialogResultString = exoskeleton.dialog.showMessageBox(
+         *    "An error has occured", "MyApp error", "OKCancel", "Exclamation"
+         * );
+         * if (dialogResultString === "OK") {
+         *   console.log("user clicked ok");
+         * }
+         */
+        Dialog.prototype.showMessageBox = function (text, caption, buttons, icon) {
+            return this.exoDialog.ShowMessageBox(text, caption, buttons, icon);
+        };
+
+        /**
+         * Allows user to pick a file to 'save' and returns that filename.  Although only a few options are
+         * documented here, any 'SaveFileDialog' properties may be attempted to be passed.
+         * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.savefiledialog(v=vs.110).aspx ms docs}
+         * @param {object=} dialogOptions - optional object containing 'OpenFileDialog' properties
+         * @param {string=} dialogOptions.Title - title to display on save file dialog
+         * @param {string=} dialogOptions.InitialDirectory - initial directory to pick file(s) from
+         * @param {string=} dialogOptions.Filter - filtering options such as "txt files (*.txt)|*.txt|All files (*.*)|*.*"
+         * @param {int=} dialogOptions.FilterIndex - the index of the filter currently selected in the file dialog box
+         * @returns {object=} 'SaveFileDialog' properties after dialog was dismissed, or null if cancelled.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * // example passing a few (optional) dialog initialization settings
+         * var dialogValues = exoskeleton.dialog.showSaveFileDialog({
+         *   Title: "Pick data file to save to",
+         *   InitialDirectory: "c:\\mydatafolder",
+         *   Filter: "dat files (*.dat)|*.dat|All files (*.*)|*.*"
+         * });
+         * // if user did not cancel
+         * if (dialogValues) {
+         *   console.log("selected file (name) : " + dialogValues.FileName);
+         * }
+         */
+        Dialog.prototype.showSaveFileDialog = function (dialogOptions) {
+            if (dialogOptions) {
+                dialogOptions = JSON.stringify(dialogOptions);
             }
 
-            return multiselect ? JSON.parse(result) : result;
+            var result = this.exoDialog.ShowSaveFileDialog(dialogOptions);
+            if (result) {
+                result = JSON.parse(result);
+            }
+            return result;
         };
 
         // #endregion
@@ -1000,14 +1337,22 @@
         };
 
         /**
-         * Deletes an empty directory.
+         * Deletes an empty directory (if recursive is false),
+         * or recursively deletes subfolders and files (if recursive is true).
          * @param {string} path - The name of the empty directory to delete.
+         * @param {boolean} recursive - Whether delete should remove files and subdirectories.
          * @memberof File
          * @instance
          * @example
+         * // this will only work if the 'subdir' folder is empty
          * exoskeleton.file.deleteDirectory("c:\\downloads\\subdir");
+         * // this will wipe out the whole 'subdir' folder even if it has files or subdirectories
+         * exoskeleton.file.deleteDirectory("c:\\downloads\\subdir", true);
          */
-        File.prototype.deleteDirectory = function (path) {
+        File.prototype.deleteDirectory = function (path, recursive) {
+            if (typeof recursive === "undefined") {
+                recursive = false;
+            }
             this.exoFile.DeleteDirectory(path);
         };
 
@@ -1333,6 +1678,26 @@
         }
 
         /**
+         * Allows updating properties of the host window (.Net) Form object
+         * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx ms docs}
+         * @param {object} formProperties - object containing properties to apply to host window's Form
+         * @memberof Main
+         * @instance
+         * @example
+         * exoskeleton.main.applyFormProperties({
+         *   WindowState: "Maximized",
+         *   Opacity: 0.9
+         * });
+         */
+        Main.prototype.applyFormProperties = function (formProperties) {
+            if (typeof formProperties === "object") {
+                formProperties = JSON.stringify(formProperties);
+            }
+
+            this.exoMain.applyFormProperties(formProperties);
+        };
+
+        /**
          * Process all Windows messages currently in the message queue.
          * @memberof Main
          * @instance
@@ -1399,63 +1764,6 @@
         };
 
         /**
-         * Allows user to pick a file to 'open' and returns that filename.  Although only a few options are
-         * documented here, any 'OpenFileDialog' properties may be attempted to be passed.
-         * @param {object=} dialogOptions - optional object containing 'OpenFileDialog' properties
-         * @param {string=} dialogOptions.Title - title to display on open file dialog
-         * @param {string=} dialogOptions.InitialDirectory - initial directory to pick file(s) from
-         * @param {string=} dialogOptions.Filter - filtering options such as "txt files (*.txt)|*.txt|All files (*.*)|*.*"
-         * @param {int=} dialogOptions.FilterIndex - the index of the filter currently selected in the file dialog box
-         * @param {bool=} dialogOptions.Multiselect - whether to allow user to select multiple files
-         * @returns {object=} 'OpenFileDialog' properties after dialog was dismissed, or null if cancelled.
-         * @memberof Main
-         * @instance
-         * @example
-         * // example passing a few (optional) dialog initialization settings
-         * var dialogValues = exoskeleton.main.showOpenFileDialog({
-         *   Title: "Select myapp data file to open",
-         *   InitialDirectory: "c:\\mydatafolder",
-         *   Filter: "dat files (*.dat)|*.dat|All files (*.*)|*.*"
-         * });
-         * // if user did not cancel
-         * if (dialogValues) {
-         *   console.log("selected file (name) : " + dialogValues.FileName);
-         * }
-         */
-        Main.prototype.showOpenFileDialog = function (dialogOptions) {
-            if (dialogOptions) {
-                dialogOptions = JSON.stringify(dialogOptions);
-            }
-
-            var result = this.exoMain.ShowOpenFileDialog(dialogOptions);
-            if (result) {
-                result = JSON.parse(result);
-            }
-            return result;
-        };
-
-        /**
-         * Displays a message box to the user and returns the button they clicked.
-         * @param {string} text - Message to display to user.
-         * @param {string} caption - Caption of message box window
-         * @param {string=} buttons - "OK"||"OKCancel"||"YesNo"||"YesNoCancel"||"AbortRetryIgnore"||"RetryCancel"
-         * @param {string=} icon - "None"||"Information"||"Question"||"Warning"||"Exclamation"||"Hand"||"Error"||"Stop"||"Asterisk"
-         * @returns {string} Text (ToString) representation of button clicked.
-         * @memberof Main
-         * @instance
-         * @example
-         * var dialogResultString = exoskeleton.main.showMessageBox(
-         *    "An error has occured", "MyApp error", "OKCancel", "Exclamation"
-         * );
-         * if (dialogResultString === "OK") {
-         *   console.log("user clicked ok");
-         * }
-         */
-        Main.prototype.showMessageBox = function (text, caption, buttons, icon) {
-            return this.exoMain.ShowMessageBox(text, caption, buttons, icon);
-        };
-
-        /**
          * Displays a windows system tray notification.
          * @param {string} title - The notification title.
          * @param {string} message - The notification message.
@@ -1466,41 +1774,6 @@
          */
         Main.prototype.showNotification = function (title, message) {
             this.exoMain.ShowNotification(title, message);
-        };
-
-        /**
-         * Allows user to pick a file to 'save' and returns that filename.  Although only a few options are
-         * documented here, any 'SaveFileDialog' properties may be attempted to be passed.
-         * @param {object=} dialogOptions - optional object containing 'OpenFileDialog' properties
-         * @param {string=} dialogOptions.Title - title to display on save file dialog
-         * @param {string=} dialogOptions.InitialDirectory - initial directory to pick file(s) from
-         * @param {string=} dialogOptions.Filter - filtering options such as "txt files (*.txt)|*.txt|All files (*.*)|*.*"
-         * @param {int=} dialogOptions.FilterIndex - the index of the filter currently selected in the file dialog box
-         * @returns {object=} 'SaveFileDialog' properties after dialog was dismissed, or null if cancelled.
-         * @memberof Main
-         * @instance
-         * @example
-         * // example passing a few (optional) dialog initialization settings
-         * var dialogValues = exoskeleton.main.showSaveFileDialog({
-         *   Title: "Pick data file to save to",
-         *   InitialDirectory: "c:\\mydatafolder",
-         *   Filter: "dat files (*.dat)|*.dat|All files (*.*)|*.*"
-         * });
-         * // if user did not cancel
-         * if (dialogValues) {
-         *   console.log("selected file (name) : " + dialogValues.FileName);
-         * }
-         */
-        Main.prototype.showSaveFileDialog = function (dialogOptions) {
-            if (dialogOptions) {
-                dialogOptions = JSON.stringify(dialogOptions);
-            }
-
-            var result = this.exoMain.ShowSaveFileDialog(dialogOptions);
-            if (result) {
-                result = JSON.parse(result);
-            }
-            return result;
         };
 
         /**
@@ -1671,7 +1944,7 @@
          * Downloads from an internet url and saves to disk.
          * @param {string} url - The internet url to download from.
          * @param {string} dest - Destination filename on disk.
-         * @param {bool} async - Whether to wait until finished before returning.
+         * @param {boolean} async - Whether to wait until finished before returning.
          * @memberof Net
          * @instance
          * @example
@@ -1728,11 +2001,11 @@
          * @param {object} processStartInfo - Serialized javascript object closely resembling a c# ProcessStartInfo object.
          * @param {string=} processStartInfo.FileName - filename of program to load.
          * @param {string=} processStartInfo.Arguments - string containing arguments to launch with.
-         * @param {bool=} processStartInfo.CreateNoWindow - whether to start the process in a new window.
-         * @param {bool=} processStartInfo.ErrorDialog - whether to show error dialog if process could not be started.
-         * @param {bool=} processStartInfo.LoadUserProfile - whether the windows user profile is to be loaded from the registry.
-         * @param {bool=} processStartInfo.UseShellExecute - whether to use the operating system shell to start the process.
-         * @param {bool=} processStartInfo.WorkingDirectory - working dir of proc when UseShellExecute is false. dir containing process when UseShellExecute is true.
+         * @param {boolean=} processStartInfo.CreateNoWindow - whether to start the process in a new window.
+         * @param {boolean=} processStartInfo.ErrorDialog - whether to show error dialog if process could not be started.
+         * @param {boolean=} processStartInfo.LoadUserProfile - whether the windows user profile is to be loaded from the registry.
+         * @param {boolean=} processStartInfo.UseShellExecute - whether to use the operating system shell to start the process.
+         * @param {boolean=} processStartInfo.WorkingDirectory - working dir of proc when UseShellExecute is false. dir containing process when UseShellExecute is true.
          * @returns {object} an object containing information about the newly created process.
          * @memberof Proc
          * @instance
@@ -1808,7 +2081,7 @@
         /**
          * Kills a running process.
          * @param {int} id - The id of the process to kill.
-         * @returns {bool} whether process was found or not.
+         * @returns {boolean} whether process was found or not.
          * @memberof Proc
          * @instance
          * @example
@@ -2064,7 +2337,7 @@
          * @param {string=} className - The class name of the window, or null.
          * @param {string=} windowName - The window name of the window, or null.
          * @param {string[]} keys - String array of keys or keycodes to send.
-         * @returns {bool} - Whether the window was found.
+         * @returns {boolean} - Whether the window was found.
          * @memberof System
          * @instance
          * @example
@@ -2205,13 +2478,13 @@
          * @example
          * var now = new Date();
          * // 24 hr date and time
-         * var result = exoskeleton.main.formatUnixDate(now, "MM/dd/yy H:mm:ss");
+         * var result = exoskeleton.util.formatUnixDate(now, "MM/dd/yy H:mm:ss");
          * alert(result);
          * // formatted date only
-         * result = exoskeleton.main.formatUnixDate(now.getTime(), ""MMMM dd, yyyy");
+         * result = exoskeleton.util.formatUnixDate(now.getTime(), "MMMM dd, yyyy");
          * alert(result);
          * // formatted time only
-         * result = exoskeleton.main.formatUnixDate(now, "hh:mm:ss tt");
+         * result = exoskeleton.util.formatUnixDate(now, "hh:mm:ss tt");
          */
         Util.prototype.formatUnixDate = function (date, format) {
             if (typeof date === "object" && date instanceof Date) {
@@ -2289,7 +2562,7 @@
          *
          * @param {object} exo - Instance to the exoskeleton com interface
          * @param {object} options - options to configure event emitter with.
-         * @param {bool=} [options.asyncListeners=false] - whether events will be emitted asynchronously.
+         * @param {boolean=} [options.asyncListeners=false] - whether events will be emitted asynchronously.
          * @constructor ExoEventEmitter
          */
         function ExoEventEmitter(exo, options) {

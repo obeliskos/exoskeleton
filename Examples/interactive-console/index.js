@@ -18,13 +18,6 @@ $(document).ready(function () {
 
     $("body").css("background-color", "#222");
 
-    var theme = localStorage["xo.editorTheme"];
-    if (theme) {
-        $("#select-theme option").filter(function () {
-            return $(this).text() === theme;
-        }).prop('selected', true);
-    }
-
     xo.locations = exoskeleton.getLocations();
     xo.settings = exoskeleton.getApplicationSettings();
 
@@ -33,6 +26,7 @@ $(document).ready(function () {
     xo.initializeStatusbar();
     exoskeleton.main.doEvents();
 
+    var theme = localStorage["xo.editorTheme"];
     xo.setupEditor(theme);
 
     setTimeout(xo.windowResize, 100);
@@ -52,10 +46,10 @@ xo.initializeMenu = function () {
     exoskeleton.menu.addMenuItem("&File", "&Run", "RunScriptEvent", ["Control", "R"]);
     exoskeleton.menu.addMenuItem("&File", "-");
     exoskeleton.menu.addMenuItem("&File", "E&xit", "ExitEvent");
-    exoskeleton.menu.addMenu("&Themes");
-    xo.themes.forEach(function (name) {
-        exoskeleton.menu.addMenuItem("&Themes", name, "SetThemeEvent");
-    });
+
+    exoskeleton.menu.addMenu("&Options");
+    exoskeleton.menu.addMenuItem("&Options", "&Choose Editor Theme", "PickThemeEvent", ["Control", "T"]);
+
     exoskeleton.menu.addMenu("&Help");
     exoskeleton.menu.addMenuItem("&Help", "&View local Exoskeleton.js help docs", "LocalHelpEvent", ["F1"]);
     exoskeleton.menu.addMenuItem("&Help", "Browse Exoskeleton &GitHub page", "ShowGithubEvent");
@@ -98,15 +92,27 @@ xo.initializeMenu = function () {
             "exoskeleton.js scripts and creating your own new scripts.  You might then include them in a real " +
             "exoskeleton application, separate from this interactive console app.";
 
-        exoskeleton.main.showMessageBox(msg, "About Exoskeleton Interactive Console", "OK", "Information");
+        exoskeleton.dialog.showMessageBox(msg, "About Exoskeleton Interactive Console", "OK", "Information");
     });
 
-    exoskeleton.events.on("SetThemeEvent", function (menuText) {
+    exoskeleton.events.on("PickThemeEvent", function () {
+        var selectedTheme = null;
         if (localStorage) {
-            localStorage["xo.editorTheme"] = menuText;
+            if (localStorage["xo.editorTheme"]) {
+                selectedTheme = localStorage["xo.editorTheme"];
+            }
         }
+        var result = exoskeleton.dialog.promptList(
+            "Set Editor Theme",
+            "Select theme to apply to editors :",
+            xo.themes,
+            selectedTheme
+        );
 
-        xo.applyTheme(menuText);
+        if (result) {
+            xo.applyTheme(result);
+            localStorage["xo.editorTheme"] = result;
+        }
     });
 };  
 
@@ -173,7 +179,7 @@ xo.openHandler = function () {
         "appdata"
     ]);
 
-    var result = exoskeleton.main.showOpenFileDialog({
+    var result = exoskeleton.dialog.showOpenFileDialog({
         InitialDirectory: sampleDirectory,
         Filter: "exo files (*.exo)|*.exo|javascript files (*.js)|*.js|All files (*.*)|*.*"
     });
@@ -208,7 +214,7 @@ xo.saveHandler = function (data) {
 
     // if 'saving as' or no known existing filename, ask user to pick filename
     if (data !== "Save" || xo.currentFilepath === "") {
-        var dialogValues = exoskeleton.main.showSaveFileDialog({
+        var dialogValues = exoskeleton.dialog.showSaveFileDialog({
             Title: "Pick data file to save to",
             InitialDirectory: sampleDirectory,
             Filter: "exo files (*.exo)|*.exo|javascript files (*.js)|*.js|All files (*.*)|*.*"
@@ -307,7 +313,7 @@ xo.saveScript = function () {
     var filename = $("#input-filename").val();
 
     if (filename === "") {
-        exoskeleton.main.showMessageBox("You are required to enter a filename.", "Exoskeleton Interactive Console", "OK", "Warning");
+        exoskeleton.dialog.showMessageBox("You are required to enter a filename.", "Exoskeleton Interactive Console", "OK", "Warning");
         return;
     }
 
@@ -320,7 +326,7 @@ xo.saveScript = function () {
 
     var fi = exoskeleton.file.getFileInfo(newfilename);
     if (fi.Exists) {
-        var dr = exoskeleton.main.showMessageBox(
+        var dr = exoskeleton.dialog.showMessageBox(
             "Do you want to overwrite this file",
             "File already exists", "OKCancel", "Question");
 
@@ -333,7 +339,7 @@ xo.saveScript = function () {
 
     xo.refreshScriptList();
 
-    exoskeleton.main.showMessageBox("Saved " + filename, "Exoskeleton Interactive Console", "OK", "Information");
+    exoskeleton.dialog.showMessageBox("Saved " + filename, "Exoskeleton Interactive Console", "OK", "Information");
 };
 
 xo.setupEditor = function (theme) {

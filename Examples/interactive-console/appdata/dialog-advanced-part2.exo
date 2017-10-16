@@ -1,0 +1,274 @@
+/**
+ * Advanced dialog part 2
+ *
+ * For better code organization when creating exoskeleton
+ * programs which need to use dialogs, I've added :
+ * (1) applyDialogDefinitions(), and
+ * (2) applyControlProperties()
+ *
+ * This let's you load your dialog controls, separately
+ * from where you initialize the control values.
+ * You might also store dialog definitions on disk.
+ */
+ 
+// Let's create a dialog definition
+// The top level property names will have a similar 'Name' 
+//   property added with if one is not already specified.
+// Several Control have extra top level properties, which
+//   you will see demonstrated within this example.
+var dialogData = {
+  MiddlePanel: {
+    Type: "Panel",
+    Properties: {
+      Dock: "Fill",
+      BackColor: "192,192,192",	
+      Height: 20,
+      Width: 20,
+      Top: 100,
+      Left: 10,
+      Padding: "10, 10, 10, 10"
+    }
+  },
+  MiddleLeft: {
+    Type: "Panel",
+    Parent: "MiddlePanel",
+    Properties: {
+      Dock: "Fill",
+    }
+  },
+  MiddleRight: {
+    Type: "Panel",
+    Parent: "MiddlePanel",
+    Properties: {
+      Dock: "Right",
+      Width: 360
+    }
+  },
+  UserTypeList: {
+    Type: "ListBox",
+    Parent: "MiddleLeft",
+    Properties: {
+      Dock: "Fill",
+      TabIndex: 1,
+      Items: ['Guest', 'Normal', 'Administrator'],
+      SelectedItem: 'Normal'
+    }
+  },
+  UserTypeLabel: {
+    Type: "Label",
+    Parent: "MiddleLeft",
+    Properties: {
+      Dock: "Top",
+      Text: "Select your user type :",
+      Height: 26
+    }
+  },
+  CountryCheckList: {
+    Type: "CheckedListBox",
+    Parent: "MiddleRight",
+    Properties: {
+      Dock: "Fill",
+      CheckOnClick: true,
+      Items: ["United States", "United Kingdom", "Germany", "France", "Australia", 
+  				"Japan", "India", "Russia", "Other"],
+      CheckedIndices: [1, 4]
+    }
+  },
+  CountriesLabel: {
+    Type: "Label",
+    Parent: "MiddleRight",
+    Properties: {
+      Dock: "Top",
+      Text: "Select countries of residence :",
+      Height: 26
+    }
+  },
+  TopPanel: {
+    Type: "Panel",
+    Properties: {
+      Dock: "Top",
+      BackColor: "PaleGreen",
+      Height: 84,
+      Padding: "10, 10, 10, 10"
+    }
+  },
+  NameLabel: {
+    Type: "Label",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Enter your name :",
+      Top: 8,
+      Left: 7,
+      Height: 20,
+      Width: 140
+    }
+  },
+  NameTextBox: {
+    Type: "TextBox",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Some User",
+      Top: 32,
+      Left: 10,
+      Height: 30,
+      WIdth: 140,
+      TabIndex: 0
+    }
+  },
+  EmployeeCheckBox: {
+    Type: "CheckBox",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Employee",
+      Top: 58,
+      Left: 10
+    }
+  },
+  GenderMale: {
+    Type: "RadioButton",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Male",
+      Top: 57,
+      Left: 165,
+      AutoSize: true
+    }
+  },
+  GenderFemale: {
+    Type: "RadioButton",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Female",
+      Top: 57,
+      Left: 225,
+      AutoSize: true
+    }
+  },
+  AgeLabel: {
+    Type: "Label",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Enter your age:",
+      AutoSize: true,
+      Top: 10,
+      Left: 170
+    }
+  },
+  AgeNumeric: {
+    Type: "NumericUpDown",
+    Parent: "TopPanel",
+    Properties: {
+      Left: 170,
+      Top: 30,
+      Minimum: 13,
+      Maximum: 120
+    }
+  },
+  DateLabel: {
+    Type: "Label",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Pick some date :",
+      AutoSize: true,
+      Top: 10,
+      Left: 310
+    }
+  },
+  StartDate: {
+    Type: "DateTimePicker",
+    Parent: "TopPanel",
+    Properties: {
+      Top: 30,
+      Left: 310,
+      Width: 240
+    }
+  },
+  ComboLabel: {
+    Type: "Label",
+    Parent: "TopPanel",
+    Properties: {
+      Text: "Pick some value :",
+      AutoSize: true,
+      Top: 10,
+      Left: 565
+    }
+  },
+  TestComboBox: {
+    Type: "ComboBox",
+    Parent: "TopPanel",
+    Properties: {
+      AutoSize: true,
+      Top: 30,
+      Left: 565,
+      Items: ["one", "two", "three"]
+    }
+  },
+  BottomPanel: {
+    Type: "Panel",
+    Properties: {
+      Dock: "Bottom",
+      Height: 50,
+      Padding: "10, 10, 10, 10"
+    }
+  },
+  OkButton: {
+    Type: "DialogButton",
+    Parent: "BottomPanel",
+    DialogResult: "OK",
+    Properties: {
+      Top: 10,
+      Left: 280,
+      Height: 30,
+      Width: 100,
+      UseVisualStyleBackColor: true,
+      TabIndex:2,
+      Text: "OK"
+    }
+  },
+  CancelButton: {
+    Type: "DialogButton",
+    Parent: "BottomPanel",
+    DialogResult: "Cancel",
+    Properties: {
+      Text: "Cancel",
+      Top: 10,
+      Left: 390,
+      Height: 30,
+      Width: 100,
+      UseVisualStyleBackColor: true
+    }
+  }
+};
+
+// ok, before we can use that definition, we should initialize
+// our dialog.
+exoskeleton.dialog.initialize({
+  Text: "test", 
+  Width: 720, 
+  Height: 400
+});
+
+// now apply that definition
+exoskeleton.dialog.applyDialogDefinition(
+  JSON.stringify(dialogData)
+);
+
+// now initialize our control value data in a way that is more 
+// 'data-friendly'
+exoskeleton.dialog.applyControlProperties({
+  NameTextBox : { Text: "TestUser" },
+  EmployeeCheckBox : { Checked: false },
+  AgeNumeric : { Value: 19 },
+  GenderFemale: { Checked: true },
+  UserTypeList: { SelectedItem: 'Administrator' },
+  StartDate: { Value: '1/2/2017' },
+  TestComboBox : { SelectedItem: 'three' },
+  CountryCheckList: { 
+    CheckedIndices: [0, 1, 2],
+    BackColor: "LightBlue" 
+  }
+});
+
+// now, show the dialog and get results
+var results = exoskeleton.dialog.showDialog();
+xo.logObject(results);

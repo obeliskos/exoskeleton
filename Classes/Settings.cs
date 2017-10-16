@@ -10,60 +10,60 @@ namespace Exoskeleton.Classes
 {
     public class Settings
     {
-        public List<string> StartupCommands = new List<string>();
+        public List<string> StartupCommands { get; set; }  = new List<string>();
 
         /// <summary>
         /// Whether we should set current directory to settings path (true) 
         /// or use existing current directory (false)
         /// </summary>
-        public bool CurrentDirectoryUseSettingsPath = true;
+        public bool CurrentDirectoryUseSettingsPath { get; set; } = true;
         /// <summary>
         /// If true, we will either 
         /// 'tweak' current directory with relative offset defined in CurrentDirectoryProvidedPath, or
         /// 'set' current directory with absolute path defined in CurrentDirectoryProvidedPath
         /// </summary>
-        public bool CurrentDirectoryUseProvidedPath = false;
+        public bool CurrentDirectoryUseProvidedPath { get; set; } = false;
         /// <summary>
         /// Either an absolute path or relative modifer to effective 'current directory'
         /// </summary>
-        public string CurrentDirectoryProvidedPath = "";
+        public string CurrentDirectoryProvidedPath { get; set; } = "";
 
-        public string WindowTitle = "My Exoskeleton App";
-        public int WindowWidth = 820;
-        public int WindowHeight = 512;
-        public bool WindowAllowFullscreenF11 = true;
-        public bool WindowAllowResize = true;
-        public string WindowIconPath = "";
+        public string WindowTitle { get; set; } = "My Exoskeleton App";
+        public int WindowWidth { get; set; } = 820;
+        public int WindowHeight { get; set; } = 512;
+        public bool WindowAllowFullscreenF11 { get; set; } = true;
+        public bool WindowAllowResize { get; set; } = true;
+        public string WindowIconPath { get; set; } = "";
 
-        public bool WebServerSelfHost = false;
-        public int WebServerListenPort = 8080;
-        public string WebServerHostDirectory = "";
+        public bool WebServerSelfHost { get; set; } = false;
+        public int WebServerListenPort { get; set; } = 8080;
+        public string WebServerHostDirectory { get; set; } = "";
 
-        public bool WebBrowserRefreshOnFirstLoad = true;
-        public bool WebBrowserContextMenu = true;
-        public string WebBrowserDefaultUrl = "";
-        public string WebBrowserBaseUrl = "";
-        public int WebBrowserAutoRefreshSecs = 0;
-        public bool WebBrowserAllowChildWindows = true;
-        public bool WebBrowserScriptErrorsSuppressed = true;
-        public bool WebBrowserShortcutsEnabled = false;
+        public bool WebBrowserRefreshOnFirstLoad { get; set; } = true;
+        public bool WebBrowserContextMenu { get; set; } = true;
+        public string WebBrowserDefaultUrl { get; set; } = "";
+        public string WebBrowserBaseUrl { get; set; } = "";
+        public int WebBrowserAutoRefreshSecs { get; set; } = 0;
+        public bool WebBrowserAllowChildWindows { get; set; } = true;
+        public bool WebBrowserScriptErrorsSuppressed { get; set; } = true;
+        public bool WebBrowserShortcutsEnabled { get; set; } = false;
 
         // will probably want all of these on but when we generate
         // a default one (if none exists) we will use these defaults 
         // which are safe enough to run as a sitewrap app
-        public bool ScriptingEnabled = true;
-        public bool ScriptingMediaEnabled = true;
-        public bool ScriptingFilesEnabled = false;
-        public bool ScriptingProcessEnabled = false;
-        public bool ScriptingSystemEnabled = false;
-        public bool ScriptingLoggerEnabled = false;
-        public bool ScriptingComObjectsEnabled = false;
-        public bool ScriptingNetEnabled = false;
-        public bool ScriptingEncryptionEnabled = true;
-        public bool ScriptingMenuEnabled = false;
-        public bool ScriptingToolStripEnabled = false;
-        public bool ScriptingStatusStripEnabled = false;
-        public bool ScriptingDialogEnabled = true;
+        public bool ScriptingEnabled { get; set; } = true;
+        public bool ScriptingMediaEnabled { get; set; } = true;
+        public bool ScriptingFilesEnabled { get; set; } = false;
+        public bool ScriptingProcessEnabled { get; set; } = false;
+        public bool ScriptingSystemEnabled { get; set; } = false;
+        public bool ScriptingLoggerEnabled { get; set; } = false;
+        public bool ScriptingComObjectsEnabled { get; set; } = false;
+        public bool ScriptingNetEnabled { get; set; } = false;
+        public bool ScriptingEncryptionEnabled { get; set; } = true;
+        public bool ScriptingMenuEnabled { get; set; } = false;
+        public bool ScriptingToolStripEnabled { get; set; } = false;
+        public bool ScriptingStatusStripEnabled { get; set; } = false;
+        public bool ScriptingDialogEnabled { get; set; } = true;
 
         public void Save(string filename)
         {
