@@ -59,11 +59,13 @@
     <Compile Include="Classes\API\ScriptComObjects.cs" />
     <Compile Include="Classes\API\ScriptDialog.cs" />
     <Compile Include="Classes\API\ScriptEncryption.cs" />
+    <Compile Include="Classes\API\ScriptForm.cs" />
     <Compile Include="Classes\API\ScriptMenu.cs" />
     <Compile Include="Classes\API\ScriptNet.cs" />
     <Compile Include="Classes\API\ScriptStatusstrip.cs" />
     <Compile Include="Classes\API\ScriptToolstrip.cs" />
     <Compile Include="Classes\API\ScriptUtility.cs" />
+    <Compile Include="Classes\FormLayoutBase.cs" />
     <Compile Include="Classes\MimeTypeMappings.cs" />
     <Compile Include="Classes\API\ScriptMain.cs" />
     <Compile Include="Classes\API\ScriptSession.cs" />

@@ -1,13 +1,15 @@
 window.addEventListener("load", function load(event){
     window.removeEventListener("load", load, false); //remove listener, no longer needed
     // override or edit this to be notified of shutdown;
+    // the shutdown occurs when you close the main window, 
+    // this logic would work in child windows as well.
     exoskeleton.events.on("multicast.shutdown", function() {
        exoskeleton.media.speakSync("example java script shutdown");
        return true;
     });
     // setup a listener in case they test eventing in 'open in new window' sample
-    exoskeleton.events.on("multicast.TestEvent", function (data1, data2) {
-        console.info("Received the 'multicast.TestEvent' event", "data1:" + data1 + " data2:" + JSON.stringify(data2));
+    exoskeleton.events.on("multicast.TestEvent", function (data) {
+        console.info("Received the 'multicast.TestEvent' event", "data1" + JSON.stringify(data));
     });
 },false);
 
@@ -79,8 +81,7 @@ function runGetEnvironmentVariable() {
 }
 
 function runGetEnvironmentVariables() {
-    var resultJson = exoskeleton.system.getEnvironmentVariables();
-    var environmentVars = JSON.parse(resultJson);
+    var environmentVars = exoskeleton.system.getEnvironmentVariables();
 
     var msg = Object.keys(environmentVars).length + " variables : " + "\n";
 
@@ -153,7 +154,7 @@ function runGetFiles() {
 }
 
 function runGetExecutableDirectory() {
-    var appLocations = exoskeleton.main.getLocations();
+    var appLocations = exoskeleton.getLocations();
   
     var el = document.getElementById("txtCurrentDir");
 
@@ -188,10 +189,10 @@ function runProcStartInfo() {
 
     var result = exoskeleton.proc.start(startInfo);
 
-    // on success, null will be returned.  
-    // on error, a string description of exception
+    // returns simplified process info, so log to console
     if (result) {
-        alert(result);
+        console.log("Simplified Process info : ");
+        console.dir(result);
     }
 }
 

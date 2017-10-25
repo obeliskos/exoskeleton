@@ -39,18 +39,14 @@
 
             // now let's set up our example page event listener callbacks which we 
             // will emit in our button handlers
-            exoskeleton.events.on("TestEvent", function (data, data2) {
-                console.info("LOCALLY received our 'TestEvent'", "data: " + data + " data2 : " + JSON.stringify(data2));
+            exoskeleton.events.on("TestEvent", function (data) {
+                console.info("LOCALLY received our 'TestEvent'", "data: " + JSON.stringify(data));
             });
-            exoskeleton.events.on("multicast.TestEvent", function (data, data2) {
-                console.info("LOCALLY received the 'multicast.TestEvent'", "data: " + data + " data2 : " + JSON.stringify(data2));
+            exoskeleton.events.on("multicast.TestEvent", function (data) {
+                console.info("LOCALLY received the 'multicast.TestEvent'", "data: " + JSON.stringify(data));
             });
-            exoskeleton.events.on("local.AnotherEvent", function (data) {
+            exoskeleton.events.on("AnotherEvent", function (data) {
                 console.info("LOCALLY received the 'AnotherEvent'");
-            });
-            // when we want to emit only to current window, we can prefix the name with 'local.'
-            exoskeleton.events.on("multicast.local.TestEvent", function (data) {
-                console.warning("This event should never fire as we would not multicast a 'local.' event");
             });
         }, false);
 
@@ -61,12 +57,12 @@
          * actually do anything when those events fire.
          */
         function runEmitMulticast() {
-            exoskeleton.events.emit("TestEvent", "testdata", { more: 'data' });
+            exoskeleton.events.emitMulticast("TestEvent", { data1: 'data1value', data2: 987 });
         }
 
         function runEmitLocal() {
             // The 'local.' prefix in javascript here, in the name
-            exoskeleton.events.emit("local.AnotherEvent");
+            exoskeleton.events.emit("AnotherEvent");
         }
 
     </script>

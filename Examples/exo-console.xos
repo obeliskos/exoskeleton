@@ -33,4 +33,6 @@
   <ScriptingMenuEnabled>true</ScriptingMenuEnabled>
   <ScriptingToolStripEnabled>true</ScriptingToolStripEnabled>
   <ScriptingStatusStripEnabled>true</ScriptingStatusStripEnabled>
+  <ScriptingDialogEnabled>true</ScriptingDialogEnabled>
+  <ScriptingFormEnabled>true</ScriptingFormEnabled>
 </Settings>

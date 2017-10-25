@@ -64,6 +64,7 @@ namespace Exoskeleton.Classes
         public bool ScriptingToolStripEnabled { get; set; } = false;
         public bool ScriptingStatusStripEnabled { get; set; } = false;
         public bool ScriptingDialogEnabled { get; set; } = true;
+        public bool ScriptingFormEnabled { get; set; } = true;
 
         public void Save(string filename)
         {

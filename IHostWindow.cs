@@ -23,9 +23,8 @@ namespace Exoskeleton
         void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon);
 
         void MulticastEvent(string name, string data);
-        void UnicastEvent(string name, string data);
-        void PackageAndMulticast(string name, dynamic[] data);
-        void PackageAndUnicast(string name, dynamic[] data);
+        void PackageAndMulticast(string name, dynamic data);
+        void PackageAndUnicast(string name, dynamic data);
         object InvokeScript(string name, params string[] args);
 
         void ShowMenu();

@@ -227,6 +227,17 @@ namespace Exoskeleton
             this.Text = settings.WindowTitle;
         }
 
+        public string ResolveWebBrowserUrl(string url)
+        {
+            string result = url
+                .Replace("{port}", actualPort.ToString())
+                .Replace("{ExecutableLocation}", Path.GetDirectoryName(Application.ExecutablePath))
+                .Replace("{CurrentLocation}", environmentLocationCurrent)
+                .Replace("{SettingsLocation}", environmentLocationSettings);
+
+            return result;
+        }
+
         /// <summary>
         /// Window load event where we will set up WebBrowser control to load our app
         /// </summary>
@@ -258,11 +269,7 @@ namespace Exoskeleton
             }
             else
             {
-                string url = settings.WebBrowserDefaultUrl
-                    .Replace("{port}", actualPort.ToString())
-                    .Replace("{ExecutableLocation}", Path.GetDirectoryName(Application.ExecutablePath))
-                    .Replace("{CurrentLocation}", environmentLocationCurrent)
-                    .Replace("{SettingsLocation}", environmentLocationSettings);
+                string url = ResolveWebBrowserUrl(settings.WebBrowserDefaultUrl);
 
                 // For (only) filesystem based uri's, convert relative paths to absolute.
                 Uri startingUri = null;
@@ -474,58 +481,18 @@ namespace Exoskeleton
         /// </summary>
         /// <param name="name"></param>
         /// <param name="data"></param>
-        public void PackageAndMulticast(string name, dynamic[] data)
+        public void PackageAndMulticast(string name, dynamic data)
         {
-            string wrappedData = null;
-
-            List<string> args = new List<string>();
-            args.Add("multicast." + name);
-
-            if (data != null)
-            {
-                for(int idx=0; idx < data.Length; idx++)
-                {
-                    data[idx] = JsonConvert.SerializeObject(data[idx]);
-                }
-                // now that we have array of strings (of serialized objects or values), serialize that.
-                wrappedData = JsonConvert.SerializeObject(data);
-
-                args.Add(wrappedData);
-            }
+            // InvokeScript handles params as string array
+            // our event name will be first (0) element
+            // out serialized event data will be second (1) element
+            string[] wrappedJson = { "multicast." + name, JsonConvert.SerializeObject(data) };
 
             // now tell each IHostWindow to emit that event with those params
             foreach (IHostWindow hostWindow in hostWindows)
             {
-                hostWindow.InvokeScript("exoskeletonEmitEvent", args.ToArray());
+                hostWindow.InvokeScript("exoskeletonEmitEvent", wrappedJson);
             }
-        }
-
-        /// <summary>
-        /// Used for passing event data as serialized array of serialized data items.  
-        /// Requires the javascript event handler to deserialize (JSON.parse()) data.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="data"></param>
-        public void PackageAndUnicast(string name, dynamic[] data)
-        {
-            string wrappedData = null;
-
-            List<string> args = new List<string>();
-            args.Add(name);
-
-            if (data != null)
-            {
-                for (int idx = 0; idx < data.Length; idx++)
-                {
-                    data[idx] = JsonConvert.SerializeObject(data[idx]);
-                }
-                // now that we have array of strings (of serialized objects or values), serialize that.
-                wrappedData = JsonConvert.SerializeObject(data);
-
-                args.Add(wrappedData);
-            }
-
-            this.InvokeScript("exoskeletonEmitEvent", args.ToArray());
         }
 
         /// <summary>
@@ -549,20 +516,19 @@ namespace Exoskeleton
         }
 
         /// <summary>
-        /// Interface method so that host can broadcast events only to its own container.
+        /// Internal method used for unicasting event and passing data.
+        /// This is only public so that Scripting Interface c# can utilize it.
         /// </summary>
-        /// <param name="name">Event name</param>
-        /// <param name="data">String encoded event data</param>
-        public void UnicastEvent(string name, string data)
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void PackageAndUnicast(string name, dynamic data)
         {
-            List<string> args = new List<string>();
-            args.Add(name);
-            if (data != null)
-            {
-                args.Add(data);
-            }
+            // InvokeScript handles params as string array
+            // our event name will be first (0) element
+            // out serialized event data will be second (1) element
+            string[] wrappedJson = { name, JsonConvert.SerializeObject(data) };
 
-            InvokeScript("exoskeletonEmitEvent", args.ToArray());
+            this.InvokeScript("exoskeletonEmitEvent", wrappedJson);
         }
 
         public object InvokeScript(string name, string[] args)
@@ -663,7 +629,7 @@ namespace Exoskeleton
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
 
             // payload (2nd param) may evolve over time
-            this.UnicastEvent((string) item.Tag, item.Name);
+            this.PackageAndUnicast((string) item.Tag, item.Name);
         }
 
         #endregion
@@ -737,7 +703,7 @@ namespace Exoskeleton
             ToolStripButton item = (ToolStripButton)sender;
 
             // payload (2nd param) may evolve over time
-            this.UnicastEvent((string)item.Tag, item.Text);
+            this.PackageAndUnicast((string)item.Tag, item.Text);
         }
 
         #endregion

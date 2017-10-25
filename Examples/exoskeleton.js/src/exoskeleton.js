@@ -49,37 +49,6 @@
             };
         }
 
-        // Due to .net com stuggles with marshalling types, we will stringify every arg
-        // before stringifying the whole 
-        function wrapArguments(argArray) {
-            if (argArray === null) return null;
-            if (!(argArray instanceof Array)) return null;
-            if (argArray.length === 0) return null;
-
-            for (var idx = 0; idx < argArray.length; idx++) {
-                argArray[idx] = JSON.stringify(argArray[idx]);
-            }
-
-            return JSON.stringify(argArray);
-        }
-
-        // should come in as 1-element array of encoded data, sliced off arguments
-        function unwrapArguments(wrapArgs) {
-            if (wrapArgs.length === 0) return null;
-
-            if (typeof wrapArgs[0] !== "string") {
-                wrapArgs = null;
-            }
-            else {
-                wrapArgs = JSON.parse(wrapArgs[0]);
-                for (var idx = 0; idx < wrapArgs.length; idx++) {
-                    wrapArgs[idx] = JSON.parse(wrapArgs[idx]);
-                }
-            }
-
-            return wrapArgs;
-        }
-
         /**
          * Exoskeleton main javascript facade interface to the C# API exposed via COM.
          *
@@ -98,7 +67,7 @@
 
             // establish global function for c# to broadcast events to
             window.exoskeletonEmitEvent = function (eventName, eventData) {
-                self.events.emit(eventName, eventData);
+                self.events.emit(eventName, JSON.parse(eventData));
             };
 
             // let's also assume control over errors raised and pipe them through our own logger
@@ -124,6 +93,7 @@
             if (this.exo.Statusbar) this.statusbar = new Statusbar(this.exo.Statusbar);
             if (this.exo.Util) this.util = new Util(this.exo.Util);
             if (this.exo.Dialog) this.dialog = new Dialog(this.exo.Dialog);
+            if (this.exo.Form) this.form = new Form(this.exo.Form);
 
             // go ahead and instance the keystore adapter for peristable key/value store 
             // and / or to use as a LokiJS persistence adapter.
@@ -238,8 +208,9 @@
         }
 
         /**
-         * Adds a CheckBox to the Dialog singleton Form.
+         * Adds a CheckBox to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkbox(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} checkbox - initial properties to assign to checkbox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -253,7 +224,7 @@
          *   Left: 10
          * }, "TopPanel");
          */
-        Dialog.prototype.addCheckBox = function (checkbox, parentName) {
+        Dialog.prototype.addCheckBox = function (dialogName, checkbox, parentName) {
             if (typeof checkbox === "object") {
                 checkbox = JSON.stringify(checkbox);
             }
@@ -262,12 +233,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddCheckBox(checkbox, parentName);
+            this.exoDialog.AddCheckBox(dialogName, checkbox, parentName);
         };
 
         /**
-         * Adds a CheckedListBox to the Dialog singleton Form.
+         * Adds a CheckedListBox to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkedlistbox(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} listbox - initial properties to assign to ListBox
          * @param {int[]=} checkedIndices - optional indices of selected items.
          * @param {string=} parentName - optional name of parent control to nest within
@@ -283,7 +255,7 @@
          *   CheckedIndices : [0, 2]
          * }, "AddressPanel");
          */
-        Dialog.prototype.addCheckedListBox = function (checkedlistbox, checkedIndices, parentName) {
+        Dialog.prototype.addCheckedListBox = function (dialogName, checkedlistbox, checkedIndices, parentName) {
             if (typeof checkedlistbox === "object") {
                 checkedlistbox = JSON.stringify(checkedlistbox);
             }
@@ -297,12 +269,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddCheckedListBox(checkedlistbox, checkedIndices, parentName);
+            this.exoDialog.AddCheckedListBox(dialogName, checkedlistbox, checkedIndices, parentName);
         };
 
         /**
-         * Adds a ComboBox to the Dialog singleton Form.
+         * Adds a ComboBox to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} comboBox - initial properties to assign to ComboBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -316,7 +289,7 @@
          *   SelectedItem : 'United States'
          * }, "AddressPanel");
          */
-        Dialog.prototype.addComboBox = function (comboBox, parentName) {
+        Dialog.prototype.addComboBox = function (dialogName, comboBox, parentName) {
             if (typeof comboBox === "object") {
                 comboBox = JSON.stringify(comboBox);
             }
@@ -325,12 +298,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddComboBox(comboBox, parentName);
+            this.exoDialog.AddComboBox(dialogName, comboBox, parentName);
         };
 
         /**
-         * Adds a DataGridView to the Dialog singleton Form.
+         * Adds a DataGridView to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datagridview(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} gridView - initial properties to assign to DataGridView
          * @param {object[]} objectArray - array of 'similar' objects to display in grid view
          * @param {string=} parentName - optional name of parent control to nest within
@@ -352,7 +326,7 @@
          *   SelectionMode: 'FullRowSelect'
          * }, users, "DetailsPanel");
          */
-        Dialog.prototype.addDataGridView = function (gridView, objectArray, parentName) {
+        Dialog.prototype.addDataGridView = function (dialogName, gridView, objectArray, parentName) {
             if (typeof gridView === "object") {
                 gridView = JSON.stringify(gridView);
             }
@@ -363,12 +337,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddDataGridView(gridView, objectArray, parentName);
+            this.exoDialog.AddDataGridView(dialogName, gridView, objectArray, parentName);
         };
 
         /**
-         * Adds a DateTimePicker to the Dialog singleton Form.
+         * Adds a DateTimePicker to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datetimepicker(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} dateTimePicker - initial properties to assign to DateTimePicker
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -381,7 +356,7 @@
          *   Value: "12/13/2014"
          * }, "AddressPanel");
          */
-        Dialog.prototype.addDateTimePicker = function (dateTimePicker, parentName) {
+        Dialog.prototype.addDateTimePicker = function (dialogName, dateTimePicker, parentName) {
             if (typeof dateTimePicker === "object") {
                 dateTimePicker = JSON.stringify(dateTimePicker);
             }
@@ -390,13 +365,14 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddDateTimePicker(dateTimePicker, parentName);
+            this.exoDialog.AddDateTimePicker(dialogName, dateTimePicker, parentName);
         };
 
         /**
-         * Adds a 'dismiss dialog' Button to the Dialog singleton Form.
+         * Adds a 'dismiss dialog' Button to a named exoskeleton dialog.
          * This is a standard .net button with hardcoded event handler to dismiss dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.button(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} button - initial properties to assign to button
          * @param {string} dialogResult - dismiss result ('OK', 'Cancel', 'Yes', 'No')
          * @param {string=} parentName - optional name of parent control to nest within
@@ -409,7 +385,7 @@
          *   Left: 200
          * }, "OK", "BottomPanel");
          */
-        Dialog.prototype.addDialogButton = function (button, dialogResult, parentName) {
+        Dialog.prototype.addDialogButton = function (dialogName, button, dialogResult, parentName) {
             if (typeof button === "object") {
                 button = JSON.stringify(button);
             }
@@ -418,12 +394,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddDialogButton(button, dialogResult, parentName);
+            this.exoDialog.AddDialogButton(dialogName, button, dialogResult, parentName);
         };
 
         /**
-         * Adds a Label to the Dialog singleton Form.
+         * Adds a Label to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.label(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} label - initial properties to assign to label
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -436,7 +413,7 @@
          *   Left: 10
          * }, "AddressPanel");
          */
-        Dialog.prototype.addLabel = function (label, parentName) {
+        Dialog.prototype.addLabel = function (dialogName, label, parentName) {
             if (typeof label === "object") {
                 label = JSON.stringify(label);
             }
@@ -445,12 +422,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddLabel(label, parentName);
+            this.exoDialog.AddLabel(dialogName, label, parentName);
         };
 
         /**
-         * Adds a ListBox to the Dialog singleton Form.
+         * Adds a ListBox to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} listbox - initial properties to assign to ListBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -465,7 +443,7 @@
          *   SelectedItem : 'United States'
          * }, "AddressPanel");
          */
-        Dialog.prototype.addListBox = function (listbox, parentName) {
+        Dialog.prototype.addListBox = function (dialogName, listbox, parentName) {
             if (typeof listbox === "object") {
                 listbox = JSON.stringify(listbox);
             }
@@ -474,12 +452,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddListBox(listbox, parentName);
+            this.exoDialog.AddListBox(dialogName, listbox, parentName);
         };
 
         /**
-         * Adds a MaskedTextBox to the Dialog singleton form.
+         * Adds a MaskedTextBox to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.maskedtextbox(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} maskedtextbox - object containing properties to apply to the MaskedTextBox
          * @param {string} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -493,7 +472,7 @@
          *   Width: 100
          * });
          */
-        Dialog.prototype.addMaskedTextBox = function (maskedtextbox, parentName) {
+        Dialog.prototype.addMaskedTextBox = function (dialogName, maskedtextbox, parentName) {
             if (typeof maskedtextbox === "object") {
                 maskedtextbox = JSON.stringify(maskedtextbox);
             }
@@ -502,12 +481,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddMaskedTextBox(maskedtextbox, parentName);
+            this.exoDialog.AddMaskedTextBox(dialogName, maskedtextbox, parentName);
         };
 
         /**
-         * Adds a MonthCalendar to the Dialog singleton form.
+         * Adds a MonthCalendar to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.monthcalendar(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} monthcalendar - object containing properties to apply to the MonthCalendar
          * @param {string} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -523,7 +503,7 @@
          *   Left: 40
          * });
          */
-        Dialog.prototype.addMonthCalendar = function (monthcalendar, parentName) {
+        Dialog.prototype.addMonthCalendar = function (dialogName, monthcalendar, parentName) {
             if (typeof monthcalendar === "object") {
                 monthcalendar = JSON.stringify(monthcalendar);
             }
@@ -532,12 +512,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddMonthCalendar(monthcalendar, parentName);
+            this.exoDialog.AddMonthCalendar(dialogName, monthcalendar, parentName);
         };
 
         /**
-         * Adds a NumericUpDown control to the Dialog singleton Form.
+         * Adds a NumericUpDown control to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.numericupdown(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} numericUpDown - initial properties to assign to ListBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -551,7 +532,7 @@
          *   Maximum: 120
          * }, "UserInfoPanel");
          */
-        Dialog.prototype.addNumericUpDown = function (numericUpDown, parentName) {
+        Dialog.prototype.addNumericUpDown = function (dialogName, numericUpDown, parentName) {
             if (typeof numericUpDown === "object") {
                 numericUpDown = JSON.stringify(numericUpDown);
             }
@@ -560,12 +541,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddNumericUpDown(numericUpDown, parentName);
+            this.exoDialog.AddNumericUpDown(dialogName, numericUpDown, parentName);
         };
 
         /**
-         * Adds a Panel to the Dialog singleton Form for layout and nesting purposes.
+         * Adds a Panel to a named exoskeleton dialog for layout and nesting purposes.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} panel - initial properties to assign to panel
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -586,7 +568,7 @@
          *   Height: 100
          * });
          */
-        Dialog.prototype.addPanel = function (panel, parentName) {
+        Dialog.prototype.addPanel = function (dialogName, panel, parentName) {
             if (typeof panel === "object") {
                 panel = JSON.stringify(panel);
             }
@@ -595,12 +577,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddPanel(panel, parentName);
+            this.exoDialog.AddPanel(dialogName, panel, parentName);
         };
 
         /**
-         * Adds a RadioButton to the Dialog singleton Form.
+         * Adds a RadioButton to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} radioButton - initial properties to assign to RadioButton
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -613,7 +596,7 @@
          *   Name: "GenderFemale", Text: "Female", Top: 40, Left: 140, Checked: false
          * });
          */
-        Dialog.prototype.addRadioButton = function (radioButton, parentName) {
+        Dialog.prototype.addRadioButton = function (dialogName, radioButton, parentName) {
             if (typeof radioButton === "object") {
                 radioButton = JSON.stringify(radioButton);
             }
@@ -622,12 +605,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddRadioButton(radioButton, parentName);
+            this.exoDialog.AddRadioButton(dialogName, radioButton, parentName);
         };
 
         /**
-         * Adds a TextBox to the Dialog singleton Form.
+         * Adds a TextBox to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.textbox(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} textbox - initial properties to assign to TextBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @memberof Dialog
@@ -640,7 +624,7 @@
          *   Text: user.addr1
          * }, "AddressPanel");
          */
-        Dialog.prototype.addTextBox = function (textbox, parentName) {
+        Dialog.prototype.addTextBox = function (dialogName, textbox, parentName) {
             if (typeof textbox === "object") {
                 textbox = JSON.stringify(textbox);
             }
@@ -649,12 +633,13 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddTextBox(textbox, parentName);
+            this.exoDialog.AddTextBox(dialogName, textbox, parentName);
         };
 
         /**
          * Applies property values to controls which have already been added.
          * Can be used for separating control layout and data initialization.
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} controlValues - object containing properties to apply to dialog controls.
          * @memberof Dialog
          * @instance
@@ -664,26 +649,31 @@
          *   EmployeeCheckBox : { Checked: false }
          * });
          */
-        Dialog.prototype.applyControlProperties = function (controlValues) {
+        Dialog.prototype.applyControlProperties = function (dialogName, controlValues) {
+            if (typeof dialogName === "undefined" || dialogName === null) {
+                dialogName = "dialog";
+            }
+
             controlValues = controlValues || {};
 
             if (typeof controlValues === "object") {
                 controlValues = JSON.stringify(controlValues);
             }
 
-            this.exoDialog.ApplyControlProperties(controlValues);
+            this.exoDialog.ApplyControlProperties(dialogName, controlValues);
         };
 
         /**
-         * Applies a dialog defintion to the current dialog.
+         * Applies a dialog defintion to a named exoskeleton dialog.
          * Dialog definitions allow representation of a series of controls, nesting, and property attributes
          * within a single json object definition.
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object} definition - object containing dialog definition.
          * @memberof Dialog
          * @instance
          * @example
-         * exoskeleton.dialog.initialize({ Text: "Test Dialog", Width: 400, Height: 300 });
-         * exoskeleton.dialog.applyDialogDefinition({
+         * exoskeleton.dialog.initialize("MyListDialog", { Text: "Test Dialog", Width: 400, Height: 300 });
+         * exoskeleton.dialog.applyDefinition("MyListDialog", {
          *   SampleList: {
          *     Type: "ListBox",
          *     Properties: {
@@ -699,31 +689,42 @@
          *     Properties: { Text: "OK", Width: 100, Height: 30 }
          *   }
          * });
-         * var result = exoskeleton.dialog.showDialog();
+         * var result = exoskeleton.dialog.showDialog("MyListDialog");
          */
-        Dialog.prototype.applyDialogDefinition = function (definition) {
+        Dialog.prototype.applyDefinition = function (dialogName, definition) {
+            if (typeof dialogName === "undefined" || dialogName === null) {
+                dialogName = "dialog";
+            }
             definition = definition || {};
             if (typeof definition === "object") {
                 definition = JSON.stringify(definition);
             }
 
-            this.exoDialog.ApplyDialogDefinition(definition);
+            this.exoDialog.ApplyDefinition(dialogName, definition);
         };
 
         /**
-         * Initialize global dialog singleton.
+         * Initialize a named exoskeleton dialog.
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {string} formJson - object containing properties to initialize dialog form with.
          * @memberof Dialog
          * @instance
          * @example
-         * exoskeleton.dialog.initialize("Verify address information", 600, 400);
+         * exoskeleton.dialog.initialize("AddressDialog", {
+         *   Text: "Verify address information",
+         *   Width: 600,
+         *   Height: 400
+         * });
          */
-        Dialog.prototype.initialize = function (formJson) {
+        Dialog.prototype.initialize = function (dialogName, formJson) {
+            if (typeof dialogName === "undefined" || dialogName === null) {
+                dialogName = "dialog";
+            }
             if (typeof formJson === "object") {
                 formJson = JSON.stringify(formJson);
             }
 
-            this.exoDialog.Initialize(formJson);
+            this.exoDialog.Initialize(dialogName, formJson);
         };
 
         /**
@@ -985,6 +986,24 @@
         };
 
         /**
+         * Displays a named exoskeleton dialog which you have previously created.
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
+         * @returns {object} An object containing dialog result and form content.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var dialogResult = exoskeleton.dialog.showDialog("AddressDialog");
+         * if (dialogResult.Result === 'OK') {
+         *   console.log(dialogResult.UserNameTextBox.Text);
+         * }
+         */
+        Dialog.prototype.showDialog = function (dialogName) {
+            var resultJson = this.exoDialog.ShowDialog(dialogName);
+
+            return JSON.parse(resultJson);
+        };
+
+        /**
          * Display a dialog to allow the user to select a color.
          * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.colordialog(v=vs.110).aspx ms docs}
          * @param {object} dialogOptions - initial properties to assign to ColorDialog
@@ -1009,23 +1028,6 @@
             }
 
             return result;
-        };
-
-        /**
-         * Displays the singleton dialog which you have just configured.
-         * @returns {object} An object containing dialog result and form content.
-         * @memberof Dialog
-         * @instance
-         * @example
-         * var dialogResult = exoskeleton.dialog.showDialog();
-         * if (dialogResult.Result === 'OK') {
-         *   console.log(dialogResult.UserNameTextBox.Text);
-         * }
-         */
-        Dialog.prototype.showDialog = function () {
-            var resultJson = this.exoDialog.ShowDialog();
-
-            return JSON.parse(resultJson);
         };
 
         /**
@@ -1579,6 +1581,584 @@
          */
         File.prototype.stopWatcher = function () {
             this.exoFile.StopWatcher();
+        };
+
+        // #endregion
+
+        // #region Form
+
+        /**
+         * Form API class for creating and interfacing with WinForms.
+         * This API exposes native .NET Form objects.
+         * Forms are more dynamic and interactive than dialogs.
+         * They support events which javascript can listen for and make exoskeleton calls,
+         * including updating the form programmatically.
+         * continuing or receiving its returned result.
+         * @param {any} exoForm
+         * @constructor Form
+         */
+        function Form(exoForm) {
+            this.exoForm = exoForm;
+        }
+
+        /**
+         * Adds a CheckBox to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkbox(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} checkbox - initial properties to assign to checkbox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addCheckbox("SampleForm", {
+         *   Name: "StudentCheckbox",
+         *   Text: "Student",
+         *   Checked: true,
+         *   Top: 100,
+         *   Left: 10
+         * }, "TopPanel");
+         */
+        Form.prototype.addCheckBox = function (formName, checkbox, parentName) {
+            if (typeof checkbox === "object") {
+                checkbox = JSON.stringify(checkbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddCheckBox(formName, checkbox, parentName);
+        };
+
+        /**
+         * Adds a CheckedListBox to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkedlistbox(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} listbox - initial properties to assign to ListBox
+         * @param {int[]=} checkedIndices - optional indices of selected items.
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addCheckedListBox("SampleForm", {
+         *   Name: "CountryChecklist",
+         *   Top: 10,
+         *   Left: 10,
+         *   Dock: 'Fill'
+         *   Items: ['United States', 'United Kingdom', 'Germany', 'France', 'Japan'],
+         *   CheckedIndices : [0, 2]
+         * }, "AddressPanel");
+         */
+        Form.prototype.addCheckedListBox = function (formName, checkedlistbox, checkedIndices, parentName) {
+            if (typeof checkedlistbox === "object") {
+                checkedlistbox = JSON.stringify(checkedlistbox);
+            }
+
+            if (typeof checkedIndices === "undefined") {
+                checkedIndices = [];
+            }
+            checkedIndices = JSON.stringify(checkedIndices);
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddCheckedListBox(formName, checkedlistbox, checkedIndices, parentName);
+        };
+
+        /**
+         * Adds a ComboBox to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} comboBox - initial properties to assign to ComboBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addComboBox("SampleForm", {
+         *   Name: "CountryDropDown",
+         *   Top: 10,
+         *   Left: 10,
+         *   Items: ['United States', 'United Kingdom', 'Germany', 'France', 'Japan'],
+         *   SelectedItem : 'United States'
+         * }, "AddressPanel");
+         */
+        Form.prototype.addComboBox = function (formName, comboBox, parentName) {
+            if (typeof comboBox === "object") {
+                comboBox = JSON.stringify(comboBox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddComboBox(formName, comboBox, parentName);
+        };
+
+        /**
+         * Adds a DataGridView to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datagridview(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} gridView - initial properties to assign to DataGridView
+         * @param {object[]} objectArray - array of 'similar' objects to display in grid view
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * var users = [
+         *   { name: "john", age: 24, address: "123 alpha street" },
+         *   { name: "mary", age: 22, address: "222 gamma street" },
+         *   { name: "tom", age: 28, address: "587 delta street" },
+         *   { name: "jane", age: 26, address: "428 beta street" }
+         * ];
+         *
+         * var result = exoskeleton.form.addDataGridView("SampleForm", {
+         *   Name: "UserGridView",
+         *   Dock: 'Fill',
+         *   ReadOnly: true,
+         *   AllowUserToAddRows: false,
+         *   SelectionMode: 'FullRowSelect'
+         * }, users, "DetailsPanel");
+         */
+        Form.prototype.addDataGridView = function (formName, gridView, objectArray, parentName) {
+            if (typeof gridView === "object") {
+                gridView = JSON.stringify(gridView);
+            }
+            if (typeof objectArray === "object") {
+                objectArray = JSON.stringify(objectArray);
+            }
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddDataGridView(formName, gridView, objectArray, parentName);
+        };
+
+        /**
+         * Adds a DateTimePicker to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datetimepicker(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} dateTimePicker - initial properties to assign to DateTimePicker
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addDateTimePicker("SampleForm", {
+         *   Name: "StartDate",
+         *   Top: 100,
+         *   Left: 100,
+         *   Value: "12/13/2014"
+         * }, "AddressPanel");
+         */
+        Form.prototype.addDateTimePicker = function (formName, dateTimePicker, parentName) {
+            if (typeof dateTimePicker === "object") {
+                dateTimePicker = JSON.stringify(dateTimePicker);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddDateTimePicker(formName, dateTimePicker, parentName);
+        };
+
+        /**
+         * Adds a Button to a named exoskeleton form which will raise an Unicast event.
+         * This is a standard .net button with hardcoded event handler to raise event.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.button(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} button - initial properties to assign to button
+         * @param {string} eventName - name of event to unicast with form data object.
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addEventButton("SampleForm", {
+         *   Text: "Save",
+         *   Top: 10,
+         *   Left: 200
+         * }, "SaveEvent", "BottomPanel");
+         */
+        Form.prototype.addEventButton = function (formName, button, eventName, parentName) {
+            if (typeof button === "object") {
+                button = JSON.stringify(button);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddEventButton(formName, button, eventName, parentName);
+        };
+
+        /**
+         * Adds a Label to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.label(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} label - initial properties to assign to label
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addLabel("SampleForm", {
+         *   Name: "AddressTextBox",
+         *   Text: "Address:",
+         *   Top: 100,
+         *   Left: 10
+         * }, "AddressPanel");
+         */
+        Form.prototype.addLabel = function (formName, label, parentName) {
+            if (typeof label === "object") {
+                label = JSON.stringify(label);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddLabel(formName, label, parentName);
+        };
+
+        /**
+         * Adds a ListBox to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} listbox - initial properties to assign to ListBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addListBox("SampleForm", {
+         *   Name: "CountryList",
+         *   Top: 10,
+         *   Left: 10,
+         *   Dock: 'Fill'
+         *   Items: ['United States', 'United Kingdom', 'Germany', 'France', 'Japan'],
+         *   SelectedItem : 'United States'
+         * }, "AddressPanel");
+         */
+        Form.prototype.addListBox = function (formName, listbox, parentName) {
+            if (typeof listbox === "object") {
+                listbox = JSON.stringify(listbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddListBox(formName, listbox, parentName);
+        };
+
+        /**
+         * Adds a MaskedTextBox to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.maskedtextbox(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} maskedtextbox - object containing properties to apply to the MaskedTextBox
+         * @param {string} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addMaskedTextBox("SampleForm", {
+         *   Name: "PhoneNumberMaskedEdit",
+         *   Mask: "(999)-000-0000",
+         *   Top: 124,
+         *   Left: 48,
+         *   Width: 100
+         * });
+         */
+        Form.prototype.addMaskedTextBox = function (formName, maskedtextbox, parentName) {
+            if (typeof maskedtextbox === "object") {
+                maskedtextbox = JSON.stringify(maskedtextbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddMaskedTextBox(formName, maskedtextbox, parentName);
+        };
+
+        /**
+         * Adds a MonthCalendar to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.monthcalendar(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} monthcalendar - object containing properties to apply to the MonthCalendar
+         * @param {string} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addMonthCalendar("SampleForm", {
+         *   Name: "MonthCalendar",
+         *   ShowToday: true,
+         *   ShowTodayCircle: true,
+         *   MonthlyBoldedDates: ["1/1/2017", "1/15/2017"],  // bolds 1st and 15th days of every month,
+         *   AnnuallyBoldedDates: ["3/20/2017", "6/1/2017", "9/22/2017", "12/22/2017"], 
+         *   Top: 40,
+         *   Left: 40
+         * });
+         */
+        Form.prototype.addMonthCalendar = function (formName, monthcalendar, parentName) {
+            if (typeof monthcalendar === "object") {
+                monthcalendar = JSON.stringify(monthcalendar);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddMonthCalendar(formName, monthcalendar, parentName);
+        };
+
+        /**
+         * Adds a NumericUpDown control to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.numericupdown(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} numericUpDown - initial properties to assign to ListBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addNumericUpDown("SampleForm", {
+         *   Name: "AgeNumeric",
+         *   Top: 10,
+         *   Left: 10,
+         *   Minimum: 13,
+         *   Maximum: 120
+         * }, "UserInfoPanel");
+         */
+        Form.prototype.addNumericUpDown = function (formName, numericUpDown, parentName) {
+            if (typeof numericUpDown === "object") {
+                numericUpDown = JSON.stringify(numericUpDown);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddNumericUpDown(formName, numericUpDown, parentName);
+        };
+
+        /**
+         * Adds a Panel to a named exoskeleton form for layout and nesting purposes.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} panel - initial properties to assign to panel
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addPanel("SampleForm", {
+         *   Name: "FillPanel",
+         *   Dock: 'Fill'
+         * });
+         * exoskeleton.form.addPanel("SampleForm", {
+         *   Name: "TopPanel",
+         *   Dock: 'Top',
+         *   Height: 100
+         * });
+         * exoskeleton.form.addPanel("SampleForm", {
+         *   Name: "BottomPanel",
+         *   Dock: 'Bottom',
+         *   Height: 100
+         * });
+         */
+        Form.prototype.addPanel = function (formName, panel, parentName) {
+            if (typeof panel === "object") {
+                panel = JSON.stringify(panel);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddPanel(formName, panel, parentName);
+        };
+
+        /**
+         * Adds a RadioButton to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} radioButton - initial properties to assign to RadioButton
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addRadioButton("SampleForm", {
+         *   Name: "GenderMale", Text: "Male", Top: 40, Left: 100, Checked: true
+         * });
+         * exoskeleton.form.addRadioButton("SampleForm", {
+         *   Name: "GenderFemale", Text: "Female", Top: 40, Left: 140, Checked: false
+         * });
+         */
+        Form.prototype.addRadioButton = function (formName, radioButton, parentName) {
+            if (typeof radioButton === "object") {
+                radioButton = JSON.stringify(radioButton);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddRadioButton(formName, radioButton, parentName);
+        };
+
+        /**
+         * Adds a TextBox to a named exoskeleton form.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.textbox(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} textbox - initial properties to assign to TextBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addTextBox("SampleForm", {
+         *   Name: "Street (1)",
+         *   Top: 40,
+         *   Left: 100,
+         *   Text: user.addr1
+         * }, "AddressPanel");
+         */
+        Form.prototype.addTextBox = function (formName, textbox, parentName) {
+            if (typeof textbox === "object") {
+                textbox = JSON.stringify(textbox);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            this.exoForm.AddTextBox(formName, textbox, parentName);
+        };
+
+        /**
+         * Applies property values to controls which have already been added to a named form.
+         * Can be used for separating control layout and data initialization.
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} controlValues - object containing properties to apply to dialog controls.
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.applyControlProperties("SampleForm", {
+         *   NameTextBox : { Text: "TestUser" },
+         *   EmployeeCheckBox : { Checked: false }
+         * });
+         */
+        Form.prototype.applyControlProperties = function (formName, controlValues) {
+            if (typeof formName === "undefined" || formName === null) {
+                formName = "dialog";
+            }
+
+            controlValues = controlValues || {};
+
+            if (typeof controlValues === "object") {
+                controlValues = JSON.stringify(controlValues);
+            }
+
+            this.exoForm.ApplyControlProperties(formName, controlValues);
+        };
+
+        /**
+         * Applies a form defintion to a named form.
+         * Dialog definitions allow representation of a series of controls, nesting, and property attributes
+         * within a single json object definition.
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} definition - object containing dialog definition.
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.initialize("ExampleListDialog", { Text: "Test Dialog", Width: 400, Height: 300 });
+         * exoskeleton.form.applyDefinition("ExampleListDialog", {
+         *   SampleList: {
+         *     Type: "ListBox",
+         *     Properties: {
+         *       Dock: "Fill",
+         *       Items: ["one", "two", "three"]
+         *     }
+         *   },
+         *   BottomPanel: { Type: "Panel", Properties: { Dock: "Bottom", Height: 30 } },
+         *   OkButton: {
+         *     Type: "EventButton",
+         *     Parent: "BottomPanel",
+         *     EventName: "SaveEvent",
+         *     Properties: { Text: "Save", Width: 100, Height: 30 }
+         *   }
+         * });
+         * var result = exoskeleton.form.show("ExampleListDialog");
+         */
+        Form.prototype.applyDefinition = function (formName, definition) {
+            if (typeof formName === "undefined" || formName === null) {
+                formName = "dialog";
+            }
+            definition = definition || {};
+            if (typeof definition === "object") {
+                definition = JSON.stringify(definition);
+            }
+
+            this.exoForm.ApplyDefinition(formName, definition);
+        };
+
+        /**
+         * Allows you to modify properties on a defined Form after it has been initialized.
+         * @param {string} formName - unique name to your defined form.
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.applyFormProperties("ExampleForm", { WindowState = "Minimized" });
+         */
+        Form.prototype.applyFormProperties = function (formName, formJson) {
+            if (typeof formJson === "object") {
+                formJson = JSON.stringify(formJson);
+            }
+
+            this.exoForm.ApplyFormProperties(formName, formJson);
+        };
+
+        /**
+         * Closes a named form.
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.close("ExampleForm");
+         */
+        Form.prototype.close = function (formName) {
+            this.exoForm.Close(formName);
+        };
+
+        /**
+         * Initialize or reinitialize a named form.
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {string} formJson - object containing properties to initialize dialog form with.
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.initialize("UserEditorForm", {
+         *   Text: "Manage users",
+         *   Width: 600,
+         *   Height: 400
+         * });
+         */
+        Form.prototype.initialize = function (formName, formJson) {
+            if (typeof formName === "undefined" || formName === null) {
+                formName = "dialog";
+            }
+            if (typeof formJson === "object") {
+                formJson = JSON.stringify(formJson);
+            }
+
+            this.exoForm.Initialize(formName, formJson);
+        };
+
+        /**
+         * Displays a named form which you previously configured.
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.show("UserEditorForm");
+         */
+        Form.prototype.show = function (formName) {
+            this.exoForm.Show(formName);
         };
 
         // #endregion
@@ -2650,31 +3230,45 @@
          * @memberof ExoEventEmitter
          * @instance
          */
-        ExoEventEmitter.prototype.emit = function (eventName) {
+        ExoEventEmitter.prototype.emit = function (eventName, eventData) {
             var self = this;
-            var selfArgs = Array.prototype.slice.call(arguments, 1);
 
             if (eventName && this.events[eventName]) {
                 this.events[eventName].forEach(function (listener) {
-                    // if locally emitting a multicast event, params will need to be unwrapped before applying them to listener
-                    if (eventName.indexOf("multicast.") === 0) {
-                        selfArgs = unwrapArguments(selfArgs);
-                    }
-
                     if (self.asyncListeners) {
                         setTimeout(function () {
-                            listener.apply(self, selfArgs);
+                            listener(eventData);
                         }, 1);
                     } else {
-                        listener.apply(self, selfArgs);
+                        listener(eventData);
+                    }
+
+                });
+            }
+        };
+
+        ExoEventEmitter.prototype.emitMulticast = function (eventName, eventData) {
+            var self = this;
+
+            // broadcast unprefixed event locally first (before multicasting)
+            if (eventName && this.events[eventName]) {
+                this.events[eventName].forEach(function (listener) {
+                    if (self.asyncListeners) {
+                        setTimeout(function () {
+                            listener(eventData);
+                        }, 1);
+                    } else {
+                        listener(eventData);
                     }
 
                 });
             }
 
-            // events whose name starts with 'local.' or 'multicast.' will not be (re)multicast
-            if (eventName.indexOf("local.") !== 0 && eventName.indexOf("multicast.") !== 0) {
-                this.exo.MulticastEvent(eventName, wrapArguments(selfArgs));
+            // now multicast to all windows (including this one) with prefixed event name
+            if (eventName.indexOf("multicast.") !== 0) {
+                // stringify eventData before passing to c# which will just act as a courier 
+                // to this untyped dynamic data.  It is up to the listeners to know what to expect.
+                this.exo.MulticastEvent(eventName, JSON.stringify(eventData));
             }
         };
 

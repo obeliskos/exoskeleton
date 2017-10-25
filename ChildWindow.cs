@@ -26,8 +26,10 @@ namespace Exoskeleton
 
         #region Form Level Constructor and Events
 
-        public ChildWindow(IPrimaryHostWindow parent, string caption, string uri, Settings settings, int? width, int? height)
+        public ChildWindow(IPrimaryHostWindow parent, string caption, string uri, Settings settings,
+            int? width, int? height): base()
         {
+            
             this.parent = parent;
 
             if (settings.ScriptingLoggerEnabled)
@@ -75,7 +77,10 @@ namespace Exoskeleton
             }
             else
             {
-                ChildWebBrowser.Url = new Uri(uri);
+                string baseUrl = parent.ResolveWebBrowserUrl(settings.WebBrowserBaseUrl);
+
+                Uri baseUri = new Uri(baseUrl);
+                ChildWebBrowser.Url = new Uri(baseUri, uri);
             }
         }
 
@@ -85,55 +90,54 @@ namespace Exoskeleton
             this.scriptInterface.Dispose();
         }
 
-        public void PackageAndMulticast(string name, dynamic[] data)
+        /// <summary>
+        /// Internal method used for multicasting event and passing data.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void PackageAndMulticast(string name, dynamic data)
         {
             parent.PackageAndMulticast(name, data);
         }
 
         /// <summary>
-        /// Used for passing event data as serialized array of serialized data items.  
-        /// Requires the javascript event handler to deserialize (JSON.parse()) data.
+        /// This could be used by scripting to multicast out of their window.
+        /// They will be packaging and passing serialized data.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="data"></param>
-        public void PackageAndUnicast(string name, dynamic[] data)
-        {
-            string wrappedData = null;
-
-            List<string> args = new List<string>();
-            args.Add(name);
-
-            if (data != null)
-            {
-                for (int idx = 0; idx < data.Length; idx++)
-                {
-                    data[idx] = JsonConvert.SerializeObject(data[idx]);
-                }
-                // now that we have array of strings (of serialized objects or values), serialize that.
-                wrappedData = JsonConvert.SerializeObject(data);
-
-                args.Add(wrappedData);
-            }
-
-            this.InvokeScript("exoskeletonEmitEvent", args.ToArray());
-        }
-
         public void MulticastEvent(string name, string data)
         {
             parent.MulticastEvent(name, data);
         }
 
-        public void UnicastEvent(string name, string data)
+        /// <summary>
+        /// Internal method used for unicasting event and passing data.
+        /// This is only public so that Scripting Interface c# can utilize it.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void PackageAndUnicast(string name, dynamic data)
         {
-            List<string> args = new List<string>();
-            args.Add(name);
-            if (data != null)
-            {
-                args.Add(data);
-            }
+            // InvokeScript handles params as string array
+            // our event name will be first (0) element
+            // out serialized event data will be second (1) element
+            string[] wrappedJson = { name, JsonConvert.SerializeObject(data) };
 
-            InvokeScript("exoskeletonEmitEvent", args.ToArray());
+            this.InvokeScript("exoskeletonEmitEvent", wrappedJson);
         }
+
+        //public void UnicastEvent(string name, string data)
+        //{
+        //    List<string> args = new List<string>();
+        //    args.Add(name);
+        //    if (data != null)
+        //    {
+        //        args.Add(data);
+        //    }
+
+        //    InvokeScript("exoskeletonEmitEvent", args.ToArray());
+        //}
 
         #endregion
 
@@ -337,7 +341,7 @@ namespace Exoskeleton
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
 
             // payload (2nd param) may evolve over time
-            this.UnicastEvent((string)item.Tag, item.Name);
+            this.PackageAndUnicast((string)item.Tag, item.Name);
         }
 
         #endregion
@@ -410,7 +414,7 @@ namespace Exoskeleton
             ToolStripButton item = (ToolStripButton)sender;
 
             // payload (2nd param) may evolve over time
-            this.UnicastEvent((string)item.Tag, item.Text);
+            this.PackageAndUnicast((string)item.Tag, item.Text);
         }
 
         #endregion

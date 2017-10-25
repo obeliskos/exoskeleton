@@ -63,15 +63,14 @@ namespace Exoskeleton.Classes.API
             p.StartInfo = psi;
             p.Start();
 
-            // Some properties (their accessors) may throw exception if their value is non-applicable in the 
-            // process current state so we will ignore errors by providing our own error delegate.
-            JsonSerializerSettings jss = new JsonSerializerSettings();
-            jss.Error += delegate (object sender, ErrorEventArgs args)
+            dynamic dyn = new
             {
-                args.ErrorContext.Handled = true;
+                Id = p.Id,
+                CreationTime = p.ProcessName,
+                CreationTimeUtc = p.MainWindowTitle,
             };
 
-            return JsonConvert.SerializeObject(p, jss);
+            return JsonConvert.SerializeObject(dyn);
         }
 
         /// <summary>

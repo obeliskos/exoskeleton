@@ -29,6 +29,7 @@ namespace Exoskeleton.Classes.API
         public ScriptStatusstrip Statusbar = null;
         public ScriptUtility Util = null;
         public ScriptDialog Dialog = null;
+        public ScriptForm Form = null;
 
         public IHostWindow host;
 
@@ -57,6 +58,7 @@ namespace Exoskeleton.Classes.API
             this.Statusbar = exosettings.ScriptingStatusStripEnabled ? new ScriptStatusstrip(host) : null;
             this.Util = new ScriptUtility();
             this.Dialog = exosettings.ScriptingDialogEnabled ? new ScriptDialog(host) : null;
+            this.Form = exosettings.ScriptingFormEnabled ? new ScriptForm(host) : null;
         }
 
         /// <summary>

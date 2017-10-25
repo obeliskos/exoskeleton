@@ -1,22 +1,14 @@
 /**
- * Advanced dialog part 2
+ * Advanced forms
  *
- * For better code organization when creating exoskeleton
- * programs which need to use dialogs, I've added :
- * (1) applyDialogDefinitions(), and
- * (2) applyControlProperties()
- *
- * This let's you load your dialog controls, separately
- * from where you initialize the control values.
- * You might also store dialog definitions on disk.
+ * Forms are setup identical to dialogs except :
+ * - They are not dismissed directly
+ * - Buttons are 'EventButton' rather than 'DialogButton'
+ * - Events allow running javascript on events
  */
  
-// Let's create a dialog definition
-// The top level property names will have a similar 'Name' 
-//   property added with if one is not already specified.
-// Several Control have extra top level properties, which
-//   you will see demonstrated within this example.
-var dialogData = {
+// Let's create a form definition
+var formDefinition = {
   MiddlePanel: {
     Type: "Panel",
     Properties: {
@@ -212,9 +204,9 @@ var dialogData = {
     }
   },
   OkButton: {
-    Type: "DialogButton",
+    Type: "EventButton",
     Parent: "BottomPanel",
-    DialogResult: "OK",
+    EventName: "SampleSaveEvent",
     Properties: {
       Top: 10,
       Left: 280,
@@ -222,17 +214,30 @@ var dialogData = {
       Width: 100,
       UseVisualStyleBackColor: true,
       TabIndex:2,
-      Text: "OK"
+      Text: "Save"
     }
   },
   CancelButton: {
-    Type: "DialogButton",
+    Type: "EventButton",
     Parent: "BottomPanel",
-    DialogResult: "Cancel",
+    EventName: "SampleSelectAllEvent",
     Properties: {
-      Text: "Cancel",
+      Text: "Select All",
       Top: 10,
       Left: 390,
+      Height: 30,
+      Width: 100,
+      UseVisualStyleBackColor: true
+    }
+  },
+  IncrementButton: {
+    Type: "EventButton",
+    Parent: "BottomPanel",
+    EventName: "SampleIncrementEvent",
+    Properties: {
+      Text: "Increment Age",
+      Top: 10,
+      Left: 500,
       Height: 30,
       Width: 100,
       UseVisualStyleBackColor: true
@@ -242,21 +247,21 @@ var dialogData = {
 
 // ok, before we can use that definition, we should initialize
 // our dialog.
-exoskeleton.dialog.initialize("ExampleDialog", {
-  Text: "test", 
+exoskeleton.form.initialize("ExampleForm", {
+  Text: "Example Exoskeleton Form", 
   Width: 720, 
   Height: 400
 });
 
 // now apply that definition
-exoskeleton.dialog.applyDefinition(
-  "ExampleDialog", 
-  JSON.stringify(dialogData)
+exoskeleton.form.applyDefinition(
+  "ExampleForm", 
+  JSON.stringify(formDefinition)
 );
 
 // now initialize our control value data in a way that is more 
 // 'data-friendly'
-exoskeleton.dialog.applyControlProperties("ExampleDialog", {
+exoskeleton.form.applyControlProperties("ExampleForm", {
   NameTextBox : { Text: "TestUser" },
   EmployeeCheckBox : { Checked: false },
   AgeNumeric : { Value: 19 },
@@ -270,6 +275,37 @@ exoskeleton.dialog.applyControlProperties("ExampleDialog", {
   }
 });
 
-// now, show the dialog and get results
-var results = exoskeleton.dialog.showDialog("ExampleDialog");
-xo.logObject(results);
+// now, show the form and await events
+exoskeleton.form.show("ExampleForm");
+
+// we only need to clear this because we allow re-running this script which adds listeners
+// within a single page load in exo console.
+exoskeleton.events.clear("SampleSaveEvent");
+exoskeleton.events.clear("SampleSelectAllEvent");
+exoskeleton.events.clear("SampleIncrementEvent");
+
+exoskeleton.events.on("SampleSaveEvent", function(data) {
+  xo.logObject(data);
+  exoskeleton.dialog.showMessageBox(
+     "You clicked the save button and ran this javascript code", 
+     "Same Form Save Event", 
+     "OKCancel", 
+     "Information"
+  );
+});
+
+// Select All Button Event to check all known indices in the CheckList
+exoskeleton.events.on("SampleSelectAllEvent", function(data) {
+  exoskeleton.form.applyControlProperties("ExampleForm", {
+    CountryCheckList : { CheckedIndices: [0, 1, 2, 3, 4, 5, 6, 7, 8 ] }
+  });
+});
+
+exoskeleton.events.on("SampleIncrementEvent", function(data) {
+  var age = data.AgeNumeric.Value + 1;
+  
+  exoskeleton.form.applyControlProperties("ExampleForm", {
+    AgeNumeric : { Value: age }
+  });
+});
+

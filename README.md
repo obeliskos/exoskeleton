@@ -2,8 +2,8 @@
 A .net, windows-specific native web app hosting framework.
 
 # Overview
-This is an experiment creating a minimal, windows native app hosting framework.  It is implemented in .net and exposes an 
-api for your html and javascript apps to invoke via javascript object which maps to a 'Com-Visible' C# object hierarchy.
+This is an experiment creating a windows native app hosting framework implemented in .net.  This application can host and 
+expose an api for your html and javascript apps to invoke via javascript object which maps to a 'Com-Visible' C# object hierarchy.
 Since this applicaton is written in C# and uses the .NET WebBrowser control, it should be noted that the underlying web 
 control is based on Internet Explorer 11.
 
@@ -19,6 +19,11 @@ The functionality available to your javascript apps roughly maps to a selection 
 The above list will be enhance over time, where needed.  You can browse the current state of the API by viewing the documentation.js docs here :
 
 [Exoskeleton.js API Docs](https://rawgit.com/obeliskos/exoskeleton/master/Examples/exoskeleton.js/docs/index.html)
+
+The API documented above allows configuring menus, toolbars, and statusbars on the container, creating winforms dialogs, 
+forms, native dialogs (FontDialog, ColorDialog, OpenFileDialog, SaveFileDialog), system tray notifications, along with a 
+wide variety of .net library calls categorized by category or namespace.
+
 
 # Building
 This application was built using Visual Studio 2017 Community.  A pre-built binary is included in the 'Prebuilt' folder if you just want to experiment.

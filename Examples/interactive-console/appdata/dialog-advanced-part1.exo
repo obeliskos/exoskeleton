@@ -17,7 +17,7 @@
 // Setting font at dialog initialization will default all 
 //   controls to that font size.
 
-exoskeleton.dialog.initialize({
+exoskeleton.dialog.initialize("ExampleDialog", {
   Text: 'Exoskeleton Dialog Example', 
   Font: "Microsoft Sans Serif, 11pt", // json.net can parse this
   Width: 720, 
@@ -29,7 +29,7 @@ exoskeleton.dialog.initialize({
 
 // Render Middle (Fill) Panel first, no parent name supplied so
 // this is a 'root' control added directly to dialog form controls.
-exoskeleton.dialog.addPanel({
+exoskeleton.dialog.addPanel("ExampleDialog", {
   Dock: "Fill",
   Name: "MiddlePanel",
   BackColor: "192,192,192",	// let's use rgb values here
@@ -40,19 +40,19 @@ exoskeleton.dialog.addPanel({
   Padding: "10, 10, 10, 10"
 });
 
-exoskeleton.dialog.addPanel({
+exoskeleton.dialog.addPanel("ExampleDialog", {
   Dock: "Fill",
   Name: "MiddleLeft",
 }, "MiddlePanel");
 
-exoskeleton.dialog.addPanel({
+exoskeleton.dialog.addPanel("ExampleDialog", {
   Dock: "Right",
   Name: "MiddleRight",
   Width: 360
 }, "MiddlePanel");
 
 // Add ListBox to middle panel first since it will fill to expand
-exoskeleton.dialog.addListBox({
+exoskeleton.dialog.addListBox("ExampleDialog", {
     Name: "UserTypeList",
     Dock: "Fill",
 	TabIndex: 1,
@@ -61,7 +61,7 @@ exoskeleton.dialog.addListBox({
 }, "MiddleLeft");
 
 // add label to middle panel and dock it top (above 'fill' listbox)
-exoskeleton.dialog.addLabel({
+exoskeleton.dialog.addLabel("ExampleDialog", {
   Dock: "Top",
   Name: "NameLabel",
   Text: "Select your user type :",
@@ -69,7 +69,7 @@ exoskeleton.dialog.addLabel({
   Height: 26
 }, "MiddleLeft");
 
-exoskeleton.dialog.addCheckedListBox({
+exoskeleton.dialog.addCheckedListBox("ExampleDialog", {
   Dock: "Fill",
   Name: "CountryChecklist",
   CheckOnClick: true,
@@ -78,7 +78,7 @@ exoskeleton.dialog.addCheckedListBox({
 }, [1, 4], "MiddleRight");
 
 // add label to middle panel and dock it top (above 'fill' listbox)
-exoskeleton.dialog.addLabel({
+exoskeleton.dialog.addLabel("ExampleDialog", {
   Dock: "Top",
   Name: "CountriesLabel",
   Text: "Select countries of residence :",
@@ -87,7 +87,7 @@ exoskeleton.dialog.addLabel({
 }, "MiddleRight");
 
 // Render Top Panel
-exoskeleton.dialog.addPanel({
+exoskeleton.dialog.addPanel("ExampleDialog", {
   Dock: "Top",
   Name: "TopPanel",
   BackColor: "PaleGreen",	// .net named colors are also valid
@@ -95,7 +95,7 @@ exoskeleton.dialog.addPanel({
   Padding: "10, 10, 10, 10" // 'Padding' left, top, right, bottom
 });
 
-exoskeleton.dialog.addLabel({
+exoskeleton.dialog.addLabel("ExampleDialog", {
   Name: "NameLabel",
   Text: "Enter your name :",
   Top: 8,
@@ -104,7 +104,7 @@ exoskeleton.dialog.addLabel({
   Width: 140
 }, "TopPanel");
 
-exoskeleton.dialog.addTextBox({
+exoskeleton.dialog.addTextBox("ExampleDialog", {
   Name: "NameTextBox",
   Text: "Some User",
   Top: 32,
@@ -114,7 +114,7 @@ exoskeleton.dialog.addTextBox({
   TabIndex: 0
 }, "TopPanel");
 
-exoskeleton.dialog.addCheckBox({
+exoskeleton.dialog.addCheckBox("ExampleDialog", {
   Name: "EmployeeCheckBox",
   Text: "Employee",
   Checked: true,
@@ -122,7 +122,7 @@ exoskeleton.dialog.addCheckBox({
   Left: 10
 }, "TopPanel");
 
-exoskeleton.dialog.addRadioButton({
+exoskeleton.dialog.addRadioButton("ExampleDialog", {
   Name: "GenderMale",
   Text: "Male",
   Checked: false,
@@ -131,7 +131,7 @@ exoskeleton.dialog.addRadioButton({
   AutoSize: true
 }, "TopPanel");
 
-exoskeleton.dialog.addRadioButton({
+exoskeleton.dialog.addRadioButton("ExampleDialog", {
   Name: "GenderFemale",
   Text: "Female",
   Checked: false,
@@ -140,7 +140,7 @@ exoskeleton.dialog.addRadioButton({
   AutoSize: true
 }, "TopPanel");
 
-exoskeleton.dialog.addLabel({
+exoskeleton.dialog.addLabel("ExampleDialog", {
   Name: "AgeLabel",
   Text: "Enter your age:",
   AutoSize:true,
@@ -148,7 +148,7 @@ exoskeleton.dialog.addLabel({
   Left: 170,
 }, "TopPanel");
 
-exoskeleton.dialog.addNumericUpDown({
+exoskeleton.dialog.addNumericUpDown("ExampleDialog", {
   Name: "AgeNumeric",
   Left: 170,
   Top: 30,
@@ -157,7 +157,7 @@ exoskeleton.dialog.addNumericUpDown({
   Value: 21
 }, "TopPanel");
 
-exoskeleton.dialog.addLabel({
+exoskeleton.dialog.addLabel("ExampleDialog", {
   Name: "DateLabel",
   Text: "Pick some date :",
   AutoSize: true,
@@ -165,7 +165,7 @@ exoskeleton.dialog.addLabel({
   Left: 310,
 }, "TopPanel");
 
-exoskeleton.dialog.addDateTimePicker({
+exoskeleton.dialog.addDateTimePicker("ExampleDialog", {
   Name: "StartDate",
   Top: 30,
   Left: 310,
@@ -173,7 +173,7 @@ exoskeleton.dialog.addDateTimePicker({
   Value: "12/1/2014"
 }, "TopPanel");
 
-exoskeleton.dialog.addLabel({
+exoskeleton.dialog.addLabel("ExampleDialog", {
   Name: "DateLabel",
   Text: "Pick some value :",
   AutoSize: true,
@@ -181,7 +181,7 @@ exoskeleton.dialog.addLabel({
   Left: 565,
 }, "TopPanel");
 
-exoskeleton.dialog.addComboBox({
+exoskeleton.dialog.addComboBox("ExampleDialog", {
   Name: "TestComboBox",
   AutoSize:true,
   Top: 30,
@@ -190,14 +190,14 @@ exoskeleton.dialog.addComboBox({
 }, "TopPanel");
 
 // Render Bottom Panel
-exoskeleton.dialog.addPanel({
+exoskeleton.dialog.addPanel("ExampleDialog", {
   Dock: "Bottom",
   Name: "BottomPanel",
   Height: 50,
   Padding: "10, 10, 10, 10"
 });
 
-exoskeleton.dialog.addDialogButton({
+exoskeleton.dialog.addDialogButton("ExampleDialog", {
   Name: 'OkButton',
   Top: 10,
   Left: 280,
@@ -208,7 +208,7 @@ exoskeleton.dialog.addDialogButton({
   Text: "OK"
 }, "OK", "BottomPanel");
 
-exoskeleton.dialog.addDialogButton({
+exoskeleton.dialog.addDialogButton("ExampleDialog", {
   Name: 'CancelButton',
   Text: "Cancel",
   Top: 10,
@@ -222,7 +222,7 @@ exoskeleton.dialog.addDialogButton({
 // Now let's consider that we may want to do the above dialog multiple times with different 
 // initialization data.  We can use the 'applyControlProperties' method to set properties on 
 // controls already added.
-exoskeleton.dialog.applyControlProperties({
+exoskeleton.dialog.applyControlProperties("ExampleDialog", {
   NameTextBox : { Text: "TestUser" },
   EmployeeCheckBox : { Checked: false },
   AgeNumeric : { Value: 19 },
@@ -238,7 +238,7 @@ exoskeleton.dialog.applyControlProperties({
 
 // We get a result with control contents no matter which
 // DialogButton's DialogResult was clicked.
-var result = exoskeleton.dialog.showDialog();
+var result = exoskeleton.dialog.showDialog("ExampleDialog");
 
 xo.logText("You clicked : " + result.Result);
 xo.logText("Entire result object : ");
