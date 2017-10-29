@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -110,6 +111,17 @@ namespace Exoskeleton.Classes.API
             dynamic locs = host.GetLocations();
             string json = JsonConvert.SerializeObject(locs);
             return json;
+        }
+
+        /// <summary>
+        /// Returns the exoskeleton host version
+        /// </summary>
+        /// <returns></returns>
+        public string GetVersion()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fvi.FileVersion;
         }
 
         /// <summary>

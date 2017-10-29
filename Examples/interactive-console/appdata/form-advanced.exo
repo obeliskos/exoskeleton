@@ -7,7 +7,9 @@
  * - Events allow running javascript on events
  */
  
-// Let's create a form definition
+/**
+ * Set up Form definition object...
+ */
 var formDefinition = {
   MiddlePanel: {
     Type: "Panel",
@@ -39,6 +41,7 @@ var formDefinition = {
   UserTypeList: {
     Type: "ListBox",
     Parent: "MiddleLeft",
+    EmitEvents: true,
     Properties: {
       Dock: "Fill",
       TabIndex: 1,
@@ -58,12 +61,15 @@ var formDefinition = {
   CountryCheckList: {
     Type: "CheckedListBox",
     Parent: "MiddleRight",
+    Payload: {
+      CheckedIndices: [1, 4]
+    },
+    EmitEvents: false,
     Properties: {
       Dock: "Fill",
       CheckOnClick: true,
       Items: ["United States", "United Kingdom", "Germany", "France", "Australia", 
-  				"Japan", "India", "Russia", "Other"],
-      CheckedIndices: [1, 4]
+  				"Japan", "India", "Russia", "Other"]
     }
   },
   CountriesLabel: {
@@ -110,6 +116,7 @@ var formDefinition = {
   EmployeeCheckBox: {
     Type: "CheckBox",
     Parent: "TopPanel",
+    EmitEvents: true,
     Properties: {
       Text: "Employee",
       Top: 58,
@@ -119,6 +126,7 @@ var formDefinition = {
   GenderMale: {
     Type: "RadioButton",
     Parent: "TopPanel",
+    EmitEvents: true,
     Properties: {
       Text: "Male",
       Top: 57,
@@ -149,6 +157,7 @@ var formDefinition = {
   AgeNumeric: {
     Type: "NumericUpDown",
     Parent: "TopPanel",
+    EmitEvents: true,
     Properties: {
       Left: 170,
       Top: 30,
@@ -169,6 +178,7 @@ var formDefinition = {
   StartDate: {
     Type: "DateTimePicker",
     Parent: "TopPanel",
+    EmitEvents: true,
     Properties: {
       Top: 30,
       Left: 310,
@@ -188,6 +198,7 @@ var formDefinition = {
   TestComboBox: {
     Type: "ComboBox",
     Parent: "TopPanel",
+    EmitEvents: true,
     Properties: {
       AutoSize: true,
       Top: 30,
@@ -203,24 +214,23 @@ var formDefinition = {
       Padding: "10, 10, 10, 10"
     }
   },
-  OkButton: {
-    Type: "EventButton",
+  IncrementButton: {
+    Type: "Button",
     Parent: "BottomPanel",
-    EventName: "SampleSaveEvent",
+    EmitEvents: true,
     Properties: {
+      Text: "Increment Age",
       Top: 10,
       Left: 280,
       Height: 30,
       Width: 100,
-      UseVisualStyleBackColor: true,
-      TabIndex:2,
-      Text: "Save"
+      UseVisualStyleBackColor: true
     }
   },
-  CancelButton: {
-    Type: "EventButton",
+  SelectAllButton: {
+    Type: "Button",
     Parent: "BottomPanel",
-    EventName: "SampleSelectAllEvent",
+    EmitEvents: true,
     Properties: {
       Text: "Select All",
       Top: 10,
@@ -230,23 +240,26 @@ var formDefinition = {
       UseVisualStyleBackColor: true
     }
   },
-  IncrementButton: {
-    Type: "EventButton",
+  SaveButton: {
+    Type: "Button",
     Parent: "BottomPanel",
-    EventName: "SampleIncrementEvent",
+    EmitEvents: true,
     Properties: {
-      Text: "Increment Age",
       Top: 10,
       Left: 500,
       Height: 30,
       Width: 100,
-      UseVisualStyleBackColor: true
+      UseVisualStyleBackColor: true,
+      TabIndex:2,
+      Text: "Save and Close"
     }
   }
 };
 
-// ok, before we can use that definition, we should initialize
-// our dialog.
+/**
+ * Initialize and apply definition to our form
+ */
+
 exoskeleton.form.initialize("ExampleForm", {
   Text: "Example Exoskeleton Form", 
   Width: 720, 
@@ -259,11 +272,103 @@ exoskeleton.form.applyDefinition(
   JSON.stringify(formDefinition)
 );
 
-// now initialize our control value data in a way that is more 
-// 'data-friendly'
+/**
+ * Define Events
+ */
+
+// we only need to clear events because we allow re-running this 
+// script which adds listeners within a single page load in 
+// exo console. Normally you might clear all by calling clear()
+// but the exo console needs its menu and toolbar events.
+
+exoskeleton.events.clear("ExampleForm.SaveButton.Click");
+exoskeleton.events.clear("ExampleForm.SelectAllButton.Click");
+exoskeleton.events.clear("ExampleForm.IncrementButton.Click");
+
+exoskeleton.events.clear("ExampleForm.UserTypeList.SelectedIndexChanged");
+exoskeleton.events.clear("ExampleForm.EmployeeCheckBox.CheckedChanged");
+exoskeleton.events.clear("ExampleForm.GenderMale.CheckedChanged");
+exoskeleton.events.clear("ExampleForm.StartDate.ValueChanged");
+exoskeleton.events.clear("ExampleForm.AgeNumeric.ValueChanged");
+exoskeleton.events.clear("ExampleForm.TestComboBox.SelectedIndexChanged");
+exoskeleton.events.clear("ExampleForm.CountryCheckList.ItemCheck");
+
+// EventButtons will return all control values in event data
+exoskeleton.events.on("ExampleForm.SaveButton.Click", function(data) {
+  xo.logText("ExampleForm closed with these control values:");
+  xo.logObject(data);
+  exoskeleton.form.close("ExampleForm");
+});
+
+exoskeleton.events.on("ExampleForm.SelectAllButton.Click", function(data) {
+  exoskeleton.form.applyControlProperties("ExampleForm", {
+    CountryCheckList : { CheckedIndices: [0, 1, 2, 3, 4, 5, 6, 7, 8 ] }
+  });
+});
+
+exoskeleton.events.on("ExampleForm.IncrementButton.Click", function(data) {
+  var age = data.AgeNumeric.Value + 1;
+  
+  exoskeleton.form.applyControlProperties("ExampleForm", {
+    AgeNumeric : { Value: age }
+  });
+});
+
+// Other Control Events return only that control's values in event data
+exoskeleton.events.on("ExampleForm.UserTypeList.SelectedIndexChanged", function(data) {
+  xo.logText("SelectedIndexChanged event data :");
+  xo.logObject(data);
+});
+
+exoskeleton.events.on("ExampleForm.EmployeeCheckBox.CheckedChanged", function(data) {
+  xo.logText("CheckedChanged event data :");
+  xo.logObject(data);
+  
+  // additional example to make user type listbox enabled
+  // or disabled based on user clicking the employee checkbox
+  exoskeleton.form.applyControlProperties("ExampleForm", {
+  	UserTypeList: { Enabled: data.Checked }
+  });
+});
+
+exoskeleton.events.on("ExampleForm.GenderMale.CheckedChanged", function(data) {
+  xo.logText("CheckedChanged event data :");
+  xo.logObject(data);
+});
+
+exoskeleton.events.on("ExampleForm.StartDate.ValueChanged", function(data) {
+  xo.logText("ValueChanged event data :");
+  xo.logObject(data);
+});
+
+exoskeleton.events.on("ExampleForm.AgeNumeric.ValueChanged", function(data) {
+  xo.logText("ValueChanged event data :");
+  xo.logObject(data);
+});
+
+exoskeleton.events.on("ExampleForm.TestComboBox.SelectedIndexChanged", function(data) {
+  xo.logText("SelectedIndexChanged event data :");
+  xo.logObject(data);
+});
+
+// Disabled below event because it fires multiple times when we 'Select All'
+// A normal event probably would be fast enough, but our logging slows it down.
+/*
+exoskeleton.events.on("ExampleForm.CountryCheckList.ItemCheck", function(data) {
+  xo.logText("ItemCheck event data :");
+  xo.logObject(data);
+});
+*/
+
+/**
+ * Apply control properties and payloads and Show()
+ * If we have established events which arise from changing
+ * the values, they are established and should fire.
+ */
+
 exoskeleton.form.applyControlProperties("ExampleForm", {
   NameTextBox : { Text: "TestUser" },
-  EmployeeCheckBox : { Checked: false },
+  EmployeeCheckBox : { Checked: true },
   AgeNumeric : { Value: 19 },
   GenderFemale: { Checked: true },
   UserTypeList: { SelectedItem: 'Administrator' },
@@ -275,37 +380,20 @@ exoskeleton.form.applyControlProperties("ExampleForm", {
   }
 });
 
+// Payload is for 'meta' properties which aren't directly set.
+//
+// Below make more sense if it was a datagridview or dialogbutton
+// which need this.  We have a hack which let's us deal with 
+// CheckedIndices in above applyControlProperties.
+
+exoskeleton.form.applyControlPayload(
+	"ExampleForm", 
+    "CountryCheckList", 
+    { CheckedIndices: [0, 2, 3] }
+);
+
 // now, show the form and await events
 exoskeleton.form.show("ExampleForm");
 
-// we only need to clear this because we allow re-running this script which adds listeners
-// within a single page load in exo console.
-exoskeleton.events.clear("SampleSaveEvent");
-exoskeleton.events.clear("SampleSelectAllEvent");
-exoskeleton.events.clear("SampleIncrementEvent");
 
-exoskeleton.events.on("SampleSaveEvent", function(data) {
-  xo.logObject(data);
-  exoskeleton.dialog.showMessageBox(
-     "You clicked the save button and ran this javascript code", 
-     "Same Form Save Event", 
-     "OKCancel", 
-     "Information"
-  );
-});
-
-// Select All Button Event to check all known indices in the CheckList
-exoskeleton.events.on("SampleSelectAllEvent", function(data) {
-  exoskeleton.form.applyControlProperties("ExampleForm", {
-    CountryCheckList : { CheckedIndices: [0, 1, 2, 3, 4, 5, 6, 7, 8 ] }
-  });
-});
-
-exoskeleton.events.on("SampleIncrementEvent", function(data) {
-  var age = data.AgeNumeric.Value + 1;
-  
-  exoskeleton.form.applyControlProperties("ExampleForm", {
-    AgeNumeric : { Value: age }
-  });
-});
 

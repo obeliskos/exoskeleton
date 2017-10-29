@@ -75,7 +75,7 @@ exoskeleton.dialog.addCheckedListBox("ExampleDialog", {
   CheckOnClick: true,
   Items: ["United States", "United Kingdom", "Germany", "France", "Australia", 
   	"Japan", "India", "Russia", "Other"]
-}, [1, 4], "MiddleRight");
+}, "MiddleRight", { CheckedIndices: [1, 4] });
 
 // add label to middle panel and dock it top (above 'fill' listbox)
 exoskeleton.dialog.addLabel("ExampleDialog", {
@@ -206,7 +206,7 @@ exoskeleton.dialog.addDialogButton("ExampleDialog", {
   UseVisualStyleBackColor: true,
   TabIndex: 2,
   Text: "OK"
-}, "OK", "BottomPanel");
+}, "BottomPanel", { DialogResult: "OK" });
 
 exoskeleton.dialog.addDialogButton("ExampleDialog", {
   Name: 'CancelButton',
@@ -217,7 +217,7 @@ exoskeleton.dialog.addDialogButton("ExampleDialog", {
   Width: 100,
   TabIndex: 3,
   UseVisualStyleBackColor: true
-}, "Cancel", "BottomPanel");
+}, "BottomPanel", { DialogResult: "Cancel" });
 
 // Now let's consider that we may want to do the above dialog multiple times with different 
 // initialization data.  We can use the 'applyControlProperties' method to set properties on 

@@ -59,9 +59,12 @@ namespace Exoskeleton.Classes.API
             ProcessStartInfo psi = JsonConvert.DeserializeObject<ProcessStartInfo>(startInfo,
                 new JsonSerializerSettings() { ContractResolver = new SerializableExpandableContractResolver() });
 
-            Process p = new Process();
-            p.StartInfo = psi;
-            p.Start();
+            Process p = Process.Start(psi);
+
+            if (p == null)
+            {
+                return null;
+            }
 
             dynamic dyn = new
             {

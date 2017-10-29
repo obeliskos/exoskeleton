@@ -9,14 +9,24 @@ using System.Windows.Forms;
 
 namespace Exoskeleton.Classes
 {
+    /// <summary>
+    /// Base class for both Dialog and Form classes to inherit from.
+    /// Manages form references, control references, serialization, etc.
+    /// </summary>
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public class FormLayoutBase : IDisposable
     {
         protected IHostWindow host;
 
         protected Dictionary<string, Form> formDictionary;
+        protected Dictionary<string, bool> suppressEventsDictionary;
         protected Dictionary<string, Dictionary<string, Control>> controlDictionary;
 
+        /// <summary>
+        /// Button subclass to differentiate via type in apply payload phase
+        /// </summary>
+        public class DialogButton : Button { }
+        
         public FormLayoutBase(IHostWindow host)
         {
             this.host = host;
@@ -27,6 +37,7 @@ namespace Exoskeleton.Classes
         public virtual void Dispose()
         {
             formDictionary = null;
+            suppressEventsDictionary = null;
             controlDictionary = null;
             host = null;
         }
@@ -38,8 +49,12 @@ namespace Exoskeleton.Classes
         /// <param name="formName"></param>
         /// <param name="json"></param>
         /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        /// <param name="payload"></param>
         /// <returns></returns>
-        protected T AddControl<T>(string formName, string json, string parentName = null) where T : Control
+        protected T AddControlInstance<T>(string formName, string json, string parentName = null, 
+            bool emitEvents = false, dynamic payload = null) 
+            where T : Control
         {
             T ctl = JsonConvert.DeserializeObject<T>(json);
             ctl.SuspendLayout();
@@ -55,13 +70,253 @@ namespace Exoskeleton.Classes
                 controlDictionary[formName][parentName].Controls.Add(ctl);
             }
 
+            if (emitEvents)
+            {
+                AddControlEvents<T>(formName, ctl);
+            }
+
+            if (payload != null)
+            {
+                ApplyControlPayload<T>(formName, ctl, payload);
+            }
+
             return ctl;
+        }
+
+        /// <summary>
+        /// Generic implementation for applying default events for certain control types
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="formName"></param>
+        /// <param name="control"></param>
+        protected void AddControlEvents<T>(string formName, Control control) where T : Control
+        {
+            if (control.GetType() == typeof(Label))
+            {
+                ((Label)control).Click += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".Click"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            // EventButton (Button)
+            if (control.GetType() == typeof(Button) && control.GetType() != typeof(DialogButton))
+            {
+                ((Button) control).Click += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name , ".Click"), 
+                        GenerateDynamicResponseObject(formName));
+                };
+            }
+
+            if (control.GetType() == typeof(CheckBox))
+            {
+                ((CheckBox)control).CheckedChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".CheckedChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(RadioButton))
+            {
+                ((RadioButton)control).CheckedChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".CheckedChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(DateTimePicker))
+            {
+                ((DateTimePicker)control).ValueChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".ValueChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(MonthCalendar))
+            {
+                ((MonthCalendar)control).DateChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".DateChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(TextBox))
+            {
+                ((TextBox)control).TextChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".TextChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(MaskedTextBox))
+            {
+                ((MaskedTextBox)control).TextChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".TextChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(NumericUpDown))
+            {
+                ((NumericUpDown)control).ValueChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".ValueChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(ComboBox))
+            {
+                ((ComboBox)control).SelectedIndexChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".SelectedIndexChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(ListBox)) {
+                ((ListBox) control).SelectedIndexChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name , ".SelectedIndexChanged"), 
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(CheckedListBox))
+            {
+                // Normally this event fires before item is acutally checked.
+                // To ensure our immediately checked/unchecked item is represented, will will
+                // arrange our event handler with this hack.
+                ItemCheckEventHandler handler = null;
+                handler = (sender, args) =>
+                {
+                    CheckedListBox clb = (CheckedListBox)sender;
+                    clb.ItemCheck -= handler;
+                    clb.SetItemCheckState(args.Index, args.NewValue);
+                    clb.ItemCheck += handler;
+
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".ItemCheck"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+
+                ((CheckedListBox)control).ItemCheck += handler;
+            }
+
+            if (control.GetType() == typeof(DataGridView))
+            {
+                ((DataGridView)control).SelectionChanged += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".SelectionChanged"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+        }
+
+        /// <summary>
+        /// Generic implementation for apply payload to certain control types
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="formName"></param>
+        /// <param name="control"></param>
+        /// <param name="payload"></param>
+        protected void ApplyControlPayload<T>(string formName, Control control, dynamic payload) where T : Control
+        {
+            JObject pdef = (JObject) payload;
+
+            if (control.GetType() == typeof(DialogButton))
+            {
+                if (pdef["DialogResult"] != null)
+                {
+                    DialogResult dr = 
+                        (DialogResult) Enum.Parse(typeof(DialogResult), pdef["DialogResult"].ToString());
+
+                    ((Button)control).Click += (sender, args) => {
+                        formDictionary[formName].DialogResult = dr;
+                    };
+                }
+            }
+
+            if (control.GetType() == typeof(CheckedListBox))
+            {
+                if (pdef["CheckedIndices"] != null)
+                {
+                    CheckedListBox clb = (CheckedListBox)control;
+
+                    dynamic dp = pdef["CheckedIndices"];
+                    int[] items = ((JArray)pdef["CheckedIndices"]).Select(ci => (int)ci).ToArray();
+
+                    // clear any already selected items
+                    foreach (int i in clb.CheckedIndices)
+                    {
+                        clb.SetItemCheckState(i, CheckState.Unchecked);
+                    }
+
+                    // now select only those indices passed
+                    foreach (int item in items)
+                    {
+                        clb.SetItemChecked(item, true);
+                    }
+                }
+
+            }
+
+            if (control.GetType() == typeof(DataGridView))
+            {
+                if (pdef["ObjectArray"] != null)
+                {
+                    List<dynamic> dynObjArray = ((JArray) pdef["ObjectArray"]).Select(gi => (dynamic) gi).ToList();
+                    ((DataGridView) control).DataSource = dynObjArray;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Public api method for generic implementation for applying payload to certain controls.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="controlName"></param>
+        /// <param name="payload"></param>
+        public void ApplyControlPayload(string formName, string controlName, string payload)
+        {
+            if (payload == null) return;
+
+            Control control = controlDictionary[formName][controlName];
+            dynamic payloadDynamic = JsonConvert.DeserializeObject(payload);
+
+            // Probably won't ever need this for dialogs since it should be set at definition, using generic
+            if (control.GetType() == typeof(DialogButton))
+            {
+                ApplyControlPayload<DialogButton>(formName, control, payloadDynamic);
+            }
+
+            // Not 'really' needed since we have workaround to detect and set this with properties
+            if (control.GetType() == typeof(CheckedListBox))
+            {
+                ApplyControlPayload<CheckedListBox>(formName, control, payloadDynamic);
+            }
+
+            // The only control type where this is currently needed for applying after definition.
+            // More payload types may be needed in future so this api method leaves open this possibility.
+            if (control.GetType() == typeof(DataGridView))
+            {
+                ApplyControlPayload<DataGridView>(formName, control, payloadDynamic);
+            }
         }
 
         /// <summary>
         /// Applies property values to controls which have already been added.
         /// Can be used for separating control layout and data initialization.  
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="controlValues"></param>
         public void ApplyControlProperties(string formName, string controlValues)
         {
@@ -94,7 +349,7 @@ namespace Exoskeleton.Classes
                     clbValues.Remove("CheckedIndices");
                 }
 
-                var json = JsonConvert.SerializeObject(valuesDictionary[key]); // must be a better way
+                var json = JsonConvert.SerializeObject(valuesDictionary[key]); 
                 JsonConvert.PopulateObject(json, control);
             }
         }
@@ -104,6 +359,7 @@ namespace Exoskeleton.Classes
         /// Definitions allow representation of a series of controls, nesting, and property attributes
         /// within a single json object definition.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="defintion"></param>
         public void ApplyDefinition(string formName, string defintion)
         {
@@ -113,57 +369,47 @@ namespace Exoskeleton.Classes
             {
                 JObject cdef = definitionDict[key];
                 string type = cdef["Type"].ToString();
+
                 string parent = null;
                 if (!String.IsNullOrEmpty((string)cdef["Parent"]))
                 {
                     parent = (string)cdef["Parent"];
                 }
+
                 JObject props = (JObject)cdef["Properties"];
                 if (props["Name"] == null)
                 {
                     props["Name"] = key;
                 }
 
+                JObject payload = (JObject)cdef["Payload"];
+
+                bool emitEvents = false;
+                if (cdef["EmitEvents"] != null)
+                {
+                    emitEvents = (bool)cdef["EmitEvents"];
+                }
+
                 string propJson = JsonConvert.SerializeObject(props);
 
                 switch (type)
                 {
-                    case "Panel": AddPanel(formName, propJson, parent); break;
-                    case "Label": AddLabel(formName, propJson, parent); break;
-                    case "CheckBox": AddCheckBox(formName, propJson, parent); break;
-                    case "RadioButton": AddRadioButton(formName, propJson, parent); break;
-                    case "TextBox": AddTextBox(formName, propJson, parent); break;
-                    case "MaskedTextBox": AddMaskedTextBox(formName, propJson, parent); break;
-                    case "ListBox": AddListBox(formName, propJson, parent); break;
-                    case "ComboBox": AddComboBox(formName, propJson, parent); break;
-                    case "NumericUpDown": AddNumericUpDown(formName, propJson, parent); break;
-                    case "DateTimePicker": AddDateTimePicker(formName, propJson, parent); break;
-                    case "MonthCalendar": AddMonthCalendar(formName, propJson, parent); break;
-                    case "DataGridView": AddDataGridView(formName, propJson, null, parent); break;
-                    case "DialogButton":
-                        string dialogResult = "";
-                        if (!String.IsNullOrEmpty((string)cdef["DialogResult"]))
-                        {
-                            dialogResult = (string)cdef["DialogResult"];
-                        }
-                        AddDialogButton(formName, propJson, dialogResult, parent);
-                        break;
-                    case "EventButton":
-                        string eventName = "";
-                        if (!String.IsNullOrEmpty((string) cdef["EventName"]))
-                        {
-                            eventName = (string)cdef["EventName"];
-                        }
-                        AddEventButton(formName, propJson, eventName, parent);
-                        break;
-                    case "CheckedListBox":
-                        string idxJson = null;
-                        if (cdef["CheckedIndices"] != null)
-                        {
-                            idxJson = JsonConvert.SerializeObject(cdef["CheckedIndices"]);
-                        }
-                        AddCheckedListBox(formName, propJson, idxJson, parent);
-                        break;
+                    case "Button": AddControlInstance<Button>(formName, propJson, parent, emitEvents, payload); break;
+                    case "Panel": AddControlInstance<Panel>(formName, propJson, parent, emitEvents, payload); break;
+                    case "Label": AddControlInstance<Label>(formName, propJson, parent, emitEvents, payload); break;
+                    case "CheckBox": AddControlInstance<CheckBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "RadioButton": AddControlInstance<RadioButton>(formName, propJson, parent, emitEvents, payload); break;
+                    case "TextBox": AddControlInstance<TextBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "MaskedTextBox": AddControlInstance<MaskedTextBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "ListBox": AddControlInstance<ListBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "ComboBox": AddControlInstance<ComboBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "NumericUpDown": AddControlInstance<NumericUpDown>(formName, propJson, parent, emitEvents, payload); break;
+                    case "DateTimePicker": AddControlInstance<DateTimePicker>(formName, propJson, parent, emitEvents, payload); break;
+                    case "MonthCalendar": AddControlInstance<MonthCalendar>(formName, propJson, parent, emitEvents, payload); break;
+                    case "DataGridView": AddControlInstance<DataGridView>(formName, propJson, parent, emitEvents, payload); break;
+                    case "DialogButton": AddControlInstance<DialogButton>(formName, propJson, parent, emitEvents, payload); break;
+                    case "CheckedListBox": AddControlInstance<CheckedListBox>(formName, propJson, parent, emitEvents, payload); break;
+                    default: break;
                 }
             }
         }
@@ -171,6 +417,7 @@ namespace Exoskeleton.Classes
         /// <summary>
         /// Used internally to construct response json to pass called when dismissing dialog.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="dr"></param>
         /// <returns></returns>
         protected string GenerateDynamicResponse(string formName, DialogResult dr)
@@ -189,11 +436,11 @@ namespace Exoskeleton.Classes
         }
 
         /// <summary>
-        /// Used internally for event handlers which don't need response wrapped in object containing DialogResult.
+        /// API (and internally used for event handlers) method for obtaining representation of all control values.
         /// </summary>
         /// <param name="formName"></param>
         /// <returns></returns>
-        protected string GenerateDynamicResponse(string formName)
+        public string GenerateDynamicResponse(string formName)
         {
             dynamic dyn = GenerateDynamicResponseObject(formName);
 
@@ -214,136 +461,21 @@ namespace Exoskeleton.Classes
             foreach (KeyValuePair<string, Control> controlKV in controlDictionary[formName])
             {
                 Control control = controlKV.Value;
+                dynamic cdyn = GetControlPropertiesDynamic(formName, control.Name);
 
-                if (control.GetType() == typeof(TextBox))
+                if (cdyn != null)
                 {
-                    TextBox t = (TextBox)control;
-
-                    dynamic tval = new { Name = t.Name, Text = t.Text };
-                    dyn.Add(t.Name, JObject.FromObject(tval));
-                }
-
-                if (control.GetType() == typeof(MaskedTextBox))
-                {
-                    MaskedTextBox t = (MaskedTextBox)control;
-
-                    dynamic tval = new { Name = t.Name, Text = t.Text };
-                    dyn.Add(t.Name, JObject.FromObject(tval));
-                }
-
-                if (control.GetType() == typeof(CheckBox))
-                {
-                    CheckBox cb = (CheckBox)control;
-
-                    dynamic cbval = new { Name = cb.Name, Checked = cb.Checked };
-                    dyn.Add(cb.Name, JObject.FromObject(cbval));
-                }
-
-                if (control.GetType() == typeof(RadioButton))
-                {
-                    RadioButton rb = (RadioButton)control;
-
-                    dynamic rbval = new { Name = rb.Name, Checked = rb.Checked };
-                    dyn.Add(rb.Name, JObject.FromObject(rbval));
-                }
-
-                if (control.GetType() == typeof(ListBox))
-                {
-                    ListBox lb = (ListBox)control;
-
-                    dynamic lbval = new { Name = lb.Name, Selected = lb.SelectedItem };
-                    dyn.Add(lb.Name, JObject.FromObject(lbval));
-                }
-
-                if (control.GetType() == typeof(CheckedListBox))
-                {
-                    CheckedListBox clb = (CheckedListBox)control;
-
-                    dynamic clbval = new
-                    {
-                        Name = clb.Name,
-                        Selected = clb.CheckedItems,
-                        CheckedIndices = clb.CheckedIndices
-                    };
-                    dyn.Add(clb.Name, JObject.FromObject(clbval));
-                }
-
-                if (control.GetType() == typeof(ComboBox))
-                {
-                    ComboBox cb = (ComboBox)control;
-
-                    dynamic cbval = new { Name = cb.Name, Selected = cb.SelectedItem };
-                    dyn.Add(cb.Name, JObject.FromObject(cbval));
-                }
-
-                if (control.GetType() == typeof(NumericUpDown))
-                {
-                    NumericUpDown nud = (NumericUpDown)control;
-
-                    dynamic nudval = new { Name = nud.Name, Value = nud.Value };
-                    dyn.Add(nud.Name, JObject.FromObject(nudval));
-                }
-
-                if (control.GetType() == typeof(DateTimePicker))
-                {
-                    DateTimePicker dtp = (DateTimePicker)control;
-                    TimeSpan ts = dtp.Value - new DateTime(1970, 1, 1);
-                    TimeSpan tsu = dtp.Value.ToUniversalTime() - new DateTime(1970, 1, 1);
-                    dynamic dtpval = new
-                    {
-                        Name = dtp.Name,
-                        Value = dtp.Value,
-                        Date = dtp.Value.Date,
-                        Short = dtp.Value.ToShortDateString(),
-                        TimeOfDay = dtp.Value.TimeOfDay,
-                        Epoch = (long)ts.TotalMilliseconds,
-                        UniversalTime = dtp.Value.ToUniversalTime(),
-                        UniversalEpoch = (long)tsu.TotalMilliseconds
-                    };
-                    dyn.Add(dtp.Name, JObject.FromObject(dtpval));
-                }
-
-                if (control.GetType() == typeof(MonthCalendar))
-                {
-                    MonthCalendar mc = (MonthCalendar)control;
-                    TimeSpan ssu = mc.SelectionStart.ToUniversalTime() - new DateTime(1970, 1, 1);
-                    TimeSpan seu = mc.SelectionEnd.ToUniversalTime() - new DateTime(1970, 1, 1);
-                    dynamic dtpval = new
-                    {
-                        Name = mc.Name,
-                        SelStart = mc.SelectionStart.Date,
-                        SelStartShort = mc.SelectionStart.Date.ToShortDateString(),
-                        SelStartEpoch = (long)ssu.TotalMilliseconds,
-                        SelEnd = mc.SelectionEnd.Date,
-                        SelEndShort = mc.SelectionEnd.Date.ToShortDateString(),
-                        SelEndEpoch = (long)seu.TotalMilliseconds
-                    };
-                    dyn.Add(mc.Name, JObject.FromObject(dtpval));
-                }
-
-                if (control.GetType() == typeof(DataGridView))
-                {
-                    DataGridView dgv = (DataGridView)control;
-
-                    List<int> selectedIndices = new List<int>();
-
-                    Int32 selectedRowCount = dgv.Rows.GetRowCount(DataGridViewElementStates.Selected);
-                    if (selectedRowCount > 0)
-                    {
-                        for (int i = 0; i < selectedRowCount; i++)
-                        {
-                            selectedIndices.Add(dgv.SelectedRows[i].Index);
-                        }
-                    }
-
-                    dynamic dgvval = new { Name = dgv.Name, SelectedIndices = selectedIndices };
-                    dyn.Add(dgv.Name, JObject.FromObject(dgvval));
+                    dyn.Add(control.Name, JObject.FromObject(cdyn));
                 }
             }
 
             return dyn;
         }
 
+        /// <summary>
+        /// Internal method used after all controls have been added, before 'show'ing the dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
         protected void FinalizeLayout(string formName)
         {
             foreach (KeyValuePair<string, Control> controlKV in controlDictionary[formName])
@@ -358,6 +490,161 @@ namespace Exoskeleton.Classes
             formDictionary[formName].PerformLayout();
         }
 
+        /// <summary>
+        /// API method for retrieving simplified representation of properties for a control.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="controlName"></param>
+        /// <returns></returns>
+        public string GetControlProperties(string formName, string controlName)
+        {
+            dynamic cdyn = GetControlPropertiesDynamic(formName, controlName);
+            string json = JsonConvert.SerializeObject(cdyn);
+            return json;
+        }
+
+        /// <summary>
+        /// Internal method for creating simplified dynamic object containing properties to return to user.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="controlName"></param>
+        /// <returns></returns>
+        protected dynamic GetControlPropertiesDynamic(string formName, string controlName)
+        {
+            Control control = controlDictionary[formName][controlName];
+
+            if (control.GetType() == typeof(TextBox))
+            {
+                TextBox t = (TextBox)control;
+
+                dynamic tval = new { Name = t.Name, Text = t.Text };
+                return tval;
+            }
+
+            if (control.GetType() == typeof(MaskedTextBox))
+            {
+                MaskedTextBox t = (MaskedTextBox)control;
+
+                dynamic tval = new { Name = t.Name, Text = t.Text };
+                return tval;
+            }
+
+            if (control.GetType() == typeof(CheckBox))
+            {
+                CheckBox cb = (CheckBox)control;
+
+                dynamic cbval = new { Name = cb.Name, Checked = cb.Checked };
+                return cbval;
+            }
+
+            if (control.GetType() == typeof(RadioButton))
+            {
+                RadioButton rb = (RadioButton)control;
+
+                dynamic rbval = new { Name = rb.Name, Checked = rb.Checked };
+                return rbval;
+            }
+
+            if (control.GetType() == typeof(ListBox))
+            {
+                ListBox lb = (ListBox)control;
+
+                dynamic lbval = new { Name = lb.Name, Selected = lb.SelectedItem };
+                return lbval;
+            }
+
+            if (control.GetType() == typeof(CheckedListBox))
+            {
+                CheckedListBox clb = (CheckedListBox)control;
+
+                dynamic clbval = new
+                {
+                    Name = clb.Name,
+                    Selected = clb.CheckedItems,
+                    CheckedIndices = clb.CheckedIndices
+                };
+                return clbval;
+            }
+
+            if (control.GetType() == typeof(ComboBox))
+            {
+                ComboBox cb = (ComboBox)control;
+
+                dynamic cbval = new { Name = cb.Name, Selected = cb.SelectedItem };
+                return cbval;
+            }
+
+            if (control.GetType() == typeof(NumericUpDown))
+            {
+                NumericUpDown nud = (NumericUpDown)control;
+
+                dynamic nudval = new { Name = nud.Name, Value = nud.Value };
+                return nudval;
+            }
+
+            if (control.GetType() == typeof(DateTimePicker))
+            {
+                DateTimePicker dtp = (DateTimePicker)control;
+                TimeSpan ts = dtp.Value - new DateTime(1970, 1, 1);
+                TimeSpan tsu = dtp.Value.ToUniversalTime() - new DateTime(1970, 1, 1);
+                dynamic dtpval = new
+                {
+                    Name = dtp.Name,
+                    Value = dtp.Value,
+                    Date = dtp.Value.Date,
+                    Short = dtp.Value.ToShortDateString(),
+                    TimeOfDay = dtp.Value.TimeOfDay,
+                    Epoch = (long)ts.TotalMilliseconds,
+                    UniversalTime = dtp.Value.ToUniversalTime(),
+                    UniversalEpoch = (long)tsu.TotalMilliseconds
+                };
+                return dtpval;
+            }
+
+            if (control.GetType() == typeof(MonthCalendar))
+            {
+                MonthCalendar mc = (MonthCalendar)control;
+                TimeSpan ssu = mc.SelectionStart.ToUniversalTime() - new DateTime(1970, 1, 1);
+                TimeSpan seu = mc.SelectionEnd.ToUniversalTime() - new DateTime(1970, 1, 1);
+                dynamic dtpval = new
+                {
+                    Name = mc.Name,
+                    SelStart = mc.SelectionStart.Date,
+                    SelStartShort = mc.SelectionStart.Date.ToShortDateString(),
+                    SelStartEpoch = (long)ssu.TotalMilliseconds,
+                    SelEnd = mc.SelectionEnd.Date,
+                    SelEndShort = mc.SelectionEnd.Date.ToShortDateString(),
+                    SelEndEpoch = (long)seu.TotalMilliseconds
+                };
+                return dtpval;
+            }
+
+            if (control.GetType() == typeof(DataGridView))
+            {
+                DataGridView dgv = (DataGridView)control;
+
+                List<int> selectedIndices = new List<int>();
+
+                Int32 selectedRowCount = dgv.Rows.GetRowCount(DataGridViewElementStates.Selected);
+                if (selectedRowCount > 0)
+                {
+                    for (int i = 0; i < selectedRowCount; i++)
+                    {
+                        selectedIndices.Add(dgv.SelectedRows[i].Index);
+                    }
+                }
+
+                dynamic dgvval = new { Name = dgv.Name, SelectedIndices = selectedIndices };
+                return dgvval;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Allows user to close a form
+        /// </summary>
+        /// <param name="formName"></param>
         public void Close(string formName)
         {
             if (formDictionary[formName] != null)
@@ -366,199 +653,225 @@ namespace Exoskeleton.Classes
             }
         }
 
-        #region "Add" Dialog composition methods
+        #region Individual control "Add" methods for dialog/form composition
 
         /// <summary>
-        /// Adds a Panel to the Dialog singleton Form.
+        /// Adds a Panel to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="panelJson"></param>
         /// <param name="parentName"></param>
-        public void AddPanel(string formName, string panelJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        public void AddPanel(string formName, string panelJson, string parentName=null, bool emitEvents=false)
         {
-            Panel p = JsonConvert.DeserializeObject<Panel>(panelJson);
-            p.SuspendLayout();
-
-            controlDictionary[formName][p.Name] = p;
-
-            if (parentName == null)
-            {
-                formDictionary[formName].Controls.Add(p);
-            }
-            else
-            {
-                controlDictionary[formName][parentName].Controls.Add(p);
-            }
+            AddControlInstance<Panel>(formName, panelJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a Label to the Dialog singleton Form.
+        /// Adds a Label to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="labelJson"></param>
         /// <param name="parentName"></param>
-        public void AddLabel(string formName, string labelJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        public void AddLabel(string formName, string labelJson, string parentName=null, bool emitEvents=false)
         {
-            Label l = JsonConvert.DeserializeObject<Label>(labelJson);
-            l.SuspendLayout();
-
-            controlDictionary[formName][l.Name] = l;
-
-            if (parentName == null)
-            {
-                formDictionary[formName].Controls.Add(l);
-            }
-            else
-            {
-                controlDictionary[formName][parentName].Controls.Add(l);
-            }
+            AddControlInstance<Label>(formName, labelJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a CheckBox to the Dialog singleton Form.
+        /// Adds a CheckBox to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="checkboxJson"></param>
         /// <param name="parentName"></param>
-        public void AddCheckBox(string formName, string checkboxJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        public void AddCheckBox(string formName, string checkboxJson, string parentName=null, bool emitEvents=false)
         {
-            AddControl<CheckBox>(formName, checkboxJson, parentName);
+            AddControlInstance<CheckBox>(formName, checkboxJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a RadioButton to the Dialog singleton Form.
+        /// Adds a RadioButton to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="radiobuttonJson"></param>
         /// <param name="parentName"></param>
-        public void AddRadioButton(string formName, string radiobuttonJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        public void AddRadioButton(string formName, string radiobuttonJson, string parentName=null, bool emitEvents=false)
         {
-            AddControl<RadioButton>(formName, radiobuttonJson, parentName);
+            AddControlInstance<RadioButton>(formName, radiobuttonJson, parentName);
         }
 
         /// <summary>
-        /// Adds a TextBox to the Dialog singleton Form.
+        /// Adds a TextBox to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="textboxJson"></param>
         /// <param name="parentName"></param>
-        public void AddTextBox(string formName, string textboxJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        public void AddTextBox(string formName, string textboxJson, string parentName=null, bool emitEvents=false)
         {
-            AddControl<TextBox>(formName, textboxJson, parentName);
+            AddControlInstance<TextBox>(formName, textboxJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a MaskedTextBox to the dialog singleton form.
+        /// Adds a MaskedTextBox to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="maskedtextboxJson"></param>
         /// <param name="parentName"></param>
-        public void AddMaskedTextBox(string formName, string maskedtextboxJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        public void AddMaskedTextBox(string formName, string maskedtextboxJson, string parentName=null, bool emitEvents=false)
         {
-            AddControl<MaskedTextBox>(formName, maskedtextboxJson, parentName);
+            AddControlInstance<MaskedTextBox>(formName, maskedtextboxJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a ListBox to the Dialog singleton Form.
+        /// Adds a ListBox to a named dialog or form.
         /// </summary>
         /// <param name="listboxJson"></param>
         /// <param name="parentName"></param>
-        public void AddListBox(string formName, string listboxJson, string parentName = null)
+        public void AddListBox(string formName, string listboxJson, string parentName=null, bool emitEvents=false)
         {
-            AddControl<ListBox>(formName, listboxJson, parentName);
+            AddControlInstance<ListBox>(formName, listboxJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a ComboBox to the Dialog singleton Form.
+        /// Adds a ComboBox to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="comboboxJson"></param>
         /// <param name="parentName"></param>
-        public void AddComboBox(string formName, string comboboxJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        public void AddComboBox(string formName, string comboboxJson, string parentName=null, bool emitEvents=false)
         {
-
-            AddControl<ComboBox>(formName, comboboxJson, parentName);
+            AddControlInstance<ComboBox>(formName, comboboxJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a NumericUpDown control to the global dialog singleton.
+        /// Adds a NumericUpDown control to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="numericJson"></param>
         /// <param name="parentName"></param>
-        public void AddNumericUpDown(string formName, string numericJson, string parentName)
+        /// <param name="emitEvents"></param>
+        public void AddNumericUpDown(string formName, string numericJson, string parentName=null, bool emitEvents=false)
         {
-            AddControl<NumericUpDown>(formName, numericJson, parentName);
+            AddControlInstance<NumericUpDown>(formName, numericJson, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a DateTimePicker control to the global dialog singleton
+        /// Adds a DateTimePicker control to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="dateTimePicker"></param>
         /// <param name="parentName"></param>
-        public void AddDateTimePicker(string formName, string dateTimePicker, string parentName)
+        /// <param name="emitEvents"></param>
+        public void AddDateTimePicker(string formName, string dateTimePicker, string parentName=null, bool emitEvents=false)
         {
-            AddControl<DateTimePicker>(formName, dateTimePicker, parentName);
+            AddControlInstance<DateTimePicker>(formName, dateTimePicker, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a MonthCalendar control to the global dialog singleton.
+        /// Adds a MonthCalendar control to a named dialog or form.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="monthcalendar"></param>
         /// <param name="parentName"></param>
-        public void AddMonthCalendar(string formName, string monthcalendar, string parentName)
+        /// <param name="emitEvents"></param>
+        public void AddMonthCalendar(string formName, string monthcalendar, string parentName=null, bool emitEvents=false)
         {
-            AddControl<MonthCalendar>(formName, monthcalendar, parentName);
+            AddControlInstance<MonthCalendar>(formName, monthcalendar, parentName, emitEvents);
         }
 
         /// <summary>
-        /// Adds a Button to the Dialog and wires up an event to dismiss dialog with a result.
+        /// Adds a Button to a named Dialog and wires up an event to dismiss dialog with a result.
         /// </summary>
+        /// <param name="formName"></param>
         /// <param name="buttonJson"></param>
-        /// <param name="dialogResult"></param>
         /// <param name="parentName"></param>
-        public void AddDialogButton(string formName, string buttonJson, string dialogResult, string parentName = null)
+        /// <param name="payload"></param>
+        public void AddDialogButton(string formName, string buttonJson, string parentName=null, string payload=null)
         {
-            DialogResult dr = (DialogResult)Enum.Parse(typeof(DialogResult), dialogResult);
-
-            Button btn = AddControl<Button>(formName, buttonJson, parentName);
-            btn.Click += (sender, args) => {
-                formDictionary[formName].DialogResult = dr;
-            };
-        }
-
-        public void AddEventButton(string formName, string buttonJson, string eventName, string parentName = null)
-        {
-            Button btn = AddControl<Button>(formName, buttonJson, parentName);
-            btn.Click += (sender, args) =>
+            if (payload == null)
             {
-                host.PackageAndUnicast(eventName, GenerateDynamicResponseObject(formName));
-            };
-        }
-
-        /// <summary>
-        /// Adds a CheckedListBox to the Dialog singeton Form.
-        /// </summary>
-        /// <param name="checklistJson"></param>
-        /// <param name="parentName"></param>
-        public void AddCheckedListBox(string formName, string checklistJson, string checkedIndices, string parentName = null)
-        {
-            CheckedListBox clb = AddControl<CheckedListBox>(formName, checklistJson, parentName);
-            if (!String.IsNullOrEmpty(checkedIndices))
+                DialogButton btn = AddControlInstance<DialogButton>(formName, buttonJson, parentName, false, null);
+            }
+            else
             {
-                int[] items = JsonConvert.DeserializeObject<int[]>(checkedIndices);
-                foreach (int item in items)
-                {
-                    clb.SetItemChecked(item, true);
-                }
+                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
+
+                // DialogResult is not a js event, we will handle its DialogResult in apply payload phase
+                DialogButton btn = AddControlInstance<DialogButton>(formName, buttonJson, parentName, false, payloadDynamic);
             }
         }
 
         /// <summary>
-        /// Adds a DataGridView to the global dialog singleton
+        /// Add EventButton, which is just a Button. If emitEvents is true, payload should contain EventName
         /// </summary>
-        /// <param name="gridViewJson"></param>
-        /// <param name="objectArrayJson"></param>
+        /// <param name="formName"></param>
+        /// <param name="buttonJson"></param>
         /// <param name="parentName"></param>
-        public void AddDataGridView(string formName, string gridViewJson, string objectArrayJson, string parentName = null)
+        /// <param name="emitEvents"></param>
+        /// <param name="payload"></param>
+        public void AddEventButton(string formName, string buttonJson, string parentName = null, 
+            bool emitEvents = false, string payload = null)
         {
-            DataGridView dgv = AddControl<DataGridView>(formName, gridViewJson, parentName);
-            if (!String.IsNullOrEmpty(objectArrayJson))
+            if (payload == null)
             {
-                dynamic objArray = JsonConvert.DeserializeObject(objectArrayJson);
-                dgv.DataSource = objArray;
+                Button btn = AddControlInstance<Button>(formName, buttonJson, parentName);
+            }
+            else
+            {
+                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
+                Button btn = AddControlInstance<Button>(formName, buttonJson, parentName, true, payloadDynamic);
+            }
+        }
+
+        /// <summary>
+        /// Adds a CheckedListBox to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="checklistJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        /// <param name="payload"></param>
+        public void AddCheckedListBox(string formName, string checklistJson, string parentName = null, 
+            bool emitEvents=false, string payload=null)
+        {
+            if (payload == null)
+            {
+                CheckedListBox clb = AddControlInstance<CheckedListBox>(formName, checklistJson, parentName, emitEvents);
+            }
+            else
+            {
+                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
+
+                CheckedListBox clb = AddControlInstance<CheckedListBox>(formName, checklistJson, parentName, 
+                    emitEvents, payloadDynamic);
+            }
+        }
+
+        /// <summary>
+        /// Adds a DataGridView to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="gridViewJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        /// <param name="payload"></param>
+        public void AddDataGridView(string formName, string gridViewJson, string parentName=null, 
+            bool emitEvents=false, string payload=null)
+        {
+            if (payload == null)
+            {
+                AddControlInstance<DataGridView>(formName, gridViewJson, parentName, emitEvents);
+            }
+            else
+            {
+                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
+                AddControlInstance<DataGridView>(formName, gridViewJson, parentName, emitEvents, payloadDynamic);
             }
         }
 

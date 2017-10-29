@@ -66,12 +66,14 @@ var dialogData = {
   CountryCheckList: {
     Type: "CheckedListBox",
     Parent: "MiddleRight",
+    Payload: {
+      CheckedIndices: [1, 4]
+    },
     Properties: {
       Dock: "Fill",
       CheckOnClick: true,
       Items: ["United States", "United Kingdom", "Germany", "France", "Australia", 
-  				"Japan", "India", "Russia", "Other"],
-      CheckedIndices: [1, 4]
+  				"Japan", "India", "Russia", "Other"]
     }
   },
   CountriesLabel: {
@@ -214,7 +216,9 @@ var dialogData = {
   OkButton: {
     Type: "DialogButton",
     Parent: "BottomPanel",
-    DialogResult: "OK",
+    Payload: {
+    	DialogResult: "OK"
+    },
     Properties: {
       Top: 10,
       Left: 280,
@@ -228,7 +232,9 @@ var dialogData = {
   CancelButton: {
     Type: "DialogButton",
     Parent: "BottomPanel",
-    DialogResult: "Cancel",
+    Payload: {
+    	DialogResult: "Cancel"
+    },
     Properties: {
       Text: "Cancel",
       Top: 10,

@@ -60,6 +60,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#exoskeletongetversion'
+                        class='regular pre-open'>
+                        #getVersion
+                      </a></li>
+                      
+                      <li><a
                         href='#exoskeletonshutdown'
                         class='regular pre-open'>
                         #shutdown
@@ -97,6 +103,12 @@
                         href='#exoskeletongetlocations'
                         class='regular pre-open'>
                         #getLocations
+                      </a></li>
+                      
+                      <li><a
+                        href='#exoskeletongetversion'
+                        class='regular pre-open'>
+                        #getVersion
                       </a></li>
                       
                       <li><a
@@ -660,6 +672,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#formapplycontrolpayload'
+                        class='regular pre-open'>
+                        #applyControlPayload
+                      </a></li>
+                      
+                      <li><a
                         href='#formapplycontrolproperties'
                         class='regular pre-open'>
                         #applyControlProperties
@@ -687,6 +705,18 @@
                         href='#forminitialize'
                         class='regular pre-open'>
                         #initialize
+                      </a></li>
+                      
+                      <li><a
+                        href='#formgeneratedynamicresponse'
+                        class='regular pre-open'>
+                        #generateDynamicResponse
+                      </a></li>
+                      
+                      <li><a
+                        href='#formgetcontrolproperties'
+                        class='regular pre-open'>
+                        #getControlProperties
                       </a></li>
                       
                       <li><a
@@ -1552,6 +1582,67 @@ This exoskeleton.js javascript library is what this documentation will cover.</p
       </div>
     </div>
   
+    <div class='border-bottom' id='exoskeletongetversion'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getVersion()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns the version number for the exoskeleton host you are running in.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getVersion(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The version of exoskeleton you are hosted within.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> version = exoskeleton.getVersion();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"host exo version : "</span> + version);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='exoskeletonshutdown'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -1765,6 +1856,67 @@ This exoskeleton.js javascript library is what this documentation will cover.</p
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"current directory : "</span> + locations.Current);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) settings file : "</span> + locations.Settings);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"location of (active) exoskeleton executable : "</span> + locations.Executable);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='exoskeletongetversion'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getVersion()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns the version number for the exoskeleton host you are running in.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getVersion(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The version of exoskeleton you are hosted within.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> version = exoskeleton.getVersion();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"host exo version : "</span> + version);</pre>
     
   
 
@@ -2258,7 +2410,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addCheckbox({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addCheckbox(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"StudentCheckbox"</span>,
   <span class="hljs-attr">Text</span>: <span class="hljs-string">"Student"</span>,
   <span class="hljs-attr">Checked</span>: <span class="hljs-literal">true</span>,
@@ -2282,7 +2434,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addCheckedListBox(dialogName, checkedlistbox, checkedIndices?, parentName?, listbox)</span>
+            <span class='code strong strong truncate'>addCheckedListBox(dialogName, checkedlistbox, parentName?, payload?, listbox)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2294,7 +2446,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.checkedlistbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addCheckedListBox(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checkedlistbox: any, checkedIndices: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int>?, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</div>
+  <div class='pre p1 fill-light mt0'>addCheckedListBox(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checkedlistbox: any, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</div>
   
   
 
@@ -2328,8 +2480,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>checkedIndices</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int>?)</code>
-	    optional indices of selected items.
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
 
           </div>
           
@@ -2337,8 +2489,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    optional name of parent control to nest within
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    for checkedlistbox, this allows specifying 'CheckedIndices'
 
           </div>
           
@@ -2366,14 +2518,13 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addCheckedListBox({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addCheckedListBox(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryChecklist"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>
-  Items: [<span class="hljs-string">'United States'</span>, <span class="hljs-string">'United Kingdom'</span>, <span class="hljs-string">'Germany'</span>, <span class="hljs-string">'France'</span>, <span class="hljs-string">'Japan'</span>],
-  <span class="hljs-attr">CheckedIndices</span> : [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>]
-}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+  Items: [<span class="hljs-string">'United States'</span>, <span class="hljs-string">'United Kingdom'</span>, <span class="hljs-string">'Germany'</span>, <span class="hljs-string">'France'</span>, <span class="hljs-string">'Japan'</span>]
+}, <span class="hljs-string">"AddressPanel"</span>, { <span class="hljs-attr">CheckedIndices</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>] });</pre>
     
   
 
@@ -2458,7 +2609,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addComboBox({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addComboBox(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryDropDown"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
@@ -2482,7 +2633,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addDataGridView(dialogName, gridView, objectArray, parentName?)</span>
+            <span class='code strong strong truncate'>addDataGridView(dialogName, gridView, parentName?, payload?, objectArray)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2494,7 +2645,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datagridview(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addDataGridView(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, gridView: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, objectArray: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addDataGridView(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, gridView: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, objectArray: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</div>
   
   
 
@@ -2529,8 +2680,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>objectArray</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
-	    array of 'similar' objects to display in grid view
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
 
           </div>
           
@@ -2538,8 +2689,17 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    optional name of parent control to nest within
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    for checkedlistbox, this allows specifying 'CheckedIndices'
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>objectArray</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+	    array of 'similar' objects to display in grid view
 
           </div>
           
@@ -2565,13 +2725,13 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
   { <span class="hljs-attr">name</span>: <span class="hljs-string">"jane"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">26</span>, <span class="hljs-attr">address</span>: <span class="hljs-string">"428 beta street"</span> }
 ];
 
-<span class="hljs-keyword">var</span> result = exoskeleton.dialog.addDataGridView({
+<span class="hljs-keyword">var</span> result = exoskeleton.dialog.addDataGridView(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"UserGridView"</span>,
   <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>,
   <span class="hljs-attr">ReadOnly</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">AllowUserToAddRows</span>: <span class="hljs-literal">false</span>,
   <span class="hljs-attr">SelectionMode</span>: <span class="hljs-string">'FullRowSelect'</span>
-}, users, <span class="hljs-string">"DetailsPanel"</span>);</pre>
+}, <span class="hljs-string">"DetailsPanel"</span>, { <span class="hljs-attr">ObjectArray</span>: users });</pre>
     
   
 
@@ -2656,7 +2816,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datet
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addDateTimePicker({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addDateTimePicker(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"StartDate"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>,
@@ -2679,7 +2839,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datet
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addDialogButton(dialogName, button, dialogResult, parentName?)</span>
+            <span class='code strong strong truncate'>addDialogButton(dialogName, button, parentName?, payload?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2692,7 +2852,7 @@ This is a standard .net button with hardcoded event handler to dismiss dialog.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.button(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addDialogButton(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, button: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), dialogResult: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addDialogButton(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, button: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
 
@@ -2727,8 +2887,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.butto
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>dialogResult</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    dismiss result ('OK', 'Cancel', 'Yes', 'No')
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
 
           </div>
           
@@ -2736,8 +2896,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.butto
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    optional name of parent control to nest within
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    for checkedlistbox, this allows specifying 'CheckedIndices'
 
           </div>
           
@@ -2756,11 +2916,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.butto
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addDialogButton({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addDialogButton(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Text</span>: <span class="hljs-string">"OK"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">200</span>
-}, <span class="hljs-string">"OK"</span>, <span class="hljs-string">"BottomPanel"</span>);</pre>
+}, <span class="hljs-string">"BottomPanel"</span>, { <span class="hljs-attr">DialogResult</span>: <span class="hljs-string">"OK"</span> });</pre>
     
   
 
@@ -2845,7 +3005,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addLabel({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addLabel(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"AddressTextBox"</span>,
   <span class="hljs-attr">Text</span>: <span class="hljs-string">"Address:"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
@@ -2935,7 +3095,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addListBox({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addListBox(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryList"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
@@ -3027,7 +3187,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.maske
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addMaskedTextBox({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addMaskedTextBox(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"PhoneNumberMaskedEdit"</span>,
   <span class="hljs-attr">Mask</span>: <span class="hljs-string">"(999)-000-0000"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">124</span>,
@@ -3118,7 +3278,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.month
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addMonthCalendar({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addMonthCalendar(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"MonthCalendar"</span>,
   <span class="hljs-attr">ShowToday</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">ShowTodayCircle</span>: <span class="hljs-literal">true</span>,
@@ -3211,7 +3371,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.numer
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addNumericUpDown({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addNumericUpDown(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"AgeNumeric"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
@@ -3311,7 +3471,7 @@ exoskeleton.dialog.addPanel({
   <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Top'</span>,
   <span class="hljs-attr">Height</span>: <span class="hljs-number">100</span>
 });
-exoskeleton.dialog.addPanel({
+exoskeleton.dialog.addPanel(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"BottomPanel"</span>,
   <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Bottom'</span>,
   <span class="hljs-attr">Height</span>: <span class="hljs-number">100</span>
@@ -3400,10 +3560,10 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.radio
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addRadioButton({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addRadioButton(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"GenderMale"</span>, <span class="hljs-attr">Text</span>: <span class="hljs-string">"Male"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">Checked</span>: <span class="hljs-literal">true</span>
 });
-exoskeleton.dialog.addRadioButton({
+exoskeleton.dialog.addRadioButton(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"GenderFemale"</span>, <span class="hljs-attr">Text</span>: <span class="hljs-string">"Female"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">140</span>, <span class="hljs-attr">Checked</span>: <span class="hljs-literal">false</span>
 });</pre>
     
@@ -3490,7 +3650,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textb
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addTextBox({
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addTextBox(<span class="hljs-string">"ExampleDialog"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"Street (1)"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>,
@@ -7277,7 +7437,7 @@ continuing or receiving its returned result.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addCheckBox(formName, checkbox, parentName?)</span>
+            <span class='code strong strong truncate'>addCheckBox(formName, checkbox, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7286,10 +7446,11 @@ continuing or receiving its returned result.</p>
   
 
   <p>Adds a CheckBox to a named exoskeleton form.
+Emits 'CheckedChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.checkbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addCheckBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checkbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addCheckBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checkbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -7331,6 +7492,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -7350,7 +7520,12 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
   <span class="hljs-attr">Checked</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>
-}, <span class="hljs-string">"TopPanel"</span>);</pre>
+}, <span class="hljs-string">"TopPanel"</span>, <span class="hljs-literal">true</span>);
+
+<span class="hljs-comment">// optionally listen to events because we passed 'true' above to emit them.</span>
+exoekeleton.events.on(<span class="hljs-string">"SampleForm.StudentCheckbox.CheckedChanged"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(data.Checked?<span class="hljs-string">"Is a student"</span>:<span class="hljs-string">"Not a student"</span>);
+});</pre>
     
   
 
@@ -7368,7 +7543,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addCheckedListBox(formName, checkedlistbox, checkedIndices?, parentName?, listbox)</span>
+            <span class='code strong strong truncate'>addCheckedListBox(formName, checkedlistbox, parentName?, emitEvents?, payload?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7377,10 +7552,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
   
 
   <p>Adds a CheckedListBox to a named exoskeleton form.
+Emits 'ItemCheck' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.checkedlistbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addCheckedListBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checkedlistbox: any, checkedIndices: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int>?, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</div>
+  <div class='pre p1 fill-light mt0'>addCheckedListBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checkedlistbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
 
@@ -7406,16 +7582,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>checkedlistbox</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>checkedIndices</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;int>?)</code>
-	    optional indices of selected items.
+            <span class='code bold'>checkedlistbox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to ListBox
 
           </div>
           
@@ -7432,8 +7600,17 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listbox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
-	    initial properties to assign to ListBox
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    can used for initializing default 'CheckedIndices'
 
           </div>
           
@@ -7457,9 +7634,10 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
   <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>
-  Items: [<span class="hljs-string">'United States'</span>, <span class="hljs-string">'United Kingdom'</span>, <span class="hljs-string">'Germany'</span>, <span class="hljs-string">'France'</span>, <span class="hljs-string">'Japan'</span>],
-  <span class="hljs-attr">CheckedIndices</span> : [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>]
-}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+  Items: [<span class="hljs-string">'United States'</span>, <span class="hljs-string">'United Kingdom'</span>, <span class="hljs-string">'Germany'</span>, <span class="hljs-string">'France'</span>, <span class="hljs-string">'Japan'</span>]
+}, <span class="hljs-string">"AddressPanel"</span>, <span class="hljs-literal">false</span>, { <span class="hljs-attr">CheckedIndices</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>] });
+
+<span class="hljs-comment">// if we had set emitEvents to true, we would listen for 'SampleForm.CountryCheckList.ItemCheck'</span></pre>
     
   
 
@@ -7477,7 +7655,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addComboBox(formName, comboBox, parentName?)</span>
+            <span class='code strong strong truncate'>addComboBox(formName, comboBox, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7486,10 +7664,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
   
 
   <p>Adds a ComboBox to a named exoskeleton form.
+Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addComboBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addComboBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -7531,6 +7710,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -7550,7 +7738,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Items</span>: [<span class="hljs-string">'United States'</span>, <span class="hljs-string">'United Kingdom'</span>, <span class="hljs-string">'Germany'</span>, <span class="hljs-string">'France'</span>, <span class="hljs-string">'Japan'</span>],
   <span class="hljs-attr">SelectedItem</span> : <span class="hljs-string">'United States'</span>
-}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+}, <span class="hljs-string">"AddressPanel"</span>, <span class="hljs-literal">true</span>);
+
+exoskeleton.events.on(<span class="hljs-string">"SampleForm.CountryDropDown.SelectedIndexChanged"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(data.Selected);
+});</pre>
     
   
 
@@ -7568,7 +7760,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addDataGridView(formName, gridView, objectArray, parentName?)</span>
+            <span class='code strong strong truncate'>addDataGridView(formName, gridView, parentName?, emitEvents?, payload?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7577,10 +7769,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
   
 
   <p>Adds a DataGridView to a named exoskeleton form.
+Emits 'SelectionChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datagridview(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addDataGridView(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, gridView: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, objectArray: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addDataGridView(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, gridView: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
 
@@ -7615,8 +7808,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>objectArray</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
-	    array of 'similar' objects to display in grid view
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
 
           </div>
           
@@ -7624,8 +7817,17 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-	    optional name of parent control to nest within
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    used for initializing 'ObjectArray' you want to display in grid
 
           </div>
           
@@ -7657,7 +7859,10 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
   <span class="hljs-attr">ReadOnly</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">AllowUserToAddRows</span>: <span class="hljs-literal">false</span>,
   <span class="hljs-attr">SelectionMode</span>: <span class="hljs-string">'FullRowSelect'</span>
-}, users, <span class="hljs-string">"DetailsPanel"</span>);</pre>
+}, <span class="hljs-string">"DetailsPanel"</span>, <span class="hljs-literal">false</span>, { <span class="hljs-attr">ObjectArray</span>: users });
+
+<span class="hljs-comment">// normally you might use event buttons to trigger code which 'reads' values</span>
+<span class="hljs-comment">// from form. So for this example will not emit events, but we could have.</span></pre>
     
   
 
@@ -7675,7 +7880,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addDateTimePicker(formName, dateTimePicker, parentName?)</span>
+            <span class='code strong strong truncate'>addDateTimePicker(formName, dateTimePicker, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7684,10 +7889,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datag
   
 
   <p>Adds a DateTimePicker to a named exoskeleton form.
+Emits 'ValueChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datetimepicker(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addDateTimePicker(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, dateTimePicker: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addDateTimePicker(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, dateTimePicker: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -7729,6 +7935,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datet
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -7747,7 +7962,13 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datet
   <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>,
   <span class="hljs-attr">Value</span>: <span class="hljs-string">"12/13/2014"</span>
-}, <span class="hljs-string">"AddressPanel"</span>);</pre>
+}, <span class="hljs-string">"AddressPanel"</span>, <span class="hljs-literal">true</span>);
+
+exoskeleton.events.on(<span class="hljs-string">"SampleForm.StartDate.ValueChanged"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Short date string : "</span> + data.Short);
+  <span class="hljs-built_in">Date</span> dt = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(data.UniversalEpoch);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Date converted to javascript : "</span> + dt);
+});</pre>
     
   
 
@@ -7765,7 +7986,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datet
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addEventButton(formName, button, eventName, parentName?)</span>
+            <span class='code strong strong truncate'>addEventButton(formName, button, parentName?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7774,11 +7995,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.datet
   
 
   <p>Adds a Button to a named exoskeleton form which will raise an Unicast event.
-This is a standard .net button with hardcoded event handler to raise event.
+This is a standard .net button with hardcoded event handler to raise 'Click' events.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.button(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addEventButton(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, button: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), eventName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addEventButton(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, button: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -7813,15 +8034,6 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.butto
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>eventName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    name of event to unicast with form data object.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
             <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
 
@@ -7842,11 +8054,17 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.butto
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.form.addEventButton(<span class="hljs-string">"SampleForm"</span>, {
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// event buttons will always emit their 'Click' event, so it's not even a param</span>
+exoskeleton.form.addEventButton(<span class="hljs-string">"SampleForm"</span>, {
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"SaveButton"</span>,
   <span class="hljs-attr">Text</span>: <span class="hljs-string">"Save"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">200</span>
-}, <span class="hljs-string">"SaveEvent"</span>, <span class="hljs-string">"BottomPanel"</span>);</pre>
+}, <span class="hljs-string">"BottomPanel"</span>);
+
+exoskeleton.events.on(<span class="hljs-string">"SampleForm.SaveButton.Click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Button clicked!'</span>);
+});</pre>
     
   
 
@@ -7864,7 +8082,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.butto
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addLabel(formName, label, parentName?)</span>
+            <span class='code strong strong truncate'>addLabel(formName, label, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7873,10 +8091,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.butto
   
 
   <p>Adds a Label to a named exoskeleton form.
+Emits 'Click' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addLabel(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, label: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addLabel(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, label: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -7918,6 +8137,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -7932,7 +8160,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
     
       
       <pre class='p1 overflow-auto round fill-light'>exoskeleton.form.addLabel(<span class="hljs-string">"SampleForm"</span>, {
-  <span class="hljs-attr">Name</span>: <span class="hljs-string">"AddressTextBox"</span>,
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"AddressLabel"</span>,
   <span class="hljs-attr">Text</span>: <span class="hljs-string">"Address:"</span>,
   <span class="hljs-attr">Top</span>: <span class="hljs-number">100</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>
@@ -7954,7 +8182,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addListBox(formName, listbox, parentName?)</span>
+            <span class='code strong strong truncate'>addListBox(formName, listbox, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7963,10 +8191,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
   
 
   <p>Adds a ListBox to a named exoskeleton form.
+Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addListBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addListBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -8003,6 +8232,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
           <div>
             <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
 
           </div>
           
@@ -8046,7 +8284,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addMaskedTextBox(formName, maskedtextbox, parentName)</span>
+            <span class='code strong strong truncate'>addMaskedTextBox(formName, maskedtextbox, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8055,10 +8293,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
   
 
   <p>Adds a MaskedTextBox to a named exoskeleton form.
+Emits 'TextChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.maskedtextbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addMaskedTextBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, maskedtextbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>addMaskedTextBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, maskedtextbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -8093,8 +8332,17 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.maske
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
 
           </div>
           
@@ -8119,7 +8367,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.maske
   <span class="hljs-attr">Top</span>: <span class="hljs-number">124</span>,
   <span class="hljs-attr">Left</span>: <span class="hljs-number">48</span>,
   <span class="hljs-attr">Width</span>: <span class="hljs-number">100</span>
-});</pre>
+}, <span class="hljs-string">"ContactInfoPanel"</span>);</pre>
     
   
 
@@ -8137,7 +8385,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.maske
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addMonthCalendar(formName, monthcalendar, parentName)</span>
+            <span class='code strong strong truncate'>addMonthCalendar(formName, monthcalendar, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8146,10 +8394,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.maske
   
 
   <p>Adds a MonthCalendar to a named exoskeleton form.
+Emits 'DateChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.monthcalendar(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addMonthCalendar(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, monthcalendar: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  <div class='pre p1 fill-light mt0'>addMonthCalendar(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, monthcalendar: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -8184,8 +8433,17 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.month
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
 
           </div>
           
@@ -8204,7 +8462,8 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.month
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>exoskeleton.form.addMonthCalendar(<span class="hljs-string">"SampleForm"</span>, {
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Since no parentName value is passed, it will be added directly to the form</span>
+exoskeleton.form.addMonthCalendar(<span class="hljs-string">"SampleForm"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"MonthCalendar"</span>,
   <span class="hljs-attr">ShowToday</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">ShowTodayCircle</span>: <span class="hljs-literal">true</span>,
@@ -8230,7 +8489,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.month
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addNumericUpDown(formName, numericUpDown, parentName?)</span>
+            <span class='code strong strong truncate'>addNumericUpDown(formName, numericUpDown, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8239,10 +8498,11 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.month
   
 
   <p>Adds a NumericUpDown control to a named exoskeleton form.
+Emits 'ValueChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.numericupdown(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addNumericUpDown(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, numericUpDown: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addNumericUpDown(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, numericUpDown: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -8279,6 +8539,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.numer
           <div>
             <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
 
           </div>
           
@@ -8321,7 +8590,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.numer
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addPanel(formName, panel, parentName?)</span>
+            <span class='code strong strong truncate'>addPanel(formName, panel, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8333,7 +8602,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.numer
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addPanel(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, panel: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addPanel(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, panel: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -8370,6 +8639,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel
           <div>
             <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
 
           </div>
           
@@ -8419,7 +8697,7 @@ exoskeleton.form.addPanel(<span class="hljs-string">"SampleForm"</span>, {
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addRadioButton(formName, radioButton, parentName?)</span>
+            <span class='code strong strong truncate'>addRadioButton(formName, radioButton, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8428,10 +8706,11 @@ exoskeleton.form.addPanel(<span class="hljs-string">"SampleForm"</span>, {
   
 
   <p>Adds a RadioButton to a named exoskeleton form.
+Emits 'CheckedChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addRadioButton(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, radioButton: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addRadioButton(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, radioButton: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -8473,6 +8752,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.radio
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -8488,9 +8776,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.radio
       
       <pre class='p1 overflow-auto round fill-light'>exoskeleton.form.addRadioButton(<span class="hljs-string">"SampleForm"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"GenderMale"</span>, <span class="hljs-attr">Text</span>: <span class="hljs-string">"Male"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">Checked</span>: <span class="hljs-literal">true</span>
-});
+}, <span class="hljs-literal">null</span>, <span class="hljs-literal">true</span>);
+
 exoskeleton.form.addRadioButton(<span class="hljs-string">"SampleForm"</span>, {
   <span class="hljs-attr">Name</span>: <span class="hljs-string">"GenderFemale"</span>, <span class="hljs-attr">Text</span>: <span class="hljs-string">"Female"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">140</span>, <span class="hljs-attr">Checked</span>: <span class="hljs-literal">false</span>
+});
+
+<span class="hljs-comment">// since only 2 radio buttons, we will just listen to one of the radio buttons</span>
+exoskeleton.events.on(<span class="hljs-string">"SampleForm.GenderMale.CheckedChanged"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(data.Checked?<span class="hljs-string">"male"</span>:<span class="hljs-string">"female"</span>);
 });</pre>
     
   
@@ -8509,7 +8803,7 @@ exoskeleton.form.addRadioButton(<span class="hljs-string">"SampleForm"</span>, {
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addTextBox(formName, textbox, parentName?)</span>
+            <span class='code strong strong truncate'>addTextBox(formName, textbox, parentName?, emitEvents?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8518,10 +8812,11 @@ exoskeleton.form.addRadioButton(<span class="hljs-string">"SampleForm"</span>, {
   
 
   <p>Adds a TextBox to a named exoskeleton form.
+Emits 'TextChanged' event if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addTextBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, textbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addTextBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, textbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -8563,6 +8858,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textb
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -8582,6 +8886,94 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textb
   <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>,
   <span class="hljs-attr">Text</span>: user.addr1
 }, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='formapplycontrolpayload'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>applyControlPayload(formName, controlName, payload)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Applies a payload to a control which have already been added to a named form.
+Can be used for applying certain values to control which are not able to be applied
+just by setting control properties.</p>
+
+
+  <div class='pre p1 fill-light mt0'>applyControlPayload(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, controlName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>controlName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name of control to apply payload to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing payload to apply
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.form.applyControlPayload(<span class="hljs-string">"SampleForm"</span>, <span class="hljs-string">"CountryCheckListBox"</span>, {
+  <span class="hljs-attr">CheckedIndices</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>]
+});</pre>
     
   
 
@@ -8780,10 +9172,11 @@ exoskeleton.form.applyDefinition(<span class="hljs-string">"ExampleListDialog"</
 
   
 
-  <p>Allows you to modify properties on a defined Form after it has been initialized.</p>
+  <p>Allows you to modify properties on a defined Form after it has been initialized.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>applyFormProperties(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, formJson: any)</div>
+  <div class='pre p1 fill-light mt0'>applyFormProperties(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, formJson: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
 
@@ -8809,8 +9202,9 @@ exoskeleton.form.applyDefinition(<span class="hljs-string">"ExampleListDialog"</
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>formJson</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>formJson</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing 'form' level properties/values
+
           </div>
           
         </div>
@@ -8974,6 +9368,164 @@ exoskeleton.form.applyDefinition(<span class="hljs-string">"ExampleListDialog"</
   <span class="hljs-attr">Width</span>: <span class="hljs-number">600</span>,
   <span class="hljs-attr">Height</span>: <span class="hljs-number">400</span>
 });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='formgeneratedynamicresponse'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>generateDynamicResponse(formName)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Obtains object with control values for all controls on form.</p>
+
+
+  <div class='pre p1 fill-light mt0'>generateDynamicResponse(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name of form to get control values for.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        hashobject keyed on control name, with simplified object values for value
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> result = exoskeleton.form.generateDynamicResponse(<span class="hljs-string">"ExampleForm"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='formgetcontrolproperties'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getControlProperties(formName, controlName)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Obtains object this simplified control values for a given form name and control name</p>
+
+
+  <div class='pre p1 fill-light mt0'>getControlProperties(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, controlName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name of form your control is on
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>controlName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name to control on specified form.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        object containing simplified properties and their values.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> countryValues = exoskeleton.form.getControlProperties(<span class="hljs-string">"UserEditorForm"</span>, <span class="hljs-string">"CountryCheckListBox"</span>);
+<span class="hljs-built_in">console</span>.log(countryValues.CheckedIndices);</pre>
     
   
 
