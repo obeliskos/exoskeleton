@@ -6,10 +6,21 @@
  * - Buttons are 'EventButton' rather than 'DialogButton'
  * - Events allow running javascript on events
  */
- 
+
+// alias anchorstyles for more concise definition
+var AnchorStyles = exoskeleton.enums.AnchorStyles;
+
+var locations = exoskeleton.getLocations();
+var logoPath = exoskeleton.file.combinePaths([
+  locations.Current,
+  "images",
+  "run.png"
+]);
+
 /**
  * Set up Form definition object...
  */
+ 
 var formDefinition = {
   MiddlePanel: {
     Type: "Panel",
@@ -85,7 +96,7 @@ var formDefinition = {
     Type: "Panel",
     Properties: {
       Dock: "Top",
-      BackColor: "PaleGreen",
+      BackColor: "DarkSeaGreen",
       Height: 84,
       Padding: "10, 10, 10, 10"
     }
@@ -106,7 +117,7 @@ var formDefinition = {
     Parent: "TopPanel",
     Properties: {
       Text: "Some User",
-      Top: 32,
+      Top: 30,
       Left: 10,
       Height: 30,
       WIdth: 140,
@@ -119,7 +130,7 @@ var formDefinition = {
     EmitEvents: true,
     Properties: {
       Text: "Employee",
-      Top: 58,
+      Top: 56,
       Left: 10
     }
   },
@@ -130,7 +141,7 @@ var formDefinition = {
     Properties: {
       Text: "Male",
       Top: 57,
-      Left: 165,
+      Left: 170,
       AutoSize: true
     }
   },
@@ -140,7 +151,7 @@ var formDefinition = {
     Properties: {
       Text: "Female",
       Top: 57,
-      Left: 225,
+      Left: 230,
       AutoSize: true
     }
   },
@@ -151,7 +162,7 @@ var formDefinition = {
       Text: "Enter your age:",
       AutoSize: true,
       Top: 10,
-      Left: 170
+      Left: 167
     }
   },
   AgeNumeric: {
@@ -172,7 +183,7 @@ var formDefinition = {
       Text: "Pick some date :",
       AutoSize: true,
       Top: 10,
-      Left: 310
+      Left: 307
     }
   },
   StartDate: {
@@ -192,7 +203,7 @@ var formDefinition = {
       Text: "Pick some value :",
       AutoSize: true,
       Top: 10,
-      Left: 565
+      Left: 562
     }
   },
   TestComboBox: {
@@ -211,7 +222,20 @@ var formDefinition = {
     Properties: {
       Dock: "Bottom",
       Height: 50,
-      Padding: "10, 10, 10, 10"
+      Padding: "10, 10, 10, 10",
+      BackColor: "Gray"
+    }
+  },
+  LogoPicbox: {
+    Type: "PictureBox",
+    Parent: "BottomPanel",
+    Properties: {
+      Location: "10, 10",
+      Size: "32, 32",
+      SizeMode: "StretchImage"
+    },
+    Payload: {
+      ImagePath: logoPath
     }
   },
   IncrementButton: {
@@ -219,11 +243,10 @@ var formDefinition = {
     Parent: "BottomPanel",
     EmitEvents: true,
     Properties: {
+      Anchor: AnchorStyles.Bottom|AnchorStyles.Right,
       Text: "Increment Age",
-      Top: 10,
-      Left: 280,
-      Height: 30,
-      Width: 100,
+      Location: '-200, 10',
+      Size: '100, 30',
       UseVisualStyleBackColor: true
     }
   },
@@ -232,9 +255,10 @@ var formDefinition = {
     Parent: "BottomPanel",
     EmitEvents: true,
     Properties: {
+      Anchor: AnchorStyles.Bottom|AnchorStyles.Right,
       Text: "Select All",
       Top: 10,
-      Left: 390,
+      Left: -90,
       Height: 30,
       Width: 100,
       UseVisualStyleBackColor: true
@@ -246,11 +270,11 @@ var formDefinition = {
     EmitEvents: true,
     Properties: {
       Top: 10,
-      Left: 500,
+      Left: 60,
       Height: 30,
       Width: 100,
+      Anchor: AnchorStyles.Bottom|AnchorStyles.Right,
       UseVisualStyleBackColor: true,
-      TabIndex:2,
       Text: "Save and Close"
     }
   }
@@ -376,7 +400,7 @@ exoskeleton.form.applyControlProperties("ExampleForm", {
   TestComboBox : { SelectedItem: 'three' },
   CountryCheckList: { 
     CheckedIndices: [0, 1, 2],
-    BackColor: "LightBlue" 
+    BackColor: "192, 192, 224" 
   }
 });
 

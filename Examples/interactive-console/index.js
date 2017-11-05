@@ -26,12 +26,36 @@ $(document).ready(function () {
     xo.initializeStatusbar();
     exoskeleton.main.doEvents();
 
-    var theme = localStorage["xo.editorTheme"];
-    xo.setupEditor(theme);
+    // we have chosen to serve from filesystem rather than self-host.
+    // because of this, localStorage is not available so we will use a loki database.
+    db = new loki("settings-db.json", {
+        autoload: true,
+        autoloadCallback: xo.initializeDatabase,
+        autosave: true,
+        adapter: exoskeleton.keystore,
+        serializationMethod: "pretty"
+    });
+
+    // flush any pending changes to database on exit
+    exoskeleton.events.on("multicast.shutdown", function () {
+        db.close();
+    });
 
     setTimeout(xo.windowResize, 100);
 
 });
+
+xo.initializeDatabase = function () {
+    var coll = db.getCollection('settings');
+
+    if (coll === null) {
+        coll = db.addCollection('settings');
+        coll.insert({ key: "theme", value: "abcdef" });
+    }
+
+    var theme = coll.findOne({ key: "theme" }).value;
+    xo.setupEditor(theme);
+};
 
 xo.initializeMenu = function () {
     exoskeleton.menu.initialize();
@@ -97,11 +121,9 @@ xo.initializeMenu = function () {
 
     exoskeleton.events.on("PickThemeEvent", function () {
         var selectedTheme = null;
-        if (localStorage) {
-            if (localStorage["xo.editorTheme"]) {
-                selectedTheme = localStorage["xo.editorTheme"];
-            }
-        }
+        var theme = db.getCollection("settings").findOne({ key: "theme" });
+        selectedTheme = theme.value;
+
         var result = exoskeleton.dialog.promptList(
             "Set Editor Theme",
             "Select theme to apply to editors :",
@@ -111,7 +133,8 @@ xo.initializeMenu = function () {
 
         if (result) {
             xo.applyTheme(result);
-            localStorage["xo.editorTheme"] = result;
+            theme.value = result;
+            db.getCollection("settings").update(theme);
         }
     });
 };  
@@ -245,8 +268,8 @@ xo.saveHandler = function (data) {
 xo.windowResize = function () {
     setTimeout(function () {
         try {
-            xo.editorJS.setSize("100%", $(window).height() - 180);
-            xo.editorOutput.setSize("100%", $(window).height() - 180);
+            xo.editorJS.setSize("100%", $(window).height() - 190);
+            xo.editorOutput.setSize("100%", $(window).height() - 190);
         }
         catch (e) {}
     }, 100);
@@ -436,10 +459,6 @@ xo.runScript = function () {
 
 };
 
-xo.errorHandler = function (evt) {
-    alertify.error('load error');
-};
-
 xo.toggleVisibility = function (id) {
     var e = document.getElementById(id);
     e.style.display = (e.style.display === 'block') ? 'none' : 'block';
@@ -450,11 +469,3 @@ xo.applyTheme = function (theme) {
     xo.editorOutput.setOption("theme", theme);
 };
 
-xo.selectTheme = function () {
-    var theme = $("#select-theme option:selected").val();
-    if (localStorage) {
-        localStorage["xo.editorTheme"] = theme;
-    }
-
-    xo.applyTheme(theme);
-};

@@ -15,6 +15,16 @@
         }
         body {
             color: #fff;
+            font-size: 16pt;
+        }
+        select {
+            font-size: 16pt;
+            min-width: 240px;
+        }
+        
+        button {
+            font-size: 16pt;
+            min-width: 90px;
         }
     </style>
 </head>
@@ -27,44 +37,19 @@
       <li>This example uses a javascript database to maintain a queryable javascript object database.</li>
       <li>We are using lokijs database library, saving the database using exoskelton file api to load and save to a file.</li>
       <li>The database is configured to autosave/autoload every few seconds and will automatically flush changes on app close</li>
+      <li>Exoskeleton dialog is used for data entry</li>
      </ul>
   </p>
   <br/>
   <p>
   <span>Users:</span><br/>
-  <select id="selUsers" size=10 style="min-width:200px" onclick="userSelected()">
+  <select id="selUsers" size=10 style="min-width:300px" onclick="userSelected()">
   </select><br/>
-  <button onclick="newClicked()">new</button>
-  <button onclick="deleteClicked()">delete</button>
-  <button onclick="refreshUsers()">refresh</button>
+  <br/>
+  <button onclick="editClicked()">Edit</button>
+  <button onclick="newClicked()">New</button>
+  <button onclick="deleteClicked()">Delete</button>
   </p>
-  <table border="1" style="width:300px">
-      <tr>
-          <td>
-              <label>$loki : </label>
-          </td>
-          <td>
-              <label id="lblUsersLoki"/>
-          </td>
-      </tr>
-      <tr>
-          <td>
-              <label>name : </label>
-          </td>
-          <td>
-              <input type="text" id="txtUsersName" value=""/>
-          </td>
-      </tr>
-      <tr>
-          <td>
-              <label>age : </label>
-          </td>
-          <td>
-              <input type="text" id="txtUsersAge"/>
-          </td>
-      </tr>
-  </table><br/>
-  <button onclick="saveClicked()">save</button>
 </body>
 
 </html>

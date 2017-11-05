@@ -23,6 +23,13 @@ namespace Exoskeleton.Classes.API
 
         public void Initialize(string formName, string formJson)
         {
+            // If any form by that name is already loaded, close it first
+            if (formDictionary.ContainsKey(formName))
+            {
+                formDictionary[formName].Close();
+                formDictionary.Remove(formName);
+            }
+
             formDictionary[formName] = new Form();
             formDictionary[formName].Icon = host.GetForm().Icon;
 

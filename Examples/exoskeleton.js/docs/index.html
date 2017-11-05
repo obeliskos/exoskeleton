@@ -252,6 +252,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#dialogaddpicturebox'
+                        class='regular pre-open'>
+                        #addPictureBox
+                      </a></li>
+                      
+                      <li><a
                         href='#dialogaddradiobutton'
                         class='regular pre-open'>
                         #addRadioButton
@@ -261,6 +267,12 @@
                         href='#dialogaddtextbox'
                         class='regular pre-open'>
                         #addTextBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogapplycontrolpayload'
+                        class='regular pre-open'>
+                        #applyControlPayload
                       </a></li>
                       
                       <li><a
@@ -276,9 +288,21 @@
                       </a></li>
                       
                       <li><a
+                        href='#dialogapplydialogproperties'
+                        class='regular pre-open'>
+                        #applyDialogProperties
+                      </a></li>
+                      
+                      <li><a
                         href='#dialoginitialize'
                         class='regular pre-open'>
                         #initialize
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogloaddefinition'
+                        class='regular pre-open'>
+                        #loadDefinition
                       </a></li>
                       
                       <li><a
@@ -660,6 +684,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#formaddpicturebox'
+                        class='regular pre-open'>
+                        #addPictureBox
+                      </a></li>
+                      
+                      <li><a
                         href='#formaddradiobutton'
                         class='regular pre-open'>
                         #addRadioButton
@@ -717,6 +747,12 @@
                         href='#formgetcontrolproperties'
                         class='regular pre-open'>
                         #getControlProperties
+                      </a></li>
+                      
+                      <li><a
+                        href='#formloaddefinition'
+                        class='regular pre-open'>
+                        #loadDefinition
                       </a></li>
                       
                       <li><a
@@ -2295,8 +2331,8 @@ exoskeleton.com.invokeMethod(<span class="hljs-string">"Speak"</span>, [<span cl
 
   <p>Dialog API class for creating and interfacing with WinForms dialogs.
 This API exposes native .NET dialogs, several exoskeleton 'prompt' dialogs or you can compose your own using a global dialog singleton.
-Dialogs are executed synchronously, so your javascript will wait until dialog is dismissed before
-continuing or receiving its returned result.</p>
+Dialogs are modal and executed synchronously, so your javascript will wait until dialog is dismissed before
+continuing or receiving its returned result.  Dialogs do not support javascript eventing.</p>
 
 
   <div class='pre p1 fill-light mt0'>new Dialog(exoDialog: any)</div>
@@ -3489,6 +3525,113 @@ exoskeleton.dialog.addPanel(<span class="hljs-string">"ExampleDialog"</span>, {
       </div>
     </div>
   
+    <div class='border-bottom' id='dialogaddpicturebox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addPictureBox(formName, picbox, parentName?, emitEvents?, payload)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>addPictureBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, picbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>picbox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to PictureBox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit 'Click' event
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    used to pass 'ImagePath' as string property of this object
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.addPictureBox(<span class="hljs-string">"SampleForm"</span>, {
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"LogoPicbox"</span>,
+  <span class="hljs-attr">Location</span>: <span class="hljs-string">"10, 10"</span>,
+  <span class="hljs-attr">Size</span>: <span class="hljs-string">"64, 64"</span>
+}, <span class="hljs-literal">false</span>, { <span class="hljs-attr">ImagePath</span>: <span class="hljs-string">"C:\\Images\\pic1.png"</span> });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='dialogaddradiobutton'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -3656,6 +3799,94 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textb
   <span class="hljs-attr">Left</span>: <span class="hljs-number">100</span>,
   <span class="hljs-attr">Text</span>: user.addr1
 }, <span class="hljs-string">"AddressPanel"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogapplycontrolpayload'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>applyControlPayload(formName, controlName, payload)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Applies a payload to a control which have already been added to a named dialog.
+Can be used for applying certain values to control which are not able to be applied
+just by setting control properties.</p>
+
+
+  <div class='pre p1 fill-light mt0'>applyControlPayload(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, controlName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>controlName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name of control to apply payload to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing payload to apply
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.applyControlPayload(<span class="hljs-string">"SampleForm"</span>, <span class="hljs-string">"LogoPicbox"</span>, {
+  <span class="hljs-attr">ImagePath</span>: <span class="hljs-string">"C:\\images\\pic1.png"</span>
+});</pre>
     
   
 
@@ -3842,6 +4073,82 @@ exoskeleton.dialog.applyDefinition(<span class="hljs-string">"MyListDialog"</spa
       </div>
     </div>
   
+    <div class='border-bottom' id='dialogapplydialogproperties'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>applyDialogProperties(dialogName, formJson)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Allows you to modify properties on a defined dialog Form object instance.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>applyDialogProperties(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, formJson: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dialogName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to your defined dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formJson</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object containing .NET 'Form' properties/values
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.dialog.applyDialogProperties(<span class="hljs-string">"ExampleForm"</span>, { Text = <span class="hljs-string">"Add User dialog"</span> });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='dialoginitialize'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -3908,6 +4215,83 @@ exoskeleton.dialog.applyDefinition(<span class="hljs-string">"MyListDialog"</spa
   <span class="hljs-attr">Width</span>: <span class="hljs-number">600</span>,
   <span class="hljs-attr">Height</span>: <span class="hljs-number">400</span>
 });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogloaddefinition'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>loadDefinition(dialogName, filename)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Loads a dialog definition from a file and applies it.</p>
+
+
+  <div class='pre p1 fill-light mt0'>loadDefinition(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dialogName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>filename</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    filename of the file containing a dialog/form definition.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> locations = exoskeleton.getLocations();
+<span class="hljs-keyword">var</span> defpath = exoskeleton.file.combinePaths([locations.Current, <span class="hljs-string">"definitions"</span>, <span class="hljs-string">"Address.json"</span>]);
+exoskeleton.dialog.loadDefinition(<span class="hljs-string">"AddressDialog"</span>, defpath);</pre>
     
   
 
@@ -7389,8 +7773,9 @@ exoskeleton.events.on(<span class="hljs-string">"multicast.download.created"</sp
 This API exposes native .NET Form objects.
 Forms are more dynamic and interactive than dialogs.
 They support events which javascript can listen for and make exoskeleton calls,
-including updating the form programmatically.
-continuing or receiving its returned result.</p>
+including updating the form programmatically. Forms are not modal and can be resized.
+When your javascript shows a form your javascript will not wait for it to close before
+continuing.</p>
 
 
   <div class='pre p1 fill-light mt0'>new Form(exoForm: any)</div>
@@ -8693,6 +9078,113 @@ exoskeleton.form.addPanel(<span class="hljs-string">"SampleForm"</span>, {
       </div>
     </div>
   
+    <div class='border-bottom' id='formaddpicturebox'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addPictureBox(formName, picbox, parentName?, emitEvents?, payload)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>addPictureBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, picbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>picbox</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to PictureBox
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit 'Click' event
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    used to pass 'ImagePath' as string property of this object
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.form.addPictureBox(<span class="hljs-string">"SampleForm"</span>, {
+  <span class="hljs-attr">Name</span>: <span class="hljs-string">"LogoPicbox"</span>,
+  <span class="hljs-attr">Location</span>: <span class="hljs-string">"10, 10"</span>,
+  <span class="hljs-attr">Size</span>: <span class="hljs-string">"64, 64"</span>
+}, <span class="hljs-literal">false</span>, { <span class="hljs-attr">ImagePath</span>: <span class="hljs-string">"C:\\Images\\pic1.png"</span> });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='formaddradiobutton'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -9526,6 +10018,83 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form(
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> countryValues = exoskeleton.form.getControlProperties(<span class="hljs-string">"UserEditorForm"</span>, <span class="hljs-string">"CountryCheckListBox"</span>);
 <span class="hljs-built_in">console</span>.log(countryValues.CheckedIndices);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='formloaddefinition'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>loadDefinition(formName, filename)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Loads a dialog definition from a file and applies it.</p>
+
+
+  <div class='pre p1 fill-light mt0'>loadDefinition(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>filename</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    filename of the file containing a dialog/form definition.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> locations = exoskeleton.getLocations();
+<span class="hljs-keyword">var</span> defpath = exoskeleton.file.combinePaths([locations.Current, <span class="hljs-string">"definitions"</span>, <span class="hljs-string">"UserEditor.json"</span>]);
+exoskeleton.form.loadDefinition(<span class="hljs-string">"UserEditor"</span>, defpath);</pre>
     
   
 

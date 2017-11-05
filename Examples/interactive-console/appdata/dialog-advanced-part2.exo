@@ -16,6 +16,14 @@
 //   property added with if one is not already specified.
 // Several Control have extra top level properties, which
 //   you will see demonstrated within this example.
+
+var locations = exoskeleton.getLocations();
+var logoPath = exoskeleton.file.combinePaths([
+  locations.Current,
+  "images",
+  "run.png"
+]);
+
 var dialogData = {
   MiddlePanel: {
     Type: "Panel",
@@ -89,7 +97,7 @@ var dialogData = {
     Type: "Panel",
     Properties: {
       Dock: "Top",
-      BackColor: "PaleGreen",
+      BackColor: "128, 196, 128",
       Height: 84,
       Padding: "10, 10, 10, 10"
     }
@@ -110,7 +118,7 @@ var dialogData = {
     Parent: "TopPanel",
     Properties: {
       Text: "Some User",
-      Top: 32,
+      Top: 30,
       Left: 10,
       Height: 30,
       WIdth: 140,
@@ -132,7 +140,7 @@ var dialogData = {
     Properties: {
       Text: "Male",
       Top: 57,
-      Left: 165,
+      Left: 170,
       AutoSize: true
     }
   },
@@ -142,7 +150,7 @@ var dialogData = {
     Properties: {
       Text: "Female",
       Top: 57,
-      Left: 225,
+      Left: 230,
       AutoSize: true
     }
   },
@@ -213,6 +221,18 @@ var dialogData = {
       Padding: "10, 10, 10, 10"
     }
   },
+  LogoPicbox: {
+    Type: "PictureBox",
+    Parent: "BottomPanel",
+    Properties: {
+      Location: "10, 10",
+      Size: "32, 32",
+      SizeMode: "StretchImage"
+    },
+    Payload: {
+      ImagePath: logoPath
+    }
+  },
   OkButton: {
     Type: "DialogButton",
     Parent: "BottomPanel",
@@ -221,7 +241,7 @@ var dialogData = {
     },
     Properties: {
       Top: 10,
-      Left: 280,
+      Left: 435,
       Height: 30,
       Width: 100,
       UseVisualStyleBackColor: true,
@@ -238,7 +258,7 @@ var dialogData = {
     Properties: {
       Text: "Cancel",
       Top: 10,
-      Left: 390,
+      Left: 550,
       Height: 30,
       Width: 100,
       UseVisualStyleBackColor: true
@@ -249,7 +269,7 @@ var dialogData = {
 // ok, before we can use that definition, we should initialize
 // our dialog.
 exoskeleton.dialog.initialize("ExampleDialog", {
-  Text: "test", 
+  Text: "Example Dialog Definition", 
   Width: 720, 
   Height: 400
 });
@@ -272,7 +292,8 @@ exoskeleton.dialog.applyControlProperties("ExampleDialog", {
   TestComboBox : { SelectedItem: 'three' },
   CountryCheckList: { 
     CheckedIndices: [0, 1, 2],
-    BackColor: "LightBlue" 
+    BackColor: "SeaGreen",
+    ForeColor: "White"
   }
 });
 

@@ -20,32 +20,43 @@
         'use strict';
 
         function overrideConsole() {
-            window.console = {
-                log: function (text) {
-                    if (!exoskeleton.logger) return;
+            console.log = function (text) {
+                if (!exoskeleton.logger) return;
+                exoskeleton.logger.logText(text);
+            };
 
-                    exoskeleton.logger.logText(text);
-                },
-                info: function (text, data) {
-                    if (!exoskeleton.logger) return;
+            console.info = function (text, data) {
+                if (!exoskeleton.logger) return;
+                exoskeleton.logger.logInfo(data, text);
+            };
 
-                    exoskeleton.logger.logInfo(data, text);
-                },
-                warn: function (text) {
-                    if (!exoskeleton.logger) return;
+            console.warn = function (text) {
+                if (!exoskeleton.logger) return;
+                exoskeleton.logger.logWarning("", text);
+            };
 
-                    exoskeleton.logger.logWarning("", text);
-                },
-                error: function (text) {
-                    if (!exoskeleton.logger) return;
+            console.error = function (text) {
+                if (!exoskeleton.logger) return;
+                exoskeleton.logger.logError(text);
+            };
 
-                    exoskeleton.logger.logError(text);
-                },
-                dir: function (obj) {
-                    if (!exoskeleton.logger) return;
+            console.dir = function (obj) {
+                if (!exoskeleton.logger) return;
+                exoskeleton.logger.logText(obj ? JSON.stringify(obj, null, 2) : "null");
+            };
 
-                    exoskeleton.logger.logText(obj ? JSON.stringify(obj, null, 2) : "null");
-                }
+            console.trace = function () {
+                var n = function () {
+                    try {
+                        throw new Error("");
+                    } catch (n) {
+                        return n.stack;
+                    }
+                }();
+
+                var t = n ? n.split("\n") : "";
+                t.splice(0, 3);
+                console.log("console.trace()\n" + t.join("\n"));
             };
         }
 
@@ -58,6 +69,10 @@
             var self = this;
 
             this.exo = window.external;
+
+            this.enums = {
+                AnchorStyles: Object.freeze({ "None": 0, "Top": 1, "Bottom": 2, "Left": 3, "Right": 8 })
+            };
 
             this.events = new ExoEventEmitter(this.exo);
 
@@ -211,8 +226,8 @@
         /**
          * Dialog API class for creating and interfacing with WinForms dialogs.
          * This API exposes native .NET dialogs, several exoskeleton 'prompt' dialogs or you can compose your own using a global dialog singleton.
-         * Dialogs are executed synchronously, so your javascript will wait until dialog is dismissed before
-         * continuing or receiving its returned result.
+         * Dialogs are modal and executed synchronously, so your javascript will wait until dialog is dismissed before
+         * continuing or receiving its returned result.  Dialogs do not support javascript eventing.
          * @param {any} exoDialog
          * @constructor Dialog
          */
@@ -608,6 +623,34 @@
         };
 
         /**
+         * Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} picbox - initial properties to assign to PictureBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @param {boolean=} emitEvents - whether this control should emit 'Click' event
+         * @param {object} payload - used to pass 'ImagePath' as string property of this object
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.addPictureBox("SampleForm", {
+         *   Name: "LogoPicbox",
+         *   Location: "10, 10",
+         *   Size: "64, 64"
+         * }, false, { ImagePath: "C:\\Images\\pic1.png" });
+         */
+        Dialog.prototype.addPictureBox = function (formName, picbox, parentName, emitEvents, payload) {
+            if (typeof picbox === "object") {
+                picbox = JSON.stringify(picbox);
+            }
+            if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
+
+            this.exoDialog.AddPictureBox(formName, picbox, parentName, emitEvents, payload);
+        };
+
+        /**
          * Adds a RadioButton to a named exoskeleton dialog.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx ms docs}
          * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
@@ -664,6 +707,37 @@
         };
 
         /**
+         * Applies a payload to a control which have already been added to a named dialog.
+         * Can be used for applying certain values to control which are not able to be applied
+         *   just by setting control properties.
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {string} controlName - unique name of control to apply payload to.
+         * @param {object} payload - object containing payload to apply
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.applyControlPayload("SampleForm", "LogoPicbox", {
+         *   ImagePath: "C:\\images\\pic1.png"
+         * });
+         */
+        Dialog.prototype.applyControlPayload = function (formName, controlName, payload) {
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+            else {
+                payload = JSON.stringify(payload);
+            }
+
+            try {
+                this.exoDialog.ApplyControlPayload(formName, controlName, payload);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
+        };
+
+        /**
          * Applies property values to controls which have already been added.
          * Can be used for separating control layout and data initialization.
          * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
@@ -687,7 +761,13 @@
                 controlValues = JSON.stringify(controlValues);
             }
 
-            this.exoDialog.ApplyControlProperties(dialogName, controlValues);
+            try {
+                this.exoDialog.ApplyControlProperties(dialogName, controlValues);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -727,7 +807,37 @@
                 definition = JSON.stringify(definition);
             }
 
-            this.exoDialog.ApplyDefinition(dialogName, definition);
+            try {
+                this.exoDialog.ApplyDefinition(dialogName, definition);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
+        };
+
+        /**
+         * Allows you to modify properties on a defined dialog Form object instance.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to your defined dialog.
+         * @param {object} formJson - object containing .NET 'Form' properties/values
+         * @memberof Dialog
+         * @instance
+         * @example
+         * exoskeleton.dialog.applyDialogProperties("ExampleForm", { Text = "Add User dialog" });
+         */
+        Dialog.prototype.applyDialogProperties = function (dialogName, formJson) {
+            if (typeof formJson === "object") {
+                formJson = JSON.stringify(formJson);
+            }
+
+            try {
+                this.exoDialog.ApplyDialogProperties(dialogName, formJson);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -751,7 +861,34 @@
                 formJson = JSON.stringify(formJson);
             }
 
-            this.exoDialog.Initialize(dialogName, formJson);
+            try {
+                this.exoDialog.Initialize(dialogName, formJson);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
+        };
+
+        /**
+         * Loads a dialog definition from a file and applies it.
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
+         * @param {string} filename - filename of the file containing a dialog/form definition.
+         * @memberof Dialog
+         * @instance
+         * @example
+         * var locations = exoskeleton.getLocations();
+         * var defpath = exoskeleton.file.combinePaths([locations.Current, "definitions", "Address.json"]);
+         * exoskeleton.dialog.loadDefinition("AddressDialog", defpath);
+         */
+        Dialog.prototype.loadDefinition = function (dialogName, filename) {
+            try {
+                this.exoDialog.LoadDefinition(dialogName, filename);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -1619,8 +1756,9 @@
          * This API exposes native .NET Form objects.
          * Forms are more dynamic and interactive than dialogs.
          * They support events which javascript can listen for and make exoskeleton calls,
-         * including updating the form programmatically.
-         * continuing or receiving its returned result.
+         * including updating the form programmatically. Forms are not modal and can be resized.
+         * When your javascript shows a form your javascript will not wait for it to close before
+         * continuing.
          * @param {any} exoForm
          * @constructor Form
          */
@@ -2100,6 +2238,34 @@
         };
 
         /**
+         * Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} picbox - initial properties to assign to PictureBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @param {boolean=} emitEvents - whether this control should emit 'Click' event
+         * @param {object} payload - used to pass 'ImagePath' as string property of this object
+         * @memberof Form
+         * @instance
+         * @example
+         * exoskeleton.form.addPictureBox("SampleForm", {
+         *   Name: "LogoPicbox",
+         *   Location: "10, 10",
+         *   Size: "64, 64"
+         * }, false, { ImagePath: "C:\\Images\\pic1.png" });
+         */
+        Form.prototype.addPictureBox = function (formName, picbox, parentName, emitEvents, payload) {
+            if (typeof picbox === "object") {
+                picbox = JSON.stringify(picbox);
+            }
+            if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
+
+            this.exoForm.AddPictureBox(formName, picbox, parentName, emitEvents, payload);
+        };
+
+        /**
          * Adds a RadioButton to a named exoskeleton form.
          * Emits 'CheckedChanged' event if 'emitEvents' is true.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx ms docs}
@@ -2195,7 +2361,13 @@
                 payload = JSON.stringify(payload);
             }
 
-            this.exoForm.ApplyControlPayload(formName, controlName, payload);
+            try {
+                this.exoForm.ApplyControlPayload(formName, controlName, payload);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -2222,7 +2394,13 @@
                 controlValues = JSON.stringify(controlValues);
             }
 
-            this.exoForm.ApplyControlProperties(formName, controlValues);
+            try {
+                this.exoForm.ApplyControlProperties(formName, controlValues);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -2262,7 +2440,13 @@
                 definition = JSON.stringify(definition);
             }
 
-            this.exoForm.ApplyDefinition(formName, definition);
+            try {
+                this.exoForm.ApplyDefinition(formName, definition);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -2280,7 +2464,13 @@
                 formJson = JSON.stringify(formJson);
             }
 
-            this.exoForm.ApplyFormProperties(formName, formJson);
+            try {
+                this.exoForm.ApplyFormProperties(formName, formJson);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -2316,7 +2506,13 @@
                 formJson = JSON.stringify(formJson);
             }
 
-            this.exoForm.Initialize(formName, formJson);
+            try {
+                this.exoForm.Initialize(formName, formJson);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**
@@ -2361,6 +2557,27 @@
             var result = this.exoForm.GetControlProperties(formName, controlName);
 
             return (result)?JSON.parse(result):null;
+        };
+
+        /**
+         * Loads a dialog definition from a file and applies it.
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {string} filename - filename of the file containing a dialog/form definition.
+         * @memberof Form
+         * @instance
+         * @example
+         * var locations = exoskeleton.getLocations();
+         * var defpath = exoskeleton.file.combinePaths([locations.Current, "definitions", "UserEditor.json"]);
+         * exoskeleton.form.loadDefinition("UserEditor", defpath);
+         */
+        Form.prototype.loadDefinition = function (formName, filename) {
+            try {
+                this.exoForm.LoadDefinition(formName, filename);
+            }
+            catch (ex) {
+                console.trace();
+                throw ex;
+            }
         };
 
         /**

@@ -597,6 +597,21 @@ namespace Exoskeleton.Classes.API
         }
 
         /// <summary>
+        /// Allows setting properties on the Form object, after it has been initialized.
+        /// </summary>
+        /// <param name="dialogName">The name of the dialog to apply properties to.</param>
+        /// <param name="formJson">Json object containing properties to apply to dialog Form.</param>
+        public void ApplyDialogProperties(string dialogName, string formJson)
+        {
+            if (formDictionary[dialogName] == null)
+            {
+                throw new Exception("A form by the name of " + formJson + " was not found.");
+            }
+
+            JsonConvert.PopulateObject(formJson, formDictionary[dialogName]);
+        }
+
+        /// <summary>
         /// Shows the singleton Dialog and returns the result and control values to caller.
         /// </summary>
         /// <returns></returns>

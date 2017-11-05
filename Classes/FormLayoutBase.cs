@@ -2,6 +2,8 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +21,6 @@ namespace Exoskeleton.Classes
         protected IHostWindow host;
 
         protected Dictionary<string, Form> formDictionary;
-        protected Dictionary<string, bool> suppressEventsDictionary;
         protected Dictionary<string, Dictionary<string, Control>> controlDictionary;
 
         /// <summary>
@@ -37,7 +38,6 @@ namespace Exoskeleton.Classes
         public virtual void Dispose()
         {
             formDictionary = null;
-            suppressEventsDictionary = null;
             controlDictionary = null;
             host = null;
         }
@@ -105,6 +105,8 @@ namespace Exoskeleton.Classes
             {
                 ((Button) control).Click += (sender, args) =>
                 {
+                    Application.DoEvents();
+
                     host.PackageAndUnicast(String.Concat(formName, ".", control.Name , ".Click"), 
                         GenerateDynamicResponseObject(formName));
                 };
@@ -190,6 +192,15 @@ namespace Exoskeleton.Classes
                 };
             }
 
+            if (control.GetType() == typeof(PictureBox))
+            {
+                ((PictureBox)control).Click += (sender, args) =>
+               {
+                   host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".Click"),
+                       GetControlPropertiesDynamic(formName, control.Name));
+               };
+            }
+
             if (control.GetType() == typeof(CheckedListBox))
             {
                 // Normally this event fires before item is acutally checked.
@@ -267,6 +278,19 @@ namespace Exoskeleton.Classes
                     }
                 }
 
+            }
+
+            if (control.GetType() == typeof(PictureBox))
+            {
+                if (pdef["ImagePath"] != null) {
+                    PictureBox clb = (PictureBox)control;
+
+                    string imagePath = pdef["ImagePath"].ToString();
+
+                    Image pic = Image.FromFile(imagePath);
+
+                    clb.Image = pic;
+                }
             }
 
             if (control.GetType() == typeof(DataGridView))
@@ -409,9 +433,22 @@ namespace Exoskeleton.Classes
                     case "DataGridView": AddControlInstance<DataGridView>(formName, propJson, parent, emitEvents, payload); break;
                     case "DialogButton": AddControlInstance<DialogButton>(formName, propJson, parent, emitEvents, payload); break;
                     case "CheckedListBox": AddControlInstance<CheckedListBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "PictureBox": AddControlInstance<PictureBox>(formName, propJson, parent, emitEvents, payload); break;
                     default: break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Loads a definition from a text file and applies it to the specified named form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="filename"></param>
+        public void LoadDefinition(string formName, string filename)
+        {
+            string definition = File.ReadAllText(filename);
+
+            ApplyDefinition(formName, definition);
         }
 
         /// <summary>
@@ -665,6 +702,12 @@ namespace Exoskeleton.Classes
         public void AddPanel(string formName, string panelJson, string parentName=null, bool emitEvents=false)
         {
             AddControlInstance<Panel>(formName, panelJson, parentName, emitEvents);
+        }
+
+        public void AddPictureBox(string formName, string picboxJson, string parentName=null, 
+            bool emitEvents=false, string payload = null)
+        {
+            AddControlInstance<PictureBox>(formName, picboxJson, parentName, emitEvents, payload);
         }
 
         /// <summary>
