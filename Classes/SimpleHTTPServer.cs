@@ -66,7 +66,6 @@ namespace Exoskeleton.Classes
         public static int GetOpenPort(int startPort = 2555)
         {
             int portStartIndex = startPort;
-            int count = 99;
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
             IPEndPoint[] tcpEndPoints = properties.GetActiveTcpListeners();
 
@@ -101,10 +100,7 @@ namespace Exoskeleton.Classes
                     HttpListenerContext context = _listener.GetContext();
                     Process(context);
                 }
-                catch (Exception ex)
-                {
-
-                }
+                catch { }
             }
         }
 
@@ -155,8 +151,7 @@ namespace Exoskeleton.Classes
                     context.Response.StatusCode = (int)HttpStatusCode.OK;
                     context.Response.OutputStream.Flush();
                 }
-                catch (Exception ex)
-                {
+                catch {
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 }
 

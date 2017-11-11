@@ -298,15 +298,21 @@
                 payload = JSON.stringify(payload);
             }
 
-            this.exoDialog.AddCheckedListBox(dialogName, checkedlistbox, parentName, false, null);
+            this.exoDialog.AddCheckedListBox(dialogName, checkedlistbox, parentName, false, payload);
         };
 
         /**
          * Adds a ComboBox to a named exoskeleton dialog.
+         * If the combo box items will remain static, you can set items with 'Items' property.
+         * If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+         * properties and databind by separate applyControlPayload object with 'DataSource' object array.
+         * Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+         * currently selected item across the rebinding.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx ms docs}
          * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} comboBox - initial properties to assign to ComboBox
          * @param {string=} parentName - optional name of parent control to nest within
+         * @param {string=} payload - can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
          * @memberof Dialog
          * @instance
          * @example
@@ -318,7 +324,7 @@
          *   SelectedItem : 'United States'
          * }, "AddressPanel");
          */
-        Dialog.prototype.addComboBox = function (dialogName, comboBox, parentName) {
+        Dialog.prototype.addComboBox = function (dialogName, comboBox, parentName, payload) {
             if (typeof comboBox === "object") {
                 comboBox = JSON.stringify(comboBox);
             }
@@ -327,7 +333,11 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddComboBox(dialogName, comboBox, parentName, false);
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+
+            this.exoDialog.AddComboBox(dialogName, comboBox, parentName, false, payload);
         };
 
         /**
@@ -400,7 +410,7 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddDateTimePicker(dialogName, dateTimePicker, parentName, false);
+            this.exoDialog.AddDateTimePicker(dialogName, dateTimePicker, parentName);
         };
 
         /**
@@ -469,10 +479,16 @@
 
         /**
          * Adds a ListBox to a named exoskeleton dialog.
+         * If the list box items will remain static, you can set items with 'Items' property.
+         * If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+         * properties and databind by separate applyControlPayload object with 'DataSource' object array.
+         * Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+         * currently selected item across the rebinding.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx ms docs}
          * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} listbox - initial properties to assign to ListBox
          * @param {string=} parentName - optional name of parent control to nest within
+         * @param {string=} payload - can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
          * @memberof Dialog
          * @instance
          * @example
@@ -485,7 +501,7 @@
          *   SelectedItem : 'United States'
          * }, "AddressPanel");
          */
-        Dialog.prototype.addListBox = function (dialogName, listbox, parentName) {
+        Dialog.prototype.addListBox = function (dialogName, listbox, parentName, payload) {
             if (typeof listbox === "object") {
                 listbox = JSON.stringify(listbox);
             }
@@ -494,7 +510,11 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddListBox(dialogName, listbox, parentName, false);
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+
+            this.exoDialog.AddListBox(dialogName, listbox, parentName, false, payload);
         };
 
         /**
@@ -523,7 +543,7 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddMaskedTextBox(dialogName, maskedtextbox, parentName, false);
+            this.exoDialog.AddMaskedTextBox(dialogName, maskedtextbox, parentName);
         };
 
         /**
@@ -554,7 +574,7 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddMonthCalendar(dialogName, monthcalendar, parentName, false);
+            this.exoDialog.AddMonthCalendar(dialogName, monthcalendar, parentName);
         };
 
         /**
@@ -583,7 +603,7 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddNumericUpDown(dialogName, numericUpDown, parentName, false);
+            this.exoDialog.AddNumericUpDown(dialogName, numericUpDown, parentName);
         };
 
         /**
@@ -619,16 +639,15 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddPanel(dialogName, panel, parentName, false);
+            this.exoDialog.AddPanel(dialogName, panel, parentName);
         };
 
         /**
          * Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
-         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.picturebox(v=vs.110).aspx ms docs}
          * @param {string} formName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} picbox - initial properties to assign to PictureBox
          * @param {string=} parentName - optional name of parent control to nest within
-         * @param {boolean=} emitEvents - whether this control should emit 'Click' event
          * @param {object} payload - used to pass 'ImagePath' as string property of this object
          * @memberof Dialog
          * @instance
@@ -639,7 +658,7 @@
          *   Size: "64, 64"
          * }, false, { ImagePath: "C:\\Images\\pic1.png" });
          */
-        Dialog.prototype.addPictureBox = function (formName, picbox, parentName, emitEvents, payload) {
+        Dialog.prototype.addPictureBox = function (formName, picbox, parentName, payload) {
             if (typeof picbox === "object") {
                 picbox = JSON.stringify(picbox);
             }
@@ -647,7 +666,7 @@
                 payload = JSON.stringify(payload);
             }
 
-            this.exoDialog.AddPictureBox(formName, picbox, parentName, emitEvents, payload);
+            this.exoDialog.AddPictureBox(formName, picbox, parentName, false, payload);
         };
 
         /**
@@ -675,7 +694,7 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddRadioButton(dialogName, radioButton, parentName, false);
+            this.exoDialog.AddRadioButton(dialogName, radioButton, parentName);
         };
 
         /**
@@ -703,7 +722,7 @@
                 parentName = null;
             }
 
-            this.exoDialog.AddTextBox(dialogName, textbox, parentName, false);
+            this.exoDialog.AddTextBox(dialogName, textbox, parentName);
         };
 
         /**
@@ -970,7 +989,7 @@
 
             var result = this.exoDialog.PromptDataGridView(title, prompt, objectArray, autoSizeColumns);
 
-            return (result === "undefined" || result === null) ? null : JSON.parse(result);
+            return (typeof result === "undefined" || result === null) ? null : JSON.parse(result);
         };
 
         /**
@@ -1856,11 +1875,17 @@
         /**
          * Adds a ComboBox to a named exoskeleton form.
          * Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
+         * If the combo box items will remain static, you can set items with 'Items' property.
+         * If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+         * properties and databind by separate applyControlPayload object with 'DataSource' object array.
+         * Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+         * currently selected item across the rebinding.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx ms docs}
          * @param {string} formName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} comboBox - initial properties to assign to ComboBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @param {boolean=} emitEvents - whether this control should emit event(s)
+         * @param {string=} payload - can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
          * @memberof Form
          * @instance
          * @example
@@ -1876,7 +1901,7 @@
          *   console.log(data.Selected);
          * });
          */
-        Form.prototype.addComboBox = function (formName, comboBox, parentName, emitEvents) {
+        Form.prototype.addComboBox = function (formName, comboBox, parentName, emitEvents, payload) {
             if (typeof comboBox === "object") {
                 comboBox = JSON.stringify(comboBox);
             }
@@ -1889,7 +1914,11 @@
                 emitEvents = false;
             }
 
-            this.exoForm.AddComboBox(formName, comboBox, parentName, emitEvents);
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+
+            this.exoForm.AddComboBox(formName, comboBox, parentName, emitEvents, payload);
         };
 
         /**
@@ -2055,11 +2084,17 @@
         /**
          * Adds a ListBox to a named exoskeleton form.
          * Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
+         * If the list box items will remain static, you can set items with 'Items' property.
+         * If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+         * properties and databind by separate applyControlPayload object with 'DataSource' object array.
+         * Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+         * currently selected item across the rebinding.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx ms docs}
          * @param {string} formName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} listbox - initial properties to assign to ListBox
          * @param {string=} parentName - optional name of parent control to nest within
          * @param {boolean=} emitEvents - whether this control should emit event(s)
+         * @param {string=} payload - can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
          * @memberof Form
          * @instance
          * @example
@@ -2072,7 +2107,7 @@
          *   SelectedItem : 'United States'
          * }, "AddressPanel");
          */
-        Form.prototype.addListBox = function (formName, listbox, parentName, emitEvents) {
+        Form.prototype.addListBox = function (formName, listbox, parentName, emitEvents, payload) {
             if (typeof listbox === "object") {
                 listbox = JSON.stringify(listbox);
             }
@@ -2085,7 +2120,11 @@
                 emitEvents = false;
             }
 
-            this.exoForm.AddListBox(formName, listbox, parentName, emitEvents);
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+
+            this.exoForm.AddListBox(formName, listbox, parentName, emitEvents, payload);
         };
 
         /**
@@ -2239,7 +2278,7 @@
 
         /**
          * Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
-         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.picturebox(v=vs.110).aspx ms docs}
          * @param {string} formName - unique name to dialog/form to refer to your dialog.
          * @param {object|string} picbox - initial properties to assign to PictureBox
          * @param {string=} parentName - optional name of parent control to nest within
@@ -2745,8 +2784,9 @@
          * Opens a new host container with the url and settings provided.
          * @param {string} caption - Window caption to apply to new window.
          * @param {string} url - Url to load within the new window.
-         * @param {int} width - Width (in pixels) to size new window to.
-         * @param {int} height - Height (in pixels) to size new window to.
+         * @param {int=} width - Width (in pixels) to size new window to.
+         * @param {int=} height - Height (in pixels) to size new window to.
+         * @param {string=} mode - Optionally override default UI mode to 'native' or 'web'
          * @memberof Main
          * @instance
          * @example
@@ -2758,8 +2798,49 @@
          * var html = "@<html><body><h3>Hello World</h3></body></html>";
          * exoskeleton.main.openNewWindow("My dynamic page", html, 400, 400);
          */
-        Main.prototype.openNewWindow = function (caption, url, width, height) {
-            this.exoMain.OpenNewWindow(caption, url, width, height);
+        Main.prototype.openNewWindow = function (caption, url, width, height, mode) {
+            if (typeof width === "undefined") {
+                width = null;
+            }
+            if (typeof height === "undefined") {
+                height = null;
+            }
+            if (typeof mode === "undefined") {
+                mode = null;
+            }
+            this.exoMain.OpenNewWindow(caption, url, width, height, mode);
+        };
+
+        /**
+         * (Advanced) method to dynamically switch into native ui mode.
+         * By default exoskeleton uses web ui mode within its hosted webbrowser.
+         * That can be overridden in settings to Native UI mode as 'default' for
+         * all opened windows.  That can be overridden in calls to openNewWindow.
+         * Finally, even after host form is loaded, this method along with
+         * switchToWebUi() can be used to toggle back and forth dynamically.
+         * @memberof Main
+         * @instance
+         * @example
+         * exoskeleton.main.switchToNativeUi();
+         */
+        Main.prototype.switchToNativeUi = function () {
+            this.exoMain.SwitchToNativeUi();
+        };
+
+        /**
+         * (Advanced) method to dynamically switch into web ui mode.
+         * By default exoskeleton uses web ui mode within its hosted webbrowser.
+         * That can be overridden in settings to Native UI mode as 'default' for
+         * all opened windows.  That can be overridden in calls to openNewWindow.
+         * Finally, even after host form is loaded, this method along with
+         * switchToNativeUi() can be used to toggle back and forth dynamically.
+         * @memberof Main
+         * @instance
+         * @example
+         * exoskeleton.main.switchToWebUi();
+         */
+        Main.prototype.switchToWebUi = function () {
+            this.exoMain.SwitchToWebUi();
         };
 
         /**

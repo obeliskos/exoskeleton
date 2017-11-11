@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,9 @@ namespace Exoskeleton.Classes
     {
         protected IHostWindow host;
 
+        protected string nativeContainer = "$host";
         protected Dictionary<string, Form> formDictionary;
+        protected Dictionary<string, Control.ControlCollection> containerDictionary;
         protected Dictionary<string, Dictionary<string, Control>> controlDictionary;
 
         /// <summary>
@@ -32,14 +35,103 @@ namespace Exoskeleton.Classes
         {
             this.host = host;
             formDictionary = new Dictionary<string, Form>();
+            containerDictionary = new Dictionary<string, Control.ControlCollection>();
             controlDictionary = new Dictionary<string, Dictionary<string, Control>>();
+            containerDictionary[nativeContainer] = host.GetHostPanel().Controls;
         }
 
         public virtual void Dispose()
         {
-            formDictionary = null;
+            containerDictionary = null;
             controlDictionary = null;
             host = null;
+        }
+
+        private void InitializeContainer(string formName)
+        {
+            if (formName == nativeContainer)
+            {
+                // clear existing instead of reassign dictionary entry
+                containerDictionary[formName].Clear();
+            }
+            else
+            {
+                // if form already exists, close it first
+                if (formDictionary.ContainsKey(formName))
+                {
+                    formDictionary[formName].Close();
+                }
+
+                // create the new form
+                Form f = new Form();
+                f.Icon = host.GetForm().Icon;
+                formDictionary[formName] = f;
+
+                // reassign dictionary entry with new form controls ref
+                containerDictionary[formName] = f.Controls;
+            }
+
+            // recreate control dictionary
+            controlDictionary[formName] = new Dictionary<string, Control>();
+        }
+
+        public void InitializeForm(string formName, string formJson)
+        {
+            InitializeContainer(formName);
+
+            // if any form level properties are supplied, apply them
+            if (formJson != null) {
+                if (formName == nativeContainer)
+                {
+                    JsonConvert.PopulateObject(formJson, host.GetForm());
+                }
+                else
+                {
+                    JsonConvert.PopulateObject(formJson, formDictionary[formName]);
+                }
+
+                JObject dyn = JsonConvert.DeserializeObject<JObject>(formJson);
+                if (formName != nativeContainer && dyn["StartPosition"] == null)
+                {
+                    formDictionary[formName].StartPosition = FormStartPosition.CenterParent;
+                }
+            }
+
+            if (formName == nativeContainer)
+            {
+                host.GetForm().SuspendLayout();
+            }
+            else
+            {
+                formDictionary[formName].SuspendLayout();
+            }
+        }
+
+        public void InitializeDialog(string formName, string formJson)
+        {
+            InitializeContainer(formName);
+
+            if (formName == nativeContainer)
+            {
+                throw new Exception("Not allowed to initialize host form as dialog");
+            }
+
+            if (formJson != null)
+            {
+                JsonConvert.PopulateObject(formJson, formDictionary[formName]);
+            }
+
+            formDictionary[formName].FormBorderStyle = FormBorderStyle.FixedDialog;
+            formDictionary[formName].ControlBox = false;
+            formDictionary[formName].MinimizeBox = false;
+            formDictionary[formName].MaximizeBox = false;
+            formDictionary[formName].StartPosition = FormStartPosition.CenterParent;
+            formDictionary[formName].SuspendLayout();
+        }
+
+        public void InitializeNative()
+        {
+            InitializeContainer(nativeContainer);
         }
 
         /// <summary>
@@ -63,11 +155,17 @@ namespace Exoskeleton.Classes
 
             if (parentName == null)
             {
-                formDictionary[formName].Controls.Add(ctl);
+                containerDictionary[formName].Add(ctl);
             }
             else
             {
                 controlDictionary[formName][parentName].Controls.Add(ctl);
+            }
+
+            // .net hack to avoid flickering listbox when losing focus
+            if (ctl is ListBox)
+            {
+                (ctl as ListBox).Leave += (sender, args) => { ctl.Update(); };
             }
 
             if (emitEvents)
@@ -241,11 +339,15 @@ namespace Exoskeleton.Classes
         /// <param name="payload"></param>
         protected void ApplyControlPayload<T>(string formName, Control control, dynamic payload) where T : Control
         {
+            if (payload is string) {
+                payload = JsonConvert.DeserializeObject<dynamic>(payload);
+            }
+
             JObject pdef = (JObject) payload;
 
             if (control.GetType() == typeof(DialogButton))
             {
-                if (pdef["DialogResult"] != null)
+                if (formName != nativeContainer && pdef["DialogResult"] != null)
                 {
                     DialogResult dr = 
                         (DialogResult) Enum.Parse(typeof(DialogResult), pdef["DialogResult"].ToString());
@@ -253,6 +355,52 @@ namespace Exoskeleton.Classes
                     ((Button)control).Click += (sender, args) => {
                         formDictionary[formName].DialogResult = dr;
                     };
+                }
+            }
+
+            // ListBox payload may contain array of objects to databind.
+            // This expects that 'DisplayMember' and 'ValueMember' properties are set.
+            if (control.GetType() == typeof(ListBox))
+            {
+                if (pdef["DataSource"] != null)
+                {
+                    ListBox lb = (ListBox)control;
+
+                    dynamic ds = pdef["DataSource"];
+
+                    if ((bool?) pdef["DataSourceKeepSelection"] == true)
+                    {
+                        string oldSelection = lb.Text;
+                        lb.DataSource = ds;
+                        lb.Text = oldSelection;
+                    }
+                    else
+                    {
+                        lb.DataSource = ds;
+                    }
+                }
+            }
+
+            // ListBox payload may contain array of objects to databind.
+            // This expects that 'DisplayMember' and 'ValueMember' properties are set.
+            if (control.GetType() == typeof(ComboBox))
+            {
+                if (pdef["DataSource"] != null)
+                {
+                    ComboBox cb = (ComboBox)control;
+
+                    dynamic ds = pdef["DataSource"];
+
+                    if ((bool?)pdef["DataSourceKeepSelection"] == true)
+                    {
+                        string oldSelection = cb.Text;
+                        cb.DataSource = ds;
+                        cb.Text = oldSelection;
+                    }
+                    else
+                    {
+                        cb.DataSource = ds;
+                    }
                 }
             }
 
@@ -328,6 +476,16 @@ namespace Exoskeleton.Classes
                 ApplyControlPayload<CheckedListBox>(formName, control, payloadDynamic);
             }
 
+            if (control.GetType() == typeof(ListBox))
+            {
+                ApplyControlPayload<ListBox>(formName, control, payloadDynamic);
+            }
+
+            if (control.GetType() == typeof(ComboBox))
+            {
+                ApplyControlPayload<ComboBox>(formName, control, payloadDynamic);
+            }
+
             // The only control type where this is currently needed for applying after definition.
             // More payload types may be needed in future so this api method leaves open this possibility.
             if (control.GetType() == typeof(DataGridView))
@@ -373,7 +531,8 @@ namespace Exoskeleton.Classes
                     clbValues.Remove("CheckedIndices");
                 }
 
-                var json = JsonConvert.SerializeObject(valuesDictionary[key]); 
+                var json = JsonConvert.SerializeObject(valuesDictionary[key]);
+
                 JsonConvert.PopulateObject(json, control);
             }
         }
@@ -523,8 +682,16 @@ namespace Exoskeleton.Classes
                 control.PerformLayout();
             }
 
-            formDictionary[formName].ResumeLayout(false);
-            formDictionary[formName].PerformLayout();
+            if (formName == nativeContainer)
+            {
+                host.GetForm().ResumeLayout(false);
+                host.GetForm().PerformLayout();
+            }
+            else
+            {
+                formDictionary[formName].ResumeLayout(false);
+                formDictionary[formName].PerformLayout();
+            }
         }
 
         /// <summary>
@@ -684,43 +851,18 @@ namespace Exoskeleton.Classes
         /// <param name="formName"></param>
         public void Close(string formName)
         {
-            if (formDictionary[formName] != null)
+            if (formName == nativeContainer)
+            {
+                throw new Exception("To close the host form, use exoskeleton.shutdown() instead");
+            }
+
+            if (containerDictionary[formName] != null)
             {
                 formDictionary[formName].Close();
             }
         }
 
-        #region Individual control "Add" methods for dialog/form composition
-
-        /// <summary>
-        /// Adds a Panel to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="panelJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddPanel(string formName, string panelJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<Panel>(formName, panelJson, parentName, emitEvents);
-        }
-
-        public void AddPictureBox(string formName, string picboxJson, string parentName=null, 
-            bool emitEvents=false, string payload = null)
-        {
-            AddControlInstance<PictureBox>(formName, picboxJson, parentName, emitEvents, payload);
-        }
-
-        /// <summary>
-        /// Adds a Label to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="labelJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddLabel(string formName, string labelJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<Label>(formName, labelJson, parentName, emitEvents);
-        }
+        #region (API Exposed) Individual control "Add" methods for dialog/form composition
 
         /// <summary>
         /// Adds a CheckBox to a named dialog or form.
@@ -729,147 +871,10 @@ namespace Exoskeleton.Classes
         /// <param name="checkboxJson"></param>
         /// <param name="parentName"></param>
         /// <param name="emitEvents"></param>
-        public void AddCheckBox(string formName, string checkboxJson, string parentName=null, bool emitEvents=false)
+        public void AddCheckBox(string formName, string checkboxJson, string parentName=null, 
+            bool emitEvents=false)
         {
             AddControlInstance<CheckBox>(formName, checkboxJson, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a RadioButton to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="radiobuttonJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddRadioButton(string formName, string radiobuttonJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<RadioButton>(formName, radiobuttonJson, parentName);
-        }
-
-        /// <summary>
-        /// Adds a TextBox to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="textboxJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddTextBox(string formName, string textboxJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<TextBox>(formName, textboxJson, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a MaskedTextBox to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="maskedtextboxJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddMaskedTextBox(string formName, string maskedtextboxJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<MaskedTextBox>(formName, maskedtextboxJson, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a ListBox to a named dialog or form.
-        /// </summary>
-        /// <param name="listboxJson"></param>
-        /// <param name="parentName"></param>
-        public void AddListBox(string formName, string listboxJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<ListBox>(formName, listboxJson, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a ComboBox to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="comboboxJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddComboBox(string formName, string comboboxJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<ComboBox>(formName, comboboxJson, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a NumericUpDown control to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="numericJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddNumericUpDown(string formName, string numericJson, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<NumericUpDown>(formName, numericJson, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a DateTimePicker control to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="dateTimePicker"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddDateTimePicker(string formName, string dateTimePicker, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<DateTimePicker>(formName, dateTimePicker, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a MonthCalendar control to a named dialog or form.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="monthcalendar"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        public void AddMonthCalendar(string formName, string monthcalendar, string parentName=null, bool emitEvents=false)
-        {
-            AddControlInstance<MonthCalendar>(formName, monthcalendar, parentName, emitEvents);
-        }
-
-        /// <summary>
-        /// Adds a Button to a named Dialog and wires up an event to dismiss dialog with a result.
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="buttonJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="payload"></param>
-        public void AddDialogButton(string formName, string buttonJson, string parentName=null, string payload=null)
-        {
-            if (payload == null)
-            {
-                DialogButton btn = AddControlInstance<DialogButton>(formName, buttonJson, parentName, false, null);
-            }
-            else
-            {
-                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
-
-                // DialogResult is not a js event, we will handle its DialogResult in apply payload phase
-                DialogButton btn = AddControlInstance<DialogButton>(formName, buttonJson, parentName, false, payloadDynamic);
-            }
-        }
-
-        /// <summary>
-        /// Add EventButton, which is just a Button. If emitEvents is true, payload should contain EventName
-        /// </summary>
-        /// <param name="formName"></param>
-        /// <param name="buttonJson"></param>
-        /// <param name="parentName"></param>
-        /// <param name="emitEvents"></param>
-        /// <param name="payload"></param>
-        public void AddEventButton(string formName, string buttonJson, string parentName = null, 
-            bool emitEvents = false, string payload = null)
-        {
-            if (payload == null)
-            {
-                Button btn = AddControlInstance<Button>(formName, buttonJson, parentName);
-            }
-            else
-            {
-                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
-                Button btn = AddControlInstance<Button>(formName, buttonJson, parentName, true, payloadDynamic);
-            }
         }
 
         /// <summary>
@@ -883,17 +888,20 @@ namespace Exoskeleton.Classes
         public void AddCheckedListBox(string formName, string checklistJson, string parentName = null, 
             bool emitEvents=false, string payload=null)
         {
-            if (payload == null)
-            {
-                CheckedListBox clb = AddControlInstance<CheckedListBox>(formName, checklistJson, parentName, emitEvents);
-            }
-            else
-            {
-                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
+            AddControlInstance<CheckedListBox>(formName, checklistJson, parentName, emitEvents, payload);
+        }
 
-                CheckedListBox clb = AddControlInstance<CheckedListBox>(formName, checklistJson, parentName, 
-                    emitEvents, payloadDynamic);
-            }
+        /// <summary>
+        /// Adds a ComboBox to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="comboboxJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddComboBox(string formName, string comboboxJson, string parentName=null, 
+            bool emitEvents=false, string payload = null)
+        {
+            AddControlInstance<ComboBox>(formName, comboboxJson, parentName, emitEvents, payload);
         }
 
         /// <summary>
@@ -907,15 +915,163 @@ namespace Exoskeleton.Classes
         public void AddDataGridView(string formName, string gridViewJson, string parentName=null, 
             bool emitEvents=false, string payload=null)
         {
-            if (payload == null)
-            {
-                AddControlInstance<DataGridView>(formName, gridViewJson, parentName, emitEvents);
-            }
-            else
-            {
-                dynamic payloadDynamic = JsonConvert.DeserializeObject<dynamic>(payload);
-                AddControlInstance<DataGridView>(formName, gridViewJson, parentName, emitEvents, payloadDynamic);
-            }
+            AddControlInstance<DataGridView>(formName, gridViewJson, parentName, emitEvents, payload);
+        }
+
+        /// <summary>
+        /// Adds a DateTimePicker control to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="dateTimePicker"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddDateTimePicker(string formName, string dateTimePicker, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<DateTimePicker>(formName, dateTimePicker, parentName, emitEvents);
+        }
+
+        /// <summary>
+        /// Adds a Button to a named Dialog and wires up an event to dismiss dialog with a result.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="buttonJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="payload"></param>
+        public void AddDialogButton(string formName, string buttonJson, string parentName=null, 
+            string payload=null)
+        {
+            AddControlInstance<DialogButton>(formName, buttonJson, parentName, false, payload);
+        }
+
+        /// <summary>
+        /// Add EventButton, which is just a Button. If emitEvents is true, payload should contain EventName
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="buttonJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        /// <param name="payload"></param>
+        public void AddEventButton(string formName, string buttonJson, string parentName = null, 
+            bool emitEvents = false, string payload = null)
+        {
+            AddControlInstance<Button>(formName, buttonJson, parentName, true, payload);
+        }
+
+        /// <summary>
+        /// Adds a Label to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="labelJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddLabel(string formName, string labelJson, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<Label>(formName, labelJson, parentName, emitEvents);
+        }
+
+        /// <summary>
+        /// Adds a ListBox to a named dialog or form.
+        /// </summary>
+        /// <param name="listboxJson"></param>
+        /// <param name="parentName"></param>
+        public void AddListBox(string formName, string listboxJson, string parentName=null, 
+            bool emitEvents=false, string payload = null)
+        {
+            AddControlInstance<ListBox>(formName, listboxJson, parentName, emitEvents, payload);
+        }
+
+        /// <summary>
+        /// Adds a MaskedTextBox to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="maskedtextboxJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddMaskedTextBox(string formName, string maskedtextboxJson, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<MaskedTextBox>(formName, maskedtextboxJson, parentName, emitEvents);
+        }
+
+        /// <summary>
+        /// Adds a MonthCalendar control to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="monthcalendar"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddMonthCalendar(string formName, string monthcalendar, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<MonthCalendar>(formName, monthcalendar, parentName, emitEvents);
+        }
+
+        /// <summary>
+        /// Adds a NumericUpDown control to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="numericJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddNumericUpDown(string formName, string numericJson, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<NumericUpDown>(formName, numericJson, parentName, emitEvents);
+        }
+
+        /// <summary>
+        /// Adds a Panel to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="panelJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddPanel(string formName, string panelJson, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<Panel>(formName, panelJson, parentName, emitEvents);
+        }
+
+        /// <summary>
+        /// Adds a PictureBox to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="picboxJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        /// <param name="payload"></param>
+        public void AddPictureBox(string formName, string picboxJson, string parentName=null, 
+            bool emitEvents=false, string payload = null)
+        {
+            AddControlInstance<PictureBox>(formName, picboxJson, parentName, emitEvents, payload);
+        }
+
+        /// <summary>
+        /// Adds a RadioButton to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="radiobuttonJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddRadioButton(string formName, string radiobuttonJson, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<RadioButton>(formName, radiobuttonJson, parentName);
+        }
+
+        /// <summary>
+        /// Adds a TextBox to a named dialog or form.
+        /// </summary>
+        /// <param name="formName"></param>
+        /// <param name="textboxJson"></param>
+        /// <param name="parentName"></param>
+        /// <param name="emitEvents"></param>
+        public void AddTextBox(string formName, string textboxJson, string parentName=null, 
+            bool emitEvents=false)
+        {
+            AddControlInstance<TextBox>(formName, textboxJson, parentName, emitEvents);
         }
 
         #endregion

@@ -18,14 +18,19 @@ namespace Exoskeleton
         void EnterFullscreen();
         void ExitFullscreen();
         Form GetForm();
+        Panel GetHostPanel();
+
         void SetWindowTitle(string title);
-        void OpenNewWindow(string caption, string url, int width, int height);
+        void OpenNewWindow(string caption, string url, int width, int height, string mode);
         void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon);
 
         void MulticastEvent(string name, string data);
         void PackageAndMulticast(string name, dynamic data);
         void PackageAndUnicast(string name, dynamic data);
         object InvokeScript(string name, params string[] args);
+
+        void SwitchToNativeUi();
+        void SwitchToWebUi();
 
         void ShowMenu();
         void HideMenu();

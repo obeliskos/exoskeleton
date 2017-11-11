@@ -866,6 +866,18 @@
                       </a></li>
                       
                       <li><a
+                        href='#mainswitchtonativeui'
+                        class='regular pre-open'>
+                        #switchToNativeUi
+                      </a></li>
+                      
+                      <li><a
+                        href='#mainswitchtowebui'
+                        class='regular pre-open'>
+                        #switchToWebUi
+                      </a></li>
+                      
+                      <li><a
                         href='#mainsetwindowtitle'
                         class='regular pre-open'>
                         #setWindowTitle
@@ -2578,7 +2590,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addComboBox(dialogName, comboBox, parentName?)</span>
+            <span class='code strong strong truncate'>addComboBox(dialogName, comboBox, parentName?, payload?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2587,10 +2599,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
   
 
   <p>Adds a ComboBox to a named exoskeleton dialog.
+If the combo box items will remain static, you can set items with 'Items' property.
+If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+properties and databind by separate applyControlPayload object with 'DataSource' object array.
+Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+currently selected item across the rebinding.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addComboBox(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addComboBox(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -2627,6 +2644,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
           <div>
             <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
 
           </div>
           
@@ -3064,7 +3090,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addListBox(dialogName, listbox, parentName?)</span>
+            <span class='code strong strong truncate'>addListBox(dialogName, listbox, parentName?, payload?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3073,10 +3099,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
   
 
   <p>Adds a ListBox to a named exoskeleton dialog.
+If the list box items will remain static, you can set items with 'Items' property.
+If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+properties and databind by separate applyControlPayload object with 'DataSource' object array.
+Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+currently selected item across the rebinding.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addListBox(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addListBox(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -3113,6 +3144,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
           <div>
             <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
 
           </div>
           
@@ -3529,7 +3569,7 @@ exoskeleton.dialog.addPanel(<span class="hljs-string">"ExampleDialog"</span>, {
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addPictureBox(formName, picbox, parentName?, emitEvents?, payload)</span>
+            <span class='code strong strong truncate'>addPictureBox(formName, picbox, parentName?, payload)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3538,10 +3578,10 @@ exoskeleton.dialog.addPanel(<span class="hljs-string">"ExampleDialog"</span>, {
   
 
   <p>Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
-See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx">ms docs</a></p>
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.picturebox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addPictureBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, picbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  <div class='pre p1 fill-light mt0'>addPictureBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, picbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
 
@@ -3578,15 +3618,6 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel
           <div>
             <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    optional name of parent control to nest within
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
-	    whether this control should emit 'Click' event
 
           </div>
           
@@ -8040,7 +8071,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addComboBox(formName, comboBox, parentName?, emitEvents?)</span>
+            <span class='code strong strong truncate'>addComboBox(formName, comboBox, parentName?, emitEvents?, payload?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8050,10 +8081,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.check
 
   <p>Adds a ComboBox to a named exoskeleton form.
 Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
+If the combo box items will remain static, you can set items with 'Items' property.
+If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+properties and databind by separate applyControlPayload object with 'DataSource' object array.
+Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+currently selected item across the rebinding.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combobox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addComboBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addComboBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, comboBox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -8099,6 +8135,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.combo
           <div>
             <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
 	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
 
           </div>
           
@@ -8567,7 +8612,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addListBox(formName, listbox, parentName?, emitEvents?)</span>
+            <span class='code strong strong truncate'>addListBox(formName, listbox, parentName?, emitEvents?, payload?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8577,10 +8622,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.label
 
   <p>Adds a ListBox to a named exoskeleton form.
 Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
+If the list box items will remain static, you can set items with 'Items' property.
+If the items are to be dynamic, you should set 'DisplayMember' and 'ValueMember'
+properties and databind by separate applyControlPayload object with 'DataSource' object array.
+Passing an additional 'DataSourceKeepSelection' payload property will attempt to retain the
+currently selected item across the rebinding.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listbox(v=vs.110).aspx">ms docs</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>addListBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
+  <div class='pre p1 fill-light mt0'>addListBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -8626,6 +8676,15 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
           <div>
             <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
 	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    can be used to pass 'DataSource' and 'DataSourceKeepSelection' properties
 
           </div>
           
@@ -9091,7 +9150,7 @@ exoskeleton.form.addPanel(<span class="hljs-string">"SampleForm"</span>, {
   
 
   <p>Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
-See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx">ms docs</a></p>
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.picturebox(v=vs.110).aspx">ms docs</a></p>
 
 
   <div class='pre p1 fill-light mt0'>addPictureBox(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, picbox: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
@@ -10924,7 +10983,7 @@ See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>openNewWindow(caption, url, width, height)</span>
+            <span class='code strong strong truncate'>openNewWindow(caption, url, width?, height?, mode?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -10935,7 +10994,7 @@ See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form
   <p>Opens a new host container with the url and settings provided.</p>
 
 
-  <div class='pre p1 fill-light mt0'>openNewWindow(caption: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, width: int, height: int)</div>
+  <div class='pre p1 fill-light mt0'>openNewWindow(caption: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, width: int?, height: int?, mode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -10970,7 +11029,7 @@ See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>width</span> <code class='quiet'>(int)</code>
+            <span class='code bold'>width</span> <code class='quiet'>(int?)</code>
 	    Width (in pixels) to size new window to.
 
           </div>
@@ -10979,8 +11038,17 @@ See: <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.form
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>height</span> <code class='quiet'>(int)</code>
+            <span class='code bold'>height</span> <code class='quiet'>(int?)</code>
 	    Height (in pixels) to size new window to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mode</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    Optionally override default UI mode to 'native' or 'web'
 
           </div>
           
@@ -11006,6 +11074,120 @@ exoskeleton.main.openNewWindow(<span class="hljs-string">"My App Settings"</span
 <span class="hljs-comment">// You might also pass raw html, prefixed with '@' symbol.</span>
 <span class="hljs-keyword">var</span> html = <span class="hljs-string">"@&lt;html&gt;&lt;body&gt;&lt;h3&gt;Hello World&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;"</span>;
 exoskeleton.main.openNewWindow(<span class="hljs-string">"My dynamic page"</span>, html, <span class="hljs-number">400</span>, <span class="hljs-number">400</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='mainswitchtonativeui'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>switchToNativeUi()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>(Advanced) method to dynamically switch into native ui mode.
+By default exoskeleton uses web ui mode within its hosted webbrowser.
+That can be overridden in settings to Native UI mode as 'default' for
+all opened windows.  That can be overridden in calls to openNewWindow.
+Finally, even after host form is loaded, this method along with
+switchToWebUi() can be used to toggle back and forth dynamically.</p>
+
+
+  <div class='pre p1 fill-light mt0'>switchToNativeUi()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.switchToNativeUi();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='mainswitchtowebui'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>switchToWebUi()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>(Advanced) method to dynamically switch into web ui mode.
+By default exoskeleton uses web ui mode within its hosted webbrowser.
+That can be overridden in settings to Native UI mode as 'default' for
+all opened windows.  That can be overridden in calls to openNewWindow.
+Finally, even after host form is loaded, this method along with
+switchToNativeUi() can be used to toggle back and forth dynamically.</p>
+
+
+  <div class='pre p1 fill-light mt0'>switchToWebUi()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.main.switchToWebUi();</pre>
     
   
 

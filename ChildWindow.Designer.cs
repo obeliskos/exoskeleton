@@ -33,8 +33,10 @@
             this.toolStripLeftLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripRightLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.HostToolStrip = new System.Windows.Forms.ToolStrip();
-            this.ChildWebBrowser = new System.Windows.Forms.WebBrowser();
+            this.HostPanel = new System.Windows.Forms.Panel();
+            this.HostWebBrowser = new System.Windows.Forms.WebBrowser();
             this.HostStatusStrip.SuspendLayout();
+            this.HostPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // HostMenuStrip
@@ -80,25 +82,34 @@
             this.HostToolStrip.Text = "toolStrip1";
             this.HostToolStrip.Visible = false;
             // 
-            // ChildWebBrowser
+            // HostPanel
             // 
-            this.ChildWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ChildWebBrowser.Location = new System.Drawing.Point(0, 25);
-            this.ChildWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.ChildWebBrowser.Name = "ChildWebBrowser";
-            this.ChildWebBrowser.ScriptErrorsSuppressed = true;
-            this.ChildWebBrowser.Size = new System.Drawing.Size(704, 416);
-            this.ChildWebBrowser.TabIndex = 5;
-            this.ChildWebBrowser.WebBrowserShortcutsEnabled = false;
-            this.ChildWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.ChildWebBrowser_DocumentCompleted);
-            this.ChildWebBrowser.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ChildWebBrowser_PreviewKeyDown);
+            this.HostPanel.Controls.Add(this.HostWebBrowser);
+            this.HostPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HostPanel.Location = new System.Drawing.Point(0, 0);
+            this.HostPanel.Name = "HostPanel";
+            this.HostPanel.Size = new System.Drawing.Size(704, 441);
+            this.HostPanel.TabIndex = 6;
+            // 
+            // HostWebBrowser
+            // 
+            this.HostWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HostWebBrowser.Location = new System.Drawing.Point(0, 0);
+            this.HostWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.HostWebBrowser.Name = "HostWebBrowser";
+            this.HostWebBrowser.ScriptErrorsSuppressed = true;
+            this.HostWebBrowser.Size = new System.Drawing.Size(704, 441);
+            this.HostWebBrowser.TabIndex = 6;
+            this.HostWebBrowser.WebBrowserShortcutsEnabled = false;
+            this.HostWebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.ChildWebBrowser_DocumentCompleted);
+            this.HostWebBrowser.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ChildWebBrowser_PreviewKeyDown);
             // 
             // ChildWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(704, 441);
-            this.Controls.Add(this.ChildWebBrowser);
+            this.Controls.Add(this.HostPanel);
             this.Controls.Add(this.HostToolStrip);
             this.Controls.Add(this.HostStatusStrip);
             this.Controls.Add(this.HostMenuStrip);
@@ -110,6 +121,7 @@
             this.Load += new System.EventHandler(this.ChildWindow_Load);
             this.HostStatusStrip.ResumeLayout(false);
             this.HostStatusStrip.PerformLayout();
+            this.HostPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,6 +134,7 @@
         private System.Windows.Forms.ToolStrip HostToolStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripLeftLabel;
         private System.Windows.Forms.ToolStripStatusLabel toolStripRightLabel;
-        private System.Windows.Forms.WebBrowser ChildWebBrowser;
+        private System.Windows.Forms.Panel HostPanel;
+        private System.Windows.Forms.WebBrowser HostWebBrowser;
     }
 }

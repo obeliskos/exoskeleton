@@ -80,9 +80,19 @@ namespace Exoskeleton.Classes.API
         /// <param name="url">Url to load within the new window.</param>
         /// <param name="width">Width (in pixels) to size new window to.</param>
         /// <param name="height">Height (in pixels) to size new window to.</param>
-        public void OpenNewWindow(string caption, string url, int width, int height)
+        public void OpenNewWindow(string caption, string url, int width, int height, string mode)
         {
-            host.OpenNewWindow(caption, url, width, height);
+            host.OpenNewWindow(caption, url, width, height, mode);
+        }
+
+        public void SwitchToNativeUi()
+        {
+            host.SwitchToNativeUi();
+        }
+
+        public void SwitchToWebUi()
+        {
+            host.SwitchToWebUi();
         }
 
         // Allows updating properties of the host window Form object

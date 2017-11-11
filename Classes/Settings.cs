@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace Exoskeleton.Classes
@@ -38,6 +39,12 @@ namespace Exoskeleton.Classes
         public bool WebServerSelfHost { get; set; } = false;
         public int WebServerListenPort { get; set; } = 8080;
         public string WebServerHostDirectory { get; set; } = "";
+
+        /// <summary>
+        /// If user sets this to true, we will hide the webbrowser and they
+        /// will have to layout native controls on host panel for ui.
+        /// </summary>
+        public bool NativeUiOnly { get; set; } = false;
 
         public bool WebBrowserRefreshOnFirstLoad { get; set; } = true;
         public bool WebBrowserContextMenu { get; set; } = true;
@@ -85,8 +92,18 @@ namespace Exoskeleton.Classes
             {
                 XmlSerializer s = new XmlSerializer(typeof(Settings));
                 TextReader r = new StreamReader(filename);
-                settings = (Settings)s.Deserialize(r);
-                r.Close();
+                try
+                {
+                    settings = (Settings)s.Deserialize(r);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error Loading settings", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    r.Close();
+                }
             }
             else
             {

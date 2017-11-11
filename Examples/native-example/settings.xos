@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StartupCommands />
+  <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
+  <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
+  <CurrentDirectoryProvidedPath />
+  
+  <WindowTitle>My Exoskeleton App</WindowTitle>
+  <WindowWidth>820</WindowWidth>
+  <WindowHeight>512</WindowHeight>
+  <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
+  <WindowAllowResize>true</WindowAllowResize>
+  <WindowIconPath />
+  <WebServerSelfHost>false</WebServerSelfHost>
+  <WebServerListenPort>8080</WebServerListenPort>
+  <WebServerHostDirectory />
+  
+  <NativeUiOnly>true</NativeUiOnly>
+  
+  <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
+  <WebBrowserContextMenu>true</WebBrowserContextMenu>
+  <WebBrowserDefaultUrl>{SettingsLocation}\index.htm</WebBrowserDefaultUrl>
+  <WebBrowserBaseUrl>{SettingsLocation}></WebBrowserBaseUrl>
+  <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
+  <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
+  <WebBrowserScriptErrorsSuppressed>true</WebBrowserScriptErrorsSuppressed>
+  <WebBrowserShortcutsEnabled>false</WebBrowserShortcutsEnabled>
+  
+  <ScriptingEnabled>true</ScriptingEnabled>
+  <ScriptingMediaEnabled>true</ScriptingMediaEnabled>
+  <ScriptingFilesEnabled>true</ScriptingFilesEnabled>
+  <ScriptingProcessEnabled>true</ScriptingProcessEnabled>
+  <ScriptingSystemEnabled>true</ScriptingSystemEnabled>
+  <ScriptingLoggerEnabled>true</ScriptingLoggerEnabled>
+  <ScriptingComObjectsEnabled>false</ScriptingComObjectsEnabled>
+  <ScriptingNetEnabled>false</ScriptingNetEnabled>
+  <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
+  <ScriptingMenuEnabled>true</ScriptingMenuEnabled>
+  <ScriptingToolStripEnabled>true</ScriptingToolStripEnabled>
+  <ScriptingStatusStripEnabled>true</ScriptingStatusStripEnabled>
+  <ScriptingDialogEnabled>true</ScriptingDialogEnabled>
+  <ScriptingFormEnabled>true</ScriptingFormEnabled>
+</Settings>

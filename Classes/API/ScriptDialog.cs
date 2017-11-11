@@ -174,7 +174,7 @@ namespace Exoskeleton.Classes.API
             l.Left = 10;
             l.Top = 20;
 
-            formDictionary["PromptCheckedList"].Controls.Add(l);
+            containerDictionary["PromptCheckedList"].Add(l);
 
             string[] vals = JsonConvert.DeserializeObject<string[]>(values);
 
@@ -194,7 +194,7 @@ namespace Exoskeleton.Classes.API
                 }
             }
 
-            formDictionary["PromptCheckedList"].Controls.Add(clb);
+            containerDictionary["PromptCheckedList"].Add(clb);
 
             Button ok = new Button();
             ok.Text = "OK";
@@ -204,7 +204,7 @@ namespace Exoskeleton.Classes.API
             ok.Height = 30;
             ok.Click += (sender, args) => { formDictionary["PromptCheckedList"].DialogResult = DialogResult.OK; };
 
-            formDictionary["PromptCheckedList"].Controls.Add(ok);
+            containerDictionary["PromptCheckedList"].Add(ok);
 
             Button cancel = new Button();
             cancel.Text = "Cancel";
@@ -214,7 +214,7 @@ namespace Exoskeleton.Classes.API
             cancel.Height = 30;
             cancel.Click += (sender, args) => { formDictionary["PromptCheckedList"].DialogResult = DialogResult.Cancel; };
 
-            formDictionary["PromptCheckedList"].Controls.Add(cancel);
+            containerDictionary["PromptCheckedList"].Add(cancel);
 
             DialogResult dr = formDictionary["PromptCheckedList"].ShowDialog();
 
@@ -249,19 +249,19 @@ namespace Exoskeleton.Classes.API
             dgv.AllowUserToAddRows = false;
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            formDictionary["PredefinedDataGridView"].Controls.Add(dgv);
+            containerDictionary["PredefinedDataGridView"].Add(dgv);
 
             Label l = new Label();
             l.Dock = DockStyle.Top;
             l.Padding = new Padding(10);
             l.Height = 40;
             l.Text = caption;
-            formDictionary["PredefinedDataGridView"].Controls.Add(l);
+            containerDictionary["PredefinedDataGridView"].Add(l);
 
             Panel pb = new Panel();
             pb.Dock = DockStyle.Bottom;
             pb.Height = 48;
-            formDictionary["PredefinedDataGridView"].Controls.Add(pb);
+            containerDictionary["PredefinedDataGridView"].Add(pb);
 
             Button ok = new Button();
             //ok.Dock = DockStyle.Bottom;
@@ -315,7 +315,7 @@ namespace Exoskeleton.Classes.API
             l.Left = 10;
             l.Top = 20;
 
-            formDictionary["PredefinedDatePicker"].Controls.Add(l);
+            containerDictionary["PredefinedDatePicker"].Add(l);
 
             DateTimePicker dtp = new DateTimePicker();
             dtp.Width = 300;
@@ -326,7 +326,7 @@ namespace Exoskeleton.Classes.API
                 dtp.Value = DateTime.Parse(defaultValue);
             }
 
-            formDictionary["PredefinedDatePicker"].Controls.Add(dtp);
+            containerDictionary["PredefinedDatePicker"].Add(dtp);
 
             Button ok = new Button();
             ok.Text = "OK";
@@ -336,7 +336,7 @@ namespace Exoskeleton.Classes.API
             ok.Height = 30;
             ok.Click += (sender, args) => { formDictionary["PredefinedDatePicker"].DialogResult = DialogResult.OK; };
 
-            formDictionary["PredefinedDatePicker"].Controls.Add(ok);
+            containerDictionary["PredefinedDatePicker"].Add(ok);
 
             Button cancel = new Button();
             cancel.Text = "Cancel";
@@ -346,7 +346,7 @@ namespace Exoskeleton.Classes.API
             cancel.Height = 30;
             cancel.Click += (sender, args) => { formDictionary["PredefinedDatePicker"].DialogResult = DialogResult.Cancel; };
 
-            formDictionary["PredefinedDatePicker"].Controls.Add(cancel);
+            containerDictionary["PredefinedDatePicker"].Add(cancel);
 
             DialogResult dr = formDictionary["PredefinedDatePicker"].ShowDialog();
 
@@ -383,7 +383,7 @@ namespace Exoskeleton.Classes.API
             l.Left = 10;
             l.Top = 20;
 
-            formDictionary["PredefinedPrompt"].Controls.Add(l);
+            containerDictionary["PredefinedPrompt"].Add(l);
 
             TextBox tb = new TextBox();
             tb.Text = defaultText;
@@ -391,7 +391,7 @@ namespace Exoskeleton.Classes.API
             tb.Left = 15;
             tb.Top = 48;
 
-            formDictionary["PredefinedPrompt"].Controls.Add(tb);
+            containerDictionary["PredefinedPrompt"].Add(tb);
 
             Button ok = new Button();
             ok.Text = "OK";
@@ -401,7 +401,7 @@ namespace Exoskeleton.Classes.API
             ok.Height = 30;
             ok.Click += (sender, args) => { formDictionary["PredefinedPrompt"].DialogResult = DialogResult.OK; };
 
-            formDictionary["PredefinedPrompt"].Controls.Add(ok);
+            containerDictionary["PredefinedPrompt"].Add(ok);
 
             Button cancel = new Button();
             cancel.Text = "Cancel";
@@ -411,7 +411,7 @@ namespace Exoskeleton.Classes.API
             cancel.Height = 30;
             cancel.Click += (sender, args) => { formDictionary["PredefinedPrompt"].DialogResult = DialogResult.Cancel; };
 
-            formDictionary["PredefinedPrompt"].Controls.Add(cancel);
+            containerDictionary["PredefinedPrompt"].Add(cancel);
 
             DialogResult dr = formDictionary["PredefinedPrompt"].ShowDialog();
 
@@ -437,7 +437,7 @@ namespace Exoskeleton.Classes.API
             l.Left = 10;
             l.Top = 20;
 
-            formDictionary["PredefinedList"].Controls.Add(l);
+            containerDictionary["PredefinedList"].Add(l);
 
             string[] vals = JsonConvert.DeserializeObject<string[]>(values);
 
@@ -456,7 +456,7 @@ namespace Exoskeleton.Classes.API
                 lb.SelectionMode = SelectionMode.MultiSimple;
             }
 
-            formDictionary["PredefinedList"].Controls.Add(lb);
+            containerDictionary["PredefinedList"].Add(lb);
 
             Button ok = new Button();
             ok.Text = "OK";
@@ -466,7 +466,7 @@ namespace Exoskeleton.Classes.API
             ok.Height = 30;
             ok.Click += (sender, args) => { formDictionary["PredefinedList"].DialogResult = DialogResult.OK; };
 
-            formDictionary["PredefinedList"].Controls.Add(ok);
+            containerDictionary["PredefinedList"].Add(ok);
 
             Button cancel = new Button();
             cancel.Text = "Cancel";
@@ -476,7 +476,7 @@ namespace Exoskeleton.Classes.API
             cancel.Height = 30;
             cancel.Click += (sender, args) => { formDictionary["PredefinedList"].DialogResult = DialogResult.Cancel; };
 
-            formDictionary["PredefinedList"].Controls.Add(cancel);
+            containerDictionary["PredefinedList"].Add(cancel);
 
             DialogResult dr = formDictionary["PredefinedList"].ShowDialog();
 
@@ -499,7 +499,7 @@ namespace Exoskeleton.Classes.API
             l.Left = 10;
             l.Top = 20;
 
-            formDictionary["PredefinedPropertyGrid"].Controls.Add(l);
+            containerDictionary["PredefinedPropertyGrid"].Add(l);
 
             ListBox lb = new ListBox();
 
@@ -521,7 +521,7 @@ namespace Exoskeleton.Classes.API
             pg.Top = 48;
             pg.SelectedObject = obj;
  
-            formDictionary["PredefinedPropertyGrid"].Controls.Add(pg);
+            containerDictionary["PredefinedPropertyGrid"].Add(pg);
 
             Button ok = new Button();
             ok.Text = "OK";
@@ -531,7 +531,7 @@ namespace Exoskeleton.Classes.API
             ok.Height = 30;
             ok.Click += (sender, args) => { formDictionary["PredefinedPropertyGrid"].DialogResult = DialogResult.OK; };
 
-            formDictionary["PredefinedPropertyGrid"].Controls.Add(ok);
+            containerDictionary["PredefinedPropertyGrid"].Add(ok);
 
             formDictionary["PredefinedPropertyGrid"].ResumeLayout(false);
             formDictionary["PredefinedPropertyGrid"].PerformLayout();
@@ -558,18 +558,7 @@ namespace Exoskeleton.Classes.API
         /// <param name="height"></param>
         public void Initialize(string formName, string formJson)
         {
-            formDictionary[formName] = new Form();
-
-            JsonConvert.PopulateObject(formJson, formDictionary[formName]);
-
-            formDictionary[formName].FormBorderStyle = FormBorderStyle.FixedDialog;
-            formDictionary[formName].ControlBox = false;
-            formDictionary[formName].MinimizeBox = false;
-            formDictionary[formName].MaximizeBox = false;
-            formDictionary[formName].StartPosition = FormStartPosition.CenterParent;
-            formDictionary[formName].SuspendLayout();
-
-            controlDictionary[formName] = new Dictionary<string, Control>();
+            InitializeDialog(formName, formJson);
         }
 
         /// <summary>
@@ -580,20 +569,12 @@ namespace Exoskeleton.Classes.API
         /// <param name="height"></param>
         private void Initialize(string formName, string title, int width, int height)
         {
-            formDictionary[formName] = new Form();
+            InitializeDialog(formName, null);
+
             formDictionary[formName].Text = title;
             formDictionary[formName].Width = width;
             formDictionary[formName].Height = height;
             formDictionary[formName].Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-
-            formDictionary[formName].FormBorderStyle = FormBorderStyle.FixedDialog;
-            formDictionary[formName].ControlBox = false;
-            formDictionary[formName].MinimizeBox = false;
-            formDictionary[formName].MaximizeBox = false;
-            formDictionary[formName].StartPosition = FormStartPosition.CenterParent;
-            formDictionary[formName].SuspendLayout();
-
-            controlDictionary[formName] = new Dictionary<string, Control>();
         }
 
         /// <summary>
@@ -603,12 +584,12 @@ namespace Exoskeleton.Classes.API
         /// <param name="formJson">Json object containing properties to apply to dialog Form.</param>
         public void ApplyDialogProperties(string dialogName, string formJson)
         {
-            if (formDictionary[dialogName] == null)
+            if (containerDictionary[dialogName] == null)
             {
                 throw new Exception("A form by the name of " + formJson + " was not found.");
             }
 
-            JsonConvert.PopulateObject(formJson, formDictionary[dialogName]);
+            JsonConvert.PopulateObject(formJson, containerDictionary[dialogName]);
         }
 
         /// <summary>
@@ -618,6 +599,11 @@ namespace Exoskeleton.Classes.API
         public string ShowDialog(string formName)
         {
             FinalizeLayout(formName);
+
+            if (formName == nativeContainer)
+            {
+                throw new Exception("It is not allowed to show the host form as dialog");
+            }
 
             DialogResult dr = formDictionary[formName].ShowDialog(host.GetForm());
 

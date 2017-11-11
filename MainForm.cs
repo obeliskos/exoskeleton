@@ -215,6 +215,11 @@ namespace Exoskeleton
 
             InitializeComponent();
 
+            if (settings.NativeUiOnly)
+            {
+                SwitchToNativeUi();
+            }
+
             HostMenuStrip.Visible = settings.ScriptingMenuEnabled;
             HostToolStrip.Visible = settings.ScriptingToolStripEnabled;
             HostStatusStrip.Visible = settings.ScriptingStatusStripEnabled;
@@ -282,7 +287,7 @@ namespace Exoskeleton
                         startingUri = new Uri(fi.FullName);
                     }
                 }
-                catch(Exception ex)
+                catch
                 {
                     FileInfo fi = new FileInfo(url);
                     startingUri = new Uri(fi.FullName);
@@ -308,6 +313,27 @@ namespace Exoskeleton
             HostWebBrowser.IsWebBrowserContextMenuEnabled = settings.WebBrowserContextMenu;
 
             HostWebBrowser.Focus();
+        }
+
+        public void SwitchToNativeUi()
+        {
+            WebBrowser wb = HostWebBrowser;
+            HostWebBrowser.Visible = false;
+            HostWebBrowser.Dock = DockStyle.None;
+            HostWebBrowser.Height = 1;
+            HostWebBrowser.Width = 1;
+            HostPanel.Controls.Remove(HostWebBrowser);
+            this.Controls.Add(wb);
+        }
+
+        public void SwitchToWebUi()
+        {
+            WebBrowser wb = HostWebBrowser;
+            this.Controls.Remove(HostWebBrowser);
+            HostPanel.Controls.Clear();
+            HostPanel.Controls.Add(wb);
+            HostWebBrowser.Dock = DockStyle.Fill;
+            HostWebBrowser.Visible = true;
         }
 
         private string wrapEventData(string data)
@@ -425,13 +451,13 @@ namespace Exoskeleton
             this.Text = title;
         }
 
-        public void OpenNewWindow(string caption, string url, int width, int height)
+        public void OpenNewWindow(string caption, string url, int width, int height, string mode = "")
         {
             if (!url.StartsWith("@") && url.Contains("{port}"))
             {
                 url = settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url;
             }
-            ChildWindow childWindow = new ChildWindow(this, caption, url, settings, width, height);
+            ChildWindow childWindow = new ChildWindow(this, caption, url, settings, width, height, mode);
             hostWindows.Add(childWindow);
             childWindow.Show();
         }
@@ -754,6 +780,15 @@ namespace Exoskeleton
         }
 
         #endregion
+
+        /// <summary>
+        /// Used by FormLayoutBase (Form API) for NativeUiOnly apps.
+        /// </summary>
+        /// <returns></returns>
+        public Panel GetHostPanel()
+        {
+            return this.HostPanel;
+        }
 
         /// <summary>
         /// Returns the 'active' settings class instance.

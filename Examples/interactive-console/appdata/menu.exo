@@ -63,7 +63,7 @@ exoskeleton.events.on("AboutEvent", function () {
       "exoskeleton.js scripts and creating your own new scripts.  You might then include them in a real " +
       "exoskeleton application, separate from this interactive console app.";
 
-  exoskeleton.main.showMessageBox(msg, "About Exoskeleton Interactive Console", "OK", "Information");
+  exoskeleton.dialog.showMessageBox(msg, "About Exoskeleton Interactive Console", "OK", "Information");
 });
 
 exoskeleton.events.on("SetThemeEvent", function (menuText) {

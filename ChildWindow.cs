@@ -27,7 +27,7 @@ namespace Exoskeleton
         #region Form Level Constructor and Events
 
         public ChildWindow(IPrimaryHostWindow parent, string caption, string uri, Settings settings,
-            int? width, int? height): base()
+            int? width, int? height, string mode): base()
         {
             
             this.parent = parent;
@@ -48,6 +48,22 @@ namespace Exoskeleton
 
             InitializeComponent();
 
+            // The default mode that the form is compiled with is web ui mode.
+            // This can be overriden in settings to native ui
+            // You can override either at run time with 'mode' param
+            // API should pass either 'native' or 'web'
+            if (!String.IsNullOrEmpty(mode))
+            {
+                if (mode == "native")
+                {
+                    SwitchToNativeUi();
+                }
+            }
+            else if (settings.NativeUiOnly)
+            {
+                SwitchToNativeUi();
+            }
+
             if (settings.WindowIconPath != "" && File.Exists(settings.WindowIconPath))
             {
                 this.Icon = new Icon(settings.WindowIconPath);
@@ -62,25 +78,25 @@ namespace Exoskeleton
             if (width.HasValue) this.Width = width.Value;
             if (height.HasValue) this.Height = height.Value;
 
-            ChildWebBrowser.ScriptErrorsSuppressed = settings.WebBrowserScriptErrorsSuppressed;
-            ChildWebBrowser.WebBrowserShortcutsEnabled = settings.WebBrowserShortcutsEnabled;
+            HostWebBrowser.ScriptErrorsSuppressed = settings.WebBrowserScriptErrorsSuppressed;
+            HostWebBrowser.WebBrowserShortcutsEnabled = settings.WebBrowserShortcutsEnabled;
 
-            ChildWebBrowser.ObjectForScripting = scriptInterface;
-            ChildWebBrowser.IsWebBrowserContextMenuEnabled = settings.WebBrowserContextMenu;
+            HostWebBrowser.ObjectForScripting = scriptInterface;
+            HostWebBrowser.IsWebBrowserContextMenuEnabled = settings.WebBrowserContextMenu;
         }
 
         private void ChildWindow_Load(object sender, EventArgs e)
         {
             if (uri.StartsWith("@"))
             {
-                ChildWebBrowser.DocumentText = uri.Substring(1);
+                HostWebBrowser.DocumentText = uri.Substring(1);
             }
             else
             {
                 string baseUrl = parent.ResolveWebBrowserUrl(settings.WebBrowserBaseUrl);
 
                 Uri baseUri = new Uri(baseUrl);
-                ChildWebBrowser.Url = new Uri(baseUri, uri);
+                HostWebBrowser.Url = new Uri(baseUri, uri);
             }
         }
 
@@ -127,18 +143,6 @@ namespace Exoskeleton
             this.InvokeScript("exoskeletonEmitEvent", wrappedJson);
         }
 
-        //public void UnicastEvent(string name, string data)
-        //{
-        //    List<string> args = new List<string>();
-        //    args.Add(name);
-        //    if (data != null)
-        //    {
-        //        args.Add(data);
-        //    }
-
-        //    InvokeScript("exoskeletonEmitEvent", args.ToArray());
-        //}
-
         #endregion
 
         #region Form Level ScriptingHandlers
@@ -146,6 +150,15 @@ namespace Exoskeleton
         public Form GetForm()
         {
             return this;
+        }
+
+        /// <summary>
+        /// Used by FormLayoutBase (Form API) for NativeUiOnly apps.
+        /// </summary>
+        /// <returns></returns>
+        public Panel GetHostPanel()
+        {
+            return this.HostPanel;
         }
 
         public void SetWindowTitle(string title)
@@ -177,7 +190,7 @@ namespace Exoskeleton
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
 
-            ChildWebBrowser.Focus();
+            HostWebBrowser.Focus();
         }
 
         public void ExitFullscreen()
@@ -185,12 +198,12 @@ namespace Exoskeleton
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.WindowState = FormWindowState.Normal;
 
-            ChildWebBrowser.Focus();
+            HostWebBrowser.Focus();
         }
 
-        public void OpenNewWindow(string caption, string url, int width, int height)
+        public void OpenNewWindow(string caption, string url, int width, int height, string mode = "")
         {
-            parent.OpenNewWindow(caption, url, width, height);
+            parent.OpenNewWindow(caption, url, width, height, mode);
         }
 
         #endregion
@@ -225,21 +238,42 @@ namespace Exoskeleton
 
         private void ChildWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (ChildWebBrowser.Url.AbsolutePath == "blank")
+            if (HostWebBrowser.Url.AbsolutePath == "blank")
             {
                 return;
             }
 
             if (settings.WebBrowserRefreshOnFirstLoad && 
-                CheckForStaleCache(ChildWebBrowser.Url.ToString()))
+                CheckForStaleCache(HostWebBrowser.Url.ToString()))
             {
-                ChildWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
+                HostWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
             }
         }
 
         public object InvokeScript(string name, params string[] args)
         {
-            return ChildWebBrowser.Document.InvokeScript(name, args);
+            return HostWebBrowser.Document.InvokeScript(name, args);
+        }
+
+        public void SwitchToNativeUi()
+        {
+            WebBrowser wb = HostWebBrowser;
+            HostWebBrowser.Visible = false;
+            HostWebBrowser.Dock = DockStyle.None;
+            HostWebBrowser.Height = 1;
+            HostWebBrowser.Width = 1;
+            HostPanel.Controls.Remove(HostWebBrowser);
+            this.Controls.Add(wb);
+        }
+
+        public void SwitchToWebUi()
+        {
+            WebBrowser wb = HostWebBrowser;
+            this.Controls.Remove(HostWebBrowser);
+            HostPanel.Controls.Clear();
+            HostPanel.Controls.Add(wb);
+            HostWebBrowser.Dock = DockStyle.Fill;
+            HostWebBrowser.Visible = true;
         }
 
         #endregion

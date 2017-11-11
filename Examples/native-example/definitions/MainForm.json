@@ -1,0 +1,224 @@
+{
+  "MiddlePanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Fill",
+      "BackColor": "192,192,192",
+      "Height": 20,
+      "Width": 20,
+      "Top": 100,
+      "Left": 10,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "TopPanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Top",
+      "BackColor": "128, 168, 128",
+      "Height": 55,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "BottomPanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Bottom",
+      "Height": 60,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "MiddleLeftPanel": {
+    "Type": "Panel",
+    "Parent": "MiddlePanel",
+    "Properties": {
+      "Dock": "Fill"
+    }
+  },
+  "MiddleRightPanel": {
+    "Type": "Panel",
+    "Parent": "MiddlePanel",
+    "Properties": {
+      "Dock": "Right",
+      "Width": 500
+    }
+  },
+  "ContactList": {
+    "Type": "ListBox",
+    "Parent": "MiddleLeftPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Dock": "Fill",
+      "DisplayMember": "Name",
+      "ValueMember": "Id"
+    }
+  },
+  "ContactListLabel": {
+    "Type": "Label",
+    "Parent": "MiddleLeftPanel",
+    "Properties": {
+      "Text": "Contacts :",
+      "Dock": "Top"
+    }
+  },
+  "CaptionLabel": {
+    "Type": "Label",
+    "Parent": "TopPanel",
+    "Properties": {
+      "Text": "Native Application Example - Contacts Database",
+      "Font": "Segoe UI, 18pt, style=Bold",
+      "Top": 12,
+      "Left": 7,
+      "AutoSize": true
+    }
+  },
+  "IdLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Id :",
+      "Location": "10, 25",
+      "AutoSize": true
+    }
+  },
+  "IdTextBox": {
+    "Type": "TextBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "",
+      "Enabled": false,
+      "Location": "180, 25",
+      "Size": "180, 30"
+    }
+  },
+  "NameLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Name :",
+      "Location": "7, 75",
+      "AutoSize":true
+    }
+  },
+  "NameTextBox": {
+    "Type": "TextBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Some User",
+      "Location": "180, 75",
+      "Height": 30,
+      "Width": 280,
+      "TabIndex": 0
+    }
+  },
+  "ContactTypeLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "ContactType:",
+      "AutoSize": true,
+      "Location": "7, 125"
+    }
+  },
+  "ContactTypeCombo": {
+    "Type": "ComboBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Location" : "180, 125",
+      "Width": 280,
+      "DropDownStyle": "DropDownList",
+      "DisplayMember": "Name",
+      "ValueMember": "Id"
+    }
+  },
+  "PhoneNoLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Location": "7, 175",
+      "Text": "Phone Number:",
+      "AutoSize": true
+    }
+  },
+  "PhoneNoText": {
+    "Type": "TextBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Location": "180, 175",
+      "Width": 180
+    }
+  },
+  "EmailLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Email :",
+      "Location": "7, 225",
+      "AutoSize": true
+    }
+  },
+  "EmailText": {
+    "Type": "TextBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Location": "180, 225",
+      "Width": 280
+    }
+  },
+  "NotesLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Notes :",
+      "Location": "7, 275",
+      "AutoSize": true
+    }
+  },
+  "NotesText": {
+    "Type": "TextBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Location": "180, 275",
+      "Width": 280,
+      "Multiline": true,
+      "Height": 85,
+      "ScrollBars": "Vertical"
+    }
+  },
+  "NewButton": {
+    "Type": "Button",
+    "Parent": "BottomPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Text": "New",
+      "Location": "20, 10",
+      "Height": 36,
+      "Width": 120,
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "DeleteButton": {
+    "Type": "Button",
+    "Parent": "BottomPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Text": "Delete",
+      "Location": "160, 10",
+      "Height": 36,
+      "Width": 120,
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "SaveButton": {
+    "Type": "Button",
+    "Parent": "BottomPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Text": "Save",
+      "Location": "750, 10",
+      "Height": 36,
+      "Width": 140,
+      "UseVisualStyleBackColor": true
+    }
+  }
+}
