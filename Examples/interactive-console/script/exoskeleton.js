@@ -2828,6 +2828,33 @@
         };
 
         /**
+         * (Advanced) method to dynamically switch into mixed ui mode.
+         * MixedUi mode uses native ui layout but leaves the webbrowser visible.
+         * The webbrowser will be relocated to the panel named by the parameter.
+         * The web browser will will be assigned a DockStyle of 'Fill'.
+         * MixedUi mode is a 'late' mode, requiring you to have already
+         * applied your form layout/definition and established the panel to be
+         * used for locating the browser to.
+         * controls
+         * @param {string=} browserParentPanel - optional name of panel to locate and show browser within.
+         * @memberof Main
+         * @instance
+         * @example
+         * // Typically, to use mixed ui mode, you would :
+         * // - use the 'DefaultToNativeUi' setting in your xos file,
+         * // - initialize and apply your form definition (containing the panel named below), and finally
+         * // - switch into mixedui (as below) once your form layout is complete.
+         * exoskeleton.main.switchToMixedUi("BottomRightPanel");
+         */
+        Main.prototype.switchToMixedUi = function (browserParentPanel) {
+            if (typeof browserParentPanel === "undefined") {
+                browserParentPanel = null;
+            }
+
+            this.exoMain.SwitchToMixedUi(browserParentPanel);
+        };
+
+        /**
          * (Advanced) method to dynamically switch into web ui mode.
          * By default exoskeleton uses web ui mode within its hosted webbrowser.
          * That can be overridden in settings to Native UI mode as 'default' for

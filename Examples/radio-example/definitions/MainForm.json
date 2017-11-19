@@ -1,0 +1,103 @@
+{
+  "MiddlePanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Fill",
+      "BackColor": "64,64,96",
+      "ForeColor": "White",
+      "Height": 20,
+      "Width": 20,
+      "Top": 100,
+      "Left": 10,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "StationList": {
+    "Type": "ListBox",
+    "Parent": "MiddlePanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Dock": "Fill",
+      "DisplayMember": "Name",
+      "ValueMember": "Id",
+      "ScrollAlwaysVisible": true
+    }
+  },
+  "MiddleBottomPanel": {
+    "Type": "Panel",
+    "Parent": "MiddlePanel",
+    "Properties": {
+      "Dock": "Bottom",
+      "Height": 42,
+      "Padding": "4, 4, 4, 4"
+    }
+  },
+  "BottomPanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Bottom",
+      "Height": 80,
+      "Padding": "0, 0, 0, 0",
+      "Color": "Black"
+    }
+  },
+  "StationListLabel": {
+    "Type": "Label",
+    "Parent": "MiddlePanel",
+    "Properties": {
+      "Text": "Stations :",
+      "Dock": "Top",
+      "AutoSize": true
+    }
+  },
+  "PlayOnSelectCheckBox": {
+    "Type": "CheckBox",
+    "Parent": "MiddleBottomPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Checked": true,
+      "Text": "PlayOnSelect",
+      "Location": "10, 5",
+      "AutoSize": true
+    }
+  },
+  "NewButton": {
+    "Type": "Button",
+    "Parent": "MiddleBottomPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Text": "New",
+      "ForeColor": "Black",
+      "Location": "180, 2",
+      "Height": 40,
+      "Width": 120,
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "EditButton": {
+    "Type": "Button",
+    "Parent": "MiddleBottomPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Text": "Edit",
+      "ForeColor": "Black",
+      "Location": "310, 2",
+      "Height": 40,
+      "Width": 120,
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "DeleteButton": {
+    "Type": "Button",
+    "Parent": "MiddleBottomPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "Text": "Delete",
+      "ForeColor": "Black",
+      "Location": "440, 2",
+      "Height": 40,
+      "Width": 120,
+      "UseVisualStyleBackColor": true
+    }
+  }
+}

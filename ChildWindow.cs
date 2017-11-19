@@ -27,26 +27,27 @@ namespace Exoskeleton
         #region Form Level Constructor and Events
 
         public ChildWindow(IPrimaryHostWindow parent, string caption, string uri, Settings settings,
-            int? width, int? height, string mode): base()
+            int? width, int? height, string mode)
         {
-            
             this.parent = parent;
+            this.settings = settings;
+            this.uri = uri;
 
             if (settings.ScriptingLoggerEnabled)
             {
                 logger = new LoggerForm(this, caption);
-                //    Rectangle workingArea = Screen.GetWorkingArea(this);
                 logger.Show();
-                //    logger.Location = new Point(workingArea.Right - logger.Width, 100 + 100 * hostWindows.Count);
             }
 
-            scriptInterface = new ScriptInterface(this, settings, logger);
-
-            this.settings = settings;
-
-            this.uri = uri;
+            if (!String.IsNullOrEmpty(settings.WindowIconPath))
+            {
+                string resolvedIconPath = parent.ResolveExoUrlPath(settings.WindowIconPath);
+                this.Icon = new Icon(resolvedIconPath);
+            }
 
             InitializeComponent();
+
+            scriptInterface = new ScriptInterface(this, settings, logger);
 
             // The default mode that the form is compiled with is web ui mode.
             // This can be overriden in settings to native ui
@@ -59,16 +60,10 @@ namespace Exoskeleton
                     SwitchToNativeUi();
                 }
             }
-            else if (settings.NativeUiOnly)
+            else if (settings.DefaultToNativeUi)
             {
                 SwitchToNativeUi();
             }
-
-            if (settings.WindowIconPath != "" && File.Exists(settings.WindowIconPath))
-            {
-                this.Icon = new Icon(settings.WindowIconPath);
-            }
-
 
             HostMenuStrip.Visible = settings.ScriptingMenuEnabled;
             HostToolStrip.Visible = settings.ScriptingToolStripEnabled;
@@ -93,7 +88,7 @@ namespace Exoskeleton
             }
             else
             {
-                string baseUrl = parent.ResolveWebBrowserUrl(settings.WebBrowserBaseUrl);
+                string baseUrl = parent.ResolveExoUrlPath(settings.WebBrowserBaseUrl);
 
                 Uri baseUri = new Uri(baseUrl);
                 HostWebBrowser.Url = new Uri(baseUri, uri);
@@ -258,6 +253,7 @@ namespace Exoskeleton
         public void SwitchToNativeUi()
         {
             WebBrowser wb = HostWebBrowser;
+
             HostWebBrowser.Visible = false;
             HostWebBrowser.Dock = DockStyle.None;
             HostWebBrowser.Height = 1;
@@ -266,10 +262,24 @@ namespace Exoskeleton
             this.Controls.Add(wb);
         }
 
+        public void SwitchToMixedUi(string browserParentPanel)
+        {
+            WebBrowser wb = HostWebBrowser;
+
+            HostPanel.Controls.Remove(HostWebBrowser);
+            HostWebBrowser.Visible = true;
+            HostWebBrowser.Dock = DockStyle.Fill;
+
+            Panel pnl = this.Controls.Find(browserParentPanel, true).FirstOrDefault() as Panel;
+            pnl.Controls.Clear();
+            pnl.Controls.Add(wb);
+        }
+
         public void SwitchToWebUi()
         {
             WebBrowser wb = HostWebBrowser;
-            this.Controls.Remove(HostWebBrowser);
+            wb.Parent.Controls.Remove(wb);
+
             HostPanel.Controls.Clear();
             HostPanel.Controls.Add(wb);
             HostWebBrowser.Dock = DockStyle.Fill;

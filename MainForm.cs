@@ -181,9 +181,13 @@ namespace Exoskeleton
         /// </summary>
         private void InitializeIcon()
         {
-            if (settings.WindowIconPath != "" && File.Exists(settings.WindowIconPath))
+            if (String.IsNullOrEmpty(settings.WindowIconPath)) return;
+
+            string resolvedIconPath = ResolveExoUrlPath(settings.WindowIconPath);
+
+            if (File.Exists(resolvedIconPath))
             {
-                applicationIcon = new Icon(settings.WindowIconPath);
+                applicationIcon = new Icon(resolvedIconPath);
                 this.Icon = applicationIcon;
                 this.ExoskeletonNotification.Icon = this.Icon;
             }
@@ -215,7 +219,7 @@ namespace Exoskeleton
 
             InitializeComponent();
 
-            if (settings.NativeUiOnly)
+            if (settings.DefaultToNativeUi)
             {
                 SwitchToNativeUi();
             }
@@ -232,7 +236,7 @@ namespace Exoskeleton
             this.Text = settings.WindowTitle;
         }
 
-        public string ResolveWebBrowserUrl(string url)
+        public string ResolveExoUrlPath(string url)
         {
             string result = url
                 .Replace("{port}", actualPort.ToString())
@@ -274,7 +278,7 @@ namespace Exoskeleton
             }
             else
             {
-                string url = ResolveWebBrowserUrl(settings.WebBrowserDefaultUrl);
+                string url = ResolveExoUrlPath(settings.WebBrowserDefaultUrl);
 
                 // For (only) filesystem based uri's, convert relative paths to absolute.
                 Uri startingUri = null;
@@ -318,6 +322,7 @@ namespace Exoskeleton
         public void SwitchToNativeUi()
         {
             WebBrowser wb = HostWebBrowser;
+
             HostWebBrowser.Visible = false;
             HostWebBrowser.Dock = DockStyle.None;
             HostWebBrowser.Height = 1;
@@ -326,10 +331,24 @@ namespace Exoskeleton
             this.Controls.Add(wb);
         }
 
+        public void SwitchToMixedUi(string browserParentPanel)
+        {
+            WebBrowser wb = HostWebBrowser;
+
+            HostPanel.Controls.Remove(HostWebBrowser);
+            HostWebBrowser.Visible = true;
+            HostWebBrowser.Dock = DockStyle.Fill;
+
+            Panel pnl = this.Controls.Find(browserParentPanel, true).FirstOrDefault() as Panel;
+            pnl.Controls.Clear();
+            pnl.Controls.Add(wb);
+        }
+
         public void SwitchToWebUi()
         {
             WebBrowser wb = HostWebBrowser;
-            this.Controls.Remove(HostWebBrowser);
+            wb.Parent.Controls.Remove(wb);
+
             HostPanel.Controls.Clear();
             HostPanel.Controls.Add(wb);
             HostWebBrowser.Dock = DockStyle.Fill;

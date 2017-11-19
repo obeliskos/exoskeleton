@@ -24,6 +24,7 @@ namespace Exoskeleton
         {
             this.host = host;
             this.Text = title;
+            this.Icon = host.GetForm().Icon;
         }
 
         public void LogInfo(string source, string message)

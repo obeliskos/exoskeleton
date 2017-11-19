@@ -44,7 +44,7 @@ namespace Exoskeleton.Classes
         /// If user sets this to true, we will hide the webbrowser and they
         /// will have to layout native controls on host panel for ui.
         /// </summary>
-        public bool NativeUiOnly { get; set; } = false;
+        public bool DefaultToNativeUi { get; set; } = false;
 
         public bool WebBrowserRefreshOnFirstLoad { get; set; } = true;
         public bool WebBrowserContextMenu { get; set; } = true;

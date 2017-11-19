@@ -90,6 +90,11 @@ namespace Exoskeleton.Classes.API
             host.SwitchToNativeUi();
         }
 
+        public void SwitchToMixedUi(string browserParentPanel)
+        {
+            host.SwitchToMixedUi(browserParentPanel);
+        }
+
         public void SwitchToWebUi()
         {
             host.SwitchToWebUi();

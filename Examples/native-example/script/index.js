@@ -211,7 +211,7 @@ function deleteContactTypeHandler() {
     // since no multiselect, result is a string and not array of strings
     if (result !== null) {
         var contactType = contactTypeCollection.findOne({ name: result });
-        if (contactType != null) {
+        if (contactType !== null) {
             contactTypeCollection.remove(contactType);
             refreshContactTypes();
         }

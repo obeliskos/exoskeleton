@@ -31,6 +31,7 @@ namespace Exoskeleton
 
         void SwitchToNativeUi();
         void SwitchToWebUi();
+        void SwitchToMixedUi(string browserParentPanel);
 
         void ShowMenu();
         void HideMenu();

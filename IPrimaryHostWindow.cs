@@ -8,7 +8,7 @@ namespace Exoskeleton
 {
     public interface IPrimaryHostWindow : IHostWindow
     {
-        string ResolveWebBrowserUrl(string url);
+        string ResolveExoUrlPath(string url);
         void RemoveHostWindow(IHostWindow hostWindow);
     }
 }

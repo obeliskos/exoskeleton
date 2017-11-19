@@ -5,12 +5,12 @@
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
   
-  <WindowTitle>My Exoskeleton App</WindowTitle>
+  <WindowTitle>Exoskeleton Radio - Mixed UI Example</WindowTitle>
   <WindowWidth>820</WindowWidth>
   <WindowHeight>512</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath />
+  <WindowIconPath>{SettingsLocation}\images\radio.ico</WindowIconPath>
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory />
@@ -35,7 +35,7 @@
   <ScriptingComObjectsEnabled>false</ScriptingComObjectsEnabled>
   <ScriptingNetEnabled>false</ScriptingNetEnabled>
   <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
-  <ScriptingMenuEnabled>true</ScriptingMenuEnabled>
+  <ScriptingMenuEnabled>false</ScriptingMenuEnabled>
   <ScriptingToolStripEnabled>true</ScriptingToolStripEnabled>
   <ScriptingStatusStripEnabled>true</ScriptingStatusStripEnabled>
   <ScriptingDialogEnabled>true</ScriptingDialogEnabled>
