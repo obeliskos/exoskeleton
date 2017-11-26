@@ -14,6 +14,10 @@ namespace Exoskeleton
     /// </summary>
     public interface IHostWindow
     {
+        string Title { get; set; }
+        Settings Settings { get; set; }
+        ILogWindow Logger { get; set; }
+
         void ToggleFullscreen();
         void EnterFullscreen();
         void ExitFullscreen();
@@ -51,7 +55,6 @@ namespace Exoskeleton
         void SetLeftStatusstripLabel(string text);
         void SetRightStatusstripLabel(string text);
 
-        Settings GetCurrentSettings();
         dynamic GetLocations();
         void Shutdown();
     }

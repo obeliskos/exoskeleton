@@ -10,9 +10,13 @@
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
   <WindowIconPath />
+  <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
+  <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
+  <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8090</WebServerListenPort>
   <WebServerHostDirectory>.</WebServerHostDirectory>
+  <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
   <WebBrowserDefaultUrl>{SettingsLocation}\\database-example\\index.htm</WebBrowserDefaultUrl>
@@ -26,8 +30,13 @@
   <ScriptingFilesEnabled>true</ScriptingFilesEnabled>
   <ScriptingProcessEnabled>true</ScriptingProcessEnabled>
   <ScriptingSystemEnabled>true</ScriptingSystemEnabled>
-  <ScriptingLoggerEnabled>false</ScriptingLoggerEnabled>
+  <ScriptingLoggerEnabled>true</ScriptingLoggerEnabled>
   <ScriptingComObjectsEnabled>false</ScriptingComObjectsEnabled>
   <ScriptingNetEnabled>false</ScriptingNetEnabled>
   <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
+  <ScriptingMenuEnabled>false</ScriptingMenuEnabled>
+  <ScriptingToolStripEnabled>false</ScriptingToolStripEnabled>
+  <ScriptingStatusStripEnabled>false</ScriptingStatusStripEnabled>
+  <ScriptingDialogEnabled>true</ScriptingDialogEnabled>
+  <ScriptingFormEnabled>true</ScriptingFormEnabled>
 </Settings>

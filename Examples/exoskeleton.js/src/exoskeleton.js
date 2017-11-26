@@ -2654,6 +2654,8 @@
          * exoskeleton.logger.logInfo("myfunction", "something interesting happened");
          */
         Logger.prototype.logInfo = function (source, message) {
+            if (!this.exoLogger) return;
+
             this.exoLogger.LogInfo(source, message);
         };
 
@@ -2667,6 +2669,8 @@
          * exoskeleton.logger.logInfo("myfunction", "something odd happened");
          */
         Logger.prototype.logWarning = function (source, message) {
+            if (!this.exoLogger) return;
+
             this.exoLogger.LogWarning(source, message);
         };
 
@@ -2683,6 +2687,8 @@
          * exoskeleton.logger.logError("something dangerous happened", "myfunction");
          */
         Logger.prototype.logError = function (msg, url, line, col, error) {
+            if (!this.exoLogger) return;
+
             this.exoLogger.LogError(msg, url, line, col, error);
         };
 
@@ -2696,6 +2702,8 @@
          * exoskeleton.logger.logText("started processing at : " + now);
          */
         Logger.prototype.logText = function (message) {
+            if (!this.exoLogger) return;
+
             this.exoLogger.LogText(message);
         };
 
@@ -2709,6 +2717,8 @@
          * exoskeleton.logger.logObject(obj);
          */
         Logger.prototype.logObject = function (obj) {
+            if (!this.exoLogger) return;
+
             var json = JSON.stringify(obj, undefined, 2);
 
             this.exoLogger.LogText(json);

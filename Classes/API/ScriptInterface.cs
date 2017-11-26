@@ -39,10 +39,11 @@ namespace Exoskeleton.Classes.API
         /// </summary>
         /// <param name="host">Instance of the IHostWindow acting as our container.</param>
         /// <param name="exosettings">User defined settings to use.</param>
-        /// <param name="loggerForm">Reference to our logger (if enabled)</param>
-        public ScriptInterface(IHostWindow host, Settings exosettings, LoggerForm loggerForm)
+        /// <param name="logger">Reference to our logger (if enabled)</param>
+        public ScriptInterface(IHostWindow host, ILogWindow logger)
         {
             this.host = host;
+            Settings exosettings = host.Settings;
 
             this.Main = exosettings.ScriptingEnabled ? new ScriptMain(host) : null;
             this.Media = exosettings.ScriptingMediaEnabled ? new ScriptMedia() : null;
@@ -50,7 +51,7 @@ namespace Exoskeleton.Classes.API
             this.Proc = exosettings.ScriptingProcessEnabled ? new ScriptProcess() : null;
             this.Session = new ScriptSession();
             this.System = exosettings.ScriptingSystemEnabled ? new ScriptSystem(exosettings) : null;
-            this.Logger = exosettings.ScriptingLoggerEnabled ? new ScriptLogger(loggerForm) : null;
+            this.Logger = exosettings.ScriptingLoggerEnabled ? new ScriptLogger(host) : null;
             this.Com = exosettings.ScriptingComObjectsEnabled ? new ScriptComObjects() : null;
             this.Net = exosettings.ScriptingNetEnabled ? new ScriptNet() : null;
             this.Enc = exosettings.ScriptingEncryptionEnabled ? new ScriptEncryption() : null;
@@ -95,7 +96,7 @@ namespace Exoskeleton.Classes.API
         /// <returns>Application Settings, serialized as json.</returns>
         public string GetApplicationSettings()
         {
-            Settings settings = host.GetCurrentSettings();
+            Settings settings = host.Settings;
 
             string json = JsonConvert.SerializeObject(settings);
 

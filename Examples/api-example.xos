@@ -10,9 +10,13 @@
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
   <WindowIconPath />
+  <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
+  <NotifyOnLoggedWarnings>false</NotifyOnLoggedWarnings>
+  <NotifyOnLoggedInfo>false</NotifyOnLoggedInfo>
   <WebServerSelfHost>true</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory>./api-example</WebServerHostDirectory>
+  <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
   <WebBrowserDefaultUrl>http://localhost:{port}</WebBrowserDefaultUrl>
@@ -30,4 +34,9 @@
   <ScriptingComObjectsEnabled>true</ScriptingComObjectsEnabled>
   <ScriptingNetEnabled>true</ScriptingNetEnabled>
   <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
+  <ScriptingMenuEnabled>false</ScriptingMenuEnabled>
+  <ScriptingToolStripEnabled>false</ScriptingToolStripEnabled>
+  <ScriptingStatusStripEnabled>false</ScriptingStatusStripEnabled>
+  <ScriptingDialogEnabled>true</ScriptingDialogEnabled>
+  <ScriptingFormEnabled>true</ScriptingFormEnabled>
 </Settings>

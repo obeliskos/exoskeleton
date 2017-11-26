@@ -79,6 +79,16 @@ namespace Exoskeleton.Classes
         {
             InitializeContainer(formName);
 
+            if (formName == nativeContainer)
+            {
+                host.GetHostPanel().SuspendLayout();
+                host.GetHostPanel().Visible = false;
+            }
+            else
+            {
+                formDictionary[formName].SuspendLayout();
+            }
+
             // if any form level properties are supplied, apply them
             if (formJson != null) {
                 if (formName == nativeContainer)
@@ -95,15 +105,6 @@ namespace Exoskeleton.Classes
                 {
                     formDictionary[formName].StartPosition = FormStartPosition.CenterParent;
                 }
-            }
-
-            if (formName == nativeContainer)
-            {
-                host.GetForm().SuspendLayout();
-            }
-            else
-            {
-                formDictionary[formName].SuspendLayout();
             }
         }
 
@@ -684,8 +685,8 @@ namespace Exoskeleton.Classes
 
             if (formName == nativeContainer)
             {
-                host.GetForm().ResumeLayout(false);
-                host.GetForm().PerformLayout();
+                host.GetHostPanel().ResumeLayout(false);
+                host.GetHostPanel().PerformLayout();
             }
             else
             {

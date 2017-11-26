@@ -129,10 +129,10 @@ function initializeDatabase() {
         ]);
     }
 
-
     exoskeleton.statusbar.setRightLabel(stations.count() + " stations.");
 
     exoskeleton.events.on("$host.StationList.SelectedIndexChanged", stationSelectedHandler);
+
     refreshStations();
 }
 
@@ -181,8 +181,8 @@ function initializeApp() {
       db.close();
   });
 
-  exoskeleton.main.switchToMixedUi("BottomPanel");
   document.body.style = "zoom:100%";
+  exoskeleton.main.switchToMixedUi("BottomPanel");
 
   initializeToolbar();
 }

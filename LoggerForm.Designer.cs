@@ -34,10 +34,12 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listViewLog = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.HostWindowCombo = new System.Windows.Forms.ComboBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonClearLog = new System.Windows.Forms.ToolStripButton();
             this.txtConsole = new System.Windows.Forms.TextBox();
@@ -73,6 +75,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.listViewLog);
+            this.splitContainer1.Panel1.Controls.Add(this.HostWindowCombo);
             this.splitContainer1.Panel1.Controls.Add(this.toolStrip1);
             // 
             // splitContainer1.Panel2
@@ -80,8 +83,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.txtConsole);
             this.splitContainer1.Panel2.Controls.Add(this.textConsoleEval);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip2);
-            this.splitContainer1.Size = new System.Drawing.Size(919, 512);
-            this.splitContainer1.SplitterDistance = 189;
+            this.splitContainer1.Size = new System.Drawing.Size(960, 601);
+            this.splitContainer1.SplitterDistance = 264;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 8;
             // 
@@ -89,18 +92,19 @@
             // 
             this.listViewLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
+            this.columnHeader6,
             this.columnHeader3,
             this.columnHeader2,
             this.columnHeader4,
             this.columnHeader5});
             this.listViewLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewLog.FullRowSelect = true;
-            this.listViewLog.Location = new System.Drawing.Point(0, 25);
+            this.listViewLog.Location = new System.Drawing.Point(0, 53);
             this.listViewLog.Margin = new System.Windows.Forms.Padding(4);
             this.listViewLog.Name = "listViewLog";
-            this.listViewLog.Size = new System.Drawing.Size(919, 164);
+            this.listViewLog.Size = new System.Drawing.Size(960, 211);
             this.listViewLog.SmallImageList = this.imageListViewIcons;
-            this.listViewLog.TabIndex = 2;
+            this.listViewLog.TabIndex = 4;
             this.listViewLog.UseCompatibleStateImageBehavior = false;
             this.listViewLog.View = System.Windows.Forms.View.Details;
             // 
@@ -108,6 +112,11 @@
             // 
             this.columnHeader1.Text = "Type";
             this.columnHeader1.Width = 80;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Window";
+            this.columnHeader6.Width = 111;
             // 
             // columnHeader3
             // 
@@ -127,13 +136,25 @@
             // 
             this.columnHeader5.Text = "Col";
             // 
+            // HostWindowCombo
+            // 
+            this.HostWindowCombo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HostWindowCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.HostWindowCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HostWindowCombo.FormattingEnabled = true;
+            this.HostWindowCombo.Location = new System.Drawing.Point(0, 25);
+            this.HostWindowCombo.Name = "HostWindowCombo";
+            this.HostWindowCombo.Size = new System.Drawing.Size(960, 28);
+            this.HostWindowCombo.TabIndex = 3;
+            this.HostWindowCombo.SelectedIndexChanged += new System.EventHandler(this.HostWindowCombo_SelectedIndexChanged);
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonClearLog});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(919, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(960, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -158,21 +179,21 @@
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.Size = new System.Drawing.Size(919, 256);
+            this.txtConsole.Size = new System.Drawing.Size(960, 267);
             this.txtConsole.TabIndex = 3;
             // 
             // textConsoleEval
             // 
-            this.textConsoleEval.BackColor = System.Drawing.Color.SeaShell;
-            this.textConsoleEval.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textConsoleEval.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(255)))), ((int)(((byte)(222)))));
             this.textConsoleEval.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textConsoleEval.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textConsoleEval.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textConsoleEval.ForeColor = System.Drawing.Color.Black;
-            this.textConsoleEval.Location = new System.Drawing.Point(0, 295);
+            this.textConsoleEval.Location = new System.Drawing.Point(0, 306);
             this.textConsoleEval.Margin = new System.Windows.Forms.Padding(4);
             this.textConsoleEval.Name = "textConsoleEval";
-            this.textConsoleEval.Size = new System.Drawing.Size(919, 23);
+            this.textConsoleEval.Size = new System.Drawing.Size(960, 26);
             this.textConsoleEval.TabIndex = 2;
+            this.textConsoleEval.Text = "[ Select a specific window before entering console commands ]";
             this.textConsoleEval.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textConsoleEval_KeyDown);
             // 
             // toolStrip2
@@ -183,7 +204,7 @@
             this.toolStripLabel1});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(919, 39);
+            this.toolStrip2.Size = new System.Drawing.Size(960, 39);
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -224,13 +245,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(919, 512);
+            this.ClientSize = new System.Drawing.Size(960, 601);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "LoggerForm";
+            this.ShowInTaskbar = false;
             this.Text = "LoggerForm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoggerForm_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -248,12 +272,6 @@
         #endregion
         private System.Windows.Forms.ImageList imageListViewIcons;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListView listViewLog;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButtonClearLog;
         private System.Windows.Forms.TextBox txtConsole;
@@ -262,5 +280,13 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonClearConsole;
         private System.Windows.Forms.ToolStripButton toolStripButtonToggleMultiline;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ListView listViewLog;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ComboBox HostWindowCombo;
     }
 }

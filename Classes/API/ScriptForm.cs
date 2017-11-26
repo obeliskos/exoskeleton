@@ -51,7 +51,11 @@ namespace Exoskeleton.Classes.API
         {
             FinalizeLayout(formName);
 
-            if (formName == nativeContainer) return;
+            if (formName == nativeContainer)
+            {
+                host.GetHostPanel().Visible = true;
+                return;
+            }
 
             if (formDictionary[formName].StartPosition == FormStartPosition.CenterParent)
             {

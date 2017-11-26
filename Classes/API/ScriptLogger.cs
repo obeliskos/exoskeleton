@@ -12,19 +12,19 @@ namespace Exoskeleton.Classes.API
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public class ScriptLogger: IDisposable
     {
-        private LoggerForm logger = null;
+        private IHostWindow host = null;
+        private ILogWindow logger = null;
 
-        public ScriptLogger(LoggerForm logger)
+        public ScriptLogger(IHostWindow host)
         {
-            this.logger = logger;
+            this.host = host;
+            this.logger = this.host.Logger;
         }
 
         public void Dispose()
         {
-            if (this.logger != null)
-            {
-                logger.Close();
-            }
+            // Clear all logger entries for the host window?
+            logger = null;
         }
 
         /// <summary>
@@ -34,7 +34,9 @@ namespace Exoskeleton.Classes.API
         /// <param name="message">Info detail message</param>
         public void LogInfo(string source, string message)
         {
-            logger.LogInfo(source, message);
+            if (logger == null) return;
+
+            logger.LogInfo(host, source, message);
         }
 
         /// <summary>
@@ -44,7 +46,9 @@ namespace Exoskeleton.Classes.API
         /// <param name="message">Detailed warning message.</param>
         public void LogWarning(string source, string message)
         {
-            logger.logWarning(source, message);
+            if (logger == null) return;
+
+            logger.logWarning(host, source, message);
         }
 
         /// <summary>
@@ -57,7 +61,9 @@ namespace Exoskeleton.Classes.API
         /// <param name="error">Detailed informatino about the error.</param>
         public void LogError(string msg, string url, string line, string col, string error)
         {
-            logger.logError(msg, url, line, col, error);
+            if (logger == null) return;
+
+            logger.logError(host, msg, url, line, col, error);
         }
 
         /// <summary>
@@ -66,7 +72,9 @@ namespace Exoskeleton.Classes.API
         /// <param name="message">Text to append to the console.</param>
         public void LogText(string message)
         {
-            logger.logText(message==null?message:message.Replace("\n", Environment.NewLine));
+            if (logger == null) return;
+
+            logger.logText(host, message==null?message:message.Replace("\n", Environment.NewLine));
         }
     }
 }

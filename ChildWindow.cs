@@ -16,28 +16,30 @@ namespace Exoskeleton
 {
     public partial class ChildWindow : Form, IHostWindow
     {
+        public Settings Settings { get; set; }
+        public ILogWindow Logger { get; set; }
+        public string Title { get; set; }
+
         private IPrimaryHostWindow parent;
         private ScriptInterface scriptInterface;
-        private Settings settings;
         private static Dictionary<string, bool> cacheRefreshed = new Dictionary<string, bool>();
         private bool fullscreen = false;
         private string uri;
-        LoggerForm logger;
+
+        //private ILogWindow logger;
 
         #region Form Level Constructor and Events
 
-        public ChildWindow(IPrimaryHostWindow parent, string caption, string uri, Settings settings,
-            int? width, int? height, string mode)
+        public ChildWindow(IPrimaryHostWindow parent, ILogWindow logger, Settings settings, 
+            string caption, string uri, int? width, int? height, string mode)
         {
             this.parent = parent;
-            this.settings = settings;
+            this.Settings = settings;
             this.uri = uri;
+            this.Title = caption;
 
-            if (settings.ScriptingLoggerEnabled)
-            {
-                logger = new LoggerForm(this, caption);
-                logger.Show();
-            }
+            Logger = logger;
+            Logger.AttachHost(this, caption, null);
 
             if (!String.IsNullOrEmpty(settings.WindowIconPath))
             {
@@ -47,7 +49,7 @@ namespace Exoskeleton
 
             InitializeComponent();
 
-            scriptInterface = new ScriptInterface(this, settings, logger);
+            scriptInterface = new ScriptInterface(this, Logger);
 
             // The default mode that the form is compiled with is web ui mode.
             // This can be overriden in settings to native ui
@@ -88,7 +90,7 @@ namespace Exoskeleton
             }
             else
             {
-                string baseUrl = parent.ResolveExoUrlPath(settings.WebBrowserBaseUrl);
+                string baseUrl = parent.ResolveExoUrlPath(this.Settings.WebBrowserBaseUrl);
 
                 Uri baseUri = new Uri(baseUrl);
                 HostWebBrowser.Url = new Uri(baseUri, uri);
@@ -225,7 +227,7 @@ namespace Exoskeleton
 
         private void ChildWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (settings.WindowAllowFullscreenF11  && e.KeyCode == Keys.F11)
+            if (this.Settings.WindowAllowFullscreenF11  && e.KeyCode == Keys.F11)
             {
                 ToggleFullscreen();
             }
@@ -238,7 +240,7 @@ namespace Exoskeleton
                 return;
             }
 
-            if (settings.WebBrowserRefreshOnFirstLoad && 
+            if (this.Settings.WebBrowserRefreshOnFirstLoad && 
                 CheckForStaleCache(HostWebBrowser.Url.ToString()))
             {
                 HostWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
@@ -287,13 +289,6 @@ namespace Exoskeleton
         }
 
         #endregion
-
-        #region Interface Memebers
-
-        #endregion
-
-        // Need to determine if i want to attempt to implement base class or mvp instead of just interfaces.  
-        // Winforms designers may not play well with abstract base classes.
 
         #region IHostWindow : Menu Management
 
@@ -506,15 +501,6 @@ namespace Exoskeleton
         }
 
         #endregion
-
-        /// <summary>
-        /// Returns the 'active' settings class instance.
-        /// </summary>
-        /// <returns>The 'active' settings class instance.</returns>
-        public Settings GetCurrentSettings()
-        {
-            return settings;
-        }
 
         /// <summary>
         /// Returns the important exoskeleton environment locations. (Current, Settings, Executable)

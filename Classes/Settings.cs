@@ -36,6 +36,12 @@ namespace Exoskeleton.Classes
         public bool WindowAllowResize { get; set; } = true;
         public string WindowIconPath { get; set; } = "";
 
+        // When logger is enabled and the logger is minimized, we will 
+        // notify of activity if these settings are enabled.
+        public bool NotifyOnLoggedErrors { get; set; } = true;
+        public bool NotifyOnLoggedWarnings { get; set; } = true;
+        public bool NotifyOnLoggedInfo { get; set; } = true;
+
         public bool WebServerSelfHost { get; set; } = false;
         public int WebServerListenPort { get; set; } = 8080;
         public string WebServerHostDirectory { get; set; } = "";
@@ -63,7 +69,7 @@ namespace Exoskeleton.Classes
         public bool ScriptingFilesEnabled { get; set; } = false;
         public bool ScriptingProcessEnabled { get; set; } = false;
         public bool ScriptingSystemEnabled { get; set; } = false;
-        public bool ScriptingLoggerEnabled { get; set; } = false;
+        public bool ScriptingLoggerEnabled { get; set; } = true;
         public bool ScriptingComObjectsEnabled { get; set; } = false;
         public bool ScriptingNetEnabled { get; set; } = false;
         public bool ScriptingEncryptionEnabled { get; set; } = true;

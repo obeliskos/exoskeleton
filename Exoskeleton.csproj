@@ -73,6 +73,7 @@
     <Compile Include="Classes\API\ScriptLogger.cs" />
     <Compile Include="Classes\StringCipher.cs" />
     <Compile Include="IHostWindow.cs" />
+    <Compile Include="ILogWindow.cs" />
     <Compile Include="IPrimaryHostWindow.cs" />
     <Compile Include="LoggerForm.cs">
       <SubType>Form</SubType>

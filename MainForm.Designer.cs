@@ -32,6 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.HostMenuStrip = new System.Windows.Forms.MenuStrip();
             this.ExoskeletonNotification = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notificationMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.consoleLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notificationIconToolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.HostStatusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripLeftLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -39,6 +43,7 @@
             this.HostToolStrip = new System.Windows.Forms.ToolStrip();
             this.HostPanel = new System.Windows.Forms.Panel();
             this.HostWebBrowser = new System.Windows.Forms.WebBrowser();
+            this.notificationMenuStrip.SuspendLayout();
             this.HostStatusStrip.SuspendLayout();
             this.HostPanel.SuspendLayout();
             this.SuspendLayout();
@@ -54,9 +59,38 @@
             // 
             // ExoskeletonNotification
             // 
+            this.ExoskeletonNotification.ContextMenuStrip = this.notificationMenuStrip;
             this.ExoskeletonNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("ExoskeletonNotification.Icon")));
             this.ExoskeletonNotification.Text = "Exoskeleton";
             this.ExoskeletonNotification.Visible = true;
+            this.ExoskeletonNotification.BalloonTipClicked += new System.EventHandler(this.ExoskeletonNotification_BalloonTipClicked);
+            // 
+            // notificationMenuStrip
+            // 
+            this.notificationMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.consoleLogToolStripMenuItem,
+            this.notificationIconToolStripSeparator,
+            this.exitToolStripMenuItem});
+            this.notificationMenuStrip.Name = "notificationMenuStrip";
+            this.notificationMenuStrip.Size = new System.Drawing.Size(158, 76);
+            // 
+            // consoleLogToolStripMenuItem
+            // 
+            this.consoleLogToolStripMenuItem.Name = "consoleLogToolStripMenuItem";
+            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.consoleLogToolStripMenuItem.Text = "Console Logger";
+            this.consoleLogToolStripMenuItem.Click += new System.EventHandler(this.consoleLogToolStripMenuItem_Click);
+            // 
+            // notificationIconToolStripSeparator
+            // 
+            this.notificationIconToolStripSeparator.Name = "notificationIconToolStripSeparator";
+            this.notificationIconToolStripSeparator.Size = new System.Drawing.Size(154, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.exitToolStripMenuItem.Text = "E&xit";
             // 
             // RefreshTimer
             // 
@@ -120,18 +154,18 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(864, 472);
             this.Controls.Add(this.HostPanel);
-            this.Controls.Add(this.HostToolStrip);
             this.Controls.Add(this.HostStatusStrip);
+            this.Controls.Add(this.HostToolStrip);
             this.Controls.Add(this.HostMenuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.notificationMenuStrip.ResumeLayout(false);
             this.HostStatusStrip.ResumeLayout(false);
             this.HostStatusStrip.PerformLayout();
             this.HostPanel.ResumeLayout(false);
@@ -150,5 +184,9 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripRightLabel;
         private System.Windows.Forms.Panel HostPanel;
         private System.Windows.Forms.WebBrowser HostWebBrowser;
+        private System.Windows.Forms.ContextMenuStrip notificationMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem consoleLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator notificationIconToolStripSeparator;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }

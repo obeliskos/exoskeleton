@@ -23,10 +23,13 @@ namespace Exoskeleton
     /// We will set up a mime mapping xml file to use when self hosting.
     /// The Classes\ScriptInterface.cs class will serve as a scripting object for our exeskeleton app's javascript.
     /// </summary>
-    public partial class MainForm : Form, IPrimaryHostWindow
+    public partial class MainForm : Form, IPrimaryHostWindow, IHostWindow
     {
+        public string Title { get; set; } = "Main";
+        public Settings Settings { get; set; } = null;
+        public ILogWindow Logger { get; set; } = null;
+
         private MimeTypeMappings mappings;
-        private Settings settings;
         private LoggerForm loggerForm = null;
         private ScriptInterface scriptInterface;
         private List<IHostWindow> hostWindows = new List<IHostWindow>();
@@ -146,30 +149,31 @@ namespace Exoskeleton
                 createIfNotExists = (dr == DialogResult.OK);
             }
 
-            settings = Settings.Load(settingsPath, createIfNotExists);
+            this.Settings = Settings.Load(settingsPath, createIfNotExists);
 
             // Uncomment below line to easily 'upgrade' settings file with new settings and their defaults.
-            // settings.Save(settingsPath);
+            //Settings.Save(settingsPath);
 
             // Now that settings are loaded, determine if the user has elected to use the 
             // path containing the settings file as the 'current' directory.
-            if (settings.CurrentDirectoryUseSettingsPath)
+            if (this.Settings.CurrentDirectoryUseSettingsPath)
             {
                 Environment.CurrentDirectory = environmentLocationSettings;
             }
 
             // Now that settings are loaded, determine if the user has elected to use a specific
             // (absolute or relative path) to be used as the 'current' directory.
-            if (settings.CurrentDirectoryUseProvidedPath)
+            if (this.Settings.CurrentDirectoryUseProvidedPath)
             {
                 DirectoryInfo di;
-                if (Path.IsPathRooted(settings.CurrentDirectoryProvidedPath))
+                if (Path.IsPathRooted(this.Settings.CurrentDirectoryProvidedPath))
                 {
-                    di = new DirectoryInfo(settings.CurrentDirectoryProvidedPath);
+                    di = new DirectoryInfo(this.Settings.CurrentDirectoryProvidedPath);
                 }
                 else
                 {
-                    di = new DirectoryInfo(Path.Combine(environmentLocationSettings, settings.CurrentDirectoryProvidedPath));
+                    di = new DirectoryInfo(Path.Combine(environmentLocationSettings, 
+                        this.Settings.CurrentDirectoryProvidedPath));
                 };
 
                 Environment.CurrentDirectory = di.FullName;
@@ -181,9 +185,9 @@ namespace Exoskeleton
         /// </summary>
         private void InitializeIcon()
         {
-            if (String.IsNullOrEmpty(settings.WindowIconPath)) return;
+            if (String.IsNullOrEmpty(this.Settings.WindowIconPath)) return;
 
-            string resolvedIconPath = ResolveExoUrlPath(settings.WindowIconPath);
+            string resolvedIconPath = ResolveExoUrlPath(this.Settings.WindowIconPath);
 
             if (File.Exists(resolvedIconPath))
             {
@@ -205,35 +209,35 @@ namespace Exoskeleton
 
             mappings = Classes.MimeTypeMappings.Load(mappingsPath);
 
-            if (settings.WebServerSelfHost)
+            if (this.Settings.WebServerSelfHost)
             {
                 actualPort = startServer();
             }
 
             // if configured with startup commands, run them now...
             // we might use this to start a node process like a webserver
-            foreach (string cmd in settings.StartupCommands)
+            foreach (string cmd in this.Settings.StartupCommands)
             {
                 Process.Start(cmd);
             }
 
             InitializeComponent();
 
-            if (settings.DefaultToNativeUi)
+            if (this.Settings.DefaultToNativeUi)
             {
                 SwitchToNativeUi();
             }
 
-            HostMenuStrip.Visible = settings.ScriptingMenuEnabled;
-            HostToolStrip.Visible = settings.ScriptingToolStripEnabled;
-            HostStatusStrip.Visible = settings.ScriptingStatusStripEnabled;
+            HostMenuStrip.Visible = this.Settings.ScriptingMenuEnabled;
+            HostToolStrip.Visible = this.Settings.ScriptingToolStripEnabled;
+            HostStatusStrip.Visible = this.Settings.ScriptingStatusStripEnabled;
 
             hostWindows.Add(this);
 
             InitializeIcon();
-            this.Width = settings.WindowWidth;
-            this.Height = settings.WindowHeight;
-            this.Text = settings.WindowTitle;
+            this.Width = this.Settings.WindowWidth;
+            this.Height = this.Settings.WindowHeight;
+            this.Text = this.Settings.WindowTitle;
         }
 
         public string ResolveExoUrlPath(string url)
@@ -254,20 +258,25 @@ namespace Exoskeleton
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if (settings.ScriptingLoggerEnabled)
+            if (this.Settings.ScriptingLoggerEnabled)
             {
-                loggerForm = new LoggerForm(this, "Main");
-                Rectangle workingArea = Screen.GetWorkingArea(this);
+                loggerForm = new LoggerForm();
+                loggerForm.AttachHost(this, Title, this.Icon);
+                Logger = loggerForm;
                 loggerForm.Show();
-                loggerForm.Location = new Point(workingArea.Right - loggerForm.Width, 100);
+            }
+            else
+            {
+                consoleLogToolStripMenuItem.Visible = false;
+                notificationIconToolStripSeparator.Visible = false;
             }
 
-            scriptInterface = new ScriptInterface(this, settings, loggerForm);
+            scriptInterface = new ScriptInterface(this, loggerForm);
 
-            this.HostWebBrowser.ScriptErrorsSuppressed = settings.WebBrowserScriptErrorsSuppressed;
-            this.HostWebBrowser.WebBrowserShortcutsEnabled = settings.WebBrowserShortcutsEnabled;
+            this.HostWebBrowser.ScriptErrorsSuppressed = this.Settings.WebBrowserScriptErrorsSuppressed;
+            this.HostWebBrowser.WebBrowserShortcutsEnabled = this.Settings.WebBrowserShortcutsEnabled;
 
-            if (settings.WebBrowserDefaultUrl == "")
+            if (this.Settings.WebBrowserDefaultUrl == "")
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -278,7 +287,7 @@ namespace Exoskeleton
             }
             else
             {
-                string url = ResolveExoUrlPath(settings.WebBrowserDefaultUrl);
+                string url = ResolveExoUrlPath(this.Settings.WebBrowserDefaultUrl);
 
                 // For (only) filesystem based uri's, convert relative paths to absolute.
                 Uri startingUri = null;
@@ -306,15 +315,15 @@ namespace Exoskeleton
                     MessageBox.Show(ex.ToString(), "Error assigning host browser url", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
-                if (settings.WebBrowserAutoRefreshSecs > 0)
+                if (this.Settings.WebBrowserAutoRefreshSecs > 0)
                 {
-                    RefreshTimer.Interval = settings.WebBrowserAutoRefreshSecs * 1000;
+                    RefreshTimer.Interval = this.Settings.WebBrowserAutoRefreshSecs * 1000;
                     RefreshTimer.Enabled = true;
                 }
             }
 
             HostWebBrowser.ObjectForScripting = scriptInterface;
-            HostWebBrowser.IsWebBrowserContextMenuEnabled = settings.WebBrowserContextMenu;
+            HostWebBrowser.IsWebBrowserContextMenuEnabled = this.Settings.WebBrowserContextMenu;
 
             HostWebBrowser.Focus();
         }
@@ -370,13 +379,13 @@ namespace Exoskeleton
         /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (settings.ScriptingEnabled)
+            if (this.Settings.ScriptingEnabled)
             {
                 PackageAndMulticast("shutdown", null);
             }
 
 
-            if (settings.WebServerSelfHost && simpleServer != null)
+            if (this.Settings.WebServerSelfHost && simpleServer != null)
             {
                 try
                 {
@@ -399,8 +408,8 @@ namespace Exoskeleton
 
         private int startServer()
         {
-            int port = SimpleHTTPServer.GetOpenPort(settings.WebServerListenPort);
-            simpleServer = new SimpleHTTPServer(settings.WebServerHostDirectory, port, mappings);
+            int port = SimpleHTTPServer.GetOpenPort(this.Settings.WebServerListenPort);
+            simpleServer = new SimpleHTTPServer(this.Settings.WebServerHostDirectory, port, mappings);
 
             return port;
         }
@@ -411,7 +420,7 @@ namespace Exoskeleton
 
         private void HostWebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (settings.WindowAllowFullscreenF11 && e.KeyCode == Keys.F11)
+            if (this.Settings.WindowAllowFullscreenF11 && e.KeyCode == Keys.F11)
             {
                 ToggleFullscreen();
             }
@@ -425,7 +434,7 @@ namespace Exoskeleton
         /// <param name="e"></param>
         private void HostWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (settings.WebBrowserRefreshOnFirstLoad && 
+            if (this.Settings.WebBrowserRefreshOnFirstLoad && 
                 CheckForStaleCache(HostWebBrowser.Url.ToString()))
             {
                 HostWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
@@ -474,16 +483,22 @@ namespace Exoskeleton
         {
             if (!url.StartsWith("@") && url.Contains("{port}"))
             {
-                url = settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url;
+                url = this.Settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url;
             }
-            ChildWindow childWindow = new ChildWindow(this, caption, url, settings, width, height, mode);
+
+            ChildWindow childWindow = new ChildWindow(this, Logger, this.Settings, 
+                caption, url, width, height, mode);
+
             hostWindows.Add(childWindow);
             childWindow.Show();
         }
 
         public void ShowNotification(int timeout, string tipTitle, string tipText, ToolTipIcon toolTipIcon)
         {
-            ExoskeletonNotification.ShowBalloonTip(timeout, tipTitle, tipText, toolTipIcon);
+            ExoskeletonNotification.BalloonTipTitle = tipTitle;
+            ExoskeletonNotification.BalloonTipText = tipText;
+            ExoskeletonNotification.BalloonTipIcon = toolTipIcon;
+            ExoskeletonNotification.ShowBalloonTip(timeout);
         }
 
         public void ToggleFullscreen()
@@ -815,7 +830,7 @@ namespace Exoskeleton
         /// <returns>The 'active' settings class instance.</returns>
         public Settings GetCurrentSettings()
         {
-            return settings;
+            return this.Settings;
         }
 
         /// <summary>
@@ -847,6 +862,28 @@ namespace Exoskeleton
         private void RefreshTimer_Tick(object sender, EventArgs e)
         {
             HostWebBrowser.Refresh(WebBrowserRefreshOption.Completely);
+        }
+
+        private void consoleLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!this.Settings.ScriptingLoggerEnabled) return;
+
+            loggerForm.WindowState = FormWindowState.Normal;
+            Rectangle workingArea = Screen.GetWorkingArea(this);
+            loggerForm.Location = new Point(workingArea.Right - loggerForm.Width, 100);
+        }
+
+        private void ExoskeletonNotification_BalloonTipClicked(object sender, EventArgs e)
+        {
+            NotifyIcon ni = (NotifyIcon)sender;
+
+            // Somewhat hackish way to handle balloon tip click event differently
+            // when it came from logger... in that case restore logger so its visible.
+            if (ni.BalloonTipTitle.StartsWith("Console ") && 
+                loggerForm.WindowState == FormWindowState.Minimized)
+            {
+                loggerForm.WindowState = FormWindowState.Normal;
+            }
         }
 
         #endregion

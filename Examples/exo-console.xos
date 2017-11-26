@@ -9,7 +9,7 @@
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>false</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath>science.ico</WindowIconPath>
+  <WindowIconPath>{SettingsLocation}\\interactive-console\\images\\jango-fett.ico</WindowIconPath>
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory>.</WebServerHostDirectory>
