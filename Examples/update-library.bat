@@ -7,3 +7,4 @@ copy /Y exoskeleton.js\src\exoskeleton.js interactive-console\script
 copy /Y exoskeleton.js\src\exoskeleton.js markdown-viewer\script
 copy /Y exoskeleton.js\src\exoskeleton.js native-example\script
 copy /Y exoskeleton.js\src\exoskeleton.js radio-example\script
+copy /Y exoskeleton.js\src\exoskeleton.js webservice\script

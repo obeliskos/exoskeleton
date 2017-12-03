@@ -8,6 +8,8 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Exoskeleton.Classes
 {
@@ -28,7 +30,9 @@ namespace Exoskeleton.Classes
         private string _rootDirectory;
         private HttpListener _listener;
         private int _port;
-        MimeTypeMappings _mappings;
+        private MimeTypeMappings _mappings;
+        private IPrimaryHostWindow _primaryHost;
+        private Settings _settings;
 
         public int Port
         {
@@ -41,8 +45,11 @@ namespace Exoskeleton.Classes
         /// </summary>
         /// <param name="path">Directory path to serve.</param>
         /// <param name="port">Port of the server.</param>
-        public SimpleHTTPServer(string path, int port, MimeTypeMappings mappings)
+        public SimpleHTTPServer(IPrimaryHostWindow primaryHost, Settings settings,
+            string path, int port, MimeTypeMappings mappings)
         {
+            _primaryHost = primaryHost;
+            _settings = settings;
             _mappings = mappings;
             this.Initialize(path, port);
         }
@@ -51,7 +58,8 @@ namespace Exoskeleton.Classes
         /// Construct server with suitable port.
         /// </summary>
         /// <param name="path">Directory path to serve.</param>
-        public SimpleHTTPServer(string path, MimeTypeMappings mappings)
+        public SimpleHTTPServer(IPrimaryHostWindow primaryHost, Settings settings, 
+            string path, MimeTypeMappings mappings)
         {
             _mappings = mappings;
 
@@ -95,21 +103,93 @@ namespace Exoskeleton.Classes
             _listener.Start();
             while (true)
             {
+                string rawUrl;
+
                 try
                 {
                     HttpListenerContext context = _listener.GetContext();
+                    rawUrl = context.Request.RawUrl;
                     Process(context);
                 }
-                catch { }
+                catch
+                {
+                    return;
+                }
             }
         }
 
         private void Process(HttpListenerContext context)
         {
             string filename = context.Request.Url.AbsolutePath;
-            Console.WriteLine(filename);
             filename = filename.Substring(1);
-            filename = filename.Replace("%20", " ");
+            filename = System.Net.WebUtility.UrlDecode(filename);
+
+            // If WebServices are enabled, check to see if it is a webservice request
+            if (_settings.WebServerServicesEnabled && 
+                filename.ToLower().EndsWith(_settings.WebServerServicesExtension.ToLower()))
+            {
+                string body = null;
+                string[] bodyParams = null;
+                JObject bodyParamObject = new JObject();
+
+                // If this is an HTTP POST, decode the body params
+                if (context.Request.HasEntityBody)
+                {
+                    body = new StreamReader(context.Request.InputStream).ReadToEnd();
+
+                    bodyParams = body.Split('&');
+                    for (int idx = 0; idx < bodyParams.Length; idx++)
+                    {
+                        string[] keyValue = System.Net.WebUtility.UrlDecode(bodyParams[idx]).Split('=');
+                        bodyParamObject[keyValue[0]] = keyValue[1];
+                    }
+                }
+
+                // Decode any query string params
+                JObject queryObject = new JObject();
+                foreach(dynamic key in context.Request.QueryString.Keys)
+                {
+                    queryObject[key] = context.Request.QueryString[key];
+                }
+
+                // Formulate request to pass to webbrowser javascript
+                var emitServicePayload = new
+                {
+                    context.Request.IsLocal,
+                    Filename = filename,
+                    HttpMethod = context.Request.HttpMethod,
+                    QueryParams = queryObject,
+                    context.Request.HasEntityBody,
+                    BodyParams = bodyParamObject,
+                    RawUrl = System.Net.WebUtility.UrlDecode(context.Request.RawUrl),
+                    Url = System.Net.WebUtility.UrlDecode(context.Request.Url.ToString()),
+                    context.Request.UrlReferrer,
+                    context.Request.ContentLength64,
+                    context.Request.UserAgent,
+                    context.Request.UserHostName,
+                    context.Request.RequestTraceIdentifier
+                };
+
+                // Pass to primary host to invoke the service handler via javascript and get a response
+                dynamic response = _primaryHost.ProcessServiceRequest(emitServicePayload);
+
+                context.Response.ContentType = response.ContentType; // "application/octet-stream";
+                context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
+                context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
+                context.Response.AddHeader("X-Powered-By", "Exoskeleton");
+
+                // We expect the service javascript has returned a response property to stream as output
+                using (StreamWriter writer = new StreamWriter(context.Response.OutputStream))
+                {
+                    writer.Write(response.Response);
+                }
+
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
+                context.Response.OutputStream.Flush();
+                context.Response.OutputStream.Close();
+
+                return;
+            }
 
             if (string.IsNullOrEmpty(filename))
             {

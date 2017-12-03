@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <script src="script/exoskeleton.js"></script>
+    <script src="script/jquery-3.1.1.min.js"></script>
+    <script src="script/lokijs.js"></script>
+    <script src="script/index.js"></script>
+</head>
+<body>
+    <h3>Webservice Example</h3>
+
+    <p><i>This is an example webpage to demonstrate exoskeleton web services.  Web services must be enabled 
+    within your settings file and the extension/suffix can be modified there as well.  For this example,
+    we will leave the 'WebServerServicesExtention' set to '.svc'.</i></p>
+
+    <p>Webservices (in exoskeleton) are mostly useful for communicating and exchanging data with other
+    external applications.  You would not need to use web services to communicate within exoskeleton as 
+    the 'client' pages are hosted within exoskeleton and can do everything the service implementation could.
+    </p>
+
+    <p>
+        This example will allow you to launch a client test web page within an external browser.  That page
+        will communicate with this exoskeleton program which is configured to implement two web services :
+        <ul>
+            <li>GetContactList.svc</li>
+            <li>GetContact.svc</li>
+        </ul>
+    </p>
+
+    <br/>
+    <button onclick="launchClientPage()">Launch external client test page</button>
+</body>
+</html>

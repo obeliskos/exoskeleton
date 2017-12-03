@@ -211,7 +211,7 @@ namespace Exoskeleton
 
             if (this.Settings.WebServerSelfHost)
             {
-                actualPort = startServer();
+                startServer();
             }
 
             // if configured with startup commands, run them now...
@@ -391,7 +391,10 @@ namespace Exoskeleton
                 {
                     simpleServer.Stop();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.Write(ex.ToString());
+                }
             }
         }
 
@@ -408,12 +411,13 @@ namespace Exoskeleton
 
         private int startServer()
         {
-            int port = SimpleHTTPServer.GetOpenPort(this.Settings.WebServerListenPort);
-            simpleServer = new SimpleHTTPServer(this.Settings.WebServerHostDirectory, port, mappings);
+            actualPort = SimpleHTTPServer.GetOpenPort(this.Settings.WebServerListenPort);
 
-            return port;
+            string hostDirectory = ResolveExoUrlPath(this.Settings.WebServerHostDirectory);
+            simpleServer = new SimpleHTTPServer(this, this.Settings, hostDirectory, actualPort, mappings);
+
+            return actualPort;
         }
-
         #endregion
 
         #region WebBrowser Event Handlers and Eventing
@@ -461,6 +465,37 @@ namespace Exoskeleton
         public void RemoveHostWindow(IHostWindow hostWindow)
         {
             hostWindows.Remove(hostWindow);
+        }
+
+        /// <summary>
+        /// Used to marshall a web service request through the Host Web Browser via InvokeScript.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public dynamic ProcessServiceRequest(dynamic request)
+        {
+            if (!this.Settings.WebServerServicesEnabled) return null;
+
+            string[] requestParams = { JsonConvert.SerializeObject(request) };
+
+            if (HostWebBrowser.InvokeRequired)
+            {
+                string ijson = (string) this.Invoke(
+                    new Func<object>(() => 
+                        HostWebBrowser.Document.InvokeScript("exoskeletonProcessServiceRequest", requestParams))
+                );
+
+                if (ijson == null) return null;
+
+                dynamic dyno = JsonConvert.DeserializeObject(ijson);
+                return dyno;
+            }
+
+            string json = (string) HostWebBrowser.Document.InvokeScript("exoskeletonProcessServiceRequest", requestParams);
+
+            if (json == null) return null;
+
+            return JsonConvert.DeserializeObject(json);
         }
 
         #endregion
@@ -869,6 +904,7 @@ namespace Exoskeleton
             if (!this.Settings.ScriptingLoggerEnabled) return;
 
             loggerForm.WindowState = FormWindowState.Normal;
+            loggerForm.ShowInTaskbar = true;
             Rectangle workingArea = Screen.GetWorkingArea(this);
             loggerForm.Location = new Point(workingArea.Right - loggerForm.Width, 100);
         }

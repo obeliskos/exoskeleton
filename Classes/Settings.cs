@@ -45,6 +45,11 @@ namespace Exoskeleton.Classes
         public bool WebServerSelfHost { get; set; } = false;
         public int WebServerListenPort { get; set; } = 8080;
         public string WebServerHostDirectory { get; set; } = "";
+        // Web services are enabled with these settings.
+        // If a request is made for a url with this extension, we will
+        // invoke javascript on the main window to process it.
+        public bool WebServerServicesEnabled { get; set; } = true;
+        public string WebServerServicesExtension { get; set; } = ".svc";
 
         /// <summary>
         /// If user sets this to true, we will hide the webbrowser and they

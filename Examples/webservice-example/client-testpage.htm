@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <script src="script/jquery-3.1.1.min.js"></script>
+    <script src="script/client-testpage.js"></script>
+</head>
+<body>
+    <h3>Webservice Test Client Page</h3>
+
+    <p><i>This is an example of a webpage (which is not running under exoskeleton) to call web services
+    within an exoskeleton application. For this particular example we will serve this page up from the 
+    self-hosting exoskeleton web server functionality but it could in theory be served up from another 
+    web server. </i></p>
+
+    <p>This page will GET GetContactList.svc immediately on first load to get list of contacts
+    to populate list with.  When you select a contact from the list it will call GetContact.svc,
+    passing the contact 'name' as a POST parameter and receive a json object as a return value.
+    </p>
+
+    <table>
+    <tr>
+      <td valign="top">
+        <label><b>GetContactList.svc</b><label><br/>
+        <select id="ContactSelect" size="16" style="width:200px" onchange="contactSelected()"></select>
+      </td>
+      <td valign="top">
+        <label>GetContact.svc:</label><br/>
+        <textarea id="ContactResponseText" style="width:500px;height:250px"></textarea>
+      </td>
+    </tr>
+    </table>
+</body>
+</html>

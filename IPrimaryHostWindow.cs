@@ -10,5 +10,7 @@ namespace Exoskeleton
     {
         string ResolveExoUrlPath(string url);
         void RemoveHostWindow(IHostWindow hostWindow);
+
+        dynamic ProcessServiceRequest(dynamic request);
     }
 }

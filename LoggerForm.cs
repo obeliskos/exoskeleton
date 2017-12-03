@@ -284,6 +284,7 @@ namespace Exoskeleton
         {
             e.Cancel = true;
             WindowState = FormWindowState.Minimized;
+            ShowInTaskbar = false;
         }
     }
 }
