@@ -11,7 +11,7 @@
   <WindowAllowResize>true</WindowAllowResize>
   <WindowIconPath />
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
-  <NotifyOnLoggedWarnings>false</NotifyOnLoggedWarnings>
+  <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>false</NotifyOnLoggedInfo>
   <WebServerSelfHost>true</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>

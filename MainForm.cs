@@ -28,6 +28,7 @@ namespace Exoskeleton
         public string Title { get; set; } = "Main";
         public Settings Settings { get; set; } = null;
         public ILogWindow Logger { get; set; } = null;
+        public int ActualPort { get; set; } = 0;
 
         private MimeTypeMappings mappings;
         private LoggerForm loggerForm = null;
@@ -46,7 +47,6 @@ namespace Exoskeleton
         private bool fullscreen = false;
         // if multiple instances are running with same default port, actual port
         // will be next available
-        private int actualPort = 0;
 
         #region Form Initialization and Shutdown
 
@@ -243,7 +243,7 @@ namespace Exoskeleton
         public string ResolveExoUrlPath(string url)
         {
             string result = url
-                .Replace("{port}", actualPort.ToString())
+                .Replace("{port}", ActualPort.ToString())
                 .Replace("{ExecutableLocation}", Path.GetDirectoryName(Application.ExecutablePath))
                 .Replace("{CurrentLocation}", environmentLocationCurrent)
                 .Replace("{SettingsLocation}", environmentLocationSettings);
@@ -411,12 +411,12 @@ namespace Exoskeleton
 
         private int startServer()
         {
-            actualPort = SimpleHTTPServer.GetOpenPort(this.Settings.WebServerListenPort);
+            ActualPort = SimpleHTTPServer.GetOpenPort(this.Settings.WebServerListenPort);
 
             string hostDirectory = ResolveExoUrlPath(this.Settings.WebServerHostDirectory);
-            simpleServer = new SimpleHTTPServer(this, this.Settings, hostDirectory, actualPort, mappings);
+            simpleServer = new SimpleHTTPServer(this, this.Settings, hostDirectory, ActualPort, mappings);
 
-            return actualPort;
+            return ActualPort;
         }
         #endregion
 
@@ -482,7 +482,7 @@ namespace Exoskeleton
             {
                 string ijson = (string) this.Invoke(
                     new Func<object>(() => 
-                        HostWebBrowser.Document.InvokeScript("exoskeletonProcessServiceRequest", requestParams))
+                        HostWebBrowser.Document.InvokeScript("_exoskeletonProcessServiceRequest", requestParams))
                 );
 
                 if (ijson == null) return null;
@@ -491,7 +491,7 @@ namespace Exoskeleton
                 return dyno;
             }
 
-            string json = (string) HostWebBrowser.Document.InvokeScript("exoskeletonProcessServiceRequest", requestParams);
+            string json = (string) HostWebBrowser.Document.InvokeScript("_exoskeletonProcessServiceRequest", requestParams);
 
             if (json == null) return null;
 
@@ -518,7 +518,7 @@ namespace Exoskeleton
         {
             if (!url.StartsWith("@") && url.Contains("{port}"))
             {
-                url = this.Settings.WebBrowserBaseUrl.Replace("{port}", actualPort.ToString()) + url;
+                url = this.Settings.WebBrowserBaseUrl.Replace("{port}", ActualPort.ToString()) + url;
             }
 
             ChildWindow childWindow = new ChildWindow(this, Logger, this.Settings, 
@@ -586,7 +586,7 @@ namespace Exoskeleton
             // now tell each IHostWindow to emit that event with those params
             foreach (IHostWindow hostWindow in hostWindows)
             {
-                hostWindow.InvokeScript("exoskeletonEmitEvent", wrappedJson);
+                hostWindow.InvokeScript("_exoskeletonEmitEvent", wrappedJson);
             }
         }
 
@@ -606,7 +606,7 @@ namespace Exoskeleton
 
             foreach (IHostWindow hostWindow in hostWindows)
             {
-                hostWindow.InvokeScript("exoskeletonEmitEvent", args.ToArray());
+                hostWindow.InvokeScript("_exoskeletonEmitEvent", args.ToArray());
             }
         }
 
@@ -623,7 +623,7 @@ namespace Exoskeleton
             // out serialized event data will be second (1) element
             string[] wrappedJson = { name, JsonConvert.SerializeObject(data) };
 
-            this.InvokeScript("exoskeletonEmitEvent", wrappedJson);
+            this.InvokeScript("_exoskeletonEmitEvent", wrappedJson);
         }
 
         public object InvokeScript(string name, string[] args)
@@ -870,15 +870,29 @@ namespace Exoskeleton
 
         /// <summary>
         /// Returns the important exoskeleton environment locations. (Current, Settings, Executable)
+        /// Also including web server url locations (for use when self hosting)
         /// </summary>
         /// <returns>Dynamic object containing Executable, Settings, and Current locations.</returns>
         public dynamic GetLocations()
         {
+            string webServerRoot = Settings.WebServerSelfHost ?
+                ResolveExoUrlPath(Settings.WebBrowserBaseUrl) :
+                null;
+
+            int webServerListenPort = Settings.WebServerListenPort;
+
+            int webServerActualPort = Settings.WebServerSelfHost ?
+                ActualPort : 0;
+
             return new
             {
                 Executable = this.environmentLocationExecutable,
                 Settings = this.environmentLocationSettings,
-                Current = this.environmentLocationCurrent
+                Current = this.environmentLocationCurrent,
+                WebServerSelfHost = Settings.WebServerSelfHost,
+                WebServerRoot = webServerRoot,
+                WebServerListenPort = webServerListenPort,
+                WebServerActualPort = webServerActualPort
             };
         }
 

@@ -137,7 +137,7 @@ namespace Exoskeleton
             // out serialized event data will be second (1) element
             string[] wrappedJson = { name, JsonConvert.SerializeObject(data) };
 
-            this.InvokeScript("exoskeletonEmitEvent", wrappedJson);
+            this.InvokeScript("_exoskeletonEmitEvent", wrappedJson);
         }
 
         #endregion

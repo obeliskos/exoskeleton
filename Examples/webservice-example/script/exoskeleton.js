@@ -81,8 +81,32 @@
             }
 
             // establish global function for c# to broadcast events to
-            window.exoskeletonEmitEvent = function (eventName, eventData) {
+            window._exoskeletonEmitEvent = function (eventName, eventData) {
                 self.events.emit(eventName, JSON.parse(eventData));
+            };
+
+            this.serviceProcessors = [];
+
+            window._exoskeletonProcessServiceRequest = function (request) {
+                var response;
+
+                if (self.serviceProcessors.length === 0) {
+                    throw new Error("A web service request was issued when no serviceProcessors were registered.");
+                }
+
+                request = JSON.parse(request);
+
+                // iterate serviceProcessors and see if they provide a response
+                for (var idx = 0; idx < self.serviceProcessors.length; idx++) {
+                    response = self.serviceProcessors[idx](request);
+                    // the first registered processor to return a response fulfills the request
+                    if (response) {
+                        return JSON.stringify(response);
+                    }
+                }
+
+                // none of the registered serviceProcessors returned a reponse
+                return null;
             };
 
             // let's also assume control over errors raised and pipe them through our own logger
@@ -157,6 +181,34 @@
          */
         Exoskeleton.prototype.getVersion = function () {
             return this.exo.GetVersion();
+        };
+
+        /**
+         * Registers a javascript function for processing exoskeleton web service requests.
+         * This requires enabling web services in your settings file.
+         * @param {function} processor - Your web service processor function.
+         * @memberof Exoskeleton
+         * @instance
+         * @example
+         * function myServiceProcessor (request) {
+         *   if (request.AbsolutePath === "/version.svc") {
+         *     return {
+         *       ContentType: 'application/json',
+         *       Response: JSON.stringify({ name: 'myapp', major: 1, minor: 4, patch: 7 })
+         *     }
+         *   }
+         *
+         *   return null;
+         * }
+         * 
+         * exoskeleton.registerServiceProcessor(myServiceProcessor);
+         */
+        Exoskeleton.prototype.registerServiceProcessor = function (processor) {
+            if (typeof processor !== "function") {
+                throw new Error("A call to registerServiceProcessor must be passed a function as a parameter.");
+            }
+
+            this.serviceProcessors.push(processor);
         };
 
         /**

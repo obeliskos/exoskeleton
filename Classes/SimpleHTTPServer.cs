@@ -120,9 +120,8 @@ namespace Exoskeleton.Classes
 
         private void Process(HttpListenerContext context)
         {
-            string filename = context.Request.Url.AbsolutePath;
-            filename = filename.Substring(1);
-            filename = System.Net.WebUtility.UrlDecode(filename);
+            string abspath = System.Net.WebUtility.UrlDecode(context.Request.Url.AbsolutePath);
+            string filename = abspath.Substring(1);
 
             // If WebServices are enabled, check to see if it is a webservice request
             if (_settings.WebServerServicesEnabled && 
@@ -157,6 +156,7 @@ namespace Exoskeleton.Classes
                 {
                     context.Request.IsLocal,
                     Filename = filename,
+                    AbsolutePath = abspath,
                     HttpMethod = context.Request.HttpMethod,
                     QueryParams = queryObject,
                     context.Request.HasEntityBody,
