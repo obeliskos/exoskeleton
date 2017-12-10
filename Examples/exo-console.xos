@@ -4,15 +4,23 @@
   <CurrentDirectoryUseSettingsPath>false</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>true</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath>interactive-console</CurrentDirectoryProvidedPath>
+  <ApplicationShortName>ExoConsole</ApplicationShortName>
+  <ApplicationDescription>Interactive Console for Exoskeleton.</ApplicationDescription>
   <WindowTitle>Exoskeleton Interactive Console</WindowTitle>
   <WindowWidth>1280</WindowWidth>
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>false</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
   <WindowIconPath>{SettingsLocation}\\interactive-console\\images\\jango-fett.ico</WindowIconPath>
+  <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
+  <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
+  <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory>.</WebServerHostDirectory>
+  <WebServerServicesEnabled>true</WebServerServicesEnabled>
+  <WebServerServicesExtension>.svc</WebServerServicesExtension>
+  <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
   <WebBrowserDefaultUrl>{SettingsLocation}\\interactive-console\\index.htm</WebBrowserDefaultUrl>

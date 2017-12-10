@@ -4,6 +4,8 @@
   <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
+  <ApplicationShortName>API Example</ApplicationShortName>
+  <ApplicationDescription>Original API tester WebMode application.</ApplicationDescription>
   <WindowTitle>Exoskeleton API Sample</WindowTitle>
   <WindowWidth>860</WindowWidth>
   <WindowHeight>650</WindowHeight>
@@ -11,11 +13,13 @@
   <WindowAllowResize>true</WindowAllowResize>
   <WindowIconPath />
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
-  <NotifyOnLoggedWarnings>false</NotifyOnLoggedWarnings>
-  <NotifyOnLoggedInfo>false</NotifyOnLoggedInfo>
+  <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
+  <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>
   <WebServerSelfHost>true</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory>./api-example</WebServerHostDirectory>
+  <WebServerServicesEnabled>true</WebServerServicesEnabled>
+  <WebServerServicesExtension>.svc</WebServerServicesExtension>
   <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>

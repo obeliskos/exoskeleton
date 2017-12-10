@@ -4,6 +4,8 @@
   <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
+  <ApplicationShortName>NativeMode example</ApplicationShortName>
+  <ApplicationDescription>Exoskeleton 'NativeMode' example application.</ApplicationDescription>
   <WindowTitle>My Exoskeleton App</WindowTitle>
   <WindowWidth>960</WindowWidth>
   <WindowHeight>640</WindowHeight>
@@ -16,6 +18,8 @@
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory />
+  <WebServerServicesEnabled>true</WebServerServicesEnabled>
+  <WebServerServicesExtension>.svc</WebServerServicesExtension>
   <DefaultToNativeUi>true</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>

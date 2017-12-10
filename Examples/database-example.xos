@@ -4,18 +4,22 @@
   <CurrentDirectoryUseSettingsPath>false</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>true</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath>database-example</CurrentDirectoryProvidedPath>
+  <ApplicationShortName>Database Example</ApplicationShortName>
+  <ApplicationDescription>Database example using JSON stored in filesystem.</ApplicationDescription>
   <WindowTitle>Exoskeleton Database Sample</WindowTitle>
   <WindowWidth>1200</WindowWidth>
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath />
+  <WindowIconPath>{SettingsLocation}\\database-example\\images\\database-128.ico</WindowIconPath>
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
   <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8090</WebServerListenPort>
   <WebServerHostDirectory>.</WebServerHostDirectory>
+  <WebServerServicesEnabled>true</WebServerServicesEnabled>
+  <WebServerServicesExtension>.svc</WebServerServicesExtension>
   <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>

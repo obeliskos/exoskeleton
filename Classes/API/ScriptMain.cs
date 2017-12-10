@@ -70,7 +70,7 @@ namespace Exoskeleton.Classes.API
         /// <param name="message">The notification message.</param>
         public void ShowNotification(string title, string message)
         {
-            host.ShowNotification(4000, title, message, System.Windows.Forms.ToolTipIcon.Info);
+            host.ShowNotification(2000, title, message, System.Windows.Forms.ToolTipIcon.Info);
         }
 
         /// <summary>

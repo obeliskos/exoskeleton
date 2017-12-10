@@ -29,6 +29,9 @@ namespace Exoskeleton.Classes
         /// </summary>
         public string CurrentDirectoryProvidedPath { get; set; } = "";
 
+        public string ApplicationShortName { get; set; } = "DefaultExoApp";
+        public string ApplicationDescription { get; set; } = "Default Exoskeleton App Description.";
+
         public string WindowTitle { get; set; } = "My Exoskeleton App";
         public int WindowWidth { get; set; } = 820;
         public int WindowHeight { get; set; } = 512;

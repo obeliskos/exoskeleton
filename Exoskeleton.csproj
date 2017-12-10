@@ -66,12 +66,19 @@
     <Compile Include="Classes\API\ScriptToolstrip.cs" />
     <Compile Include="Classes\API\ScriptUtility.cs" />
     <Compile Include="Classes\FormLayoutBase.cs" />
+    <Compile Include="Classes\GlobalSettings.cs" />
     <Compile Include="Classes\MimeTypeMappings.cs" />
     <Compile Include="Classes\API\ScriptMain.cs" />
     <Compile Include="Classes\API\ScriptSession.cs" />
     <Compile Include="Classes\API\ScriptSystem.cs" />
     <Compile Include="Classes\API\ScriptLogger.cs" />
     <Compile Include="Classes\StringCipher.cs" />
+    <Compile Include="HistorySelectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HistorySelectorForm.Designer.cs">
+      <DependentUpon>HistorySelectorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IHostWindow.cs" />
     <Compile Include="ILogWindow.cs" />
     <Compile Include="IPrimaryHostWindow.cs" />
@@ -98,6 +105,9 @@
     <Compile Include="Classes\SimpleHTTPServer.cs" />
     <EmbeddedResource Include="ChildWindow.resx">
       <DependentUpon>ChildWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HistorySelectorForm.resx">
+      <DependentUpon>HistorySelectorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoggerForm.resx">
       <DependentUpon>LoggerForm.cs</DependentUpon>
@@ -131,6 +141,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="application.ico" />
+    <None Include="images\add.png" />
+    <None Include="images\delete.png" />
     <Content Include="windows.ico" />
   </ItemGroup>
   <ItemGroup>

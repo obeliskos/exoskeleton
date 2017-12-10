@@ -4,6 +4,8 @@
   <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
+  <ApplicationShortName>Internet Radio App</ApplicationShortName>
+  <ApplicationDescription>Exoskeleton 'MixedUI' mode example application.</ApplicationDescription>
   <WindowTitle>Exoskeleton Radio - Mixed UI Example</WindowTitle>
   <WindowWidth>600</WindowWidth>
   <WindowHeight>640</WindowHeight>
@@ -16,6 +18,8 @@
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory />
+  <WebServerServicesEnabled>true</WebServerServicesEnabled>
+  <WebServerServicesExtension>.svc</WebServerServicesExtension>
   <DefaultToNativeUi>true</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>

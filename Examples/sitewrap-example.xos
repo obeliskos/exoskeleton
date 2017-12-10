@@ -4,15 +4,23 @@
   <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
+  <ApplicationShortName>Sitewrap Example</ApplicationShortName>
+  <ApplicationDescription>Exoskeleton 'SiteWrap' Example.</ApplicationDescription>
   <WindowTitle>Wikipedia Site Wrapper Sample</WindowTitle>
   <WindowWidth>1200</WindowWidth>
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
   <WindowIconPath>.\sitewrap-example\Wikipedia globe.ico</WindowIconPath>
+  <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
+  <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
+  <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory />
+  <WebServerServicesEnabled>true</WebServerServicesEnabled>
+  <WebServerServicesExtension>.svc</WebServerServicesExtension>
+  <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
   <WebBrowserDefaultUrl>https://en.wikipedia.org/wiki/Main_Page</WebBrowserDefaultUrl>
@@ -30,4 +38,9 @@
   <ScriptingComObjectsEnabled>false</ScriptingComObjectsEnabled>
   <ScriptingNetEnabled>false</ScriptingNetEnabled>
   <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
+  <ScriptingMenuEnabled>false</ScriptingMenuEnabled>
+  <ScriptingToolStripEnabled>false</ScriptingToolStripEnabled>
+  <ScriptingStatusStripEnabled>false</ScriptingStatusStripEnabled>
+  <ScriptingDialogEnabled>true</ScriptingDialogEnabled>
+  <ScriptingFormEnabled>true</ScriptingFormEnabled>
 </Settings>
