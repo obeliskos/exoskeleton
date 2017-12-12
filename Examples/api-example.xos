@@ -11,7 +11,7 @@
   <WindowHeight>650</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath />
+  <WindowIconPath>{SettingsLocation}\\api-example\\network.ico</WindowIconPath>
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
   <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>

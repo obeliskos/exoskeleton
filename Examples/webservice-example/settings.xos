@@ -4,14 +4,14 @@
   <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
-  <ApplicationShortName>WebService example</ApplicationShortName>
+  <ApplicationShortName>WebService Example</ApplicationShortName>
   <ApplicationDescription>Exoskeleton webservices example application.</ApplicationDescription>
   <WindowTitle>Exoskeleton Webservice Sample</WindowTitle>
   <WindowWidth>860</WindowWidth>
   <WindowHeight>650</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath>{SettingsLocation}\\images\\webservice.ico</WindowIconPath>
+  <WindowIconPath>{SettingsLocation}\\images\\db-service.ico</WindowIconPath>
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
   <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>false</NotifyOnLoggedInfo>

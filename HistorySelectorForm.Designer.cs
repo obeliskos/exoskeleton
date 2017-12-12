@@ -41,6 +41,7 @@
             this.RemoveSettingsButton = new System.Windows.Forms.Button();
             this.AddSettingsButton = new System.Windows.Forms.Button();
             this.SettingsSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.toolTipButtons = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -64,12 +65,13 @@
             this.label1.Location = new System.Drawing.Point(6, 21);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(277, 21);
+            this.label1.Size = new System.Drawing.Size(327, 21);
             this.label1.TabIndex = 7;
-            this.label1.Text = "Select an application from history :";
+            this.label1.Text = "Select an application to run from history :";
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(419, 20);
@@ -85,17 +87,17 @@
             this.panel2.Controls.Add(this.ExitButton);
             this.panel2.Controls.Add(this.SelectButton);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 422);
+            this.panel2.Location = new System.Drawing.Point(0, 416);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(644, 62);
+            this.panel2.Size = new System.Drawing.Size(644, 68);
             this.panel2.TabIndex = 3;
             // 
             // ExitButton
             // 
             this.ExitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ExitButton.ForeColor = System.Drawing.Color.Black;
-            this.ExitButton.Location = new System.Drawing.Point(515, 10);
+            this.ExitButton.Location = new System.Drawing.Point(515, 14);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(110, 37);
             this.ExitButton.TabIndex = 3;
@@ -107,7 +109,7 @@
             // 
             this.SelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SelectButton.ForeColor = System.Drawing.Color.Black;
-            this.SelectButton.Location = new System.Drawing.Point(280, 10);
+            this.SelectButton.Location = new System.Drawing.Point(280, 14);
             this.SelectButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SelectButton.Name = "SelectButton";
             this.SelectButton.Size = new System.Drawing.Size(216, 37);
@@ -125,7 +127,7 @@
             this.AppHistoryListView.Location = new System.Drawing.Point(0, 68);
             this.AppHistoryListView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.AppHistoryListView.Name = "AppHistoryListView";
-            this.AppHistoryListView.Size = new System.Drawing.Size(644, 354);
+            this.AppHistoryListView.Size = new System.Drawing.Size(644, 348);
             this.AppHistoryListView.SmallImageList = this.IconImageList;
             this.AppHistoryListView.TabIndex = 7;
             this.AppHistoryListView.UseCompatibleStateImageBehavior = false;
@@ -142,20 +144,22 @@
             // RemoveSettingsButton
             // 
             this.RemoveSettingsButton.Image = global::Exoskeleton.Properties.Resources.delete;
-            this.RemoveSettingsButton.Location = new System.Drawing.Point(72, 10);
+            this.RemoveSettingsButton.Location = new System.Drawing.Point(72, 14);
             this.RemoveSettingsButton.Name = "RemoveSettingsButton";
             this.RemoveSettingsButton.Size = new System.Drawing.Size(41, 41);
             this.RemoveSettingsButton.TabIndex = 5;
+            this.toolTipButtons.SetToolTip(this.RemoveSettingsButton, "Remove app launch info (does not delete settings file)");
             this.RemoveSettingsButton.UseVisualStyleBackColor = true;
             this.RemoveSettingsButton.Click += new System.EventHandler(this.RemoveSettingsButton_Click);
             // 
             // AddSettingsButton
             // 
             this.AddSettingsButton.Image = global::Exoskeleton.Properties.Resources.add;
-            this.AddSettingsButton.Location = new System.Drawing.Point(16, 10);
+            this.AddSettingsButton.Location = new System.Drawing.Point(16, 14);
             this.AddSettingsButton.Name = "AddSettingsButton";
             this.AddSettingsButton.Size = new System.Drawing.Size(41, 41);
             this.AddSettingsButton.TabIndex = 4;
+            this.toolTipButtons.SetToolTip(this.AddSettingsButton, "Generate a new settings.xos file and register it");
             this.AddSettingsButton.UseVisualStyleBackColor = true;
             this.AddSettingsButton.Click += new System.EventHandler(this.AddSettingsButton_Click);
             // 
@@ -201,5 +205,6 @@
         private System.Windows.Forms.Button RemoveSettingsButton;
         private System.Windows.Forms.Button AddSettingsButton;
         private System.Windows.Forms.SaveFileDialog SettingsSaveFileDialog;
+        private System.Windows.Forms.ToolTip toolTipButtons;
     }
 }

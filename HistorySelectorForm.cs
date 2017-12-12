@@ -100,60 +100,80 @@ namespace Exoskeleton
 
         private void AppHistoryListView_DragDrop(object sender, DragEventArgs e)
         {
+            List<string> failedFiles = new List<string>();
+
             try
             {
                 string[] settingsFilenames = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 foreach (string settingsFilename in settingsFilenames)
                 {
-                    Settings settings = Settings.Load(settingsFilename, false);
                     FileInfo fi = new FileInfo(settingsFilename);
-
-                    ExoAppLaunchInfo ali = new ExoAppLaunchInfo();
-
-                    ali.SettingsPath = settingsFilename;
-                    ali.IconPath = settings.WindowIconPath;
-                    ali.ShortName = settings.ApplicationShortName;
-                    ali.Description = settings.ApplicationDescription;
-
-                    ListViewItem lvi = new ListViewItem();
-                    lvi.Text = ali.ShortName;
-
-                    string revisedIconPath = ali.IconPath
-                        .Replace("{CurrentLocation}", Environment.CurrentDirectory)
-                        .Replace("{SettingsLocation}", fi.DirectoryName);
-
-                    if (revisedIconPath != "" && File.Exists(revisedIconPath))
+                    if (!fi.Extension.ToLower().Equals(".xos") && !fi.Extension.ToLower().Equals(".xml"))
                     {
-                        // Haven't quite loaded the settings file so calling IPrimaryHost.ResolveExoUrlPath 
-                        // won't work.  For now just substitute manually.
-
-                        Icon appIcon = new Icon(revisedIconPath);
-                        IconImageList.Images.Add(appIcon);
-                        lvi.ImageIndex = IconImageList.Images.Count - 1;
-                        lvi.Tag = ali.SettingsPath;
+                        failedFiles.Add(fi.Name);
                     }
                     else
                     {
-                        IconImageList.Images.Add(this.Icon);
-                        lvi.ImageIndex = IconImageList.Images.Count - 1;
-                        lvi.Tag = ali.SettingsPath;
+                        Settings settings = Settings.Load(settingsFilename, false);
+
+                        ExoAppLaunchInfo ali = new ExoAppLaunchInfo();
+
+                        ali.SettingsPath = settingsFilename;
+                        ali.IconPath = settings.WindowIconPath;
+                        ali.ShortName = settings.ApplicationShortName;
+                        ali.Description = settings.ApplicationDescription;
+
+                        ListViewItem lvi = new ListViewItem();
+                        lvi.Text = ali.ShortName;
+
+                        string revisedIconPath = ali.IconPath
+                            .Replace("{CurrentLocation}", Environment.CurrentDirectory)
+                            .Replace("{SettingsLocation}", fi.DirectoryName);
+
+                        if (revisedIconPath != "" && File.Exists(revisedIconPath))
+                        {
+                            // Haven't quite loaded the settings file so calling IPrimaryHost.ResolveExoUrlPath 
+                            // won't work.  For now just substitute manually.
+
+                            Icon appIcon = new Icon(revisedIconPath);
+                            IconImageList.Images.Add(appIcon);
+                            lvi.ImageIndex = IconImageList.Images.Count - 1;
+                            lvi.Tag = ali.SettingsPath;
+                        }
+                        else
+                        {
+                            IconImageList.Images.Add(this.Icon);
+                            lvi.ImageIndex = IconImageList.Images.Count - 1;
+                            lvi.Tag = ali.SettingsPath;
+                        }
+
+                        // We can however make sure the global settings knows about this 'history' even 
+                        // if we don't select it immediately.
+                        this.primaryHost.AddLaunchHistory(
+                            ali.SettingsPath,
+                            ali.ShortName,
+                            ali.Description,
+                            ali.IconPath
+                        );
+
+                        AppHistoryListView.Items.Add(lvi);
+
+                        AppHistoryListView.SelectedIndices.Clear();
+                        AppHistoryListView.SelectedIndices.Add(AppHistoryListView.Items.Count - 1);
+                        AppHistoryListView.Focus();
                     }
+                }
 
-                    // We can however make sure the global settings knows about this 'history' even 
-                    // if we don't select it immediately.
-                    this.primaryHost.AddLaunchHistory(
-                        ali.SettingsPath,
-                        ali.ShortName,
-                        ali.Description,
-                        ali.IconPath
+                if (settingsFilenames.Count() > 0)
+                {
+                    string files = String.Join(Environment.NewLine, failedFiles.ToArray());
+                    MessageBox.Show(
+                        files, 
+                        "The following files are not .xos or .xml files", 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Error
                     );
-
-                    AppHistoryListView.Items.Add(lvi);
-
-                    AppHistoryListView.SelectedIndices.Clear();
-                    AppHistoryListView.SelectedIndices.Add(AppHistoryListView.Items.Count - 1);
-                    AppHistoryListView.Focus();
                 }
             }
             catch (Exception ex)
@@ -233,17 +253,6 @@ namespace Exoskeleton
                     string selectedFilepath = (string)AppHistoryListView.SelectedItems[0].Tag;
                     primaryHost.RemoveLaunchHistory(selectedFilepath);
                     AppHistoryListView.Items.Remove(lvi);
-
-                    dr = MessageBox.Show(
-                        "Should we delete the actual settings file '" + lvi.Text + "' from filesystem as well?",
-                        "Confirm file deletion",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Exclamation);
-
-                    if (dr == DialogResult.Yes)
-                    {
-                        File.Delete(selectedFilepath);
-                    }
                 }
             }
         }
