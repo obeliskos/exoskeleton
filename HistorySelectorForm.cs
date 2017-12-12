@@ -165,7 +165,7 @@ namespace Exoskeleton
                     }
                 }
 
-                if (settingsFilenames.Count() > 0)
+                if (failedFiles.Count() > 0)
                 {
                     string files = String.Join(Environment.NewLine, failedFiles.ToArray());
                     MessageBox.Show(
