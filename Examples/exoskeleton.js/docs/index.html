@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>exoskeleton.js 0.7.0 | Documentation</title>
+  <title>exoskeleton.js 0.8.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>exoskeleton.js</h3>
-          <div class='mb1'><code>0.7.0</code></div>
+          <div class='mb1'><code>0.8.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -240,6 +240,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#dialogaddlistview'
+                        class='regular pre-open'>
+                        #addListView
+                      </a></li>
+                      
+                      <li><a
                         href='#dialogaddmaskedtextbox'
                         class='regular pre-open'>
                         #addMaskedTextBox
@@ -279,6 +285,12 @@
                         href='#dialogaddtextbox'
                         class='regular pre-open'>
                         #addTextBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#dialogaddtreeview'
+                        class='regular pre-open'>
+                        #addTreeView
                       </a></li>
                       
                       <li><a
@@ -488,6 +500,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#filecombinepathsarray'
+                        class='regular pre-open'>
+                        #combinePathsArray
+                      </a></li>
+                      
+                      <li><a
                         href='#filecopyfile'
                         class='regular pre-open'>
                         #copyFile
@@ -672,6 +690,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#formaddlistview'
+                        class='regular pre-open'>
+                        #addListView
+                      </a></li>
+                      
+                      <li><a
                         href='#formaddmaskedtextbox'
                         class='regular pre-open'>
                         #addMaskedTextBox
@@ -711,6 +735,12 @@
                         href='#formaddtextbox'
                         class='regular pre-open'>
                         #addTextBox
+                      </a></li>
+                      
+                      <li><a
+                        href='#formaddtreeview'
+                        class='regular pre-open'>
+                        #addTreeView
                       </a></li>
                       
                       <li><a
@@ -934,6 +964,42 @@
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#mediacreateimagelist'
+                        class='regular pre-open'>
+                        #createImageList
+                      </a></li>
+                      
+                      <li><a
+                        href='#mediaimagelistexists'
+                        class='regular pre-open'>
+                        #imageListExists
+                      </a></li>
+                      
+                      <li><a
+                        href='#medialoadimagelist'
+                        class='regular pre-open'>
+                        #loadImageList
+                      </a></li>
+                      
+                      <li><a
+                        href='#mediaclearimagelist'
+                        class='regular pre-open'>
+                        #clearImageList
+                      </a></li>
+                      
+                      <li><a
+                        href='#mediaremoveimagelist'
+                        class='regular pre-open'>
+                        #removeImageList
+                      </a></li>
+                      
+                      <li><a
+                        href='#mediaremoveallimagelists'
+                        class='regular pre-open'>
+                        #removeAllImageLists
+                      </a></li>
                       
                       <li><a
                         href='#mediaspeak'
@@ -3366,6 +3432,135 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
       </div>
     </div>
   
+    <div class='border-bottom' id='dialogaddlistview'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addListView(dialogName, listview, parentName?, payload?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a ListView to a named exoskeleton dialog.
+ListView has the following view modes (defined by 'View' property) :</p>
+<ul>
+<li>LargeIcon: 'Thumbnail-like' list using 'Items' payload property (no subitems).</li>
+<li>Details - Tabular list using 'ItemArrays' 2-dimensional payload property for subitems.</li>
+<li>SmallIcon - 'Left-to-Right, Top-to-Bottom' list needing only 'Items' payload property.</li>
+<li>List - 'Top-to-Bottom' list needing only 'Items' payload property.</li>
+<li>Tile - 'L->R, T->B' list with large icons, displaying subitems as multiple lines (2D 'ItemArrays')</li>
+</ul>
+<p>The various allowable payloads include :</p>
+<ul>
+<li>'Columns' - In a tabular view mode these define the column captions/sizes ('Text', 'Width')</li>
+<li>'Items' - Items array supports single dimension array where each array element is a different list item.</li>
+<li>'ItemArrays' - ItemArrays support 2-dimension array allowing multiple columns for each 'row'.</li>
+<li>'AppendItems' - AppendItems is the same as 'Items' but the list will not be cleared before adding those (new) items.</li>
+<li>'AppendItemArrays' - AppendItemArrays will not clear the listview before appending the new items.</li>
+</ul>
+<p>See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listview(v=vs.110).aspx">ms docs</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addListView(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listview: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dialogName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listview</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to ListView
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    can be used to pass 'Columns', 'Items' and/or 'ItemArrays' properties
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// LargeIcon view mode - depends on already established named imagelist</span>
+<span class="hljs-keyword">var</span> controlProperties = { <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryList"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>, <span class="hljs-attr">View</span>: <span class="hljs-string">"LargeIcon"</span> };
+<span class="hljs-keyword">var</span> controlPayload = {
+  <span class="hljs-attr">LargeImageList</span>: <span class="hljs-string">"LargeListIcons"</span>,
+  <span class="hljs-attr">Items</span>: [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"One"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">0</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Two"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">1</span> }]
+};
+exoskeleton.dialog.addListView(<span class="hljs-string">"ExampleDialog"</span>, controlProperties, <span class="hljs-string">"AddressPanel"</span>, controlPayload);
+
+<span class="hljs-comment">// Details view mode example</span>
+controlProperties = { <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryList"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>, <span class="hljs-attr">View</span>: <span class="hljs-string">"Details"</span>, <span class="hljs-attr">FullRowSelect</span>: <span class="hljs-literal">true</span> }
+<span class="hljs-keyword">var</span> controlPayload = {
+  <span class="hljs-attr">SmallImageList</span>: <span class="hljs-string">"SmallListIcons"</span>,
+  <span class="hljs-attr">Columns</span>: [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Country"</span>, <span class="hljs-attr">Width</span>:<span class="hljs-number">100</span> }, { <span class="hljs-attr">Text</span>:<span class="hljs-string">"Info1"</span>, <span class="hljs-attr">Width</span>: <span class="hljs-number">120</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Info2"</span>, <span class="hljs-attr">Width</span>: <span class="hljs-number">100</span> }],
+  <span class="hljs-attr">ItemArrays</span>: [
+    [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Item One"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">0</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Stuff about One"</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"More stuff about One"</span> }],
+    [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Item Two"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">1</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Stuff about Two"</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"More stuff about Two"</span> }],
+    [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Item Three"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">2</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Stuff about Three"</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"More stuff about Three"</span> }]
+  ]
+};
+exoskeleton.dialog.addListView(<span class="hljs-string">"ExampleDialog"</span>, controlProperties, <span class="hljs-string">"AddressPanel"</span>, controlPayload);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='dialogaddmaskedtextbox'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -4005,6 +4200,103 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textb
   <span class="hljs-attr">Text</span>: user.addr1
 }, <span class="hljs-string">"AddressPanel"</span>);</pre>
     
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='dialogaddtreeview'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addTreeView(dialogName, treeview, parentName?, payload, textbox)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a TreeView to a named exoskeleton form.
+Emits 'NodeMouseClick' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.treeview(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>addTreeView(dialogName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, treeview: any, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, textbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dialogName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>treeview</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    used to pass 'ImageList' and 'Nodes' collection
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>textbox</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to TextBox
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
   
 
   
@@ -6588,6 +6880,91 @@ exoskeleton.enc.decryptFiles(<span class="hljs-string">"c:\\source"</span>, <spa
       </div>
     </div>
   
+    <div class='border-bottom' id='filecombinepathsarray'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>combinePathsArray(source, paths)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Combines multiple paths with a single base/source path.</p>
+
+
+  <div class='pre p1 fill-light mt0'>combinePathsArray(source: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, paths: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>source</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    base path to join paths with.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>paths</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+	    array of paths to join against base path.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
+        Array of combined path strings.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> paths = exoskeleton.file.combinePathsArray(<span class="hljs-string">"c:\images"</span>, [<span class="hljs-string">'img1.jpg'</span>, <span class="hljs-string">'img2.jpg'</span>, <span class="hljs-string">'img3.jpg'</span>]);
+<span class="hljs-built_in">console</span>.log(paths);
+<span class="hljs-comment">// logs: ['c:\images\img1.jpg','c:\images\img2.jpg','c:\images\img3.jpg']</span></pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='filecopyfile'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -8898,6 +9275,144 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
       </div>
     </div>
   
+    <div class='border-bottom' id='formaddlistview'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addListView(formName, listview, parentName?, emitEvents?, payload?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a ListView to a named exoskeleton form.
+ListView has the following view modes (defined by 'View' property) :</p>
+<ul>
+<li>LargeIcon: 'Thumbnail-like' list using 'Items' payload property (no subitems).</li>
+<li>Details - Tabular list using 'ItemArrays' 2-dimensional payload property for subitems.</li>
+<li>SmallIcon - 'Left-to-Right, Top-to-Bottom' list needing only 'Items' payload property.</li>
+<li>List - 'Top-to-Bottom' list needing only 'Items' payload property.</li>
+<li>Tile - 'L->R, T->B' list with large icons, displaying subitems as multiple lines (2D 'ItemArrays')</li>
+</ul>
+<p>The various allowable payloads include :</p>
+<ul>
+<li>'Columns' - In a tabular view mode these define the column captions/sizes ('Text', 'Width')</li>
+<li>'Items' - Items array supports single dimension array where each array element is a different list item.</li>
+<li>'ItemArrays' - ItemArrays support 2-dimension array allowing multiple columns for each 'row'.</li>
+<li>'AppendItems' - AppendItems is the same as 'Items' but the list will not be cleared before adding those (new) items.</li>
+<li>'AppendItemArrays' - AppendItemArrays will not clear the listview before appending the new items.</li>
+</ul>
+<p>See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listview(v=vs.110).aspx">ms docs</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>addListView(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listview: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your form.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listview</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    initial properties to assign to ListView
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    can be used to pass 'Columns', 'Items' and/or 'ItemArrays' properties
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// LargeIcon view mode - depends on already established named imagelist</span>
+<span class="hljs-keyword">var</span> controlProperties = { <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryList"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>, <span class="hljs-attr">View</span>: <span class="hljs-string">"LargeIcon"</span> };
+<span class="hljs-keyword">var</span> controlPayload = {
+  <span class="hljs-attr">LargeImageList</span>: <span class="hljs-string">"LargeListIcons"</span>,
+  <span class="hljs-attr">Items</span>: [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"One"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">0</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Two"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">1</span> }]
+};
+exoskeleton.form.addListView(<span class="hljs-string">"ExampleForm"</span>, controlProperties, <span class="hljs-string">"AddressPanel"</span>, <span class="hljs-literal">false</span>, controlPayload);
+
+<span class="hljs-comment">// Details view mode example</span>
+controlProperties = { <span class="hljs-attr">Name</span>: <span class="hljs-string">"CountryList"</span>, <span class="hljs-attr">Top</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Left</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">Dock</span>: <span class="hljs-string">'Fill'</span>, <span class="hljs-attr">View</span>: <span class="hljs-string">"Details"</span>, <span class="hljs-attr">FullRowSelect</span>: <span class="hljs-literal">true</span> }
+<span class="hljs-keyword">var</span> controlPayload = {
+  <span class="hljs-attr">SmallImageList</span>: <span class="hljs-string">"SmallListIcons"</span>,
+  <span class="hljs-attr">Columns</span>: [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Country"</span>, <span class="hljs-attr">Width</span>:<span class="hljs-number">100</span> }, { <span class="hljs-attr">Text</span>:<span class="hljs-string">"Info1"</span>, <span class="hljs-attr">Width</span>: <span class="hljs-number">120</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Info2"</span>, <span class="hljs-attr">Width</span>: <span class="hljs-number">100</span> }],
+  <span class="hljs-attr">ItemArrays</span>: [
+    [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Item One"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">0</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Stuff about One"</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"More stuff about One"</span> } ],
+    [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Item Two"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">1</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Stuff about Two"</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"More stuff about Two"</span> } ],
+    [{ <span class="hljs-attr">Text</span>: <span class="hljs-string">"Item Three"</span>, <span class="hljs-attr">ImageIndex</span>: <span class="hljs-number">2</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"Stuff about Three"</span> }, { <span class="hljs-attr">Text</span>: <span class="hljs-string">"More stuff about Three"</span> }]
+  ]
+};
+exoskeleton.form.addListView(<span class="hljs-string">"ExampleForm"</span>, controlProperties, <span class="hljs-string">"AddressPanel"</span>, <span class="hljs-literal">false</span>, controlPayload);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='formaddmaskedtextbox'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -9612,6 +10127,112 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textb
   <span class="hljs-attr">Text</span>: user.addr1
 }, <span class="hljs-string">"AddressPanel"</span>);</pre>
     
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='formaddtreeview'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>addTreeView(formName, treeview, parentName?, emitEvents?, payload, textbox)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Adds a TreeView to a named exoskeleton form.
+Emits 'NodeMouseClick' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
+See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.treeview(v=vs.110).aspx">ms docs</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>addTreeView(formName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, treeview: any, parentName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, emitEvents: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, payload: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, textbox: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    unique name to dialog/form to refer to your dialog.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>treeview</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional name of parent control to nest within
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitEvents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+	    whether this control should emit event(s)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>payload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    used to pass 'ImageList' and 'Nodes' collection
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>textbox</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    initial properties to assign to TextBox
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
   
 
   
@@ -11711,6 +12332,417 @@ switchToNativeUi() can be used to toggle back and forth dynamically.</p>
   
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
+  
+    <div class='border-bottom' id='mediacreateimagelist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>createImageList(name, properties?)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Provisions a new (empty) named imagelist</p>
+
+
+  <div class='pre p1 fill-light mt0'>createImageList(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, properties: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name to associate with imagelist
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>properties</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    allows configuring properties on imagelist
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.media.createImageList(<span class="hljs-string">"listViewIcons"</span>, {
+  <span class="hljs-attr">ColorDepth</span>: <span class="hljs-number">32</span>,
+  <span class="hljs-attr">ImageSize</span>: <span class="hljs-string">"128, 128"</span>,
+  <span class="hljs-attr">TransparentColor</span>: <span class="hljs-string">"Transparent"</span>
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='mediaimagelistexists'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>imageListExists(name)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Determines if an imagelist exists by the given name</p>
+
+
+  <div class='pre p1 fill-light mt0'>imageListExists(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): bool</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name of the imagelist to check for existence of
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>bool</code>:
+        whether the imagelist exists
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='medialoadimagelist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>loadImageList(name, filenameList)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Populates an image list with images</p>
+
+
+  <div class='pre p1 fill-light mt0'>loadImageList(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, filenameList: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name of the imagelist to load
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>filenameList</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    list of absolute pathnames to images
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.media.loadImageList(<span class="hljs-string">"listViewImages"</span>, [
+  <span class="hljs-string">"c:\imgs\img1.png"</span>,
+  <span class="hljs-string">"c:\imgs\img2.jpg"</span>,
+  <span class="hljs-string">"c:\imgs\img3.bmp"</span>,
+  <span class="hljs-string">"c:\imgs\img4.gif"</span>
+]);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='mediaclearimagelist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>clearImageList(name)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Clears a named imagelist but leaves it created for future use.</p>
+
+
+  <div class='pre p1 fill-light mt0'>clearImageList(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the name of the imagelist to clear
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.media.clearImageList(<span class="hljs-string">"listViewImages"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='mediaremoveimagelist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>removeImageList(name)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Removes a named imagelist from memory.</p>
+
+
+  <div class='pre p1 fill-light mt0'>removeImageList(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the name of the imagelist to remove
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.media.removeImageList(name);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='mediaremoveallimagelists'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>removeAllImageLists()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Removes all named imagelists from memory.</p>
+
+
+  <div class='pre p1 fill-light mt0'>removeAllImageLists()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>exoskeleton.media.removeAllImageLists();</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
   
     <div class='border-bottom' id='mediaspeak'>
       <div class="clearfix small pointer toggle-sibling">

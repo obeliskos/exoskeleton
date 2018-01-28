@@ -51,6 +51,7 @@ namespace Exoskeleton
         public string Title { get; set; } = "Main";
         public Settings Settings { get; set; } = null;
         public ILogWindow Logger { get; set; } = null;
+        public Dictionary<string, ImageList> ImageListDictionary { get; set; }
 
         /// <summary>
         /// If multiple instances are running with same default port, actual port will be next available.
@@ -63,6 +64,8 @@ namespace Exoskeleton
         private ScriptInterface scriptInterface;
         private List<IHostWindow> hostWindows = new List<IHostWindow>();
         private Dictionary<string, bool> cacheRefreshed = new Dictionary<string, bool>();
+
+        public ScriptInterface GetScriptInterface { get { return scriptInterface; } }
 
         private string environmentLocationSettings;
         private string environmentLocationCurrent { get { return Environment.CurrentDirectory; } }
@@ -346,6 +349,8 @@ namespace Exoskeleton
 
             // Preserve default exoskeleton icon for app history launcher, if needed
             this.DefaultIcon = this.Icon;
+
+            this.ImageListDictionary = new Dictionary<string, ImageList>();
 
             InitializeSettings();
             SetupRegistryKeys();

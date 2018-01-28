@@ -193,11 +193,30 @@ namespace Exoskeleton.Classes.API
         /// Combine multiple paths into one.  
         /// </summary>
         /// <param name="pathsJson">Json encoded array of paths to combine.</param>
-        /// <returns></returns>
+        /// <returns>A single combined path.</returns>
         public string CombinePaths(string pathsJson)
         {
             List<string> paths = JsonConvert.DeserializeObject<List<string>>(pathsJson);
             return Path.Combine(paths.ToArray());
+        }
+
+        /// <summary>
+        /// Combines multiple paths to a single source path.
+        /// </summary>
+        /// <param name="source">Base folder to combine with</param>
+        /// <param name="pathsJson">Json encoded array of paths to combine with source.</param>
+        /// <returns>List of combined paths.</returns>
+        public string CombinePathsArray(string source, string pathsJson)
+        {
+            List<string> paths = JsonConvert.DeserializeObject<List<string>>(pathsJson);
+
+            List<string> combinedPaths = new List<string>();
+            foreach(string path in paths)
+            {
+                combinedPaths.Add(Path.Combine(source, path));
+            }
+
+            return JsonConvert.SerializeObject(combinedPaths);
         }
 
         /// <summary>

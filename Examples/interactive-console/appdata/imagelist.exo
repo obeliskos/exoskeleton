@@ -1,0 +1,91 @@
+var imageIndex = 0;
+
+// assemble fully qualified pathnames to images
+var locations = exoskeleton.getLocations();
+var logoPath = exoskeleton.file.combinePaths([
+  locations.Current,
+  "images"
+]);
+var imagePaths = exoskeleton.file.combinePathsArray(
+  logoPath,
+  [
+  	"door_exit.png",
+    "fullscreen.png",
+    "run.png",
+    "save.png"
+  ]
+);
+
+// since exo console allows multiple execution of this script let's remove any previous image list.
+// we could also call exoskeleton.media.imageListExists("PanelImages") to see if already loaded.
+exoskeleton.media.removeAllImageLists();
+exoskeleton.media.createImageList("PanelImages", {
+  ImageSize: [128,128],
+  ColorDepth: 32
+});
+
+// now create and load the image list 
+exoskeleton.media.loadImageList("PanelImages", imagePaths);
+
+// establish form definition
+var formDefinition = {
+  MiddlePanel: {
+    Type: "Panel",
+    Payload: {
+      BackgroundImageList: "PanelImages",
+      BackgroundImageIndex: 0
+    },
+    Properties: {
+      Dock: "Fill",
+      BackColor: "192,192,192",	
+      Height: 20,
+      Width: 20,
+      Top: 100,
+      Left: 10,
+      Padding: "10, 10, 10, 10",
+      /* ImageLayout enum values : Center, None, Stretch, Tile, Zoom */
+      BackgroundImageLayout: "Zoom"
+    }
+  },
+  CycleButton: {
+    Type: "Button",
+    EmitEvents: true,
+    Properties: {
+      Text: "Cycle Image",
+      Dock: "Bottom",
+      Height: 40,
+      UseVisualStyleBackColor: true
+    }
+  }
+};
+
+// initialize new form
+exoskeleton.form.initialize("ExampleForm", {
+  Text: "Example Exoskeleton Form", 
+  Width: 720, 
+  Height: 400,
+  Font: "Microsoft Sans Serif, 12pt", // json.net can parse this
+});
+
+// now apply that definition
+exoskeleton.form.applyDefinition(
+  "ExampleForm", 
+  JSON.stringify(formDefinition)
+);
+
+// show the form
+exoskeleton.form.show("ExampleForm");
+
+// since exo console allows multiple execution of this script, let's remove any previous handler
+exoskeleton.events.clear("ExampleForm.CycleButton.Click");
+
+// add button handler to cycle images
+exoskeleton.events.on("ExampleForm.CycleButton.Click", function(data) {
+  if (++imageIndex > 3) { imageIndex = 0 };
+  exoskeleton.form.applyControlPayload("ExampleForm", "MiddlePanel", {
+    BackgroundImageList: "PanelImages",
+    BackgroundImageIndex: imageIndex
+  });
+});
+
+

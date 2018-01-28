@@ -46,7 +46,7 @@ namespace Exoskeleton.Classes.API
             Settings exosettings = host.Settings;
 
             this.Main = exosettings.ScriptingEnabled ? new ScriptMain(host) : null;
-            this.Media = exosettings.ScriptingMediaEnabled ? new ScriptMedia() : null;
+            this.Media = exosettings.ScriptingMediaEnabled ? new ScriptMedia(host) : null;
             this.File = exosettings.ScriptingFilesEnabled ? new ScriptFile(host) : null;
             this.Proc = exosettings.ScriptingProcessEnabled ? new ScriptProcess() : null;
             this.Session = new ScriptSession();

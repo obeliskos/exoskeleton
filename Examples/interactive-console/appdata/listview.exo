@@ -1,0 +1,179 @@
+/**
+ * ListView control example
+ * 
+ * The ListView control is useful for display lists with icons and/or tabulated results
+ */
+ 
+var viewMode = 0;
+
+// assemble fully qualified pathnames to images
+var locations = exoskeleton.getLocations();
+var logoPath = exoskeleton.file.combinePaths([
+  locations.Current,
+  "images"
+]);
+var imagePaths = exoskeleton.file.combinePathsArray(
+  logoPath,
+  [
+  	"door_exit.png",
+    "fullscreen.png",
+    "run.png",
+    "save.png"
+  ]
+);
+
+// since exo console allows multiple execution of this script let's remove any previous image list.
+// we could also call exoskeleton.media.imageListExists("PanelImages") to see if already loaded.
+exoskeleton.media.removeAllImageLists();
+exoskeleton.media.createImageList("ListViewImages", {
+  ImageSize: [128,128],
+  ColorDepth: 32
+});
+exoskeleton.media.createImageList("ListViewSmallImages", {
+  ImageSize: [32,32],
+  ColorDepth: 32
+});
+
+// now create and load the image lists (same filenames, different scaling as defined above)
+exoskeleton.media.loadImageList("ListViewImages", imagePaths);
+exoskeleton.media.loadImageList("ListViewSmallImages", imagePaths);
+
+// establish form definition
+var formDefinition = {
+  ExampleListView: {
+    Type: "ListView",
+    EmitEvents: true,
+    Payload: {
+      LargeImageList: "ListViewImages",
+      SmallImageList: "ListViewSmallImages",
+      Items: [
+      	{ Text: "One", ImageIndex: 0 },
+      	{ Text: "Two", ImageIndex: 1 },
+      	{ Text: "Three", ImageIndex: 2 },
+      	{ Text: "Four", ImageIndex: 3 }
+      ]
+    },
+    Properties: {
+      Dock: "Fill",
+      Top: 100,
+      Left: 10,
+      Padding: "10, 10, 10, 10",
+      View: "LargeIcon"
+    }
+  },
+  ViewToggleButton: {
+    Type: "Button",
+    EmitEvents: true,
+    Properties: {
+      Text: "Cycle View Mode",
+      Dock: "Bottom",
+      Height: 40,
+      UseVisualStyleBackColor: true
+    }
+  }
+};
+
+// initialize new form
+exoskeleton.form.initialize("ExampleForm", {
+  Text: "Example Exoskeleton Form", 
+  Width: 720, 
+  Height: 400,
+  Font: "Microsoft Sans Serif, 12pt", // json.net can parse this
+});
+
+// now apply that definition
+exoskeleton.form.applyDefinition(
+  "ExampleForm", 
+  JSON.stringify(formDefinition)
+);
+
+// show the form
+exoskeleton.form.show("ExampleForm");
+
+
+
+// since exo console allows multiple execution of this script, let's remove any previous handlers
+exoskeleton.events.clear("ExampleForm.ExampleListView.DoubleClick");
+exoskeleton.events.clear("ExampleForm.ViewToggleButton.Click");
+
+// listview currently supports 'Click' and 'DoubleClick' events... we will use double click
+exoskeleton.events.on("ExampleForm.ExampleListView.DoubleClick", function(data) {
+  // event data / control properties include :
+  // - SelectedItems object array (Text, Tag, ImageIndex, ImageKey), 
+  // - SelectedIndices integer array
+  xo.logObject(data);
+});
+
+// add button handler to cycle images
+exoskeleton.events.on("ExampleForm.ViewToggleButton.Click", function(data) {
+  var controlProperties, controlPayload;
+  
+  if (++viewMode > 4) { viewMode = 0 };
+  
+  switch (viewMode) {
+    case 0 : 	controlProperties = { View: "LargeIcon" }; 
+    			controlPayload = {       
+                	Items: [
+      					{ Text: "One", ImageIndex: 0 },
+      					{ Text: "Two", ImageIndex: 1 },
+      					{ Text: "Three", ImageIndex: 2 },
+      					{ Text: "Four", ImageIndex: 3 }
+      				]
+				};
+                xo.logText("LargeIcon mode");
+    			break;
+    case 1 : 	controlProperties = { View: "Details", FullRowSelect: true }; 
+    			controlPayload = { 
+                	Columns: [ {Text:'Item',Width:100}, {Text:'Data1',Width:100}, {Text:'Data2',Width:200}],
+                	ItemArrays: [
+                      [{Text:"One",ImageIndex:0}, {Text:"OneData1"}, {Text:"OneData2"}],
+                      [{Text:"Two",ImageIndex:1}, {Text:"TwoData1"}, {Text:"TwoData2"}],
+                      [{Text:"Three",ImageIndex:2}, {Text:"ThreeData1"}, {Text:"ThreeData2"}],
+                      [{Text:"Four",ImageIndex:3}, {Text:"FourData1"}, {Text:"FourData2"}]
+                    ]
+                };
+                xo.logText("Details mode");
+    			break;
+    case 2 : 	controlProperties = { View: "SmallIcon" }; 
+    			controlPayload = { 
+                	Columns: [ {Text:'Item',Width:100}, {Text:'Data1',Width:100}, {Text:'Data2',Width:200}],
+                	ItemArrays: [
+                      [{Text:"One",ImageIndex:0}, {Text:"OneData1"}, {Text:"OneData2"}],
+                      [{Text:"Two",ImageIndex:1}, {Text:"TwoData1"}, {Text:"TwoData2"}],
+                      [{Text:"Three",ImageIndex:2}, {Text:"ThreeData1"}, {Text:"ThreeData2"}],
+                      [{Text:"Four",ImageIndex:3}, {Text:"FourData1"}, {Text:"FourData2"}]
+                    ]
+                };
+                xo.logText("SmallIcon mode");
+    			break;
+    case 3 : 	controlProperties = { View: "List" }; 
+    			controlPayload = {       
+                	Items: [
+      					{ Text: "One", ImageIndex: 0 },
+      					{ Text: "Two", ImageIndex: 1 },
+      					{ Text: "Three", ImageIndex: 2 },
+      					{ Text: "Four", ImageIndex: 3 }
+      				]
+				};
+                xo.logText("List mode");
+    			break;
+    case 4 : 	controlProperties = { View: "Tile" }; 
+    			controlPayload = { 
+                	Columns: [ {Text:'Item',Width:100}, {Text:'Data1',Width:100}, {Text:'Data2',Width:200}],
+                	ItemArrays: [
+                      [{Text:"One",ImageIndex:0}, {Text:"OneData1"}, {Text:"OneData2"}],
+                      [{Text:"Two",ImageIndex:1}, {Text:"TwoData1"}, {Text:"TwoData2"}],
+                      [{Text:"Three",ImageIndex:2}, {Text:"ThreeData1"}, {Text:"ThreeData2"}],
+                      [{Text:"Four",ImageIndex:3}, {Text:"FourData1"}, {Text:"FourData2"}]
+                    ]
+                };
+                xo.logText("Tile mode");
+    			break;
+    default : break;
+  }
+  
+  exoskeleton.form.applyControlProperties("ExampleForm", { ExampleListView: controlProperties });
+  exoskeleton.form.applyControlPayload("ExampleForm", "ExampleListView", controlPayload);
+});
+
+

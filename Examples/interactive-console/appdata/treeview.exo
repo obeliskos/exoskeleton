@@ -1,0 +1,112 @@
+/**
+ * TreeView control example
+ * 
+ * The TreeView control is useful for displaying hierarchical data
+ */
+ 
+var viewMode = 0;
+
+// assemble fully qualified pathnames to images
+var locations = exoskeleton.getLocations();
+var logoPath = exoskeleton.file.combinePaths([
+  locations.Current,
+  "images"
+]);
+var imagePaths = exoskeleton.file.combinePathsArray(
+  logoPath,
+  [
+  	"door_exit.png",
+    "fullscreen.png",
+    "run.png",
+    "save.png"
+  ]
+);
+
+// since exo console allows multiple execution of this script let's remove any previous image list.
+// we could also call exoskeleton.media.imageListExists("PanelImages") to see if already loaded.
+exoskeleton.media.removeAllImageLists();
+exoskeleton.media.createImageList("TreeViewImages", {
+  ImageSize: [32,32],
+  ColorDepth: 32
+});
+
+// now create and load the image lists (same filenames, different scaling as defined above)
+exoskeleton.media.loadImageList("TreeViewImages", imagePaths);
+
+// establish form definition
+var formDefinition = {
+  ExampleTreeView: {
+    Type: "TreeView",
+    EmitEvents: true,
+    Payload: {
+      ImageList: "TreeViewImages",
+      Nodes: [
+      	{ 
+        	Text: "ExampleRoot", 
+            ImageIndex: 0,
+            SelectedImageIndex: 0,
+            Nodes: [
+            	{ Text: "One", ImageIndex: 1, SelectedImageIndex: 1 }, 
+                { 
+                	Text: "Two", 
+                    ImageIndex: 0,
+                    SelectedImageIndex: 0,
+                    Nodes: [
+                    	{ Text: "2a", ImageIndex: 2, SelectedImageIndex: 2 }, 
+                        { Text: "2b", ImageIndex: 3, SelectedImageIndex: 3 }
+                    ] 
+                }, 
+                { Text: "Three", ImageIndex: 3, SelectedImageIndex: 3 }
+          	]
+		}
+      ]
+    },
+    Properties: {
+      Dock: "Fill",
+      Top: 100,
+      Left: 10,
+      Padding: "10, 10, 10, 10"
+    }
+  },
+  InfoLabel: {
+    Type: "Label",
+    Properties: {
+      Text: "Double-Click a node to trigger event to log selected node info",
+      Dock: "Bottom",
+      Height: 40,
+      UseVisualStyleBackColor: true
+    }
+  }
+};
+
+// initialize new form
+exoskeleton.form.initialize("ExampleForm", {
+  Text: "Example Exoskeleton Form", 
+  Width: 720, 
+  Height: 400,
+  Font: "Microsoft Sans Serif, 12pt", // json.net can parse this
+});
+
+// now apply that definition
+exoskeleton.form.applyDefinition(
+  "ExampleForm", 
+  JSON.stringify(formDefinition)
+);
+
+// show the form
+exoskeleton.form.show("ExampleForm");
+
+
+// since exo console allows multiple execution of this script, let's remove any previous handlers
+exoskeleton.events.clear("ExampleForm.ExampleTreeView.NodeMouseDoubleClick");
+exoskeleton.events.clear("ExampleForm.ViewToggleButton.Click");
+
+// listview currently supports 'Click' and 'DoubleClick' events... we will use double click
+exoskeleton.events.on("ExampleForm.ExampleTreeView.NodeMouseDoubleClick", function(data) {
+  // event data / control properties include :
+  // - SelectedItems object array (Text, Tag, ImageIndex, ImageKey), 
+  // - SelectedIndices integer array
+  xo.logObject(data);
+});
+
+

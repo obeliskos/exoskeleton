@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Exoskeleton.Classes;
+using Exoskeleton.Classes.API;
 
 namespace Exoskeleton
 {
@@ -17,6 +18,8 @@ namespace Exoskeleton
         string Title { get; set; }
         Settings Settings { get; set; }
         ILogWindow Logger { get; set; }
+        ScriptInterface GetScriptInterface { get; }
+        Dictionary<string, ImageList> ImageListDictionary { get; set; }
 
         void ToggleFullscreen();
         void EnterFullscreen();

@@ -19,6 +19,7 @@ namespace Exoskeleton
         public Settings Settings { get; set; }
         public ILogWindow Logger { get; set; }
         public string Title { get; set; }
+        public Dictionary<string, ImageList> ImageListDictionary { get; set; }
 
         private IPrimaryHostWindow parent;
         private ScriptInterface scriptInterface;
@@ -26,7 +27,7 @@ namespace Exoskeleton
         private bool fullscreen = false;
         private string uri;
 
-        //private ILogWindow logger;
+        public ScriptInterface GetScriptInterface { get { return scriptInterface; } }
 
         #region Form Level Constructor and Events
 
@@ -37,6 +38,8 @@ namespace Exoskeleton
             this.Settings = settings;
             this.uri = uri;
             this.Title = caption;
+
+            this.ImageListDictionary = new Dictionary<string, ImageList>();
 
             Logger = logger;
             Logger.AttachHost(this, caption, null);

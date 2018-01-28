@@ -388,6 +388,9 @@
             if (typeof payload === "undefined") {
                 payload = null;
             }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
 
             this.exoDialog.AddComboBox(dialogName, comboBox, parentName, false, payload);
         };
@@ -565,8 +568,75 @@
             if (typeof payload === "undefined") {
                 payload = null;
             }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
 
             this.exoDialog.AddListBox(dialogName, listbox, parentName, false, payload);
+        };
+
+        /**
+         * Adds a ListView to a named exoskeleton dialog.
+         * ListView has the following view modes (defined by 'View' property) :
+         * - LargeIcon: 'Thumbnail-like' list using 'Items' payload property (no subitems).
+         * - Details - Tabular list using 'ItemArrays' 2-dimensional payload property for subitems.
+         * - SmallIcon - 'Left-to-Right, Top-to-Bottom' list needing only 'Items' payload property.
+         * - List - 'Top-to-Bottom' list needing only 'Items' payload property.
+         * - Tile - 'L->R, T->B' list with large icons, displaying subitems as multiple lines (2D 'ItemArrays')
+         *
+         * The various allowable payloads include :
+         * - 'Columns' - In a tabular view mode these define the column captions/sizes ('Text', 'Width')
+         * - 'Items' - Items array supports single dimension array where each array element is a different list item.
+         * - 'ItemArrays' - ItemArrays support 2-dimension array allowing multiple columns for each 'row'.
+         * - 'AppendItems' - AppendItems is the same as 'Items' but the list will not be cleared before adding those (new) items.
+         * - 'AppendItemArrays' - AppendItemArrays will not clear the listview before appending the new items.
+         *
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.listview(v=vs.110).aspx ms docs}.
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
+         * @param {object|string} listview - initial properties to assign to ListView
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @param {string=} payload - can be used to pass 'Columns', 'Items' and/or 'ItemArrays' properties
+         * @memberof Dialog
+         * @instance
+         * @example
+         * // LargeIcon view mode - depends on already established named imagelist
+         * var controlProperties = { Name: "CountryList", Top: 10, Left: 10, Dock: 'Fill', View: "LargeIcon" };
+         * var controlPayload = {
+         *   LargeImageList: "LargeListIcons",
+         *   Items: [{ Text: "One", ImageIndex: 0 }, { Text: "Two", ImageIndex: 1 }]
+         * };
+         * exoskeleton.dialog.addListView("ExampleDialog", controlProperties, "AddressPanel", controlPayload);
+         *
+         * // Details view mode example
+         * controlProperties = { Name: "CountryList", Top: 10, Left: 10, Dock: 'Fill', View: "Details", FullRowSelect: true }
+         * var controlPayload = {
+         *   SmallImageList: "SmallListIcons",
+         *   Columns: [{ Text: "Country", Width:100 }, { Text:"Info1", Width: 120 }, { Text: "Info2", Width: 100 }],
+         *   ItemArrays: [
+         *     [{ Text: "Item One", ImageIndex: 0 }, { Text: "Stuff about One" }, { Text: "More stuff about One" }],
+         *     [{ Text: "Item Two", ImageIndex: 1 }, { Text: "Stuff about Two" }, { Text: "More stuff about Two" }],
+         *     [{ Text: "Item Three", ImageIndex: 2 }, { Text: "Stuff about Three" }, { Text: "More stuff about Three" }]
+         *   ]
+         * };
+         * exoskeleton.dialog.addListView("ExampleDialog", controlProperties, "AddressPanel", controlPayload);
+         */
+        Dialog.prototype.addListView = function (dialogName, listview, parentName, payload) {
+            if (typeof listview === "object") {
+                listview = JSON.stringify(listview);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
+
+            this.exoDialog.AddListView(dialogName, listview, parentName, false, payload);
         };
 
         /**
@@ -714,7 +784,10 @@
             if (typeof picbox === "object") {
                 picbox = JSON.stringify(picbox);
             }
-            if (typeof payload === "object") {
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+            else if (typeof payload === "object") {
                 payload = JSON.stringify(payload);
             }
 
@@ -795,7 +868,7 @@
             if (typeof payload === "undefined") {
                 payload = null;
             }
-            else {
+            else if (typeof payload === "object") {
                 payload = JSON.stringify(payload);
             }
 
@@ -1545,7 +1618,28 @@
          */
         File.prototype.combinePaths = function (paths) {
             var pathsJson = JSON.stringify(paths);
+
             return this.exoFile.CombinePaths(pathsJson);
+        };
+
+        /**
+         * Combines multiple paths with a single base/source path.
+         * @param {string} source - base path to join paths with.
+         * @param {string[]} paths - array of paths to join against base path.
+         * @returns {string[]} - Array of combined path strings.
+         * @memberof File
+         * @instance
+         * @example
+         * var paths = exoskeleton.file.combinePathsArray("c:\images", ['img1.jpg', 'img2.jpg', 'img3.jpg']);
+         * console.log(paths);
+         * // logs: ['c:\images\img1.jpg','c:\images\img2.jpg','c:\images\img3.jpg']
+         */
+        File.prototype.combinePathsArray = function (source, paths) {
+            var pathsJson = JSON.stringify(paths);
+
+            var result = this.exoFile.CombinePathsArray(source, pathsJson);
+
+            return result?JSON.parse(result):null;
         };
 
         /**
@@ -1969,6 +2063,9 @@
             if (typeof payload === "undefined") {
                 payload = null;
             }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
 
             this.exoForm.AddComboBox(formName, comboBox, parentName, emitEvents, payload);
         };
@@ -2175,8 +2272,80 @@
             if (typeof payload === "undefined") {
                 payload = null;
             }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
 
             this.exoForm.AddListBox(formName, listbox, parentName, emitEvents, payload);
+        };
+
+        /**
+         * Adds a ListView to a named exoskeleton form. 
+         * ListView has the following view modes (defined by 'View' property) :
+         * - LargeIcon: 'Thumbnail-like' list using 'Items' payload property (no subitems).
+         * - Details - Tabular list using 'ItemArrays' 2-dimensional payload property for subitems.
+         * - SmallIcon - 'Left-to-Right, Top-to-Bottom' list needing only 'Items' payload property.
+         * - List - 'Top-to-Bottom' list needing only 'Items' payload property.
+         * - Tile - 'L->R, T->B' list with large icons, displaying subitems as multiple lines (2D 'ItemArrays')
+         *
+         * The various allowable payloads include :
+         * - 'Columns' - In a tabular view mode these define the column captions/sizes ('Text', 'Width')
+         * - 'Items' - Items array supports single dimension array where each array element is a different list item.
+         * - 'ItemArrays' - ItemArrays support 2-dimension array allowing multiple columns for each 'row'.
+         * - 'AppendItems' - AppendItems is the same as 'Items' but the list will not be cleared before adding those (new) items.
+         * - 'AppendItemArrays' - AppendItemArrays will not clear the listview before appending the new items.
+         *
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.listview(v=vs.110).aspx ms docs}.
+         * @param {string} formName - unique name to dialog/form to refer to your form.
+         * @param {object|string} listview - initial properties to assign to ListView
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @param {boolean=} emitEvents - whether this control should emit event(s)
+         * @param {string=} payload - can be used to pass 'Columns', 'Items' and/or 'ItemArrays' properties
+         * @memberof Form
+         * @instance
+         * @example
+         * // LargeIcon view mode - depends on already established named imagelist
+         * var controlProperties = { Name: "CountryList", Top: 10, Left: 10, Dock: 'Fill', View: "LargeIcon" };
+         * var controlPayload = {
+         *   LargeImageList: "LargeListIcons",
+         *   Items: [{ Text: "One", ImageIndex: 0 }, { Text: "Two", ImageIndex: 1 }]
+         * };
+         * exoskeleton.form.addListView("ExampleForm", controlProperties, "AddressPanel", false, controlPayload);
+         *
+         * // Details view mode example
+         * controlProperties = { Name: "CountryList", Top: 10, Left: 10, Dock: 'Fill', View: "Details", FullRowSelect: true }
+         * var controlPayload = {
+         *   SmallImageList: "SmallListIcons",
+         *   Columns: [{ Text: "Country", Width:100 }, { Text:"Info1", Width: 120 }, { Text: "Info2", Width: 100 }],
+         *   ItemArrays: [
+         *     [{ Text: "Item One", ImageIndex: 0 }, { Text: "Stuff about One" }, { Text: "More stuff about One" } ],
+         *     [{ Text: "Item Two", ImageIndex: 1 }, { Text: "Stuff about Two" }, { Text: "More stuff about Two" } ],
+         *     [{ Text: "Item Three", ImageIndex: 2 }, { Text: "Stuff about Three" }, { Text: "More stuff about Three" }]
+         *   ]
+         * };
+         * exoskeleton.form.addListView("ExampleForm", controlProperties, "AddressPanel", false, controlPayload);
+         */
+        Form.prototype.addListView = function (formName, listview, parentName, emitEvents, payload) {
+            if (typeof listview === "object") {
+                listview = JSON.stringify(listview);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            if (typeof emitEvents === "undefined") {
+                emitEvents = false;
+            }
+
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
+
+            this.exoForm.AddListView(formName, listview, parentName, emitEvents, payload);
         };
 
         /**
@@ -2349,7 +2518,10 @@
             if (typeof picbox === "object") {
                 picbox = JSON.stringify(picbox);
             }
-            if (typeof payload === "object") {
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+            else if (typeof payload === "object") {
                 payload = JSON.stringify(payload);
             }
 
@@ -2448,7 +2620,7 @@
             if (typeof payload === "undefined") {
                 payload = null;
             }
-            else {
+            else if (typeof payload === "object") {
                 payload = JSON.stringify(payload);
             }
 
@@ -2981,6 +3153,106 @@
         function Media(exoMedia) {
             this.exoMedia = exoMedia;
         }
+
+        /**
+         * Provisions a new (empty) named imagelist
+         *
+         * @param {string} name - name to associate with imagelist
+         * @param {object=} properties - allows configuring properties on imagelist
+         * @memberof Media
+         * @instance
+         * @example
+         * exoskeleton.media.createImageList("listViewIcons", {
+         *   ColorDepth: 32,
+         *   ImageSize: "128, 128",
+         *   TransparentColor: "Transparent"
+         * });
+         */
+        Media.prototype.createImageList = function (name, properties) {
+            if (typeof properties === "undefined") {
+                properties = null;
+            }
+
+            if (typeof properties === "object" && properties !== null) {
+                properties = JSON.stringify(properties);
+            }
+
+            this.exoMedia.CreateImageList(name, properties);
+        };
+
+        /**
+         * Determines if an imagelist exists by the given name
+         * @param {string} name - name of the imagelist to check for existence of
+         * @returns {bool} whether the imagelist exists
+         * @memberof Media
+         * @instance
+         */
+        Media.prototype.imageListExists = function (name) {
+            return this.exoMedia.ImageListExists(name);
+        };
+
+        /**
+         * Populates an image list with images
+         *
+         * @param {string} name - name of the imagelist to load
+         * @param {array} filenameList - list of absolute pathnames to images
+         * @memberof Media
+         * @instance
+         * @example
+         * exoskeleton.media.loadImageList("listViewImages", [
+         *   "c:\imgs\img1.png",
+         *   "c:\imgs\img2.jpg",
+         *   "c:\imgs\img3.bmp",
+         *   "c:\imgs\img4.gif"
+         * ]);
+         */
+        Media.prototype.loadImageList = function (name, filenameList) {
+            if (!Array.isArray(filenameList)) {
+                throw new Error("loadImageList expects a filenameList of array type");
+            }
+
+            filenameList = JSON.stringify(filenameList);
+
+            this.exoMedia.LoadImageList(name, filenameList);
+        };
+
+        /**
+         * Clears a named imagelist but leaves it created for future use.
+         *
+         * @param {string} name - the name of the imagelist to clear
+         * @memberof Media
+         * @instance
+         * @example
+         * exoskeleton.media.clearImageList("listViewImages");
+         */
+        Media.prototype.clearImageList = function (name) {
+            this.exoMedia.ClearImageList(name);
+        };
+
+        /**
+         * Removes a named imagelist from memory.
+         *
+         * @param {string} name - the name of the imagelist to remove
+         * @memberof Media
+         * @instance
+         * @example
+         * exoskeleton.media.removeImageList(name);
+         */
+        Media.prototype.removeImageList = function (name) {
+            this.exoMedia.RemoveImageList(name);
+        };
+
+        /**
+         * Removes all named imagelists from memory.
+         *
+         * @memberof Media
+         * @instance
+         * @example
+         * exoskeleton.media.removeAllImageLists();
+         */
+        Media.prototype.removeAllImageLists = function () {
+            this.exoMedia.removeAllImageLists();
+        };
 
         /**
          * Invokes text-to-speech to speak the provided message.

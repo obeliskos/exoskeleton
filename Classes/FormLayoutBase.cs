@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.ListViewItem;
 
 namespace Exoskeleton.Classes
 {
@@ -19,6 +20,8 @@ namespace Exoskeleton.Classes
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public class FormLayoutBase : IDisposable
     {
+        protected class ImageListPlaceHolder : Control {}
+
         protected IHostWindow host;
 
         protected string nativeContainer = "$host";
@@ -211,6 +214,34 @@ namespace Exoskeleton.Classes
                 };
             }
 
+            if (control.GetType() == typeof(ListView))
+            {
+                ((ListView)control).Click += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".Click"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+                ((ListView)control).DoubleClick += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".DoubleClick"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
+            if (control.GetType() == typeof(TreeView))
+            {
+                ((TreeView)control).NodeMouseClick += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".NodeMouseClick"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+                ((TreeView)control).NodeMouseDoubleClick += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".NodeMouseDoubleClick"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
+            }
+
             if (control.GetType() == typeof(CheckBox))
             {
                 ((CheckBox)control).CheckedChanged += (sender, args) =>
@@ -359,6 +390,25 @@ namespace Exoskeleton.Classes
                 }
             }
 
+            // Panel may be associated with background Image from ImageList
+            if (control.GetType() == typeof(Panel))
+            {
+                Panel p = (Panel)control;
+
+                if (pdef["BackgroundImageList"] != null)
+                {
+                    if (pdef["BackgroundImageIndex"] != null)
+                    {
+                        p.BackgroundImage = host.ImageListDictionary[(string)pdef["BackgroundImageList"]].Images[(int)pdef["BackgroundImageIndex"]];
+                    }
+
+                    if (pdef["BackgroundImageKey"] != null)
+                    {
+                        p.BackgroundImage = host.ImageListDictionary[(string)pdef["BackgroundImageList"]].Images[(string)pdef["BackgroundImageKey"]];
+                    }
+                }
+            }
+
             // ListBox payload may contain array of objects to databind.
             // This expects that 'DisplayMember' and 'ValueMember' properties are set.
             if (control.GetType() == typeof(ListBox))
@@ -450,6 +500,167 @@ namespace Exoskeleton.Classes
                     ((DataGridView) control).DataSource = dynObjArray;
                 }
             }
+
+            if (control.GetType() == typeof(ListView))
+            {
+                ListView ctl = (ListView)control;
+
+                if (pdef["LargeImageList"] != null)
+                {
+                    ctl.LargeImageList = host.ImageListDictionary[(string)pdef["LargeImageList"]];
+                }
+
+                if (pdef["SmallImageList"] != null)
+                {
+                    ctl.SmallImageList = host.ImageListDictionary[(string)pdef["SmallImageList"]];
+                }
+
+                if (pdef["Columns"] != null)
+                {
+                    ctl.Columns.Clear();
+
+                    JArray cols = (JArray) pdef["Columns"];
+
+                    foreach(JObject col in cols)
+                    {
+                        ColumnHeader ch = new ColumnHeader();
+
+                        if (col["Text"] != null) { ch.Text = (string)col["Text"]; }
+                        if (col["Width"] != null) { ch.Width = (int)col["Width"]; }
+
+                        ctl.Columns.Add(ch);
+                    }
+                }
+
+                // Items array supports single dimension array where each array element is a different list item.
+                // AppendItems is the same as above but the list will not be cleared before adding those (new) items.
+                if (pdef["Items"] != null || pdef["AppendItems"] != null)
+                {
+                    JArray items;
+
+                    if (pdef["AppendItems"] != null)
+                    {
+                        items = (JArray)pdef["AppendItems"];
+                    }
+                    else
+                    {
+                        ctl.Items.Clear();
+                        items = (JArray)pdef["Items"];
+                    }
+
+                    foreach (dynamic item in items)
+                    {
+                        ListViewItem lvi = new ListViewItem();
+                        if (item["Text"] != null) { lvi.Text = (string)item["Text"]; }
+                        if (item["Tag"] != null) { lvi.Tag = item["Tag"]; }
+                        if (item["ImageIndex"] != null) { lvi.ImageIndex = (int)item["ImageIndex"]; }
+
+                        ctl.Items.Add(lvi);
+                    }
+                }
+
+                // ItemArrays support 2-dimension array allowing multiple columns for each 'row'.
+                // AppendItemArrays will not clear the listview before appending the new items.
+                if (pdef["ItemArrays"] != null || pdef["AppendItemArrays"] != null)
+                {
+                    JArray items;
+
+                    if (pdef["AppendItemArrays"] != null)
+                    {
+                        items = (JArray)pdef["AppendItemArrays"];
+                    }
+                    else
+                    {
+                        ctl.Items.Clear();
+                        items = (JArray)pdef["ItemArrays"];
+                    }
+
+                    foreach (dynamic item in items)
+                    {
+                        ListViewItem lvi = new ListViewItem();
+
+                        JArray cols = (JArray)item;
+                        
+                        if (item[0]["Text"] != null) { lvi.Text = (string)item[0]["Text"]; }
+                        if (item[0]["Tag"] != null) { lvi.Tag = item[0]["Tag"]; }
+                        if (item[0]["ImageIndex"] != null) { lvi.ImageIndex = (int)item[0]["ImageIndex"]; }
+
+                        for(int idx=1; idx < cols.Count; idx++)
+                        {
+                            ListViewSubItem lvsi = new ListViewSubItem();
+                            if (item[idx]["Text"] != null) { lvsi.Text = (string)item[idx]["Text"]; }
+                            if (item[idx]["Tag"] != null) { lvsi.Tag = item[idx]["Tag"]; }
+                            lvi.SubItems.Add(lvsi);
+                        }
+                        ctl.Items.Add(lvi);
+                    }
+                }
+            }
+
+            if (control.GetType() == typeof(TreeView))
+            {
+                TreeView ctl = (TreeView)control;
+
+                if (pdef["ImageList"] != null)
+                {
+                    ctl.ImageList = host.ImageListDictionary[(string)pdef["ImageList"]];
+                }
+
+                if (pdef["Nodes"] != null)
+                {
+                    JArray nodes = (JArray) pdef["Nodes"];
+                    foreach(JObject node in nodes)
+                    {
+                        addTreeNodeBranch(node, ctl.Nodes);
+                    }
+                }
+            }
+        }
+
+        // Private helper function for recursively populating hierarchical TreeView node collection
+        private void addTreeNodeBranch(JObject rootObject, TreeNodeCollection rootNode)
+        {
+            TreeNode treeNode = new TreeNode();
+            rootNode.Add(treeNode);
+
+            if (rootObject["Text"] != null)
+            {
+                treeNode.Text = (string)rootObject["Text"];
+            }
+
+            if (rootObject["Tag"] != null)
+            {
+                treeNode.Tag = rootObject["Tag"];
+            }
+
+            if (rootObject["ImageIndex"] != null)
+            {
+                treeNode.ImageIndex = (int)rootObject["ImageIndex"];
+            }
+
+            if (rootObject["ImageKey"] != null)
+            {
+                treeNode.ImageIndex = (int)rootObject["ImageKey"];
+            }
+
+            if (rootObject["SelectedImageIndex"] != null)
+            {
+                treeNode.SelectedImageIndex = (int)rootObject["SelectedImageIndex"];
+            }
+
+            if (rootObject["SelectedImageKey"] != null)
+            {
+                treeNode.SelectedImageKey = (string)rootObject["SelectedImageKey"];
+            }
+
+            if (rootObject["Nodes"] != null)
+            {
+                JArray nodes = (JArray)rootObject["Nodes"];
+                foreach(JObject node in nodes)
+                {
+                    addTreeNodeBranch(node, treeNode.Nodes);
+                }
+            }
         }
 
         /// <summary>
@@ -465,10 +676,25 @@ namespace Exoskeleton.Classes
             Control control = controlDictionary[formName][controlName];
             dynamic payloadDynamic = JsonConvert.DeserializeObject(payload);
 
+            if (control.GetType() == typeof(Panel))
+            {
+                ApplyControlPayload<Panel>(formName, control, payloadDynamic);
+            }
+
             // Probably won't ever need this for dialogs since it should be set at definition, using generic
             if (control.GetType() == typeof(DialogButton))
             {
                 ApplyControlPayload<DialogButton>(formName, control, payloadDynamic);
+            }
+
+            if (control.GetType() == typeof(ListView))
+            {
+                ApplyControlPayload<DialogButton>(formName, control, payloadDynamic);
+            }
+
+            if (control.GetType() == typeof(TreeView))
+            {
+                ApplyControlPayload<TreeView>(formName, control, payloadDynamic);
             }
 
             // Not 'really' needed since we have workaround to detect and set this with properties
@@ -576,24 +802,32 @@ namespace Exoskeleton.Classes
 
                 string propJson = JsonConvert.SerializeObject(props);
 
+                if (type == "ImageList")
+                {
+                    host.GetScriptInterface.Media.CreateImageList(key, propJson);
+                    return;
+                }
+
                 switch (type)
                 {
                     case "Button": AddControlInstance<Button>(formName, propJson, parent, emitEvents, payload); break;
-                    case "Panel": AddControlInstance<Panel>(formName, propJson, parent, emitEvents, payload); break;
-                    case "Label": AddControlInstance<Label>(formName, propJson, parent, emitEvents, payload); break;
                     case "CheckBox": AddControlInstance<CheckBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "CheckedListBox": AddControlInstance<CheckedListBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "ComboBox": AddControlInstance<ComboBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "DataGridView": AddControlInstance<DataGridView>(formName, propJson, parent, emitEvents, payload); break;
+                    case "DateTimePicker": AddControlInstance<DateTimePicker>(formName, propJson, parent, emitEvents, payload); break;
+                    case "DialogButton": AddControlInstance<DialogButton>(formName, propJson, parent, emitEvents, payload); break;
+                    case "Label": AddControlInstance<Label>(formName, propJson, parent, emitEvents, payload); break;
+                    case "ListBox": AddControlInstance<ListBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "MaskedTextBox": AddControlInstance<MaskedTextBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "MonthCalendar": AddControlInstance<MonthCalendar>(formName, propJson, parent, emitEvents, payload); break;
+                    case "NumericUpDown": AddControlInstance<NumericUpDown>(formName, propJson, parent, emitEvents, payload); break;
+                    case "Panel": AddControlInstance<Panel>(formName, propJson, parent, emitEvents, payload); break;
+                    case "PictureBox": AddControlInstance<PictureBox>(formName, propJson, parent, emitEvents, payload); break;
                     case "RadioButton": AddControlInstance<RadioButton>(formName, propJson, parent, emitEvents, payload); break;
                     case "TextBox": AddControlInstance<TextBox>(formName, propJson, parent, emitEvents, payload); break;
-                    case "MaskedTextBox": AddControlInstance<MaskedTextBox>(formName, propJson, parent, emitEvents, payload); break;
-                    case "ListBox": AddControlInstance<ListBox>(formName, propJson, parent, emitEvents, payload); break;
-                    case "ComboBox": AddControlInstance<ComboBox>(formName, propJson, parent, emitEvents, payload); break;
-                    case "NumericUpDown": AddControlInstance<NumericUpDown>(formName, propJson, parent, emitEvents, payload); break;
-                    case "DateTimePicker": AddControlInstance<DateTimePicker>(formName, propJson, parent, emitEvents, payload); break;
-                    case "MonthCalendar": AddControlInstance<MonthCalendar>(formName, propJson, parent, emitEvents, payload); break;
-                    case "DataGridView": AddControlInstance<DataGridView>(formName, propJson, parent, emitEvents, payload); break;
-                    case "DialogButton": AddControlInstance<DialogButton>(formName, propJson, parent, emitEvents, payload); break;
-                    case "CheckedListBox": AddControlInstance<CheckedListBox>(formName, propJson, parent, emitEvents, payload); break;
-                    case "PictureBox": AddControlInstance<PictureBox>(formName, propJson, parent, emitEvents, payload); break;
+                    case "ListView": AddControlInstance<ListView>(formName, propJson, parent, emitEvents, payload); break;
+                    case "TreeView": AddControlInstance<TreeView>(formName, propJson, parent, emitEvents, payload); break;
                     default: break;
                 }
             }
@@ -724,6 +958,31 @@ namespace Exoskeleton.Classes
 
                 dynamic tval = new { Name = t.Name, Text = t.Text };
                 return tval;
+            }
+
+            if (control.GetType() == typeof(ListView))
+            {
+                ListView lv = (ListView)control;
+                List<dynamic> selectedItemsDynamic = new List<dynamic>();
+                foreach(ListViewItem item in lv.SelectedItems)
+                {
+                    selectedItemsDynamic.Add(new { item.Text, item.Tag, item.ImageIndex, item.ImageKey });
+                }
+
+                dynamic lvval = new { SelectedItems = selectedItemsDynamic, SelectedIndices = lv.SelectedIndices };
+                return lvval;
+            }
+
+            if (control.GetType() == typeof(TreeView))
+            {
+                TreeView tv = (TreeView)control;
+                dynamic tvval = new {
+                    tv.SelectedNode.Text,
+                    tv.SelectedNode.Tag,
+                    tv.SelectedNode.Level,
+                    tv.SelectedNode.FullPath
+                };
+                return tvval;
             }
 
             if (control.GetType() == typeof(MaskedTextBox))
@@ -983,6 +1242,12 @@ namespace Exoskeleton.Classes
             AddControlInstance<ListBox>(formName, listboxJson, parentName, emitEvents, payload);
         }
 
+        public void AddListView(string formName, string listviewJson, string parentName=null,
+            bool emitEvents=false, string payload = null)
+        {
+            AddControlInstance<ListView>(formName, listviewJson, parentName, emitEvents, payload);
+        }
+
         /// <summary>
         /// Adds a MaskedTextBox to a named dialog or form.
         /// </summary>
@@ -1075,6 +1340,11 @@ namespace Exoskeleton.Classes
             AddControlInstance<TextBox>(formName, textboxJson, parentName, emitEvents);
         }
 
+        public void AddTreeView(string formName, string treeviewJson, string parentName=null,
+            bool emitEvents=false)
+        {
+            AddControlInstance<TreeView>(formName, treeviewJson, parentName, emitEvents);
+        }
         #endregion
 
     }
