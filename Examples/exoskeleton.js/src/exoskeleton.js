@@ -71,7 +71,7 @@
             this.exo = window.external;
 
             this.enums = {
-                AnchorStyles: Object.freeze({ "None": 0, "Top": 1, "Bottom": 2, "Left": 3, "Right": 8 })
+                AnchorStyles: Object.freeze({ "None": 0, "Top": 1, "Bottom": 2, "Left": 4, "Right": 8 })
             };
 
             this.events = new ExoEventEmitter(this.exo);
@@ -1830,6 +1830,24 @@
         };
 
         /**
+         * Gets list of files ending in any of the extensions provided.
+         * @param {string} parentDir - Parent directory to search within.
+         * @param {Array|string} extensions - Array or comma-delimited list of ending string (not wildcards).
+         * @returns {string[]} array of filenames matching the provided searchPattern
+         * @memberof File
+         * @instance
+         * @example
+         * var results = exoskeleton.file.getFilesEndingWith(".mp3,.m4a");
+         */
+        File.prototype.getFilesEndingWith = function (parentDir, extensions) {
+            if (Array.isArray(extensions)) {
+                extensions = extensions.join();
+            }
+
+            return JSON.parse(this.exoFile.GetFilesEndingWith(parentDir, extensions));
+        };
+
+        /**
          * Returns the filename portion of the path without the directory.
          * @param {string} path - The full pathname to get filename portion of.
          * @memberof File
@@ -2312,6 +2330,7 @@
 
         /**
          * Adds a ListView to a named exoskeleton form. 
+         * Emits 'Click' and 'DoubleClick' events if 'emitEvents' is true.
          * ListView has the following view modes (defined by 'View' property) :
          * - LargeIcon: 'Thumbnail-like' list using 'Items' payload property (no subitems).
          * - Details - Tabular list using 'ItemArrays' 2-dimensional payload property for subitems.

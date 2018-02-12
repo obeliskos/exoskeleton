@@ -1,0 +1,215 @@
+{
+  "MiddlePanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Fill",
+      "BackColor": "164,164,164",
+      "Height": 20,
+      "Width": 20,
+      "Top": 100,
+      "Left": 10,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "TopPanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Top",
+      "Height": 150,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "BottomPanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Bottom",
+      "Height": 60,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "MiddleRightPanel": {
+    "Type": "Panel",
+    "Parent": "MiddlePanel",
+    "Properties": {
+      "Dock": "Fill",
+      "Height": 20,
+      "Width": 20,
+      "Top": 0,
+      "Left": 0,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "MiddleLeftPanel": {
+    "Type": "Panel",
+    "Parent": "MiddlePanel",
+    "Properties": {
+      "Dock": "Left",
+      "Height": 20,
+      "Width": 400,
+      "Top": 0,
+      "Left": 0,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "MiddleLeftBottomPanel": {
+    "Type": "Panel",
+    "Parent": "MiddleLeftPanel",
+    "Properties": {
+      "Dock": "Bottom",
+      "Height": 45,
+      "Padding": "10, 10, 10, 10"
+    }
+  },
+  "AddSourceButton": {
+    "Type": "Button",
+    "Parent": "MiddleLeftBottomPanel",
+    "Properties": {
+      "Left": 0,
+      "Top": 10,
+      "Width": 100,
+      "Height": 36,
+      "Text": "New",
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "EditSourceButton": {
+    "Type": "Button",
+    "Parent": "MiddleLeftBottomPanel",
+    "Properties": {
+      "Left": 110,
+      "Top": 10,
+      "Width": 100,
+      "Height": 36,
+      "Text": "Edit",
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "DeleteSourceButton": {
+    "Type": "Button",
+    "Parent": "MiddleLeftBottomPanel",
+    "Properties": {
+      "Left": 220,
+      "Top": 10,
+      "Width": 100,
+      "Height": 36,
+      "Text": "Delete",
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "SettingsCaption": {
+    "Type": "Label",
+    "Parent": "TopPanel",
+    "Properties": {
+      "Dock": "Top",
+      "Text": "Settings:",
+      "AutoSize": true
+    }
+  },
+  "ExtensionsLabel": {
+    "Type": "Label",
+    "Parent": "TopPanel",
+    "Properties": {
+      "Text": "File extensions to show in list :",
+      "Location": "10, 50",
+      "AutoSize": true
+    }
+  },
+  "ExtensionsTextBox": {
+    "Type": "TextBox",
+    "Parent": "TopPanel",
+    "Properties": {
+      "Location": "320, 50",
+      "Size": "240, 36"
+    }
+  },
+  "SourcesCaption": {
+    "Type": "Label",
+    "Parent": "MiddlePanel",
+    "Properties": {
+      "Dock": "Top",
+      "Text": "Sources:"
+    }
+  },
+  "SourcesListBox": {
+    "Type": "ListBox",
+    "Parent": "MiddleLeftPanel",
+    "EmitEvents": true,
+    "Properties": {
+      "DisplayMember": "name",
+      "ValueMember": "location",
+      "Dock": "Fill"
+    }
+  },
+  "SourceNameLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Name :",
+      "Location": "10, 5",
+      "AutoSize": true
+    }
+  },
+  "SourceNameTextBox": {
+    "Type": "TextBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "",
+      "Top": 35,
+      "Left": 15,
+      "Width": 280,
+      "Height": 30
+    }
+  },
+  "SourceLocationLabel": {
+    "Type": "Label",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Location :",
+      "Location": "10, 80",
+      "AutoSize": true
+    }
+  },
+  "SourceLocationTextBox": {
+    "Type": "TextBox",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "",
+      "Location": "15, 110",
+      "Size": "400, 30"
+    }
+  },
+  "SaveSourceButton": {
+    "Type": "Button",
+    "Parent": "MiddleRightPanel",
+    "Properties": {
+      "Text": "Save Source",
+      "Location": "15, 160",
+      "Size": "160, 36",
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "SaveButton": {
+    "Type": "Button",
+    "Parent": "BottomPanel",
+    "Properties": {
+      "Anchor": 10,
+      "Text": "Save",
+      "Location": "-80, 10",
+      "Height": 36,
+      "Width": 120,
+      "UseVisualStyleBackColor": true
+    }
+  },
+  "CancelButton": {
+    "Type": "Button",
+    "Parent": "BottomPanel",
+    "Properties": {
+      "Text": "Cancel",
+      "Anchor": 10,
+      "Location": "60, 10",
+      "Height": 36,
+      "Width": 120,
+      "UseVisualStyleBackColor": true
+    }
+  }
+}

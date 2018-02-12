@@ -18,7 +18,7 @@
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory />
-  <WebServerServicesEnabled>true</WebServerServicesEnabled>
+  <WebServerServicesEnabled>false</WebServerServicesEnabled>
   <WebServerServicesExtension>.svc</WebServerServicesExtension>
   <DefaultToNativeUi>true</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>

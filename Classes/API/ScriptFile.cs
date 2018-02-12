@@ -344,6 +344,24 @@ namespace Exoskeleton.Classes.API
         }
 
         /// <summary>
+        /// Gets list of files ending in any of the extensions provided
+        /// </summary>
+        /// <param name="parentDir">Parent directory to search within.</param>
+        /// <param name="extensions">Comma delimited list of ending string (not wildcards)</param>
+        /// <returns>string array of matching files</returns>
+        public string GetFilesEndingWith(string parentDir, string extensions)
+        {
+            string[] patterns = extensions.Split(',');
+
+            var files = Directory
+                .GetFiles(parentDir)
+                .Where(file => patterns.Any(file.ToLower().EndsWith))
+                .ToList();
+
+            return JsonConvert.SerializeObject(files);
+        }
+
+        /// <summary>
         /// Opens a text file, reads all lines of the file and returns text as a string.
         /// </summary>
         /// <param name="filename">The file to read from.</param>

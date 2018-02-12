@@ -4,14 +4,14 @@
   <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
-  <ApplicationShortName>Sitewrap Example</ApplicationShortName>
-  <ApplicationDescription>Exoskeleton 'SiteWrap' Example.</ApplicationDescription>
-  <WindowTitle>Wikipedia Site Wrapper Sample</WindowTitle>
-  <WindowWidth>1200</WindowWidth>
-  <WindowHeight>720</WindowHeight>
+  <ApplicationShortName>Exoskeleton Audio Player</ApplicationShortName>
+  <ApplicationDescription>Exoskeleton Audio Player</ApplicationDescription>
+  <WindowTitle>Exoskeleton Audio Player</WindowTitle>
+  <WindowWidth>960</WindowWidth>
+  <WindowHeight>640</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath>{SettingsLocation}\\sitewrap-example\\Wikipedia globe.ico</WindowIconPath>
+  <WindowIconPath>{SettingsLocation}\images\Speaker_wood.ico</WindowIconPath>
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
   <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>
@@ -20,27 +20,27 @@
   <WebServerHostDirectory />
   <WebServerServicesEnabled>false</WebServerServicesEnabled>
   <WebServerServicesExtension>.svc</WebServerServicesExtension>
-  <DefaultToNativeUi>false</DefaultToNativeUi>
+  <DefaultToNativeUi>true</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
-  <WebBrowserDefaultUrl>https://en.wikipedia.org/wiki/Main_Page</WebBrowserDefaultUrl>
-  <WebBrowserBaseUrl />
+  <WebBrowserDefaultUrl>{SettingsLocation}\index.htm</WebBrowserDefaultUrl>
+  <WebBrowserBaseUrl>{SettingsLocation}&gt;</WebBrowserBaseUrl>
   <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
   <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
   <WebBrowserScriptErrorsSuppressed>true</WebBrowserScriptErrorsSuppressed>
   <WebBrowserShortcutsEnabled>false</WebBrowserShortcutsEnabled>
-  <ScriptingEnabled>false</ScriptingEnabled>
-  <ScriptingMediaEnabled>false</ScriptingMediaEnabled>
-  <ScriptingFilesEnabled>false</ScriptingFilesEnabled>
-  <ScriptingProcessEnabled>false</ScriptingProcessEnabled>
-  <ScriptingSystemEnabled>false</ScriptingSystemEnabled>
-  <ScriptingLoggerEnabled>false</ScriptingLoggerEnabled>
+  <ScriptingEnabled>true</ScriptingEnabled>
+  <ScriptingMediaEnabled>true</ScriptingMediaEnabled>
+  <ScriptingFilesEnabled>true</ScriptingFilesEnabled>
+  <ScriptingProcessEnabled>true</ScriptingProcessEnabled>
+  <ScriptingSystemEnabled>true</ScriptingSystemEnabled>
+  <ScriptingLoggerEnabled>true</ScriptingLoggerEnabled>
   <ScriptingComObjectsEnabled>false</ScriptingComObjectsEnabled>
   <ScriptingNetEnabled>false</ScriptingNetEnabled>
   <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>
   <ScriptingMenuEnabled>false</ScriptingMenuEnabled>
-  <ScriptingToolStripEnabled>false</ScriptingToolStripEnabled>
-  <ScriptingStatusStripEnabled>false</ScriptingStatusStripEnabled>
+  <ScriptingToolStripEnabled>true</ScriptingToolStripEnabled>
+  <ScriptingStatusStripEnabled>true</ScriptingStatusStripEnabled>
   <ScriptingDialogEnabled>true</ScriptingDialogEnabled>
   <ScriptingFormEnabled>true</ScriptingFormEnabled>
 </Settings>

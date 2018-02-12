@@ -572,6 +572,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#filegetfilesendingwith'
+                        class='regular pre-open'>
+                        #getFilesEndingWith
+                      </a></li>
+                      
+                      <li><a
                         href='#filegetfilename'
                         class='regular pre-open'>
                         #getFileName
@@ -7764,6 +7770,89 @@ driveInfo.forEach(<span class="hljs-function"><span class="hljs-keyword">functio
       </div>
     </div>
   
+    <div class='border-bottom' id='filegetfilesendingwith'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getFilesEndingWith(parentDir, extensions)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Gets list of files ending in any of the extensions provided.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getFilesEndingWith(parentDir: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, extensions: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>parentDir</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Parent directory to search within.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>extensions</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    Array or comma-delimited list of ending string (not wildcards).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
+        array of filenames matching the provided searchPattern
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> results = exoskeleton.file.getFilesEndingWith(<span class="hljs-string">".mp3,.m4a"</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='filegetfilename'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -9288,6 +9377,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.listb
   
 
   <p>Adds a ListView to a named exoskeleton form.
+Emits 'Click' and 'DoubleClick' events if 'emitEvents' is true.
 ListView has the following view modes (defined by 'View' property) :</p>
 <ul>
 <li>LargeIcon: 'Thumbnail-like' list using 'Items' payload property (no subitems).</li>

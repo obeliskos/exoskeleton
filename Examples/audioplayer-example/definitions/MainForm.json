@@ -1,0 +1,62 @@
+{
+  "LeftPanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Fill",
+      "BackColor": "64,64,64",
+      "ForeColor": "White",
+      "Height": 20,
+      "Width": 200,
+      "Top": 100,
+      "Left": 10
+    }
+  },
+  "RightPanel": {
+    "Type": "Panel",
+    "Properties": {
+      "Dock": "Right",
+      "BackColor": "64,64,64",
+      "ForeColor": "White",
+      "Height": 20,
+      "Width": 600,
+      "Top": 100,
+      "Left": 10
+    }
+  },
+  "DirTreeView": {
+    "Type": "TreeView",
+    "Parent": "LeftPanel",
+    "EmitEvents": true,
+    "Payload": {
+      "ImageList": "ImageListSmall",
+    },
+    "Properties": {
+      "Dock": "Fill"
+    }
+  },
+  "FileListView": {
+    "Type": "ListView",
+    "Parent": "RightPanel",
+    "EmitEvents": true,
+    "Payload": {
+      "LargeImageList": "ImageListSmall",
+      "SmallImageList": "ImageListSmall"
+    },
+    "Properties": {
+      "Dock": "Fill",
+      "MultiSelect": false,
+      "FullRowSelect": true,
+      "View": "Details"
+    }
+  },
+  "AudioPanel": {
+    "Type": "Panel",
+    "Parent": "RightPanel",
+    "Properties": {
+      "Dock": "Bottom",
+      "Height": 80,
+      "Padding": "0, 0, 0, 0",
+      "Color": "Black"
+    }
+  }
+}

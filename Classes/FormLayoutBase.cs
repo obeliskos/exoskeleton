@@ -172,7 +172,7 @@ namespace Exoskeleton.Classes
                 (ctl as ListBox).Leave += (sender, args) => { ctl.Update(); };
             }
 
-            if (emitEvents)
+            if (emitEvents || ctl.GetType() == typeof(Button))
             {
                 AddControlEvents<T>(formName, ctl);
             }
@@ -230,6 +230,11 @@ namespace Exoskeleton.Classes
 
             if (control.GetType() == typeof(TreeView))
             {
+                ((TreeView)control).AfterSelect += (sender, args) =>
+                {
+                    host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".AfterSelect"),
+                        GetControlPropertiesDynamic(formName, control.Name));
+                };
                 ((TreeView)control).NodeMouseClick += (sender, args) =>
                 {
                     host.PackageAndUnicast(String.Concat(formName, ".", control.Name, ".NodeMouseClick"),
@@ -595,6 +600,17 @@ namespace Exoskeleton.Classes
                         ctl.Items.Add(lvi);
                     }
                 }
+
+                if (pdef["SelectedIndices"] != null) {
+                    JArray indices;
+                    indices = (JArray)pdef["SelectedIndices"];
+                    foreach (dynamic index in indices)
+                    {
+                        ctl.Items[(int) index].Selected = true;
+                        ctl.Items[(int) index].Focused = true;
+                    }
+                    ctl.Focus();
+                }
             }
 
             if (control.GetType() == typeof(TreeView))
@@ -608,13 +624,89 @@ namespace Exoskeleton.Classes
 
                 if (pdef["Nodes"] != null)
                 {
+                    ctl.Nodes.Clear();
+
                     JArray nodes = (JArray) pdef["Nodes"];
                     foreach(JObject node in nodes)
                     {
                         addTreeNodeBranch(node, ctl.Nodes);
                     }
                 }
+
+                // payload for resolving text captions where fullpath is backslash delimited string of node text values
+                if (pdef["GraftNodes"] != null)
+                {
+                    string parent = (string)pdef["GraftNodes"]["Parent"];
+                    string[] parentPath = parent.Split('\\');
+                    
+                    JArray nodes = (JArray)(pdef["GraftNodes"]["Nodes"]);
+
+                    TreeNode search = findTreeNodeByPathArray(ctl.Nodes, parentPath);
+
+                    if (search != null)
+                    {
+                        foreach (JObject node in nodes)
+                        {
+                            addTreeNodeBranch(node, search.Nodes);
+                        }
+
+                        search.Expand();
+                    }
+                }
+
+                // payload for resolving text captions where path is array of node text captions
+                if (pdef["GraftPath"] != null)
+                {
+                    JArray parentPath = (JArray)pdef["GraftPath"]["ParentPath"];
+
+                    JArray nodes = (JArray)(pdef["GraftPath"]["Nodes"]);
+
+                    TreeNode search = findTreeNodeByPathArray(ctl.Nodes, parentPath.ToObject<string[]>());
+
+                    if (search != null)
+                    {
+                        foreach (JObject node in nodes)
+                        {
+                            addTreeNodeBranch(node, search.Nodes);
+                        }
+
+                        search.Expand();
+                    }
+                }
             }
+        }
+
+        /// <summary>
+        /// navigates a tree view by text path
+        /// </summary>
+        /// <param name="nodeCollection">Root TreeNodeCollection to base path resolving to.</param>
+        /// <param name="parentPath">string[] of node text captions, indicating path of node to find.</param>
+        /// <returns>Leaf TreeNode addressed by parentPath if found, or null if not.</returns>
+        private TreeNode findTreeNodeByPathArray(TreeNodeCollection nodeCollection, string[] parentPath)
+        {
+            int count = parentPath.Length;
+
+            foreach (string path in parentPath)
+            {
+                foreach (TreeNode node in nodeCollection)
+                {
+                    if (node.Text == path)
+                    {
+                        if (--count == 0)
+                        {
+                            return node;
+                        }
+                        else
+                        {
+                            // rereference to sub node collection and break current iteration
+                            nodeCollection = node.Nodes;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         // Private helper function for recursively populating hierarchical TreeView node collection
@@ -631,6 +723,11 @@ namespace Exoskeleton.Classes
             if (rootObject["Tag"] != null)
             {
                 treeNode.Tag = rootObject["Tag"];
+            }
+
+            if ((bool?) rootObject["IsExpanded"] == true)
+            {
+                treeNode.Expand();
             }
 
             if (rootObject["ImageIndex"] != null)
@@ -914,7 +1011,6 @@ namespace Exoskeleton.Classes
                 Control control = controlKV.Value;
 
                 control.ResumeLayout(false);
-                control.PerformLayout();
             }
 
             if (formName == nativeContainer)
@@ -969,18 +1065,26 @@ namespace Exoskeleton.Classes
                     selectedItemsDynamic.Add(new { item.Text, item.Tag, item.ImageIndex, item.ImageKey });
                 }
 
-                dynamic lvval = new { SelectedItems = selectedItemsDynamic, SelectedIndices = lv.SelectedIndices };
+                dynamic lvval = new {
+                    SelectedItems = selectedItemsDynamic,
+                    SelectedIndices = lv.SelectedIndices,
+                    ItemCount = lv.Items.Count
+                };
                 return lvval;
             }
 
             if (control.GetType() == typeof(TreeView))
             {
                 TreeView tv = (TreeView)control;
+
+                if (tv.SelectedNode == null) return null;
+
                 dynamic tvval = new {
                     tv.SelectedNode.Text,
                     tv.SelectedNode.Tag,
                     tv.SelectedNode.Level,
-                    tv.SelectedNode.FullPath
+                    tv.SelectedNode.FullPath,
+                    FullPaths = tv.SelectedNode.FullPath.Split('\\')
                 };
                 return tvval;
             }

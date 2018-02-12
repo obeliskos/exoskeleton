@@ -45,12 +45,14 @@ var formDefinition = {
         	Text: "ExampleRoot", 
             ImageIndex: 0,
             SelectedImageIndex: 0,
+            IsExpanded: true,
             Nodes: [
             	{ Text: "One", ImageIndex: 1, SelectedImageIndex: 1 }, 
                 { 
                 	Text: "Two", 
                     ImageIndex: 0,
                     SelectedImageIndex: 0,
+                    IsExpanded: true,
                     Nodes: [
                     	{ Text: "2a", ImageIndex: 2, SelectedImageIndex: 2 }, 
                         { Text: "2b", ImageIndex: 3, SelectedImageIndex: 3 }

@@ -51,7 +51,7 @@ namespace Exoskeleton.Classes
         // Web services are enabled with these settings.
         // If a request is made for a url with this extension, we will
         // invoke javascript on the main window to process it.
-        public bool WebServerServicesEnabled { get; set; } = true;
+        public bool WebServerServicesEnabled { get; set; } = false;
         public string WebServerServicesExtension { get; set; } = ".svc";
 
         /// <summary>

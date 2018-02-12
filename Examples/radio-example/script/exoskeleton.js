@@ -71,7 +71,7 @@
             this.exo = window.external;
 
             this.enums = {
-                AnchorStyles: Object.freeze({ "None": 0, "Top": 1, "Bottom": 2, "Left": 3, "Right": 8 })
+                AnchorStyles: Object.freeze({ "None": 0, "Top": 1, "Bottom": 2, "Left": 4, "Right": 8 })
             };
 
             this.events = new ExoEventEmitter(this.exo);
@@ -848,6 +848,37 @@
             }
 
             this.exoDialog.AddTextBox(dialogName, textbox, parentName);
+        };
+
+        /**
+         * Adds a TreeView to a named exoskeleton form.
+         * Emits 'NodeMouseClick' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.treeview(v=vs.110).aspx ms docs}
+         * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
+         * @param {object} textbox - initial properties to assign to TextBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @param {object} payload - used to pass 'ImageList' and 'Nodes' collection
+         * @memberof Dialog
+         * @instance
+         * @example
+         */
+        Dialog.prototype.addTreeView = function (dialogName, treeview, parentName, payload) {
+            if (typeof treeview === "object") {
+                treeview = JSON.stringify(treeview);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
+
+            this.exoDialog.AddTreeView(dialogName, treeview, parentName, false, payload);
         };
 
         /**
@@ -1799,6 +1830,24 @@
         };
 
         /**
+         * Gets list of files ending in any of the extensions provided.
+         * @param {string} parentDir - Parent directory to search within.
+         * @param {Array|string} extensions - Array or comma-delimited list of ending string (not wildcards).
+         * @returns {string[]} array of filenames matching the provided searchPattern
+         * @memberof File
+         * @instance
+         * @example
+         * var results = exoskeleton.file.getFilesEndingWith(".mp3,.m4a");
+         */
+        File.prototype.getFilesEndingWith = function (parentDir, extensions) {
+            if (Array.isArray(extensions)) {
+                extensions = extensions.join();
+            }
+
+            return JSON.parse(this.exoFile.GetFilesEndingWith(parentDir, extensions));
+        };
+
+        /**
          * Returns the filename portion of the path without the directory.
          * @param {string} path - The full pathname to get filename portion of.
          * @memberof File
@@ -2281,6 +2330,7 @@
 
         /**
          * Adds a ListView to a named exoskeleton form. 
+         * Emits 'Click' and 'DoubleClick' events if 'emitEvents' is true.
          * ListView has the following view modes (defined by 'View' property) :
          * - LargeIcon: 'Thumbnail-like' list using 'Items' payload property (no subitems).
          * - Details - Tabular list using 'ItemArrays' 2-dimensional payload property for subitems.
@@ -2600,6 +2650,42 @@
             }
 
             this.exoForm.AddTextBox(formName, textbox, parentName, emitEvents);
+        };
+
+        /**
+         * Adds a TreeView to a named exoskeleton form.
+         * Emits 'NodeMouseClick' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
+         * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.treeview(v=vs.110).aspx ms docs}
+         * @param {string} formName - unique name to dialog/form to refer to your dialog.
+         * @param {object} textbox - initial properties to assign to TextBox
+         * @param {string=} parentName - optional name of parent control to nest within
+         * @param {boolean=} emitEvents - whether this control should emit event(s)
+         * @param {object} payload - used to pass 'ImageList' and 'Nodes' collection
+         * @memberof Form
+         * @instance
+         * @example
+         */
+        Form.prototype.addTreeView = function (formName, treeview, parentName, emitEvents, payload) {
+            if (typeof treeview === "object") {
+                treeview = JSON.stringify(treeview);
+            }
+
+            if (typeof parentName === "undefined") {
+                parentName = null;
+            }
+
+            if (typeof emitEvents === "undefined") {
+                emitEvents = false;
+            }
+
+            if (typeof payload === "undefined") {
+                payload = null;
+            }
+            else if (typeof payload === "object") {
+                payload = JSON.stringify(payload);
+            }
+
+            this.exoForm.AddTreeView(formName, treeview, parentName, emitEvents, payload);
         };
 
         /**
