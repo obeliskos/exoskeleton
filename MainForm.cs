@@ -427,7 +427,7 @@ namespace Exoskeleton
                 StringBuilder sb = new StringBuilder();
 
                 sb.Append("<h3>Exoskeleton default page</h3>");
-                sb.Append("Please create a settings.xml file in the same folder as the executable");
+                sb.Append("Please create a settings.xos file in the same folder as the executable");
 
                 HostWebBrowser.DocumentText = sb.ToString();
             }
@@ -1027,6 +1027,9 @@ namespace Exoskeleton
             int webServerActualPort = Settings.WebServerSelfHost ?
                 ActualPort : 0;
 
+            string browserDefaultUrl = ResolveExoUrlPath(Settings.WebBrowserDefaultUrl);
+            Uri startingUri = new Uri(browserDefaultUrl);
+
             return new
             {
                 Executable = this.environmentLocationExecutable,
@@ -1037,9 +1040,14 @@ namespace Exoskeleton
                 Pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
                 Videos = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos),
                 WebServerSelfHost = Settings.WebServerSelfHost,
+                WebServerHostDirectory = Settings.WebServerSelfHost ? ResolveExoUrlPath(Settings.WebServerHostDirectory) : null,
                 WebServerRoot = webServerRoot,
                 WebServerListenPort = webServerListenPort,
-                WebServerActualPort = webServerActualPort
+                WebServerActualPort = webServerActualPort,
+                WebBrowserBaseUrl = ResolveExoUrlPath(Settings.WebBrowserBaseUrl),
+                WebBrowserDefaultUrl = browserDefaultUrl,
+                WebBrowserDefaultUrlIsFile = startingUri.IsFile,
+                WindowIconPath = ResolveExoUrlPath(Settings.WindowIconPath)
             };
         }
 

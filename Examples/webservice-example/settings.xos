@@ -11,7 +11,7 @@
   <WindowHeight>650</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath>{SettingsLocation}\\images\\db-service.ico</WindowIconPath>
+  <WindowIconPath>{SettingsLocation}\images\db-service.ico</WindowIconPath>
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
   <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>false</NotifyOnLoggedInfo>
@@ -23,8 +23,8 @@
   <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
-  <WebBrowserDefaultUrl>http://localhost:{port}</WebBrowserDefaultUrl>
-  <WebBrowserBaseUrl>http://localhost:{port}/index.htm</WebBrowserBaseUrl>
+  <WebBrowserDefaultUrl>http://localhost:{port}/index.htm</WebBrowserDefaultUrl>
+  <WebBrowserBaseUrl>http://localhost:{port}</WebBrowserBaseUrl>
   <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
   <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
   <WebBrowserScriptErrorsSuppressed>true</WebBrowserScriptErrorsSuppressed>

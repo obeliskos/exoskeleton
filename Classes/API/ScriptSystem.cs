@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,14 +40,10 @@ namespace Exoskeleton.Classes.API
         {
             var info = new
             {
+                ExoVersion = Assembly.GetExecutingAssembly().GetName().Version,
+                ProductVersion = Application.ProductVersion,
                 CommandLine = Environment.CommandLine,
                 CommandLineArguments = Environment.GetCommandLineArgs(),
-                HostedRoot = Path.GetFullPath(
-                    Path.Combine(new[] {
-                        Environment.CurrentDirectory,
-                        settings.WebServerHostDirectory
-                    })
-                ),
                 NewLine = Environment.NewLine,
                 CurrentDirectory = Environment.CurrentDirectory,
                 Is64BitOperatingSystem = Environment.Is64BitOperatingSystem,

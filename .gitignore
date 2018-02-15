@@ -8,4 +8,7 @@ Examples/interactive-console/settings-db.json
 Examples/native-example/contacts-database.json
 Examples/radio-example/station-database.json
 Examples/webservice-example/contacts-database.json
+Examples/audioplayer-example/player-settings.json
+Prebuilt/exo-global-settings.xml
+Prebuilt/exo-mappings.xml
 *.user

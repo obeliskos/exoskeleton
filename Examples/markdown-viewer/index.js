@@ -6,6 +6,7 @@ $(document).ready(function () {
     converter.setFlavor('github');
     
     var systeminfo = exoskeleton.system.getSystemInfo();
+    var locations = exoskeleton.getLocations();
     var filename = systeminfo.CommandLineArguments[systeminfo.CommandLineArguments.length - 1];
     var ext = exoskeleton.file.getExtension(filename).toLowerCase();
 
@@ -15,8 +16,8 @@ $(document).ready(function () {
         document.getElementsByTagName("BODY")[0].innerHTML = html; 
     }
     else {
-        var result = exoskeleton.main.showOpenFileDialog({
-            InitialDirectory: systeminfo.HostedRoot,
+        var result = exoskeleton.dialog.showOpenFileDialog({
+            InitialDirectory: locations.Current,
             Filter: "md files (*.md)|*.md|All files (*.*)|*.*"
         });
 

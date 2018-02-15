@@ -140,7 +140,7 @@
         }
 
         /**
-         * Returns the currently active settings (xos file), converted to a json string.
+         * Returns the currently active settings (xos file), converted to a json string, without resolving urls.
          * @returns {object} The current application settings
          * @memberof Exoskeleton
          * @instance
@@ -157,7 +157,7 @@
 
         /**
          * Returns the important exoskeleton environment locations. (Current, Settings, Executable)
-         * @returns {object} Object containing 'Executable', 'Settings' and 'Current' properties.
+         * @returns {object} Object containing resolved paths to common locations in Windows and Exoskeleton.
          * @memberof Exoskeleton
          * @instance
          * @example
@@ -1824,20 +1824,22 @@
          * @returns {string[]} array of filenames matching privided  searchPattern
          * @memberof File
          * @instance
+         * @example
+         * var results = exoskeleton.file.getFiles("c:\\downloads\\music", "*.mp3");
          */
         File.prototype.getFiles = function (parentDir, searchPattern) {
             return JSON.parse(this.exoFile.GetFiles(parentDir, searchPattern));
         };
 
         /**
-         * Gets list of files ending in any of the extensions provided.
+         * Gets list of files ending in any of the extension/suffix strings provided.
          * @param {string} parentDir - Parent directory to search within.
-         * @param {Array|string} extensions - Array or comma-delimited list of ending string (not wildcards).
-         * @returns {string[]} array of filenames matching the provided searchPattern
+         * @param {Array|string} extensions - Array or comma-delimited list of extension strings (not wildcards).
+         * @returns {string[]} array of filenames matching the provided search extensions.
          * @memberof File
          * @instance
          * @example
-         * var results = exoskeleton.file.getFilesEndingWith(".mp3,.m4a");
+         * var results = exoskeleton.file.getFilesEndingWith("c:\\downloads\\music", ".mp3,.m4a");
          */
         File.prototype.getFilesEndingWith = function (parentDir, extensions) {
             if (Array.isArray(extensions)) {
@@ -2654,7 +2656,7 @@
 
         /**
          * Adds a TreeView to a named exoskeleton form.
-         * Emits 'NodeMouseClick' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
+         * Emits 'NodeMouseClick', 'AfterSelect' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
          * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.treeview(v=vs.110).aspx ms docs}
          * @param {string} formName - unique name to dialog/form to refer to your dialog.
          * @param {object} textbox - initial properties to assign to TextBox

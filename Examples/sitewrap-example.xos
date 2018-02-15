@@ -11,7 +11,7 @@
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath>{SettingsLocation}\\sitewrap-example\\Wikipedia globe.ico</WindowIconPath>
+  <WindowIconPath>{SettingsLocation}\sitewrap-example\Wikipedia globe.ico</WindowIconPath>
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
   <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>

@@ -11,7 +11,7 @@
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath>{SettingsLocation}\\database-example\\images\\database-128.ico</WindowIconPath>
+  <WindowIconPath>{SettingsLocation}\database-example\images\database-128.ico</WindowIconPath>
   <NotifyOnLoggedErrors>true</NotifyOnLoggedErrors>
   <NotifyOnLoggedWarnings>true</NotifyOnLoggedWarnings>
   <NotifyOnLoggedInfo>true</NotifyOnLoggedInfo>
@@ -23,8 +23,8 @@
   <DefaultToNativeUi>false</DefaultToNativeUi>
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
-  <WebBrowserDefaultUrl>{SettingsLocation}\\database-example\\index.htm</WebBrowserDefaultUrl>
-  <WebBrowserBaseUrl>{SettingsLocation}\\database-example</WebBrowserBaseUrl>
+  <WebBrowserDefaultUrl>{SettingsLocation}\database-example\index.htm</WebBrowserDefaultUrl>
+  <WebBrowserBaseUrl>{SettingsLocation}\database-example</WebBrowserBaseUrl>
   <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
   <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
   <WebBrowserScriptErrorsSuppressed>true</WebBrowserScriptErrorsSuppressed>

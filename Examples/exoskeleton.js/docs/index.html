@@ -1605,7 +1605,7 @@ This exoskeleton.js javascript library is what this documentation will cover.</p
 
   
 
-  <p>Returns the currently active settings (xos file), converted to a json string.</p>
+  <p>Returns the currently active settings (xos file), converted to a json string, without resolving urls.</p>
 
 
   <div class='pre p1 fill-light mt0'>getApplicationSettings(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
@@ -1691,7 +1691,7 @@ This exoskeleton.js javascript library is what this documentation will cover.</p
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
-        Object containing 'Executable', 'Settings' and 'Current' properties.
+        Object containing resolved paths to common locations in Windows and Exoskeleton.
 
       
     
@@ -1970,7 +1970,7 @@ exoskeleton.registerServiceProcessor(myServiceProcessor);</pre>
 
   
 
-  <p>Returns the currently active settings (xos file), converted to a json string.</p>
+  <p>Returns the currently active settings (xos file), converted to a json string, without resolving urls.</p>
 
 
   <div class='pre p1 fill-light mt0'>getApplicationSettings(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
@@ -2056,7 +2056,7 @@ exoskeleton.registerServiceProcessor(myServiceProcessor);</pre>
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
-        Object containing 'Executable', 'Settings' and 'Current' properties.
+        Object containing resolved paths to common locations in Windows and Exoskeleton.
 
       
     
@@ -7759,6 +7759,12 @@ driveInfo.forEach(<span class="hljs-function"><span class="hljs-keyword">functio
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> results = exoskeleton.file.getFiles(<span class="hljs-string">"c:\\downloads\\music"</span>, <span class="hljs-string">"*.mp3"</span>);</pre>
+    
+  
 
   
 
@@ -7782,7 +7788,7 @@ driveInfo.forEach(<span class="hljs-function"><span class="hljs-keyword">functio
 
   
 
-  <p>Gets list of files ending in any of the extensions provided.</p>
+  <p>Gets list of files ending in any of the extension/suffix strings provided.</p>
 
 
   <div class='pre p1 fill-light mt0'>getFilesEndingWith(parentDir: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, extensions: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
@@ -7812,7 +7818,7 @@ driveInfo.forEach(<span class="hljs-function"><span class="hljs-keyword">functio
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>extensions</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
-	    Array or comma-delimited list of ending string (not wildcards).
+	    Array or comma-delimited list of extension strings (not wildcards).
 
           </div>
           
@@ -7827,7 +7833,7 @@ driveInfo.forEach(<span class="hljs-function"><span class="hljs-keyword">functio
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
-        array of filenames matching the provided searchPattern
+        array of filenames matching the provided search extensions.
 
       
     
@@ -7839,7 +7845,7 @@ driveInfo.forEach(<span class="hljs-function"><span class="hljs-keyword">functio
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> results = exoskeleton.file.getFilesEndingWith(<span class="hljs-string">".mp3,.m4a"</span>);</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> results = exoskeleton.file.getFilesEndingWith(<span class="hljs-string">"c:\\downloads\\music"</span>, <span class="hljs-string">".mp3,.m4a"</span>);</pre>
     
   
 
@@ -10242,7 +10248,7 @@ See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.textb
   
 
   <p>Adds a TreeView to a named exoskeleton form.
-Emits 'NodeMouseClick' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
+Emits 'NodeMouseClick', 'AfterSelect' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
 See <a href="https://msdn.microsoft.com/en-us/library/system.windows.forms.treeview(v=vs.110).aspx">ms docs</a></p>
 
 

@@ -24,7 +24,7 @@
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
   <WebBrowserDefaultUrl>{SettingsLocation}\index.htm</WebBrowserDefaultUrl>
-  <WebBrowserBaseUrl>{SettingsLocation}&gt;</WebBrowserBaseUrl>
+  <WebBrowserBaseUrl>{SettingsLocation}</WebBrowserBaseUrl>
   <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
   <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
   <WebBrowserScriptErrorsSuppressed>true</WebBrowserScriptErrorsSuppressed>

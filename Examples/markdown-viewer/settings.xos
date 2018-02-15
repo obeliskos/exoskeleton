@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <StartupCommands />
+  <ApplicationShortName>Showdown Markdown Viewer</ApplicationShortName>
+  <ApplicationDescription>Example supporting command line arguments.</ApplicationDescription>
   <CurrentDirectoryUseSettingsPath>true</CurrentDirectoryUseSettingsPath>
   <CurrentDirectoryUseProvidedPath>false</CurrentDirectoryUseProvidedPath>
   <CurrentDirectoryProvidedPath />
@@ -9,13 +11,13 @@
   <WindowHeight>720</WindowHeight>
   <WindowAllowFullscreenF11>true</WindowAllowFullscreenF11>
   <WindowAllowResize>true</WindowAllowResize>
-  <WindowIconPath>markdown.ico</WindowIconPath>
+  <WindowIconPath>{SettingsLocation}\markdown.ico</WindowIconPath>
   <WebServerSelfHost>false</WebServerSelfHost>
   <WebServerListenPort>8080</WebServerListenPort>
   <WebServerHostDirectory />
   <WebBrowserRefreshOnFirstLoad>true</WebBrowserRefreshOnFirstLoad>
   <WebBrowserContextMenu>true</WebBrowserContextMenu>
-  <WebBrowserDefaultUrl>index.htm</WebBrowserDefaultUrl>
+  <WebBrowserDefaultUrl>{SettingsLocation}\index.htm</WebBrowserDefaultUrl>
   <WebBrowserBaseUrl />
   <WebBrowserAutoRefreshSecs>0</WebBrowserAutoRefreshSecs>
   <WebBrowserAllowChildWindows>true</WebBrowserAllowChildWindows>
@@ -26,7 +28,7 @@
   <ScriptingFilesEnabled>true</ScriptingFilesEnabled>
   <ScriptingProcessEnabled>false</ScriptingProcessEnabled>
   <ScriptingSystemEnabled>true</ScriptingSystemEnabled>
-  <ScriptingLoggerEnabled>false</ScriptingLoggerEnabled>
+  <ScriptingLoggerEnabled>true</ScriptingLoggerEnabled>
   <ScriptingComObjectsEnabled>false</ScriptingComObjectsEnabled>
   <ScriptingNetEnabled>false</ScriptingNetEnabled>
   <ScriptingEncryptionEnabled>true</ScriptingEncryptionEnabled>

@@ -294,9 +294,8 @@ xo.tabMode = function(mode) {
 }
 
 xo.refreshScriptList = function () {
-    var settings = exoskeleton.system.getSystemInfo();
     var appdata = exoskeleton.file.combinePaths([
-        settings.HostedRoot,
+        xo.locations.Current,
         "appdata"
     ]);
     var files = exoskeleton.file.getFiles(appdata, "*.exo");
