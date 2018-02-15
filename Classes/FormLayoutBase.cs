@@ -645,6 +645,8 @@ namespace Exoskeleton.Classes
 
                     if (search != null)
                     {
+                        search.Nodes.Clear();
+
                         foreach (JObject node in nodes)
                         {
                             addTreeNodeBranch(node, search.Nodes);
@@ -665,6 +667,8 @@ namespace Exoskeleton.Classes
 
                     if (search != null)
                     {
+                        search.Nodes.Clear();
+
                         foreach (JObject node in nodes)
                         {
                             addTreeNodeBranch(node, search.Nodes);
