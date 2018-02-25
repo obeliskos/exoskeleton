@@ -391,10 +391,13 @@ function playNextFile() {
 // Provides the html 5 audio element with a file name or url and begins playing it
 function playFile(filename) {
     var basename = exoskeleton.file.getFileName(filename);
+
     exoskeleton.statusbar.setLeftLabel("Now Playing : " + basename);
 
+    var uri = exoskeleton.file.filePathToUri(filename);
+
     var audio = document.getElementById("audioPlayer");
-    audio.src = filename;
+    audio.src = uri;
     audio.load();
     audio.play();
 }

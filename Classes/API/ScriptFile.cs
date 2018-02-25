@@ -429,6 +429,11 @@ namespace Exoskeleton.Classes.API
             File.Delete(filename);
         }
 
+        public string FilePathToUri(string filepath)
+        {
+            return (new Uri(filepath)).AbsoluteUri;
+        }
+
         #endregion
 
     }

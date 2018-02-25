@@ -1730,6 +1730,10 @@
             this.exoFile.DeleteFile(filename);
         };
 
+        File.prototype.filePathToUri = function (filepath) {
+            return this.exoFile.FilePathToUri(filepath);
+        }
+
         /**
          * Gets subdirectory names of a parent directory.
          * @param {string} parentDir - Directory to list subdirectories for.
