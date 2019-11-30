@@ -220,6 +220,16 @@ namespace Exoskeleton.Classes.API
         }
 
         /// <summary>
+        /// Used for resolving paths comtaining inner relative paths
+        /// </summary>
+        /// <param name="path">Path containing possible inner relative paths</param>
+        /// <returns></returns>
+        public string GetFullPath(string path)
+        {
+            return Path.GetFullPath(path);
+        }
+
+        /// <summary>
         /// Gets DirectoryInfo for the specified directory path.
         /// </summary>
         /// <param name="path">Name of the directory to get information for.</param>
