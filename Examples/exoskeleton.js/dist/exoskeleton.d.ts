@@ -1,4 +1,3 @@
-"use strict";
 /**
  *  exoskeleton.js is a wrapper interface for accessing com object functionality exposed by the exoskeleon shell.
  *  @author Obeliskos
@@ -6,17 +5,115 @@
  *  @todo
  *    - create callback interfaces to help callers determine parameters supported in those callbacks
  */
-;
-var ExoskeletonAnchorStyles;
-(function (ExoskeletonAnchorStyles) {
-    ExoskeletonAnchorStyles[ExoskeletonAnchorStyles["None"] = 0] = "None";
-    ExoskeletonAnchorStyles[ExoskeletonAnchorStyles["Top"] = 1] = "Top";
-    ExoskeletonAnchorStyles[ExoskeletonAnchorStyles["Bottom"] = 2] = "Bottom";
-    ExoskeletonAnchorStyles[ExoskeletonAnchorStyles["Left"] = 4] = "Left";
-    ExoskeletonAnchorStyles[ExoskeletonAnchorStyles["Right"] = 8] = "Right";
-})(ExoskeletonAnchorStyles || (ExoskeletonAnchorStyles = {}));
-;
-;
+interface IHash<T> {
+    [key: string]: T;
+}
+declare enum ExoskeletonAnchorStyles {
+    "None" = 0,
+    "Top" = 1,
+    "Bottom" = 2,
+    "Left" = 4,
+    "Right" = 8
+}
+declare type ExoskeletonLocations = {
+    Executable: string;
+    Settings: string;
+    Current: string;
+    Documents: string;
+    Music: string;
+    Pictures: string;
+    Videos: string;
+    WebServerSelfHost: boolean;
+    WebServerHostDirectory: string;
+    WebServerRoot: string;
+    WebServerListenPort: number;
+    WebServerActualPort: number;
+    WebBrowserBaseUrl: string;
+    WebBrowserDefaultUrl: string;
+    WebBrowserDefaultUrlIsFile: boolean;
+    WindowIconPath: string;
+};
+declare type ExoskeletonApplicationSettings = {
+    StartupCommands: string[];
+    CurrentDirectoryUseSettingsPath: boolean;
+    CurrentDirectoryUseProvidedPath: boolean;
+    CurrentDirectoryProvidedPath: string;
+    ApplicationShortName: string;
+    ApplicationDescription: string;
+    WindowTitle: string;
+    WindowWidth: number;
+    WindowHeight: number;
+    WindowAllowFullscreenF11: boolean;
+    WindowAllowResize: boolean;
+    WindowIconPath: string;
+    NotifyOnLoggedErrors: boolean;
+    NotifyOnLoggedWarnings: boolean;
+    NotifyOnLoggedInfo: boolean;
+    WebServerSelfHost: boolean;
+    WebServerListenPort: number;
+    WebServerHostDirectory: string;
+    WebServerServicesEnabled: boolean;
+    WebServerServicesExtension: string;
+    DefaultToNativeUi: boolean;
+    WebBrowserRefreshOnFirstLoad: boolean;
+    WebBrowserContextMenu: boolean;
+    WebBrowserDefaultUrl: string;
+    WebBrowserBaseUrl: string;
+    WebBrowserAutoRefreshSecs: number;
+    WebBrowserAllowChildWindows: boolean;
+    WebBrowserScriptErrorsSuppressed: boolean;
+    WebBrowserShortcutsEnabled: boolean;
+    ScriptingEnabled: boolean;
+    ScriptingMediaEnabled: boolean;
+    ScriptingFilesEnabled: boolean;
+    ScriptingProcessEnabled: boolean;
+    ScriptingSystemEnabled: boolean;
+    ScriptingLoggerEnabled: boolean;
+    ScriptingComObjectsEnabled: boolean;
+    ScriptingNetEnabled: boolean;
+    ScriptingEncryptionEnabled: boolean;
+    ScriptingMenuEnabled: boolean;
+    ScriptingToolStripEnabled: boolean;
+    ScriptingStatusStripEnabled: boolean;
+    ScriptingDialogEnabled: boolean;
+    ScriptingFormEnabled: boolean;
+};
+declare type DotNetVersionType = {
+    Revision: number;
+    Build: number;
+    Minor: number;
+    Major: number;
+    MajorRevision: number;
+    MinorRevision: number;
+};
+declare type OperatingSystemType = {
+    PlatformID: number;
+    ServicePack: string;
+    Version: DotNetVersionType;
+    VersionString: string;
+};
+declare type ExoskeletonSystemInfo = {
+    ExoVersion: string;
+    ProductVersion: string;
+    CommandLine: string;
+    CommandLineArguments: string[];
+    NewLine: string;
+    CurrentDirectory: string;
+    Is64BitOperatingSystem: boolean;
+    Is64BitProcess: boolean;
+    MachineName: string;
+    TickCount: number;
+    OSVersion: OperatingSystemType;
+    OSVersionString: string;
+    ProcessorCount: number;
+    SystemDirectory: string;
+    UserDomainName: string;
+    UserName: string;
+    DotNetVersion: DotNetVersionType;
+};
+interface eventedCallback {
+    (data: any, ...args: any[]): void;
+}
 /**
  * Event emitter for listening to or emitting events within your page(s)
  *
@@ -33,21 +130,17 @@ var ExoskeletonAnchorStyles;
  * @param {boolean=} [options.asyncListeners=false] - whether events will be emitted asynchronously.
  * @constructor ExoEventEmitter
  */
-var ExoEventEmitter = /** @class */ (function () {
-    function ExoEventEmitter(exo, options) {
-        /**
-         * Whether events should be emitted immediately (true) or whenever thread is yielded (false).
-         */
-        this.asyncListeners = false;
-        /**
-         * Hashobject for storing the registered events and callbacks
-         */
-        this.events = {};
-        this.exo = exo;
-        if (options && options.asyncListeners) {
-            this.asyncListeners = true;
-        }
-    }
+declare class ExoEventEmitter {
+    exo: any;
+    /**
+     * Whether events should be emitted immediately (true) or whenever thread is yielded (false).
+     */
+    asyncListeners: boolean;
+    /**
+     * Hashobject for storing the registered events and callbacks
+     */
+    events: IHash<any>;
+    constructor(exo: any, options?: any);
     /**
      * Clears all event listeners
      * @param {string|string[]=} eventName - event(s) to clear listeners, or all if nothing passed.
@@ -61,22 +154,7 @@ var ExoEventEmitter = /** @class */ (function () {
      * // clear event listeners for multiple named events
      * exoskeleton.events.clear(["FileMenuClicked", "HelpMenuClicked"]);
      */
-    ExoEventEmitter.prototype.clear = function (eventName) {
-        var self = this;
-        // if nothing passed, clear all
-        if (!eventName) {
-            this.events = {};
-            return;
-        }
-        if (Array.isArray(eventName)) {
-            eventName.forEach(function (currentEventName) {
-                self.clear(currentEventName);
-            });
-            return;
-        }
-        this.events[eventName] = [];
-    };
-    ;
+    clear(eventName: string): void;
     /**
      * Used to register a listener to an event.
      * @param {string} eventName - name of the event to listen for.
@@ -85,23 +163,7 @@ var ExoEventEmitter = /** @class */ (function () {
      * @memberof ExoEventEmitter
      * @instance
      */
-    ExoEventEmitter.prototype.on = function (eventName, listener) {
-        var event;
-        var self = this;
-        if (Array.isArray(eventName)) {
-            eventName.forEach(function (currentEventName) {
-                self.on(currentEventName, listener);
-            });
-            return listener;
-        }
-        event = this.events[eventName];
-        if (!event) {
-            event = this.events[eventName] = [];
-        }
-        event.push(listener);
-        return listener;
-    };
-    ;
+    on(eventName: string, listener: eventedCallback): eventedCallback;
     /**
      * Used to emit a specific event, possibly with additional parameter data.
      * @param {string} eventName - the name of the event to emit.
@@ -109,54 +171,15 @@ var ExoEventEmitter = /** @class */ (function () {
      * @memberof ExoEventEmitter
      * @instance
      */
-    ExoEventEmitter.prototype.emit = function (eventName, eventData) {
-        var self = this;
-        if (eventName && this.events[eventName]) {
-            this.events[eventName].forEach(function (listener) {
-                if (self.asyncListeners) {
-                    setTimeout(function () {
-                        listener(eventData);
-                    }, 1);
-                }
-                else {
-                    listener(eventData);
-                }
-            });
-        }
-    };
-    ;
-    ExoEventEmitter.prototype.emitMulticast = function (eventName, eventData) {
-        var self = this;
-        // broadcast unprefixed event locally first (before multicasting)
-        if (eventName && this.events[eventName]) {
-            this.events[eventName].forEach(function (listener) {
-                if (self.asyncListeners) {
-                    setTimeout(function () {
-                        listener(eventData);
-                    }, 1);
-                }
-                else {
-                    listener(eventData);
-                }
-            });
-        }
-        // now multicast to all windows (including this one) with prefixed event name
-        if (eventName.indexOf("multicast.") !== 0) {
-            // stringify eventData before passing to c# which will just act as a courier 
-            // to this untyped dynamic data.  It is up to the listeners to know what to expect.
-            this.exo.MulticastEvent(eventName, JSON.stringify(eventData));
-        }
-    };
-    ;
-    return ExoEventEmitter;
-}());
+    emit(eventName: string, eventData: any): void;
+    emitMulticast(eventName: string, eventData: any): void;
+}
 /**
  * Persistent Key/Value store which can also be used as a loki database persistence adapter.
  */
-var KeyStoreAdapter = /** @class */ (function () {
-    function KeyStoreAdapter(exoFile) {
-        this.exoFile = exoFile;
-    }
+declare class KeyStoreAdapter {
+    exoFile: ExoFile;
+    constructor(exoFile: ExoFile);
     /**
      * An expected method provided for lokijs to load a database from.
      * @param {string} dbname - the name (of the file) to load the database from.
@@ -164,13 +187,7 @@ var KeyStoreAdapter = /** @class */ (function () {
      * @memberof KeyStoreAdapter
      * @instance
      */
-    KeyStoreAdapter.prototype.loadDatabase = function (dbname, callback) {
-        var result = this.exoFile.loadFile(dbname);
-        if (typeof callback === 'function') {
-            callback(result);
-        }
-    };
-    ;
+    loadDatabase(dbname: string, callback: Function): void;
     /**
      * (Alias) Used to load a value asynchronously from the keystore.
      * @param {string} dbname - the key name (filename) to load the value (contents) from.
@@ -178,10 +195,7 @@ var KeyStoreAdapter = /** @class */ (function () {
      * @memberof KeyStoreAdapter
      * @instance
      */
-    KeyStoreAdapter.prototype.loadKey = function (dbname, callback) {
-        return this.loadDatabase(dbname, callback);
-    };
-    ;
+    loadKey(dbname: string, callback: Function): void;
     /**
      * An expected method provided for lokijs to save a database from.
      * @param {string} dbname - the name (of the file) to load the database from.
@@ -190,14 +204,7 @@ var KeyStoreAdapter = /** @class */ (function () {
      * @memberof KeyStoreAdapter
      * @instance
      */
-    KeyStoreAdapter.prototype.saveDatabase = function (dbname, dbstring, callback) {
-        // synchronous? for now
-        this.exoFile.saveFile(dbname, dbstring);
-        if (typeof callback === 'function') {
-            callback(null);
-        }
-    };
-    ;
+    saveDatabase(dbname: string, dbstring: string, callback: Function): void;
     /**
      * (Alias) Used to asynchronously save a key/value into the (file based) keystore.
      * @param {string} dbname - the name (of the file) to save the key/value to.
@@ -205,18 +212,14 @@ var KeyStoreAdapter = /** @class */ (function () {
      * @memberof KeyStoreAdapter
      * @instance
      */
-    KeyStoreAdapter.prototype.saveKey = function (dbname, dbstring, callback) {
-        return this.saveDatabase(dbname, dbstring, callback);
-    };
-    return KeyStoreAdapter;
-}());
+    saveKey(dbname: string, dbstring: string, callback: Function): void;
+}
 /**
  * Media API class for speech and audio/video/image.
  */
-var ExoMedia = /** @class */ (function () {
-    function ExoMedia(exoMedia) {
-        this.exoMedia = exoMedia;
-    }
+declare class ExoMedia {
+    exoMedia: any;
+    constructor(exoMedia: any);
     /**
      * Provisions a new (empty) named imagelist
      *
@@ -231,16 +234,7 @@ var ExoMedia = /** @class */ (function () {
      *   TransparentColor: "Transparent"
      * });
      */
-    ExoMedia.prototype.createImageList = function (name, properties) {
-        if (typeof properties === "undefined") {
-            properties = null;
-        }
-        if (typeof properties === "object" && properties !== null) {
-            properties = JSON.stringify(properties);
-        }
-        this.exoMedia.CreateImageList(name, properties);
-    };
-    ;
+    createImageList(name: string, properties: any): void;
     /**
      * Determines if an imagelist exists by the given name
      * @param {string} name - name of the imagelist to check for existence of
@@ -248,10 +242,7 @@ var ExoMedia = /** @class */ (function () {
      * @memberof Media
      * @instance
      */
-    ExoMedia.prototype.imageListExists = function (name) {
-        return this.exoMedia.ImageListExists(name);
-    };
-    ;
+    imageListExists(name: string): any;
     /**
      * Populates an image list with images
      *
@@ -267,14 +258,7 @@ var ExoMedia = /** @class */ (function () {
      *   "c:\imgs\img4.gif"
      * ]);
      */
-    ExoMedia.prototype.loadImageList = function (name, filenameList) {
-        if (!Array.isArray(filenameList)) {
-            throw new Error("loadImageList expects a filenameList of array type");
-        }
-        var filelistJson = JSON.stringify(filenameList);
-        this.exoMedia.LoadImageList(name, filelistJson);
-    };
-    ;
+    loadImageList(name: string, filenameList: string[]): void;
     /**
      * Clears a named imagelist but leaves it created for future use.
      *
@@ -284,10 +268,7 @@ var ExoMedia = /** @class */ (function () {
      * @example
      * exoskeleton.media.clearImageList("listViewImages");
      */
-    ExoMedia.prototype.clearImageList = function (name) {
-        this.exoMedia.ClearImageList(name);
-    };
-    ;
+    clearImageList(name: string): void;
     /**
      * Removes a named imagelist from memory.
      *
@@ -297,10 +278,7 @@ var ExoMedia = /** @class */ (function () {
      * @example
      * exoskeleton.media.removeImageList(name);
      */
-    ExoMedia.prototype.removeImageList = function (name) {
-        this.exoMedia.RemoveImageList(name);
-    };
-    ;
+    removeImageList(name: string): void;
     /**
      * Removes all named imagelists from memory.
      *
@@ -309,10 +287,7 @@ var ExoMedia = /** @class */ (function () {
      * @example
      * exoskeleton.media.removeAllImageLists();
      */
-    ExoMedia.prototype.removeAllImageLists = function () {
-        this.exoMedia.removeAllImageLists();
-    };
-    ;
+    removeAllImageLists(): void;
     /**
      * Invokes text-to-speech to speak the provided message.
      * @param {string} message - The message to speak.
@@ -321,10 +296,7 @@ var ExoMedia = /** @class */ (function () {
      * @example
      * exoskeleton.media.speak("this is a test");
      */
-    ExoMedia.prototype.speak = function (message) {
-        this.exoMedia.Speak(message);
-    };
-    ;
+    speak(message: string): void;
     /**
      * Invokes text-to-speech to synchronously speak the provided message.
      * @param {string} message - The message to speak.
@@ -333,19 +305,14 @@ var ExoMedia = /** @class */ (function () {
      * @example
      * exoskeleton.media.speakSync("this is a test");
      */
-    ExoMedia.prototype.speakSync = function (message) {
-        this.exoMedia.SpeakSync(message);
-    };
-    ;
-    return ExoMedia;
-}());
+    speakSync(message: string): void;
+}
 /**
  * Com API class for interacting with COM Objects registered on the system.
  */
-var ExoCom = /** @class */ (function () {
-    function ExoCom(exoCom) {
-        this.exoCom = exoCom;
-    }
+declare class ExoCom {
+    exoCom: any;
+    constructor(exoCom: any);
     /**
      * Allows creation of c# singleton for further operations.
      * @param {string} comObjectName - Com class type name to instance.
@@ -354,10 +321,7 @@ var ExoCom = /** @class */ (function () {
      * @example
      * exoskeleton.com.createInstance("SAPI.SpVoice");
      */
-    ExoCom.prototype.createInstance = function (comObjectName) {
-        this.exoCom.CreateInstance(comObjectName);
-    };
-    ;
+    createInstance(comObjectName: string): void;
     /**
      * Allows invocation of a method on the global singleton com object instance.
      * @param {string} methodName - Com interface method to invoke.
@@ -368,10 +332,7 @@ var ExoCom = /** @class */ (function () {
      * exoskeleton.com.createInstance("SAPI.SpVoice");
      * exoskeleton.com.invokeMethod("Speak", ["this is a test message scripting activex from java script", 1])
      */
-    ExoCom.prototype.invokeMethod = function (methodName, methodParams) {
-        this.exoCom.InvokeMethod(methodName, JSON.stringify(methodParams));
-    };
-    ;
+    invokeMethod(methodName: string, methodParams: any[]): void;
     /**
      * Activates instance to Com type, calls a single method (with params) and then disposes instance.
      * @param {string} comObjectName - Com class type name to instance.
@@ -383,19 +344,14 @@ var ExoCom = /** @class */ (function () {
      * exoskeleton.com.createAndInvokeMethod ("SAPI.SpVoice", "Speak",
      *     ["this is a test message scripting activex from java script", 1]);
      */
-    ExoCom.prototype.createAndInvokeMethod = function (comObjectName, methodName, methodParams) {
-        this.exoCom.CreateAndInvokeMethod(comObjectName, methodName, JSON.stringify(methodParams));
-    };
-    ;
-    return ExoCom;
-}());
+    createAndInvokeMethod(comObjectName: string, methodName: string, methodParams: any[]): void;
+}
 /**
  * File API class for interfacing with .NET File and Directory classes.
  */
-var ExoFile = /** @class */ (function () {
-    function ExoFile(exoFile) {
-        this.exoFile = exoFile;
-    }
+declare class ExoFile {
+    exoFile: any;
+    constructor(exoFile: any);
     /**
      * Combine multiple paths into one.
      * @param {string[]} paths - Array of paths to combine.
@@ -407,11 +363,7 @@ var ExoFile = /** @class */ (function () {
      * console.log(fullyQualifiedPath);
      * // "c:\downloads\myfile.txt"
      */
-    ExoFile.prototype.combinePaths = function (paths) {
-        var pathsJson = JSON.stringify(paths);
-        return this.exoFile.CombinePaths(pathsJson);
-    };
-    ;
+    combinePaths(paths: string[]): any;
     /**
      * Combines multiple paths with a single base/source path.
      * @param {string} source - base path to join paths with.
@@ -424,12 +376,7 @@ var ExoFile = /** @class */ (function () {
      * console.log(paths);
      * // logs: ['c:\images\img1.jpg','c:\images\img2.jpg','c:\images\img3.jpg']
      */
-    ExoFile.prototype.combinePathsArray = function (source, paths) {
-        var pathsJson = JSON.stringify(paths);
-        var result = this.exoFile.CombinePathsArray(source, pathsJson);
-        return result ? JSON.parse(result) : null;
-    };
-    ;
+    combinePathsArray(source: string, paths: string[]): any;
     /**
      * Copies an existing file to a new file.  Overwriting is not allowed.
      * @param {string} source - Filename to copy from.
@@ -439,10 +386,7 @@ var ExoFile = /** @class */ (function () {
      * @example
      * exoskeleton.file.copyFile("c:\\myfolder\\file1.txt", "c:\\myfolder\\file1.txt.bak");
      */
-    ExoFile.prototype.copyFile = function (source, dest) {
-        this.exoFile.CopyFile(source, dest);
-    };
-    ;
+    copyFile(source: string, dest: string): void;
     /**
      * Creates all directories and subdirectories in the specified path unless they already exist.
      * @param {string} path - The directory to create.
@@ -451,10 +395,7 @@ var ExoFile = /** @class */ (function () {
      * @example
      * exoskeleton.file.createDirectory("c:\\downloads\\subdir");
      */
-    ExoFile.prototype.createDirectory = function (path) {
-        this.exoFile.CreateDirectory(path);
-    };
-    ;
+    createDirectory(path: string): void;
     /**
      * Deletes an empty directory (if recursive is false),
      * or recursively deletes subfolders and files (if recursive is true).
@@ -468,13 +409,7 @@ var ExoFile = /** @class */ (function () {
      * // this will wipe out the whole 'subdir' folder even if it has files or subdirectories
      * exoskeleton.file.deleteDirectory("c:\\downloads\\subdir", true);
      */
-    ExoFile.prototype.deleteDirectory = function (path, recursive) {
-        if (typeof recursive === "undefined") {
-            recursive = false;
-        }
-        this.exoFile.DeleteDirectory(path);
-    };
-    ;
+    deleteDirectory(path: string, recursive: boolean): void;
     /**
      * Deletes the specified file.
      * @param {string} filename - Name of file to delete. Wildcard characters are not supported.
@@ -483,10 +418,7 @@ var ExoFile = /** @class */ (function () {
      * @example
      * exoskeleton.file.deleteFile("c:\\myfolder\\file1.txt.bak");
      */
-    ExoFile.prototype.deleteFile = function (filename) {
-        this.exoFile.DeleteFile(filename);
-    };
-    ;
+    deleteFile(filename: string): void;
     /**
      * Converts a filepath to a Uri
      * @param filepath {string} path to convert to uri
@@ -494,10 +426,7 @@ var ExoFile = /** @class */ (function () {
      * @instance
      * @returns {string} uri string
      */
-    ExoFile.prototype.filePathToUri = function (filepath) {
-        return this.exoFile.FilePathToUri(filepath);
-    };
-    ;
+    filePathToUri(filepath: string): any;
     /**
      * Gets subdirectory names of a parent directory.
      * @param {string} parentDir - Directory to list subdirectories for.
@@ -514,10 +443,7 @@ var ExoFile = /** @class */ (function () {
      * // "c:\\downloads\\subdir3"
      * // ]
      */
-    ExoFile.prototype.getDirectories = function (parentDir) {
-        return JSON.parse(this.exoFile.GetDirectories(parentDir));
-    };
-    ;
+    getDirectories(parentDir: string): string[];
     /**
      * Gets DirectoryInfo for the specified directory path.
      * @param {string} path - Name of the directory to get information for.
@@ -527,10 +453,7 @@ var ExoFile = /** @class */ (function () {
      * @example
      * console.dir(exoskeleton.file.getDirectoryInfo("c:\\downloads"));
      */
-    ExoFile.prototype.getDirectoryInfo = function (path) {
-        return JSON.parse(this.exoFile.GetDirectoryInfo(path));
-    };
-    ;
+    getDirectoryInfo(path: string): any;
     /**
      * Returns the directory portion of the path without the filename.
      * @param {string} path - The full pathname to get directory portion of.
@@ -541,10 +464,7 @@ var ExoFile = /** @class */ (function () {
      * console.log(exoskeleton.file.getDirectoryName("c:\\downloads\\myfile.txt"));
      * // logs : "c:\downloads"
      */
-    ExoFile.prototype.getDirectoryName = function (path) {
-        return this.exoFile.GetDirectoryName(path);
-    };
-    ;
+    getDirectoryName(path: string): string;
     /**
      * Gets information about each of the mounted drives.
      * @memberof File
@@ -556,10 +476,7 @@ var ExoFile = /** @class */ (function () {
      *   console.log(drive.Name + ":" + drive.AvailableFreeSpace);
      * });
      */
-    ExoFile.prototype.getDriveInfo = function () {
-        return JSON.parse(this.exoFile.GetDriveInfo());
-    };
-    ;
+    getDriveInfo(): any[];
     /**
      * Gets the file extension of the fully qualified path.
      * @param {string} path - The filepath to get extension of.
@@ -570,10 +487,7 @@ var ExoFile = /** @class */ (function () {
      * console.log(exoskeleton.file.getExtension("c:\\downloads\\myfile.txt"));
      * // logs : ".txt"
      */
-    ExoFile.prototype.getExtension = function (path) {
-        return this.exoFile.GetExtension(path);
-    };
-    ;
+    getExtension(path: string): string;
     /**
      * Gets FileInfo for the specified filename.
      * @param {string} filename - The filename to get information on.
@@ -581,10 +495,7 @@ var ExoFile = /** @class */ (function () {
      * @memberof File
      * @instance
      */
-    ExoFile.prototype.getFileInfo = function (filename) {
-        return JSON.parse(this.exoFile.GetFileInfo(filename));
-    };
-    ;
+    getFileInfo(filename: string): any;
     /**
      * Gets list of files matching a pattern within a parent directory.
      * @param {string} parentDir - Parent directory to search within.
@@ -595,10 +506,7 @@ var ExoFile = /** @class */ (function () {
      * @example
      * var results = exoskeleton.file.getFiles("c:\\downloads\\music", "*.mp3");
      */
-    ExoFile.prototype.getFiles = function (parentDir, searchPattern) {
-        return JSON.parse(this.exoFile.GetFiles(parentDir, searchPattern));
-    };
-    ;
+    getFiles(parentDir: string, searchPattern: string): string[];
     /**
      * Gets list of files ending in any of the extension/suffix strings provided.
      * @param {string} parentDir - Parent directory to search within.
@@ -609,13 +517,7 @@ var ExoFile = /** @class */ (function () {
      * @example
      * var results = exoskeleton.file.getFilesEndingWith("c:\\downloads\\music", ".mp3,.m4a");
      */
-    ExoFile.prototype.getFilesEndingWith = function (parentDir, extensions) {
-        if (Array.isArray(extensions)) {
-            extensions = extensions.join();
-        }
-        return JSON.parse(this.exoFile.GetFilesEndingWith(parentDir, extensions));
-    };
-    ;
+    getFilesEndingWith(parentDir: string, extensions: string | string[]): string[];
     /**
      * Returns the filename portion of the path without the directory.
      * @param {string} path - The full pathname to get filename portion of.
@@ -626,10 +528,7 @@ var ExoFile = /** @class */ (function () {
      * console.log(exoskeleton.file.getFileName("c:\\downloads\\myfile.txt"));
      * // logs : "myfile.txt"
      */
-    ExoFile.prototype.getFileName = function (path) {
-        return this.exoFile.GetFileName(path);
-    };
-    ;
+    getFileName(path: string): string;
     /**
      * Resolves an absolute path from a path containing inner relative paths
      * @param {string} path A path containing possible inner relative paths
@@ -638,10 +537,7 @@ var ExoFile = /** @class */ (function () {
      * console.log(exoskeleton.file.getFullPath("d:\archives\january\..\march\test.txt");
      * // logs : "d:\archives\march\test.txt"
      */
-    ExoFile.prototype.getFullPath = function (path) {
-        return this.exoFile.GetFullPath(path);
-    };
-    ;
+    getFullPath(path: string): string;
     /**
      * Gets a list of logical drives.
      * @memberof File
@@ -652,10 +548,7 @@ var ExoFile = /** @class */ (function () {
      * console.log(result);
      * // logs : C:\,D:\,Z:\
      */
-    ExoFile.prototype.getLogicalDrives = function () {
-        return JSON.parse(this.exoFile.GetLogicalDrives());
-    };
-    ;
+    getLogicalDrives(): string[];
     /**
      * Opens a text file, reads all lines of the file and returns text as a string.
      * @param {string} filename - The file to read from.
@@ -663,10 +556,7 @@ var ExoFile = /** @class */ (function () {
      * @memberof File
      * @instance
      */
-    ExoFile.prototype.loadFile = function (filename) {
-        return this.exoFile.LoadFile(filename);
-    };
-    ;
+    loadFile(filename: string): string;
     /**
      * Reads a binary file into a Base64 string.  Can be used for encoding data urls.
      * @param {string} filename - The file to read from.
@@ -678,10 +568,7 @@ var ExoFile = /** @class */ (function () {
      * var pic1 = exoskeleton.file.loadFileBase64("c:\\images\\pic1.png");
      * img1.src = 'data:image/png;base64,' + pic1;
      */
-    ExoFile.prototype.loadFileBase64 = function (filename) {
-        return this.exoFile.LoadFileBase64(filename);
-    };
-    ;
+    loadFileBase64(filename: string): string;
     /**
      * Writes a text file with the provided contents string.
      * If the file already exists, it will be overwritten.
@@ -690,10 +577,7 @@ var ExoFile = /** @class */ (function () {
      * @memberof File
      * @instance
      */
-    ExoFile.prototype.saveFile = function (filename, contents) {
-        this.exoFile.SaveFile(filename, contents);
-    };
-    ;
+    saveFile(filename: string, contents: string): void;
     /**
      * Writes a binary file with bytes derived from the provided base64 string.
      * @param {string} filename - Filename to write to.
@@ -706,10 +590,7 @@ var ExoFile = /** @class */ (function () {
      * b64Text = b64Text.replace('data:;image/png;base64,','');
      * exoskeleton.file.saveFileBase64('canvas1.png', b64Text);
      */
-    ExoFile.prototype.saveFileBase64 = function (filename, contents) {
-        this.exoFile.SaveFileBase64(filename, contents);
-    };
-    ;
+    saveFileBase64(filename: string, contents: string): void;
     /**
      * Starts our container singleton watcher on path specified by user.
      * Events will be emitted as multicast, so if multiple forms load
@@ -727,10 +608,7 @@ var ExoFile = /** @class */ (function () {
      *   exoskeleton.logger.logInfo("multicast.download.created event received", data);
      * });
      */
-    ExoFile.prototype.startWatcher = function (path, eventBaseName) {
-        this.exoFile.StartWatcher(path, eventBaseName);
-    };
-    ;
+    startWatcher(path: string, eventBaseName: string): void;
     /**
      * Disables the watcher singleton.
      * @memberof File
@@ -738,19 +616,14 @@ var ExoFile = /** @class */ (function () {
      * @example
      * exoskeleton.file.stopWatcher();
      */
-    ExoFile.prototype.stopWatcher = function () {
-        this.exoFile.StopWatcher();
-    };
-    ;
-    return ExoFile;
-}());
+    stopWatcher(): void;
+}
 /**
  * Main API class used for general MessageBox, FileDialog, Notifications, and Container utilitites.
  */
-var ExoMain = /** @class */ (function () {
-    function ExoMain(exoMain) {
-        this.exoMain = exoMain;
-    }
+declare class ExoMain {
+    exoMain: any;
+    constructor(exoMain: any);
     /**
      * Allows updating properties of the host window (.Net) Form object
      * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx ms docs}
@@ -763,13 +636,7 @@ var ExoMain = /** @class */ (function () {
      *   Opacity: 0.9
      * });
      */
-    ExoMain.prototype.applyFormProperties = function (formProperties) {
-        if (typeof formProperties === "object") {
-            formProperties = JSON.stringify(formProperties);
-        }
-        this.exoMain.applyFormProperties(formProperties);
-    };
-    ;
+    applyFormProperties(formProperties: any): void;
     /**
      * Process all Windows messages currently in the message queue.
      * @memberof Main
@@ -777,10 +644,7 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.doEvents();
      */
-    ExoMain.prototype.doEvents = function () {
-        this.exoMain.DoEvents();
-    };
-    ;
+    doEvents(): void;
     /**
      * Signals the host container to exit fullscreen mode.
      * @memberof Main
@@ -788,10 +652,7 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.exitFullscreen();
      */
-    ExoMain.prototype.exitFullscreen = function () {
-        this.exoMain.ExitFullscreen();
-    };
-    ;
+    exitFullscreen(): void;
     /**
      * Signals the host container to enter fullscreen mode.
      * @memberof Main
@@ -799,10 +660,7 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.fullscreen();
      */
-    ExoMain.prototype.fullscreen = function () {
-        this.exoMain.Fullscreen();
-    };
-    ;
+    fullscreen(): void;
     /**
      * Opens a new host container with the url and settings provided.
      * @param {string} caption - Window caption to apply to new window.
@@ -821,19 +679,7 @@ var ExoMain = /** @class */ (function () {
      * var html = "@<html><body><h3>Hello World</h3></body></html>";
      * exoskeleton.main.openNewWindow("My dynamic page", html, 400, 400);
      */
-    ExoMain.prototype.openNewWindow = function (caption, url, width, height, mode) {
-        if (typeof width === "undefined") {
-            width = null;
-        }
-        if (typeof height === "undefined") {
-            height = null;
-        }
-        if (typeof mode === "undefined") {
-            mode = null;
-        }
-        this.exoMain.OpenNewWindow(caption, url, width, height, mode);
-    };
-    ;
+    openNewWindow(caption: string, url: string, width?: number | null, height?: number | null, mode?: string | null): void;
     /**
      * (Advanced) method to dynamically switch into native ui mode.
      * By default exoskeleton uses web ui mode within its hosted webbrowser.
@@ -846,10 +692,7 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.switchToNativeUi();
      */
-    ExoMain.prototype.switchToNativeUi = function () {
-        this.exoMain.SwitchToNativeUi();
-    };
-    ;
+    switchToNativeUi(): void;
     /**
      * (Advanced) method to dynamically switch into mixed ui mode.
      * MixedUi mode uses native ui layout but leaves the webbrowser visible.
@@ -869,13 +712,7 @@ var ExoMain = /** @class */ (function () {
      * // - switch into mixedui (as below) once your form layout is complete.
      * exoskeleton.main.switchToMixedUi("BottomRightPanel");
      */
-    ExoMain.prototype.switchToMixedUi = function (browserParentPanel) {
-        if (typeof browserParentPanel === "undefined") {
-            browserParentPanel = null;
-        }
-        this.exoMain.SwitchToMixedUi(browserParentPanel);
-    };
-    ;
+    switchToMixedUi(browserParentPanel?: string | null): void;
     /**
      * (Advanced) method to dynamically switch into web ui mode.
      * By default exoskeleton uses web ui mode within its hosted webbrowser.
@@ -888,10 +725,7 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.switchToWebUi();
      */
-    ExoMain.prototype.switchToWebUi = function () {
-        this.exoMain.SwitchToWebUi();
-    };
-    ;
+    switchToWebUi(): void;
     /**
      * Updates the window title for the host container.
      * @param {string} title - Text to apply to window title.
@@ -900,10 +734,7 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.setWindowTitle("My Editor App - " + filename);
      */
-    ExoMain.prototype.setWindowTitle = function (title) {
-        this.exoMain.SetWindowTitle(title);
-    };
-    ;
+    setWindowTitle(title: string): void;
     /**
      * Displays a windows system tray notification.
      * @param {string} title - The notification title.
@@ -913,10 +744,7 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.showNotification("my exo app", "some notification details");
      */
-    ExoMain.prototype.showNotification = function (title, message) {
-        this.exoMain.ShowNotification(title, message);
-    };
-    ;
+    showNotification(title: string, message: string): void;
     /**
      * Signals the host container to toggle fullscreen mode.
      * @memberof Main
@@ -924,19 +752,14 @@ var ExoMain = /** @class */ (function () {
      * @example
      * exoskeleton.main.toggleFullscreen();
      */
-    ExoMain.prototype.toggleFullscreen = function () {
-        this.exoMain.ToggleFullscreen();
-    };
-    ;
-    return ExoMain;
-}());
+    toggleFullscreen(): void;
+}
 /**
  * Proc API class for performing windows process related tasks.
  */
-var ExoProc = /** @class */ (function () {
-    function ExoProc(exoProc) {
-        this.exoProc = exoProc;
-    }
+declare class ExoProc {
+    exoProc: any;
+    constructor(exoProc: any);
     /**
      * Starts a process resource by specifying the name of a document or application file.
      * @param {string} procPath - Program to execute.
@@ -947,11 +770,7 @@ var ExoProc = /** @class */ (function () {
      * exoskeleton.proc.startPath("calc.exe");
      * exoskeleton.proc.startPath("c:\\windows\\system32\\notepad.exe");
      */
-    ExoProc.prototype.startPath = function (procPath) {
-        var result = this.exoProc.StartPath(procPath);
-        return (result ? JSON.parse(result) : null);
-    };
-    ;
+    startPath(procPath: string): any;
     /**
      * Starts a process resource by providing information in a ProcessStartInfo format.
      * @param {object} processStartInfo - Serialized javascript object closely resembling a c# ProcessStartInfo object.
@@ -971,11 +790,7 @@ var ExoProc = /** @class */ (function () {
      *   Arguments: "c:\\docs\\readme.txt"
      * });
      */
-    ExoProc.prototype.start = function (processStartInfo) {
-        var result = this.exoProc.Start(JSON.stringify(processStartInfo));
-        return (result ? JSON.parse(result) : null);
-    };
-    ;
+    start(processStartInfo: any): any;
     /**
      * Gets a detailed list of running processes and their settings. (Takes a long time to run)
      * @memberof Proc
@@ -988,10 +803,7 @@ var ExoProc = /** @class */ (function () {
      *   console.log(p.ProcessName + " : " + p.Id);
      * });
      */
-    ExoProc.prototype.getProcesses = function () {
-        return JSON.parse(this.exoProc.GetProcesses());
-    };
-    ;
+    getProcesses(): any[];
     /**
      * Gets a simplified list of running processes.
      * @memberof Proc
@@ -1004,10 +816,7 @@ var ExoProc = /** @class */ (function () {
      *   console.log(p.ProcessName + " : " + p.Id);
      * });
      */
-    ExoProc.prototype.getProcessesSimplified = function () {
-        return JSON.parse(this.exoProc.GetProcessesSimplified());
-    };
-    ;
+    getProcessesSimplified(): any;
     /**
      * Gets detailed process information by process id.
      * @param {int} id - the windows process id to get more info about.
@@ -1015,10 +824,7 @@ var ExoProc = /** @class */ (function () {
      * @memberof Proc
      * @instance
      */
-    ExoProc.prototype.getProcessInfoById = function (id) {
-        return JSON.parse(this.exoProc.GetProcessInfoById(id));
-    };
-    ;
+    getProcessInfoById(id: number): any;
     /**
      * Gets a list of processes of the provided name.
      * @param {string} name - name of process to get list of.
@@ -1031,10 +837,7 @@ var ExoProc = /** @class */ (function () {
      *   console.log(p.ProcessName + " : " + p.Id);
      * });
      */
-    ExoProc.prototype.getProcessesByName = function (name) {
-        return JSON.parse(this.exoProc.GetProcessesByName(name));
-    };
-    ;
+    getProcessesByName(name: string): any[];
     /**
      * Kills a running process.
      * @param {int} id - The id of the process to kill.
@@ -1045,19 +848,14 @@ var ExoProc = /** @class */ (function () {
      * // The id passed can be looked up via calls to getProcesses or getProcessesByName.
      * exoskeleton.proc.killProcessById(1608);
      */
-    ExoProc.prototype.killProcessById = function (id) {
-        return this.exoProc.KillProcessById(id);
-    };
-    ;
-    return ExoProc;
-}());
+    killProcessById(id: number): boolean;
+}
 /**
  * Session API class for interfacing with the exoskeleton 'session' key/value storage.
  */
-var ExoSession = /** @class */ (function () {
-    function ExoSession(exoSession) {
-        this.exoSession = exoSession;
-    }
+declare class ExoSession {
+    exoSession: any;
+    constructor(exoSession: any);
     /**
      * Looks up the (string) Value for the Session key provided.
      * @param {string} key - The key name to lookup a value for in the session store.
@@ -1067,10 +865,7 @@ var ExoSession = /** @class */ (function () {
      * @example
      * var result = exoskeleton.session.get("username");
      */
-    ExoSession.prototype.get = function (key) {
-        return this.exoSession.Get(key);
-    };
-    ;
+    get(key: string): string;
     /**
      * Looks up the (object) Value for the Session key provided.
      * @param {string} key - The key name to lookup a value for in the session store.
@@ -1081,11 +876,7 @@ var ExoSession = /** @class */ (function () {
      * var userInfo = exoskeleton.session.getObject("UserInfo");
      * console.log(userInfo.name + userInfo.addr + userInfo.phone);
      */
-    ExoSession.prototype.getObject = function (key) {
-        var result = this.exoSession.Get(key);
-        return result ? JSON.parse(result) : result;
-    };
-    ;
+    getObject(key: string): any;
     /**
      * Obtains a string list of all keys currently in the session store.
      * @returns {string[]} - An array of string 'keys' within the session store.
@@ -1097,10 +888,7 @@ var ExoSession = /** @class */ (function () {
      *   console.log(exoskeleton.session.get(keyname));
      * });
      */
-    ExoSession.prototype.list = function () {
-        return JSON.parse(this.exoSession.list());
-    };
-    ;
+    list(): string[];
     /**
      * Assigns a key/value setting within the session store.
      * @param {string} key - The name of the session variable to set.
@@ -1110,10 +898,7 @@ var ExoSession = /** @class */ (function () {
      * @example
      * exoskeleton.session.set("username", "jdoe");
      */
-    ExoSession.prototype.set = function (key, value) {
-        this.exoSession.Set(key, value);
-    };
-    ;
+    set(key: string, value: string): void;
     /**
      * Assigns a key/value setting within the session store by serializing it.
      * @param {string} key - The name of the session variable to set.
@@ -1127,19 +912,14 @@ var ExoSession = /** @class */ (function () {
      *   phone: "555-1212"
      * });
      */
-    ExoSession.prototype.setObject = function (key, value) {
-        this.exoSession.Set(key, JSON.stringify(value));
-    };
-    ;
-    return ExoSession;
-}());
+    setObject(key: string, value: any): void;
+}
 /**
  * System API class for getting system information, environment variables, registry, etc.
  */
-var ExoSystem = /** @class */ (function () {
-    function ExoSystem(exoSystem) {
-        this.exoSystem = exoSystem;
-    }
+declare class ExoSystem {
+    exoSystem: any;
+    constructor(exoSystem: any);
     /**
      * Get information about the system which this program is being run on.
      * @returns {object} - Json system information object.
@@ -1150,10 +930,7 @@ var ExoSystem = /** @class */ (function () {
      * console.dir(si);
      * console.log(si.MachineName);
      */
-    ExoSystem.prototype.getSystemInfo = function () {
-        return JSON.parse(this.exoSystem.GetSystemInfo());
-    };
-    ;
+    getSystemInfo(): ExoskeletonSystemInfo;
     /**
      * Retrieves a single environment variable value.
      * @param {string} varName - The name of the environment variable to retrieve value for.
@@ -1163,10 +940,7 @@ var ExoSystem = /** @class */ (function () {
      * @example
      * var path = exoskeleton.system.getEnvironmentVariable("PATH");
      */
-    ExoSystem.prototype.getEnvironmentVariable = function (varName) {
-        return this.exoSystem.GetEnvironmentVariable(varName);
-    };
-    ;
+    getEnvironmentVariable(varName: string): string | null;
     /**
      * Returns a list of all environment variables as properties and property values.
      * @returns {object} - Json hash object with properties representing variables.
@@ -1178,10 +952,7 @@ var ExoSystem = /** @class */ (function () {
      *   console.log("key: " + key + " val : " + exoskeleton.system.getEnvironmentVariable(key));
      * });
      */
-    ExoSystem.prototype.getEnvironmentVariables = function () {
-        return JSON.parse(this.exoSystem.GetEnvironmentVariables());
-    };
-    ;
+    getEnvironmentVariables(): any;
     /**
      * Sets an environment variable only within this process or child processes.
      * @param {string} varName - The name of the environment variable.
@@ -1192,10 +963,7 @@ var ExoSystem = /** @class */ (function () {
      * var now = new DateTime();
      * var path = exoskeleton.system.setEnvironmentVariable("LAUNCHTIME", now.toString());
      */
-    ExoSystem.prototype.setEnvironmentVariable = function (varName, varValue) {
-        this.exoSystem.SetEnvironmentVariable(varName, varValue);
-    };
-    ;
+    setEnvironmentVariable(varName: string, varValue: string): void;
     /**
      * Finds an existing application window by either class or name and focuses it.
      * @param {string=} className - The class name of the window, or null.
@@ -1207,10 +975,7 @@ var ExoSystem = /** @class */ (function () {
      * exoskeleton.system.focusWindow("notepad", null);
      * exoskeleton.system.focusWindow(null, "readme.txt - Notepad");
      */
-    ExoSystem.prototype.focusWindow = function (className, windowName) {
-        this.exoSystem.FocusWindow(className, windowName);
-    };
-    ;
+    focusWindow(className?: string | null, windowName?: string | null): void;
     /**
      * Finds a window and sends keycodes to it.
      * This uses .Net SendKeys(), for info on key codes read :
@@ -1224,20 +989,14 @@ var ExoSystem = /** @class */ (function () {
      * @example
      * exoskeleton.system.focusAndSendKeys("notepad", null, ["t", "e", "s", "t", "{ENTER}"]);
      */
-    ExoSystem.prototype.focusAndSendKeys = function (className, windowName, keys) {
-        var keysJson = JSON.stringify(keys);
-        return this.exoSystem.FocusAndSendKeys(className, windowName, keysJson);
-    };
-    ;
-    return ExoSystem;
-}());
+    focusAndSendKeys(className?: string | null, windowName?: string | null, keys?: string[]): boolean;
+}
 /**
  * Logger API class for dealing with exoskeleton logger.
  */
-var ExoLogger = /** @class */ (function () {
-    function ExoLogger(exoLogger) {
-        this.exoLogger = exoLogger;
-    }
+declare class ExoLogger {
+    exoLogger: any;
+    constructor(exoLogger: any);
     /**
      * Logs an "info" message to the logger's message list.
      * @param {string} source - Descriptive 'source' of the info.
@@ -1247,12 +1006,7 @@ var ExoLogger = /** @class */ (function () {
      * @example
      * exoskeleton.logger.logInfo("myfunction", "something interesting happened");
      */
-    ExoLogger.prototype.logInfo = function (source, message) {
-        if (!this.exoLogger)
-            return;
-        this.exoLogger.LogInfo(source, message);
-    };
-    ;
+    logInfo(source: string, message: string): void;
     /**
      * Logs a "warning" message to the logger's message list.
      * @param {string} source - Descriptive 'source' of the warning.
@@ -1262,12 +1016,7 @@ var ExoLogger = /** @class */ (function () {
      * @example
      * exoskeleton.logger.logInfo("myfunction", "something odd happened");
      */
-    ExoLogger.prototype.logWarning = function (source, message) {
-        if (!this.exoLogger)
-            return;
-        this.exoLogger.LogWarning(source, message);
-    };
-    ;
+    logWarning(source: string, message: string): void;
     /**
      * Logs an "error" message to the logger's message list.
      * @param {string} msg - Message to log.
@@ -1280,12 +1029,7 @@ var ExoLogger = /** @class */ (function () {
      * @example
      * exoskeleton.logger.logError("something dangerous happened", "myfunction");
      */
-    ExoLogger.prototype.logError = function (msg, url, line, col, error) {
-        if (!this.exoLogger)
-            return;
-        this.exoLogger.LogError(msg, url, line, col, error);
-    };
-    ;
+    logError(msg: string, url?: string | null, line?: string | null, col?: string | null, error?: string | null): void;
     /**
      * Logs text to the logger's console.
      * @param {string} message - Text to append to the console.
@@ -1295,12 +1039,7 @@ var ExoLogger = /** @class */ (function () {
      * var now = new DateTime();
      * exoskeleton.logger.logText("started processing at : " + now);
      */
-    ExoLogger.prototype.logText = function (message) {
-        if (!this.exoLogger)
-            return;
-        this.exoLogger.LogText(message);
-    };
-    ;
+    logText(message: string): void;
     /**
      * Logs an object to the logger's console.
      * @param {object} obj - Object to serialize and pretty print to console.
@@ -1310,22 +1049,14 @@ var ExoLogger = /** @class */ (function () {
      * var obj = new { a: 1, b: 2 }
      * exoskeleton.logger.logObject(obj);
      */
-    ExoLogger.prototype.logObject = function (obj) {
-        if (!this.exoLogger)
-            return;
-        var json = JSON.stringify(obj, undefined, 2);
-        this.exoLogger.LogText(json);
-    };
-    ;
-    return ExoLogger;
-}());
+    logObject(obj: any): void;
+}
 /**
  * Net API class for various network and http tasks.
  */
-var ExoNet = /** @class */ (function () {
-    function ExoNet(exoNet) {
-        this.exoNet = exoNet;
-    }
+declare class ExoNet {
+    exoNet: any;
+    constructor(exoNet: any);
     /**
      * Downloads from an internet url and saves to disk.
      * @param {string} url - The internet url to download from.
@@ -1337,10 +1068,7 @@ var ExoNet = /** @class */ (function () {
      * exoskeleton.net.downloadFile("https://github.com/obeliskos/exoskeleton/archive/0.2.zip",
      *   "c:\\downloads\\0.2.zip", false);
      */
-    ExoNet.prototype.downloadFile = function (url, dest, async) {
-        this.exoNet.DownloadFile(url, dest, async);
-    };
-    ;
+    downloadFile(url: string, dest: string, async: boolean): void;
     /**
      * Fetches text-based resource at the provided url and returns a string of its content.
      * @param {string} url - Internet url of text based resource.
@@ -1351,19 +1079,14 @@ var ExoNet = /** @class */ (function () {
      * var readmeText = exoskeleton.net.readUrl("https://raw.githubusercontent.com/obeliskos/exoskeleton/master/README.md");
      * exoskeleton.logger.logText(readmeText);
      */
-    ExoNet.prototype.readUrl = function (url) {
-        return this.exoNet.ReadUrl(url);
-    };
-    ;
-    return ExoNet;
-}());
+    readUrl(url: string): string;
+}
 /**
  * Enc API class for performing various encryption and hashing tasks.
  */
-var ExoEnc = /** @class */ (function () {
-    function ExoEnc(exoEnc) {
-        this.exoEnc = exoEnc;
-    }
+declare class ExoEnc {
+    exoEnc: any;
+    constructor(exoEnc: any);
     /**
      * Encrypts a string using the provided password.
      * @param {string} data - The string to encrypt.
@@ -1374,10 +1097,7 @@ var ExoEnc = /** @class */ (function () {
      * @example
      * var encryptedString = exoskeleton.enc.encrypt("some secret msg", "s0m3p4ssw0rd");
      */
-    ExoEnc.prototype.encrypt = function (data, password) {
-        return this.exoEnc.Encrypt(data, password);
-    };
-    ;
+    encrypt(data: string, password: string): string;
     /**
      * Decrypts a string using the provided password.
      * @param {string} data - The string to decrypt.
@@ -1393,10 +1113,7 @@ var ExoEnc = /** @class */ (function () {
      * console.log("encrypted: " + encryptedString);
      * console.log("decrypted: " + decryptedString);
      */
-    ExoEnc.prototype.decrypt = function (data, password) {
-        return this.exoEnc.Decrypt(data, password);
-    };
-    ;
+    decrypt(data: string, password: string): string;
     /**
      * Create encrypted copies of the specified file(s) using the provided password.
      * @param {string=} directory - Directory where file(s) to be encrypted reside (or current directory if null).
@@ -1409,10 +1126,7 @@ var ExoEnc = /** @class */ (function () {
      * exoskeleton.enc.encryptFiles("c:\\source", "readme.txt", "s0m3p4ssw0rd");
      * exoskeleton.enc.encryptFiles("c:\\source", "*.doc", "s0m3p4ssw0rd");
      */
-    ExoEnc.prototype.encryptFiles = function (directory, filemask, password) {
-        this.exoEnc.EncryptFiles(directory, filemask, password);
-    };
-    ;
+    encryptFiles(directory: string | null, filemask: string, password: string): void;
     /**
      * Create decrypted copies of the specified file(s) using the provided password.
      * @param {string=} directory - Directory where file(s) to be decrypted reside (or current directory if null).
@@ -1425,10 +1139,7 @@ var ExoEnc = /** @class */ (function () {
      * exoskeleton.enc.decryptFiles("c:\\source", "readme.txt.enx", "s0m3p4ssw0rd");
      * exoskeleton.enc.decryptFiles("c:\\source", "*.doc.enx", "s0m3p4ssw0rd");
      */
-    ExoEnc.prototype.decryptFiles = function (directory, filemask, password) {
-        this.exoEnc.DecryptFiles(directory, filemask, password);
-    };
-    ;
+    decryptFiles(directory: string | null, filemask: string, password: string): void;
     /**
      * Creates ana MD5 Hash for the file specified by the provided filename.
      * @param {string} filename - The filename of the file to calculate a hash file.
@@ -1438,10 +1149,7 @@ var ExoEnc = /** @class */ (function () {
      * @example
      * var hash = exoskeleton.enc.createMD5Hash("c:\\source\\readme.txt");
      */
-    ExoEnc.prototype.createMD5Hash = function (filename) {
-        return this.exoEnc.GetBase64EncodedMD5Hash(filename);
-    };
-    ;
+    createMD5Hash(filename: string): string;
     /**
      * Creates ana SH1 Hash for the file specified by the provided filename.
      * @param {string} filename : The filename of the file to calculate a hash file.
@@ -1451,10 +1159,7 @@ var ExoEnc = /** @class */ (function () {
      * @example
      * var hash = exoskeleton.enc.createSHA1Hash("c:\\source\\readme.txt");
      */
-    ExoEnc.prototype.createSHA1Hash = function (filename) {
-        return this.exoEnc.GetBase64EncodedSHA1Hash(filename);
-    };
-    ;
+    createSHA1Hash(filename: string): string;
     /**
      * Creates ana SHA256 Hash for the file specified by the provided filename.
      * @param {string} filename - The filename of the file to calculate a hash file.
@@ -1464,10 +1169,7 @@ var ExoEnc = /** @class */ (function () {
      * @example
      * var hash = exoskeleton.enc.createSHA256Hash("c:\\source\\readme.txt");
      */
-    ExoEnc.prototype.createSHA256Hash = function (filename) {
-        return this.exoEnc.GetBase64EncodedSHA256Hash(filename);
-    };
-    ;
+    createSHA256Hash(filename: string): string;
     /**
      * Creates MD5, SHA1, and SHA256 hashes for the file(s) specified.
      * @param {string} path - Directory to look in for files to hash.
@@ -1480,19 +1182,14 @@ var ExoEnc = /** @class */ (function () {
      * console.log(detailedHashInfo.length);
      * console.log(detailedHashInfo[0].sha256);
      */
-    ExoEnc.prototype.hashFiles = function (path, searchPattern) {
-        return JSON.parse(this.exoEnc.HashFiles(path, searchPattern));
-    };
-    ;
-    return ExoEnc;
-}());
+    hashFiles(path: string, searchPattern: string): any[];
+}
 /**
  * Menu API class used for populating the host container's menu bar.
  */
-var ExoMenu = /** @class */ (function () {
-    function ExoMenu(exoMenu) {
-        this.exoMenu = exoMenu;
-    }
+declare class ExoMenu {
+    exoMenu: any;
+    constructor(exoMenu: any);
     /**
      * Enables visibility of the window's menu
      * @memberof Menu
@@ -1500,10 +1197,7 @@ var ExoMenu = /** @class */ (function () {
      * @example
      * exoskeleton.menu.show();
      */
-    ExoMenu.prototype.show = function () {
-        this.exoMenu.Show();
-    };
-    ;
+    show(): void;
     /**
      * Hides visibility of the window's menu
      * @memberof Menu
@@ -1511,10 +1205,7 @@ var ExoMenu = /** @class */ (function () {
      * @example
      * exoskeleton.menu.hide();
      */
-    ExoMenu.prototype.hide = function () {
-        this.exoMenu.Hide();
-    };
-    ;
+    hide(): void;
     /**
      * Removes all menu items for reinitialization.  Host window survives across inner page
      * (re)loads or redirects so menus would need to be (re)initialized on page loads.
@@ -1523,10 +1214,7 @@ var ExoMenu = /** @class */ (function () {
      * @example
      * exoskeleton.menu.initialize();
      */
-    ExoMenu.prototype.initialize = function () {
-        this.exoMenu.Initialize();
-    };
-    ;
+    initialize(): void;
     /**
      * Adds a top level menu
      * @param {string} menuName - Text to display on menu
@@ -1537,13 +1225,7 @@ var ExoMenu = /** @class */ (function () {
      * exoskeleton.menu.addMenu("File");
      * exoskeleton.menu.addMenu("About", "AboutClicked");
      */
-    ExoMenu.prototype.addMenu = function (menuName, emitEventName) {
-        if (typeof emitEventName === 'undefined') {
-            emitEventName = '';
-        }
-        this.exoMenu.AddMenu(menuName, emitEventName);
-    };
-    ;
+    addMenu(menuName: string, emitEventName?: string | null): void;
     /**
      * Adds menu subitems to an existing menu or submenu.
      * Any event emitted on click will be passed the menu item text as parameter.
@@ -1569,29 +1251,14 @@ var ExoMenu = /** @class */ (function () {
      *   alert('File/New/' + data + ' clicked');
      * });
      */
-    ExoMenu.prototype.addMenuItem = function (menuName, menuItemName, emitEventName, shortcutKeys) {
-        var shortcutsJson = '';
-        if (typeof shortcutKeys === 'undefined') {
-            shortcutsJson = '';
-        }
-        if (Array.isArray(shortcutKeys)) {
-            shortcutsJson = JSON.stringify(shortcutKeys);
-        }
-        if (typeof emitEventName === 'undefined') {
-            emitEventName = '';
-        }
-        this.exoMenu.AddMenuItem(menuName, menuItemName, emitEventName, shortcutsJson);
-    };
-    ;
-    return ExoMenu;
-}());
+    addMenuItem(menuName: string, menuItemName: string, emitEventName?: string | null, shortcutKeys?: string | string[] | null): void;
+}
 /**
  * Toolbar API class used for populating the host container's tool strip.
  */
-var ExoToolbar = /** @class */ (function () {
-    function ExoToolbar(exoToolbar) {
-        this.exoToolbar = exoToolbar;
-    }
+declare class ExoToolbar {
+    exoToolbar: any;
+    constructor(exoToolbar: any);
     /**
      * Enables visibility of the window's toolbar.
      * @memberof Toolbar
@@ -1599,10 +1266,7 @@ var ExoToolbar = /** @class */ (function () {
      * @example
      * exoskeleton.toolbar.show();
      */
-    ExoToolbar.prototype.show = function () {
-        this.exoToolbar.Show();
-    };
-    ;
+    show(): void;
     /**
      * Hides visibility of the window's toolbar.
      * @memberof Toolbar
@@ -1610,10 +1274,7 @@ var ExoToolbar = /** @class */ (function () {
      * @example
      * exoskeleton.toolbar.hide();
      */
-    ExoToolbar.prototype.hide = function () {
-        this.exoToolbar.Hide();
-    };
-    ;
+    hide(): void;
     /**
      * Empties the host window toolstrip of all controls
      * @memberof Toolbar
@@ -1621,10 +1282,7 @@ var ExoToolbar = /** @class */ (function () {
      * @example
      * exoskeleton.toolbar.initialize();
      */
-    ExoToolbar.prototype.initialize = function () {
-        this.exoToolbar.Initialize();
-    };
-    ;
+    initialize(): void;
     /**
      * Adds a ToolStripButton to the host window toolstrip
      * @param {string} text - Text to display on the tooltip
@@ -1643,11 +1301,7 @@ var ExoToolbar = /** @class */ (function () {
      *   exoskeleton.shutdown();
      * });
      */
-    ExoToolbar.prototype.addButton = function (text, eventName, imagePath) {
-        imagePath = imagePath || "";
-        this.exoToolbar.AddButton(text, eventName, imagePath);
-    };
-    ;
+    addButton(text: string, eventName: string, imagePath: string): void;
     /**
      * Adds a visual separator for toolstrip control groups
      * @memberof Toolbar
@@ -1655,19 +1309,14 @@ var ExoToolbar = /** @class */ (function () {
      * @example
      * exoskeleton.toolbar.addSeparator();
      */
-    ExoToolbar.prototype.addSeparator = function () {
-        this.exoToolbar.AddSeparator();
-    };
-    ;
-    return ExoToolbar;
-}());
+    addSeparator(): void;
+}
 /**
  * Statusbar API class used for manipulating the host container's status strip.
  */
-var ExoStatusbar = /** @class */ (function () {
-    function ExoStatusbar(exoStatusbar) {
-        this.exoStatusbar = exoStatusbar;
-    }
+declare class ExoStatusbar {
+    exoStatusbar: any;
+    constructor(exoStatusbar: any);
     /**
      * Enables visibility of the window's status bar.
      * @memberof Statusbar
@@ -1675,10 +1324,7 @@ var ExoStatusbar = /** @class */ (function () {
      * @example
      * exoskeleton.statusbar.show();
      */
-    ExoStatusbar.prototype.show = function () {
-        this.exoStatusbar.Show();
-    };
-    ;
+    show(): void;
     /**
      * Hides visibility of the window's status bar.
      * @memberof Statusbar
@@ -1686,10 +1332,7 @@ var ExoStatusbar = /** @class */ (function () {
      * @example
      * exoskeleton.statusbar.hide();
      */
-    ExoStatusbar.prototype.hide = function () {
-        this.exoStatusbar.Hide();
-    };
-    ;
+    hide(): void;
     /**
      * Clears both left and right status labels
      * @memberof Statusbar
@@ -1697,10 +1340,7 @@ var ExoStatusbar = /** @class */ (function () {
      * @example
      * exoskeleton.statusbar.initialize();
      */
-    ExoStatusbar.prototype.initialize = function () {
-        this.exoStatusbar.Initialize();
-    };
-    ;
+    initialize(): void;
     /**
      * Sets the text to be displayed in the left status label
      * @param {string} text - text to display in left status label
@@ -1709,10 +1349,7 @@ var ExoStatusbar = /** @class */ (function () {
      * @example
      * exoskeleton.statusbar.setLeftLabel("Welcome to my app");
      */
-    ExoStatusbar.prototype.setLeftLabel = function (text) {
-        this.exoStatusbar.SetLeftLabel(text);
-    };
-    ;
+    setLeftLabel(text: string): void;
     /**
      * Sets the text to be displayed in the right status label
      * @param {string} text - text to display in right status label
@@ -1721,19 +1358,14 @@ var ExoStatusbar = /** @class */ (function () {
      * @example
      * exoskeleton.statusbar.setRightLabel("Started : " + new Date());
      */
-    ExoStatusbar.prototype.setRightLabel = function (text) {
-        this.exoStatusbar.SetRightLabel(text);
-    };
-    ;
-    return ExoStatusbar;
-}());
+    setRightLabel(text: string): void;
+}
 /**
  * Util API class containing misc utility methods.
  */
-var ExoUtil = /** @class */ (function () {
-    function ExoUtil(exoUtil) {
-        this.exoUtil = exoUtil;
-    }
+declare class ExoUtil {
+    exoUtil: any;
+    constructor(exoUtil: any);
     /**
      * Converts a .NET date to unix format for use with javascript.
      * @param {string} dateString - String representation of a (serialized) .net DateTime object
@@ -1748,10 +1380,7 @@ var ExoUtil = /** @class */ (function () {
      * // create a javascript date from unix format
      * var dt = new Date(unixTime);
      */
-    ExoUtil.prototype.convertDateToUnix = function (dateString) {
-        return this.exoUtil.ConvertDateToUnix(dateString);
-    };
-    ;
+    convertDateToUnix(dateString: string): number;
     /**
      * Converts a javascript unix epoch time to a .net formatted date.
      * See {@link https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings ms docs}
@@ -1771,25 +1400,17 @@ var ExoUtil = /** @class */ (function () {
      * // formatted time only
      * result = exoskeleton.util.formatUnixDate(now, "hh:mm:ss tt");
      */
-    ExoUtil.prototype.formatUnixDate = function (date, format) {
-        if (typeof date === "object" && date instanceof Date) {
-            date = date.getTime();
-        }
-        return this.exoUtil.FormatUnixDate(date, format);
-    };
-    ;
-    return ExoUtil;
-}());
+    formatUnixDate(date: number | Date, format: string): string;
+}
 /**
     * Dialog API class for creating and interfacing with WinForms dialogs.
     * This API exposes native .NET dialogs, several exoskeleton 'prompt' dialogs or you can compose your own using a global dialog singleton.
     * Dialogs are modal and executed synchronously, so your javascript will wait until dialog is dismissed before
     * continuing or receiving its returned result.  Dialogs do not support javascript eventing.
     */
-var ExoDialog = /** @class */ (function () {
-    function ExoDialog(exoDialog) {
-        this.exoDialog = exoDialog;
-    }
+declare class ExoDialog {
+    exoDialog: any;
+    constructor(exoDialog: any);
     /**
      * Adds a CheckBox to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkbox(v=vs.110).aspx ms docs}
@@ -1807,16 +1428,7 @@ var ExoDialog = /** @class */ (function () {
      *   Left: 10
      * }, "TopPanel");
      */
-    ExoDialog.prototype.addCheckBox = function (dialogName, checkbox, parentName) {
-        if (typeof checkbox === "object") {
-            checkbox = JSON.stringify(checkbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddCheckBox(dialogName, checkbox, parentName, false);
-    };
-    ;
+    addCheckBox(dialogName: string, checkbox: any, parentName?: string | null): void;
     /**
      * Adds a CheckedListBox to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.checkedlistbox(v=vs.110).aspx ms docs}
@@ -1835,22 +1447,7 @@ var ExoDialog = /** @class */ (function () {
      *   Items: ['United States', 'United Kingdom', 'Germany', 'France', 'Japan']
      * }, "AddressPanel", { CheckedIndices: [0, 2] });
      */
-    ExoDialog.prototype.addCheckedListBox = function (dialogName, checkedlistbox, parentName, payload) {
-        if (typeof checkedlistbox === "object") {
-            checkedlistbox = JSON.stringify(checkedlistbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddCheckedListBox(dialogName, checkedlistbox, parentName, false, payload);
-    };
-    ;
+    addCheckedListBox(dialogName: string, checkedlistbox: any, parentName?: string | null, payload?: any): void;
     /**
      * Adds a ComboBox to a named exoskeleton dialog.
      * If the combo box items will remain static, you can set items with 'Items' property.
@@ -1874,22 +1471,7 @@ var ExoDialog = /** @class */ (function () {
      *   SelectedItem : 'United States'
      * }, "AddressPanel");
      */
-    ExoDialog.prototype.addComboBox = function (dialogName, comboBox, parentName, payload) {
-        if (typeof comboBox === "object") {
-            comboBox = JSON.stringify(comboBox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddComboBox(dialogName, comboBox, parentName, false, payload);
-    };
-    ;
+    addComboBox(dialogName: string, comboBox: any, parentName?: string | null, payload?: any): void;
     /**
      * Adds a DataGridView to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datagridview(v=vs.110).aspx ms docs}
@@ -1916,22 +1498,7 @@ var ExoDialog = /** @class */ (function () {
      *   SelectionMode: 'FullRowSelect'
      * }, "DetailsPanel", { ObjectArray: users });
      */
-    ExoDialog.prototype.addDataGridView = function (dialogName, gridView, parentName, payload) {
-        if (typeof gridView === "object") {
-            gridView = JSON.stringify(gridView);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddDataGridView(dialogName, gridView, parentName, false, payload);
-    };
-    ;
+    addDataGridView(dialogName: string, gridView: any, parentName?: string | null, payload?: any): void;
     /**
      * Adds a DateTimePicker to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.datetimepicker(v=vs.110).aspx ms docs}
@@ -1948,16 +1515,7 @@ var ExoDialog = /** @class */ (function () {
      *   Value: "12/13/2014"
      * }, "AddressPanel");
      */
-    ExoDialog.prototype.addDateTimePicker = function (dialogName, dateTimePicker, parentName) {
-        if (typeof dateTimePicker === "object") {
-            dateTimePicker = JSON.stringify(dateTimePicker);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddDateTimePicker(dialogName, dateTimePicker, parentName);
-    };
-    ;
+    addDateTimePicker(dialogName: any, dateTimePicker: any, parentName?: string | null): void;
     /**
      * Adds a 'dismiss dialog' Button to a named exoskeleton dialog.
      * This is a standard .net button with hardcoded event handler to dismiss dialog.
@@ -1975,22 +1533,7 @@ var ExoDialog = /** @class */ (function () {
      *   Left: 200
      * }, "BottomPanel", { DialogResult: "OK" });
      */
-    ExoDialog.prototype.addDialogButton = function (dialogName, button, parentName, payload) {
-        if (typeof button === "object") {
-            button = JSON.stringify(button);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddDialogButton(dialogName, button, parentName, payload);
-    };
-    ;
+    addDialogButton(dialogName: string, button: any, parentName?: string | null, payload?: any): void;
     /**
      * Adds a Label to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.label(v=vs.110).aspx ms docs}
@@ -2007,16 +1550,7 @@ var ExoDialog = /** @class */ (function () {
      *   Left: 10
      * }, "AddressPanel");
      */
-    ExoDialog.prototype.addLabel = function (dialogName, label, parentName) {
-        if (typeof label === "object") {
-            label = JSON.stringify(label);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddLabel(dialogName, label, parentName, false);
-    };
-    ;
+    addLabel(dialogName: string, label: any, parentName?: string | null): void;
     /**
      * Adds a ListBox to a named exoskeleton dialog.
      * If the list box items will remain static, you can set items with 'Items' property.
@@ -2041,22 +1575,7 @@ var ExoDialog = /** @class */ (function () {
      *   SelectedItem : 'United States'
      * }, "AddressPanel");
      */
-    ExoDialog.prototype.addListBox = function (dialogName, listbox, parentName, payload) {
-        if (typeof listbox === "object") {
-            listbox = JSON.stringify(listbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddListBox(dialogName, listbox, parentName, false, payload);
-    };
-    ;
+    addListBox(dialogName: string, listbox: any, parentName?: string | null, payload?: any): void;
     /**
      * Adds a ListView to a named exoskeleton dialog.
      * ListView has the following view modes (defined by 'View' property) :
@@ -2102,22 +1621,7 @@ var ExoDialog = /** @class */ (function () {
      * };
      * exoskeleton.dialog.addListView("ExampleDialog", controlProperties, "AddressPanel", controlPayload);
      */
-    ExoDialog.prototype.addListView = function (dialogName, listview, parentName, payload) {
-        if (typeof listview === "object") {
-            listview = JSON.stringify(listview);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddListView(dialogName, listview, parentName, false, payload);
-    };
-    ;
+    addListView(dialogName: string, listview: any, parentName?: string | null, payload?: any): void;
     /**
      * Adds a MaskedTextBox to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.maskedtextbox(v=vs.110).aspx ms docs}
@@ -2135,16 +1639,7 @@ var ExoDialog = /** @class */ (function () {
      *   Width: 100
      * });
      */
-    ExoDialog.prototype.addMaskedTextBox = function (dialogName, maskedtextbox, parentName) {
-        if (typeof maskedtextbox === "object") {
-            maskedtextbox = JSON.stringify(maskedtextbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddMaskedTextBox(dialogName, maskedtextbox, parentName);
-    };
-    ;
+    addMaskedTextBox(dialogName: string, maskedtextbox: any, parentName?: string | null): void;
     /**
      * Adds a MonthCalendar to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.monthcalendar(v=vs.110).aspx ms docs}
@@ -2164,16 +1659,7 @@ var ExoDialog = /** @class */ (function () {
      *   Left: 40
      * });
      */
-    ExoDialog.prototype.addMonthCalendar = function (dialogName, monthcalendar, parentName) {
-        if (typeof monthcalendar === "object") {
-            monthcalendar = JSON.stringify(monthcalendar);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddMonthCalendar(dialogName, monthcalendar, parentName);
-    };
-    ;
+    addMonthCalendar(dialogName: string, monthcalendar: any, parentName?: string | null): void;
     /**
      * Adds a NumericUpDown control to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.numericupdown(v=vs.110).aspx ms docs}
@@ -2191,16 +1677,7 @@ var ExoDialog = /** @class */ (function () {
      *   Maximum: 120
      * }, "UserInfoPanel");
      */
-    ExoDialog.prototype.addNumericUpDown = function (dialogName, numericUpDown, parentName) {
-        if (typeof numericUpDown === "object") {
-            numericUpDown = JSON.stringify(numericUpDown);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddNumericUpDown(dialogName, numericUpDown, parentName);
-    };
-    ;
+    addNumericUpDown(dialogName: string, numericUpDown: any, parentName?: string | null): void;
     /**
      * Adds a Panel to a named exoskeleton dialog for layout and nesting purposes.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
@@ -2225,16 +1702,7 @@ var ExoDialog = /** @class */ (function () {
      *   Height: 100
      * });
      */
-    ExoDialog.prototype.addPanel = function (dialogName, panel, parentName) {
-        if (typeof panel === "object") {
-            panel = JSON.stringify(panel);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddPanel(dialogName, panel, parentName);
-    };
-    ;
+    addPanel(dialogName: string, panel: any, parentName?: string | null): void;
     /**
      * Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.picturebox(v=vs.110).aspx ms docs}
@@ -2251,19 +1719,7 @@ var ExoDialog = /** @class */ (function () {
      *   Size: "64, 64"
      * }, false, { ImagePath: "C:\\Images\\pic1.png" });
      */
-    ExoDialog.prototype.addPictureBox = function (formName, picbox, parentName, payload) {
-        if (typeof picbox === "object") {
-            picbox = JSON.stringify(picbox);
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddPictureBox(formName, picbox, parentName, false, payload);
-    };
-    ;
+    addPictureBox(formName: string, picbox: any, parentName?: string | null, payload?: any): void;
     /**
      * Adds a RadioButton to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.radiobutton(v=vs.110).aspx ms docs}
@@ -2280,16 +1736,7 @@ var ExoDialog = /** @class */ (function () {
      *   Name: "GenderFemale", Text: "Female", Top: 40, Left: 140, Checked: false
      * });
      */
-    ExoDialog.prototype.addRadioButton = function (dialogName, radioButton, parentName) {
-        if (typeof radioButton === "object") {
-            radioButton = JSON.stringify(radioButton);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddRadioButton(dialogName, radioButton, parentName);
-    };
-    ;
+    addRadioButton(dialogName: string, radioButton: any, parentName?: string | null): void;
     /**
      * Adds a TextBox to a named exoskeleton dialog.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.textbox(v=vs.110).aspx ms docs}
@@ -2306,16 +1753,7 @@ var ExoDialog = /** @class */ (function () {
      *   Text: user.addr1
      * }, "AddressPanel");
      */
-    ExoDialog.prototype.addTextBox = function (dialogName, textbox, parentName) {
-        if (typeof textbox === "object") {
-            textbox = JSON.stringify(textbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoDialog.AddTextBox(dialogName, textbox, parentName);
-    };
-    ;
+    addTextBox(dialogName: string, textbox: any, parentName?: string | null): void;
     /**
      * Adds a TreeView to a named exoskeleton form.
      * Emits 'NodeMouseClick' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
@@ -2328,22 +1766,7 @@ var ExoDialog = /** @class */ (function () {
      * @instance
      * @example
      */
-    ExoDialog.prototype.addTreeView = function (dialogName, treeview, parentName, payload) {
-        if (typeof treeview === "object") {
-            treeview = JSON.stringify(treeview);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoDialog.AddTreeView(dialogName, treeview, parentName, false, payload);
-    };
-    ;
+    addTreeView(dialogName: string, treeview: any, parentName?: string | null, payload?: any): void;
     /**
      * Applies a payload to a control which have already been added to a named dialog.
      * Can be used for applying certain values to control which are not able to be applied
@@ -2358,22 +1781,7 @@ var ExoDialog = /** @class */ (function () {
      *   ImagePath: "C:\\images\\pic1.png"
      * });
      */
-    ExoDialog.prototype.applyControlPayload = function (formName, controlName, payload) {
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        try {
-            this.exoDialog.ApplyControlPayload(formName, controlName, payload);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyControlPayload(formName: string, controlName: string, payload: any): void;
     /**
      * Applies property values to controls which have already been added.
      * Can be used for separating control layout and data initialization.
@@ -2387,23 +1795,7 @@ var ExoDialog = /** @class */ (function () {
      *   EmployeeCheckBox : { Checked: false }
      * });
      */
-    ExoDialog.prototype.applyControlProperties = function (dialogName, controlValues) {
-        if (typeof dialogName === "undefined" || dialogName === null) {
-            dialogName = "dialog";
-        }
-        controlValues = controlValues || {};
-        if (typeof controlValues === "object") {
-            controlValues = JSON.stringify(controlValues);
-        }
-        try {
-            this.exoDialog.ApplyControlProperties(dialogName, controlValues);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyControlProperties(dialogName: string, controlValues: any): void;
     /**
      * Applies a dialog defintion to a named exoskeleton dialog.
      * Dialog definitions allow representation of a series of controls, nesting, and property attributes
@@ -2432,23 +1824,7 @@ var ExoDialog = /** @class */ (function () {
      * });
      * var result = exoskeleton.dialog.showDialog("MyListDialog");
      */
-    ExoDialog.prototype.applyDefinition = function (dialogName, definition) {
-        if (typeof dialogName === "undefined" || dialogName === null) {
-            dialogName = "dialog";
-        }
-        definition = definition || {};
-        if (typeof definition === "object") {
-            definition = JSON.stringify(definition);
-        }
-        try {
-            this.exoDialog.ApplyDefinition(dialogName, definition);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyDefinition(dialogName: string, definition: any): void;
     /**
      * Allows you to modify properties on a defined dialog Form object instance.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx ms docs}
@@ -2459,19 +1835,7 @@ var ExoDialog = /** @class */ (function () {
      * @example
      * exoskeleton.dialog.applyDialogProperties("ExampleForm", { Text = "Add User dialog" });
      */
-    ExoDialog.prototype.applyDialogProperties = function (dialogName, formJson) {
-        if (typeof formJson === "object") {
-            formJson = JSON.stringify(formJson);
-        }
-        try {
-            this.exoDialog.ApplyDialogProperties(dialogName, formJson);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyDialogProperties(dialogName: string, formJson: any): void;
     /**
      * Initialize a named exoskeleton dialog.
      * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
@@ -2485,22 +1849,7 @@ var ExoDialog = /** @class */ (function () {
      *   Height: 400
      * });
      */
-    ExoDialog.prototype.initialize = function (dialogName, formJson) {
-        if (typeof dialogName === "undefined" || dialogName === null) {
-            dialogName = "dialog";
-        }
-        if (typeof formJson === "object") {
-            formJson = JSON.stringify(formJson);
-        }
-        try {
-            this.exoDialog.Initialize(dialogName, formJson);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    initialize(dialogName: string, formJson: string): void;
     /**
      * Loads a dialog definition from a file and applies it.
      * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
@@ -2512,16 +1861,7 @@ var ExoDialog = /** @class */ (function () {
      * var defpath = exoskeleton.file.combinePaths([locations.Current, "definitions", "Address.json"]);
      * exoskeleton.dialog.loadDefinition("AddressDialog", defpath);
      */
-    ExoDialog.prototype.loadDefinition = function (dialogName, filename) {
-        try {
-            this.exoDialog.LoadDefinition(dialogName, filename);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    loadDefinition(dialogName: string, filename: string): void;
     /**
      * Displays a predefined dialog allowing user to select item(s) from a checklist.
      * @param {string} title - The caption to display on the input dialog window
@@ -2544,17 +1884,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("user picked : " + result);
      * }
      */
-    ExoDialog.prototype.promptCheckedList = function (title, prompt, values, checkedIndices) {
-        title = title || "";
-        prompt = prompt || "";
-        values = values || [];
-        checkedIndices = checkedIndices || [];
-        var valuesJson = JSON.stringify(values);
-        var checkedIndicesJson = JSON.stringify(checkedIndices);
-        var result = this.exoDialog.PromptCheckedList(title, prompt, valuesJson, checkedIndicesJson);
-        return (typeof result === "undefined") ? null : JSON.parse(result);
-    };
-    ;
+    promptCheckedList(title: string, prompt: string, values: string[], checkedIndices?: number[]): any;
     /**
      * Allows display and row selection of an array of similar objects within a .net DataGridView
      * @param {string} title - The caption to display on the input dialog window
@@ -2581,24 +1911,7 @@ var ExoDialog = /** @class */ (function () {
      *   });
      * }
      */
-    ExoDialog.prototype.promptDataGridView = function (title, prompt, objectArray, autoSizeColumns) {
-        if (typeof title === "undefined") {
-            title = "DataGridView Selection Dialog";
-        }
-        if (typeof prompt === "undefined") {
-            prompt = "Browser or select a row :";
-        }
-        if (typeof objectArray === "undefined") {
-            objectArray = [];
-        }
-        if (typeof autoSizeColumns === "undefined") {
-            autoSizeColumns = true;
-        }
-        var objectArrayJson = JSON.stringify(objectArray);
-        var result = this.exoDialog.PromptDataGridView(title, prompt, objectArrayJson, autoSizeColumns);
-        return (typeof result === "undefined" || result === null) ? null : JSON.parse(result);
-    };
-    ;
+    promptDataGridView(title: string, prompt: string, objectArray: any[], autoSizeColumns: boolean): number[];
     /**
      * Displays a predefined dialog allowing user to pick a date from a calendar.
      * @param {string} title - The caption to display on the input dialog window
@@ -2620,20 +1933,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("javascript date : " + jsDate);
      * }
      */
-    ExoDialog.prototype.promptDatePicker = function (title, prompt, defaultValue) {
-        if (typeof title === "undefined") {
-            title = "Date Selection";
-        }
-        if (typeof prompt === "undefined") {
-            prompt = prompt || "Please select a date : ";
-        }
-        if (typeof defaultValue === "undefined") {
-            defaultValue = null;
-        }
-        var result = this.exoDialog.PromptDatePicker(title, prompt, defaultValue);
-        return (typeof result === "undefined") ? null : JSON.parse(result);
-    };
-    ;
+    promptDatePicker(title: string, prompt: string, defaultValue?: string | null): any;
     /**
      * Displays a predefined dialog allowing user to input a string.
      * @param {string} title - The caption to display on the input dialog window
@@ -2652,23 +1952,7 @@ var ExoDialog = /** @class */ (function () {
      *   user.PhoneNumber = phoneNumber;
      * }
      */
-    ExoDialog.prototype.promptInput = function (title, prompt, defaultText) {
-        if (typeof title === "undefined") {
-            title = "Enter text:";
-        }
-        if (typeof prompt === "undefined") {
-            prompt = "";
-        }
-        if (typeof defaultText === "undefined") {
-            defaultText = "";
-        }
-        var result = this.exoDialog.PromptInput(title, prompt, defaultText);
-        if (typeof result === "undefined") {
-            result = null;
-        }
-        return result;
-    };
-    ;
+    promptInput(title: string, prompt: string, defaultText?: string | null): any;
     /**
      * Displays a predefined dialog allowing user to select item(s) from a list.
      * @param {string} title - The caption to display on the input dialog window
@@ -2691,30 +1975,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("user picked : " + result);
      * }
      */
-    ExoDialog.prototype.promptList = function (title, prompt, values, selectedItem, multiselect) {
-        if (typeof title === "undefined") {
-            title = "Item Picklist";
-        }
-        if (typeof prompt === "undefined") {
-            prompt = "Enter an item";
-        }
-        if (typeof values === "undefined") {
-            values = [];
-        }
-        var valuesJson = JSON.stringify(values);
-        if (typeof selectedItem === "undefined") {
-            selectedItem = null;
-        }
-        if (!multiselect) {
-            multiselect = false;
-        }
-        var result = this.exoDialog.PromptList(title, prompt, valuesJson, selectedItem, multiselect);
-        if (typeof result === 'undefined') {
-            result = null;
-        }
-        return multiselect ? JSON.parse(result) : result;
-    };
-    ;
+    promptList(title: string, prompt: string, values: string[], selectedItem?: string | string[] | null, multiselect?: boolean): any;
     /**
      * Displays a predefined dialog allowing user create an instance of a .net datatype,
      * inspect and modify it, and view it's serialized result.
@@ -2739,27 +2000,7 @@ var ExoDialog = /** @class */ (function () {
      * // we can inspect the structure of the object and what properties look like when serialized
      * xo.logObject(result);
      */
-    ExoDialog.prototype.promptPropertyGrid = function (title, caption, objectJson, assemblyName, typeName) {
-        if (typeof title === "undefined") {
-            title = "PropertyGrid inspector";
-        }
-        if (typeof caption === "undefined") {
-            caption = "Inspecting object of type : " + typeName;
-        }
-        objectJson = objectJson || {};
-        if (typeof objectJson === "object") {
-            objectJson = JSON.stringify(objectJson);
-        }
-        if (typeof assemblyName === "undefined") {
-            assemblyName = null;
-        }
-        if (typeof typeName === "undefined") {
-            typeName = null;
-        }
-        var result = this.exoDialog.PromptPropertyGrid(title, caption, objectJson, assemblyName, typeName);
-        return result ? JSON.parse(result) : null;
-    };
-    ;
+    promptPropertyGrid(title: string, caption: string, objectJson: any, assemblyName?: string | null, typeName?: string | null): any;
     /**
      * Displays a named exoskeleton dialog which you have previously created.
      * @param {string} dialogName - unique name to dialog/form to refer to your dialog.
@@ -2772,11 +2013,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log(dialogResult.UserNameTextBox.Text);
      * }
      */
-    ExoDialog.prototype.showDialog = function (dialogName) {
-        var resultJson = this.exoDialog.ShowDialog(dialogName);
-        return JSON.parse(resultJson);
-    };
-    ;
+    showDialog(dialogName: string): any;
     /**
      * Display a dialog to allow the user to select a color.
      * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.colordialog(v=vs.110).aspx ms docs}
@@ -2790,18 +2027,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("hex color : " + result.HexColor);
      * }
      */
-    ExoDialog.prototype.showColorDialog = function (dialogOptions) {
-        dialogOptions = dialogOptions || {};
-        if (typeof dialogOptions === "object") {
-            dialogOptions = JSON.stringify(dialogOptions);
-        }
-        var result = this.exoDialog.ShowColorDialog(dialogOptions);
-        if (result) {
-            result = JSON.parse(result);
-        }
-        return result;
-    };
-    ;
+    showColorDialog(dialogOptions: any): any;
     /**
      * Display a dialog to allow the user to select a font.
      * See: {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.fontdialog(v=vs.110).aspx ms docs}
@@ -2815,18 +2041,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("fontJson : " + result.FontJson);
      * }
      */
-    ExoDialog.prototype.showFontDialog = function (dialogOptions) {
-        dialogOptions = dialogOptions || {};
-        if (typeof dialogOptions === "object") {
-            dialogOptions = JSON.stringify(dialogOptions);
-        }
-        var result = this.exoDialog.ShowFontDialog(dialogOptions);
-        if (result) {
-            result = JSON.parse(result);
-        }
-        return result;
-    };
-    ;
+    showFontDialog(dialogOptions: any): any;
     /**
      * Allows user to pick a file to 'open' and returns that filename.  Although only a few options are
      * documented here, any 'OpenFileDialog' properties may be attempted to be passed.
@@ -2852,17 +2067,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("selected file (name) : " + dialogValues.FileName);
      * }
      */
-    ExoDialog.prototype.showOpenFileDialog = function (dialogOptions) {
-        if (dialogOptions) {
-            dialogOptions = JSON.stringify(dialogOptions);
-        }
-        var result = this.exoDialog.ShowOpenFileDialog(dialogOptions);
-        if (result) {
-            result = JSON.parse(result);
-        }
-        return result;
-    };
-    ;
+    showOpenFileDialog(dialogOptions: any): any;
     /**
      * Displays a message box to the user and returns the button they clicked.
      * @param {string} text - Message to display to user.
@@ -2880,10 +2085,7 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("user clicked ok");
      * }
      */
-    ExoDialog.prototype.showMessageBox = function (text, caption, buttons, icon) {
-        return this.exoDialog.ShowMessageBox(text, caption, buttons, icon);
-    };
-    ;
+    showMessageBox(text: string, caption: string, buttons?: string | null, icon?: string | null): string;
     /**
      * Allows user to pick a file to 'save' and returns that filename.  Although only a few options are
      * documented here, any 'SaveFileDialog' properties may be attempted to be passed.
@@ -2908,19 +2110,8 @@ var ExoDialog = /** @class */ (function () {
      *   console.log("selected file (name) : " + dialogValues.FileName);
      * }
      */
-    ExoDialog.prototype.showSaveFileDialog = function (dialogOptions) {
-        if (dialogOptions) {
-            dialogOptions = JSON.stringify(dialogOptions);
-        }
-        var result = this.exoDialog.ShowSaveFileDialog(dialogOptions);
-        if (result) {
-            result = JSON.parse(result);
-        }
-        return result;
-    };
-    ;
-    return ExoDialog;
-}());
+    showSaveFileDialog(dialogOptions: any): any;
+}
 /**
  * Form API class for creating and interfacing with WinForms.
  * This API exposes native .NET Form objects.
@@ -2930,10 +2121,9 @@ var ExoDialog = /** @class */ (function () {
  * When your javascript shows a form your javascript will not wait for it to close before
  * continuing.
  */
-var ExoForm = /** @class */ (function () {
-    function ExoForm(exoForm) {
-        this.exoForm = exoForm;
-    }
+declare class ExoForm {
+    exoForm: any;
+    constructor(exoForm: any);
     /**
      * Adds a CheckBox to a named exoskeleton form.
      * Emits 'CheckedChanged' event if 'emitEvents' is true.
@@ -2958,19 +2148,7 @@ var ExoForm = /** @class */ (function () {
      *   console.log(data.Checked?"Is a student":"Not a student");
      * });
      */
-    ExoForm.prototype.addCheckBox = function (formName, checkbox, parentName, emitEvents) {
-        if (typeof checkbox === "object") {
-            checkbox = JSON.stringify(checkbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddCheckBox(formName, checkbox, parentName, emitEvents);
-    };
-    ;
+    addCheckBox(formName: string, checkbox: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a CheckedListBox to a named exoskeleton form.
      * Emits 'ItemCheck' event if 'emitEvents' is true.
@@ -2993,25 +2171,7 @@ var ExoForm = /** @class */ (function () {
      *
      * // if we had set emitEvents to true, we would listen for 'SampleForm.CountryCheckList.ItemCheck'
      */
-    ExoForm.prototype.addCheckedListBox = function (formName, checkedlistbox, parentName, emitEvents, payload) {
-        if (typeof checkedlistbox === "object") {
-            checkedlistbox = JSON.stringify(checkedlistbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoForm.AddCheckedListBox(formName, checkedlistbox, parentName, emitEvents, payload);
-    };
-    ;
+    addCheckedListBox(formName: string, checkedlistbox: any, parentName?: string | null, emitEvents?: boolean, payload?: any): void;
     /**
      * Adds a ComboBox to a named exoskeleton form.
      * Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
@@ -3041,25 +2201,7 @@ var ExoForm = /** @class */ (function () {
      *   console.log(data.Selected);
      * });
      */
-    ExoForm.prototype.addComboBox = function (formName, comboBox, parentName, emitEvents, payload) {
-        if (typeof comboBox === "object") {
-            comboBox = JSON.stringify(comboBox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoForm.AddComboBox(formName, comboBox, parentName, emitEvents, payload);
-    };
-    ;
+    addComboBox(formName: string, comboBox: any, parentName?: string | null, emitEvents?: boolean, payload?: any): void;
     /**
      * Adds a DataGridView to a named exoskeleton form.
      * Emits 'SelectionChanged' event if 'emitEvents' is true.
@@ -3090,25 +2232,7 @@ var ExoForm = /** @class */ (function () {
      * // normally you might use event buttons to trigger code which 'reads' values
      * // from form. So for this example will not emit events, but we could have.
      */
-    ExoForm.prototype.addDataGridView = function (formName, gridView, parentName, emitEvents, payload) {
-        if (typeof gridView === "object") {
-            gridView = JSON.stringify(gridView);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoForm.AddDataGridView(formName, gridView, parentName, emitEvents, payload);
-    };
-    ;
+    addDataGridView(formName: string, gridView: any, parentName?: string | null, emitEvents?: boolean, payload?: any): void;
     /**
      * Adds a DateTimePicker to a named exoskeleton form.
      * Emits 'ValueChanged' event if 'emitEvents' is true.
@@ -3133,19 +2257,7 @@ var ExoForm = /** @class */ (function () {
      *   console.log("Date converted to javascript : " + dt);
      * });
      */
-    ExoForm.prototype.addDateTimePicker = function (formName, dateTimePicker, parentName, emitEvents) {
-        if (typeof dateTimePicker === "object") {
-            dateTimePicker = JSON.stringify(dateTimePicker);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddDateTimePicker(formName, dateTimePicker, parentName, emitEvents);
-    };
-    ;
+    addDateTimePicker(formName: string, dateTimePicker: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a Button to a named exoskeleton form which will raise an Unicast event.
      * This is a standard .net button with hardcoded event handler to raise 'Click' events.
@@ -3168,16 +2280,7 @@ var ExoForm = /** @class */ (function () {
      *   console.log('Button clicked!');
      * });
      */
-    ExoForm.prototype.addEventButton = function (formName, button, parentName) {
-        if (typeof button === "object") {
-            button = JSON.stringify(button);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        this.exoForm.AddEventButton(formName, button, parentName, true);
-    };
-    ;
+    addEventButton(formName: string, button: any, parentName?: string | null): void;
     /**
      * Adds a Label to a named exoskeleton form.
      * Emits 'Click' event if 'emitEvents' is true.
@@ -3196,19 +2299,7 @@ var ExoForm = /** @class */ (function () {
      *   Left: 10
      * }, "AddressPanel");
      */
-    ExoForm.prototype.addLabel = function (formName, label, parentName, emitEvents) {
-        if (typeof label === "object") {
-            label = JSON.stringify(label);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddLabel(formName, label, parentName, emitEvents);
-    };
-    ;
+    addLabel(formName: string, label: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a ListBox to a named exoskeleton form.
      * Emits 'SelectedIndexChanged' event if 'emitEvents' is true.
@@ -3235,25 +2326,7 @@ var ExoForm = /** @class */ (function () {
      *   SelectedItem : 'United States'
      * }, "AddressPanel");
      */
-    ExoForm.prototype.addListBox = function (formName, listbox, parentName, emitEvents, payload) {
-        if (typeof listbox === "object") {
-            listbox = JSON.stringify(listbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoForm.AddListBox(formName, listbox, parentName, emitEvents, payload);
-    };
-    ;
+    addListBox(formName: string, listbox: any, parentName?: string | null, emitEvents?: boolean, payload?: any): void;
     /**
      * Adds a ListView to a named exoskeleton form.
      * Emits 'Click' and 'DoubleClick' events if 'emitEvents' is true.
@@ -3301,25 +2374,7 @@ var ExoForm = /** @class */ (function () {
      * };
      * exoskeleton.form.addListView("ExampleForm", controlProperties, "AddressPanel", false, controlPayload);
      */
-    ExoForm.prototype.addListView = function (formName, listview, parentName, emitEvents, payload) {
-        if (typeof listview === "object") {
-            listview = JSON.stringify(listview);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoForm.AddListView(formName, listview, parentName, emitEvents, payload);
-    };
-    ;
+    addListView(formName: string, listview: any, parentName?: string | null, emitEvents?: boolean, payload?: any): void;
     /**
      * Adds a MaskedTextBox to a named exoskeleton form.
      * Emits 'TextChanged' event if 'emitEvents' is true.
@@ -3339,19 +2394,7 @@ var ExoForm = /** @class */ (function () {
      *   Width: 100
      * }, "ContactInfoPanel");
      */
-    ExoForm.prototype.addMaskedTextBox = function (formName, maskedtextbox, parentName, emitEvents) {
-        if (typeof maskedtextbox === "object") {
-            maskedtextbox = JSON.stringify(maskedtextbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddMaskedTextBox(formName, maskedtextbox, parentName, emitEvents);
-    };
-    ;
+    addMaskedTextBox(formName: string, maskedtextbox: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a MonthCalendar to a named exoskeleton form.
      * Emits 'DateChanged' event if 'emitEvents' is true.
@@ -3374,19 +2417,7 @@ var ExoForm = /** @class */ (function () {
      *   Left: 40
      * });
      */
-    ExoForm.prototype.addMonthCalendar = function (formName, monthcalendar, parentName, emitEvents) {
-        if (typeof monthcalendar === "object") {
-            monthcalendar = JSON.stringify(monthcalendar);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddMonthCalendar(formName, monthcalendar, parentName, emitEvents);
-    };
-    ;
+    addMonthCalendar(formName: string, monthcalendar: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a NumericUpDown control to a named exoskeleton form.
      * Emits 'ValueChanged' event if 'emitEvents' is true.
@@ -3406,19 +2437,7 @@ var ExoForm = /** @class */ (function () {
      *   Maximum: 120
      * }, "UserInfoPanel");
      */
-    ExoForm.prototype.addNumericUpDown = function (formName, numericUpDown, parentName, emitEvents) {
-        if (typeof numericUpDown === "object") {
-            numericUpDown = JSON.stringify(numericUpDown);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddNumericUpDown(formName, numericUpDown, parentName, emitEvents);
-    };
-    ;
+    addNumericUpDown(formName: string, numericUpDown: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a Panel to a named exoskeleton form for layout and nesting purposes.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.panel(v=vs.110).aspx ms docs}
@@ -3444,19 +2463,7 @@ var ExoForm = /** @class */ (function () {
      *   Height: 100
      * });
      */
-    ExoForm.prototype.addPanel = function (formName, panel, parentName, emitEvents) {
-        if (typeof panel === "object") {
-            panel = JSON.stringify(panel);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddPanel(formName, panel, parentName, emitEvents);
-    };
-    ;
+    addPanel(formName: string, panel: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a PictureBox to a named exoskeleton form for layout and nesting purposes.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.picturebox(v=vs.110).aspx ms docs}
@@ -3474,19 +2481,7 @@ var ExoForm = /** @class */ (function () {
      *   Size: "64, 64"
      * }, false, { ImagePath: "C:\\Images\\pic1.png" });
      */
-    ExoForm.prototype.addPictureBox = function (formName, picbox, parentName, emitEvents, payload) {
-        if (typeof picbox === "object") {
-            picbox = JSON.stringify(picbox);
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoForm.AddPictureBox(formName, picbox, parentName, emitEvents, payload);
-    };
-    ;
+    addPictureBox(formName: string, picbox: any, parentName?: string | null, emitEvents?: boolean, payload?: any): void;
     /**
      * Adds a RadioButton to a named exoskeleton form.
      * Emits 'CheckedChanged' event if 'emitEvents' is true.
@@ -3511,19 +2506,7 @@ var ExoForm = /** @class */ (function () {
      *   console.log(data.Checked?"male":"female");
      * });
      */
-    ExoForm.prototype.addRadioButton = function (formName, radioButton, parentName, emitEvents) {
-        if (typeof radioButton === "object") {
-            radioButton = JSON.stringify(radioButton);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddRadioButton(formName, radioButton, parentName, emitEvents);
-    };
-    ;
+    addRadioButton(formName: string, radioButton: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a TextBox to a named exoskeleton form.
      * Emits 'TextChanged' event if 'emitEvents' is true.
@@ -3542,19 +2525,7 @@ var ExoForm = /** @class */ (function () {
      *   Text: user.addr1
      * }, "AddressPanel");
      */
-    ExoForm.prototype.addTextBox = function (formName, textbox, parentName, emitEvents) {
-        if (typeof textbox === "object") {
-            textbox = JSON.stringify(textbox);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        this.exoForm.AddTextBox(formName, textbox, parentName, emitEvents);
-    };
-    ;
+    addTextBox(formName: string, textbox: any, parentName?: string | null, emitEvents?: boolean): void;
     /**
      * Adds a TreeView to a named exoskeleton form.
      * Emits 'NodeMouseClick', 'AfterSelect' and 'NodeMouseDoubleClick' events if 'emitEvents' is true.
@@ -3568,25 +2539,7 @@ var ExoForm = /** @class */ (function () {
      * @instance
      * @example
      */
-    ExoForm.prototype.addTreeView = function (formName, treeview, parentName, emitEvents, payload) {
-        if (typeof treeview === "object") {
-            treeview = JSON.stringify(treeview);
-        }
-        if (typeof parentName === "undefined") {
-            parentName = null;
-        }
-        if (typeof emitEvents === "undefined") {
-            emitEvents = false;
-        }
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        this.exoForm.AddTreeView(formName, treeview, parentName, emitEvents, payload);
-    };
-    ;
+    addTreeView(formName: string, treeview: any, parentName?: string | null, emitEvents?: boolean, payload?: any): void;
     /**
      * Applies a payload to a control which have already been added to a named form.
      * Can be used for applying certain values to control which are not able to be applied
@@ -3601,22 +2554,7 @@ var ExoForm = /** @class */ (function () {
      *   CheckedIndices: [0, 3]
      * });
      */
-    ExoForm.prototype.applyControlPayload = function (formName, controlName, payload) {
-        if (typeof payload === "undefined") {
-            payload = null;
-        }
-        else if (typeof payload === "object") {
-            payload = JSON.stringify(payload);
-        }
-        try {
-            this.exoForm.ApplyControlPayload(formName, controlName, payload);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyControlPayload(formName: string, controlName: string, payload: any): void;
     /**
      * Applies property values to controls which have already been added to a named form.
      * Can be used for separating control layout and data initialization.
@@ -3630,23 +2568,7 @@ var ExoForm = /** @class */ (function () {
      *   EmployeeCheckBox : { Checked: false }
      * });
      */
-    ExoForm.prototype.applyControlProperties = function (formName, controlValues) {
-        if (typeof formName === "undefined" || formName === null) {
-            formName = "dialog";
-        }
-        controlValues = controlValues || {};
-        if (typeof controlValues === "object") {
-            controlValues = JSON.stringify(controlValues);
-        }
-        try {
-            this.exoForm.ApplyControlProperties(formName, controlValues);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyControlProperties(formName: string, controlValues: any): void;
     /**
      * Applies a form defintion to a named form.
      * Dialog definitions allow representation of a series of controls, nesting, and property attributes
@@ -3675,23 +2597,7 @@ var ExoForm = /** @class */ (function () {
      * });
      * var result = exoskeleton.form.show("ExampleListDialog");
      */
-    ExoForm.prototype.applyDefinition = function (formName, definition) {
-        if (typeof formName === "undefined" || formName === null) {
-            formName = "dialog";
-        }
-        definition = definition || {};
-        if (typeof definition === "object") {
-            definition = JSON.stringify(definition);
-        }
-        try {
-            this.exoForm.ApplyDefinition(formName, definition);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyDefinition(formName: string, definition: any): void;
     /**
      * Allows you to modify properties on a defined Form after it has been initialized.
      * See {@link https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx ms docs}
@@ -3702,19 +2608,7 @@ var ExoForm = /** @class */ (function () {
      * @example
      * exoskeleton.form.applyFormProperties("ExampleForm", { WindowState = "Minimized" });
      */
-    ExoForm.prototype.applyFormProperties = function (formName, formJson) {
-        if (typeof formJson === "object") {
-            formJson = JSON.stringify(formJson);
-        }
-        try {
-            this.exoForm.ApplyFormProperties(formName, formJson);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    applyFormProperties(formName: any, formJson: any): void;
     /**
      * Closes a named form.
      * @param {string} formName - unique name to dialog/form to refer to your dialog.
@@ -3723,10 +2617,7 @@ var ExoForm = /** @class */ (function () {
      * @example
      * exoskeleton.form.close("ExampleForm");
      */
-    ExoForm.prototype.close = function (formName) {
-        this.exoForm.Close(formName);
-    };
-    ;
+    close(formName: string): void;
     /**
      * Initialize or reinitialize a named form.
      * @param {string} formName - unique name to dialog/form to refer to your dialog.
@@ -3740,22 +2631,7 @@ var ExoForm = /** @class */ (function () {
      *   Height: 400
      * });
      */
-    ExoForm.prototype.initialize = function (formName, formJson) {
-        if (typeof formName === "undefined" || formName === null) {
-            formName = "dialog";
-        }
-        if (typeof formJson === "object") {
-            formJson = JSON.stringify(formJson);
-        }
-        try {
-            this.exoForm.Initialize(formName, formJson);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    initialize(formName: string, formJson: any): void;
     /**
      * Obtains object with control values for all controls on form.
      * @param {string} formName - name of form to get control values for.
@@ -3765,14 +2641,7 @@ var ExoForm = /** @class */ (function () {
      * @example
      * var result = exoskeleton.form.generateDynamicResponse("ExampleForm");
      */
-    ExoForm.prototype.generateDynamicResponse = function (formName) {
-        if (typeof formName === "undefined") {
-            formName = null;
-        }
-        var result = this.exoForm.GenerateDynamicResponse(formName);
-        return JSON.parse(result);
-    };
-    ;
+    generateDynamicResponse(formName?: string | null): any;
     /**
      * Obtains object this simplified control values for a given form name and control name
      * @param {string} formName - name of form your control is on
@@ -3784,17 +2653,7 @@ var ExoForm = /** @class */ (function () {
      * var countryValues = exoskeleton.form.getControlProperties("UserEditorForm", "CountryCheckListBox");
      * console.log(countryValues.CheckedIndices);
      */
-    ExoForm.prototype.getControlProperties = function (formName, controlName) {
-        if (typeof formName === "undefined") {
-            formName = null;
-        }
-        if (typeof controlName === "undefined") {
-            controlName = null;
-        }
-        var result = this.exoForm.GetControlProperties(formName, controlName);
-        return (result) ? JSON.parse(result) : null;
-    };
-    ;
+    getControlProperties(formName?: string | null, controlName?: string | null): any;
     /**
      * Loads a dialog definition from a file and applies it.
      * @param {string} formName - unique name to dialog/form to refer to your dialog.
@@ -3806,16 +2665,7 @@ var ExoForm = /** @class */ (function () {
      * var defpath = exoskeleton.file.combinePaths([locations.Current, "definitions", "UserEditor.json"]);
      * exoskeleton.form.loadDefinition("UserEditor", defpath);
      */
-    ExoForm.prototype.loadDefinition = function (formName, filename) {
-        try {
-            this.exoForm.LoadDefinition(formName, filename);
-        }
-        catch (ex) {
-            console.trace();
-            throw ex;
-        }
-    };
-    ;
+    loadDefinition(formName: string, filename: string): void;
     /**
      * Displays a named form which you previously configured.
      * @param {string} formName - unique name to dialog/form to refer to your dialog.
@@ -3824,138 +2674,36 @@ var ExoForm = /** @class */ (function () {
      * @example
      * exoskeleton.form.show("UserEditorForm");
      */
-    ExoForm.prototype.show = function (formName) {
-        this.exoForm.Show(formName);
-    };
-    ;
-    return ExoForm;
-}());
-var Exoskeleton = /** @class */ (function () {
+    show(formName: string): void;
+}
+declare class Exoskeleton {
+    exo: any;
+    keystore: KeyStoreAdapter;
+    events: ExoEventEmitter;
+    serviceProcessors: any[];
+    media?: ExoMedia;
+    com?: ExoCom;
+    file?: ExoFile;
+    main?: ExoMain;
+    proc?: ExoProc;
+    session?: ExoSession;
+    system?: ExoSystem;
+    logger?: ExoLogger;
+    net?: ExoNet;
+    enc?: ExoEnc;
+    menu?: ExoMenu;
+    toolbar?: ExoToolbar;
+    statusbar?: ExoStatusbar;
+    util?: ExoUtil;
+    dialog?: ExoDialog;
+    form?: ExoForm;
     /**
     * Exoskeleton main javascript facade interface to the C# API exposed via COM.
     *
     * @constructor Exoskeleton
     */
-    function Exoskeleton() {
-        var _this = this;
-        /**
-         * Initiates shutdown of this exoskeleton app by notifying the container.
-         * @memberOf Exoskeleton
-         */
-        this.shutdown = function () {
-            _this.exo.Shutdown();
-        };
-        this.exo = window.external;
-        this.events = new ExoEventEmitter(window.external);
-        if (!window || !window.external) {
-            throw new Error("Exoskeleton could not find the COM interface exposed by exoskeleton");
-        }
-        // establish global function for c# to broadcast events to
-        window._exoskeletonEmitEvent = function (eventName, eventData) {
-            _this.events.emit(eventName, JSON.parse(eventData));
-        };
-        this.serviceProcessors = [];
-        window._exoskeletonProcessServiceRequest = function (request) {
-            var response;
-            if (_this.serviceProcessors.length === 0) {
-                throw new Error("A web service request was issued when no serviceProcessors were registered.");
-            }
-            request = JSON.parse(request);
-            // iterate serviceProcessors and see if they provide a response
-            for (var idx = 0; idx < _this.serviceProcessors.length; idx++) {
-                response = _this.serviceProcessors[idx](request);
-                // the first registered processor to return a response fulfills the request
-                if (response) {
-                    return JSON.stringify(response);
-                }
-            }
-            // none of the registered serviceProcessors returned a reponse
-            return null;
-        };
-        // let's also assume control over errors raised and pipe them through our own logger
-        window.onerror = function (msg, url, line, col, error) {
-            if (!_this.logger)
-                return;
-            _this.logger.logError(msg + '', url, line + '', col + '', error + '');
-            return true;
-        };
-        this.overrideConsole();
-        if (this.exo.Media)
-            this.media = new ExoMedia(this.exo.Media);
-        if (this.exo.Com)
-            this.com = new ExoCom(this.exo.Com);
-        if (this.exo.File)
-            this.file = new ExoFile(this.exo.File);
-        if (this.exo.Main)
-            this.main = new ExoMain(this.exo.Main);
-        if (this.exo.Proc)
-            this.proc = new ExoProc(this.exo.Proc);
-        if (this.exo.Session)
-            this.session = new ExoSession(this.exo.Session);
-        if (this.exo.System)
-            this.system = new ExoSystem(this.exo.System);
-        if (this.exo.Logger)
-            this.logger = new ExoLogger(this.exo.Logger);
-        if (this.exo.Net)
-            this.net = new ExoNet(this.exo.Net);
-        if (this.exo.Enc)
-            this.enc = new ExoEnc(this.exo.Enc);
-        if (this.exo.Menu)
-            this.menu = new ExoMenu(this.exo.Menu);
-        if (this.exo.Toolbar)
-            this.toolbar = new ExoToolbar(this.exo.Toolbar);
-        if (this.exo.Statusbar)
-            this.statusbar = new ExoStatusbar(this.exo.Statusbar);
-        if (this.exo.Util)
-            this.util = new ExoUtil(this.exo.Util);
-        if (this.exo.Dialog)
-            this.dialog = new ExoDialog(this.exo.Dialog);
-        if (this.exo.Form)
-            this.form = new ExoForm(this.exo.Form);
-        // go ahead and instance the keystore adapter for peristable key/value store 
-        // and / or to use as a LokiJS persistence adapter.
-        this.keystore = new KeyStoreAdapter(this.exo.File);
-    }
-    Exoskeleton.prototype.overrideConsole = function () {
-        console.log = function (text) {
-            if (!exoskeleton.logger)
-                return;
-            exoskeleton.logger.logText(text);
-        };
-        console.info = function (text, data) {
-            if (!exoskeleton.logger)
-                return;
-            exoskeleton.logger.logInfo(data, text);
-        };
-        console.warn = function (text) {
-            if (!exoskeleton.logger)
-                return;
-            exoskeleton.logger.logWarning("", text);
-        };
-        console.error = function (text) {
-            if (!exoskeleton.logger)
-                return;
-            exoskeleton.logger.logError(text);
-        };
-        console.dir = function (obj) {
-            if (!exoskeleton.logger)
-                return;
-            exoskeleton.logger.logText(obj ? JSON.stringify(obj, null, 2) : "null");
-        };
-        console.trace = function () {
-            var n = function () {
-                try {
-                    throw new Error("");
-                }
-                catch (n) {
-                    return n.stack;
-                }
-            }();
-            var t = n ? n.split("\n") : "";
-            t.splice(0, 3);
-            console.log("console.trace()\n" + t.join("\n"));
-        };
-    };
+    constructor();
+    private overrideConsole;
     /**
     * Returns the currently active settings (xos file), converted to a json string, without resolving urls.
     * @returns {object} The current application settings
@@ -3968,10 +2716,7 @@ var Exoskeleton = /** @class */ (function () {
     *   exoskeleton.speech.speak("hello");
     * }
     */
-    Exoskeleton.prototype.getApplicationSettings = function () {
-        return JSON.parse(this.exo.GetApplicationSettings());
-    };
-    ;
+    getApplicationSettings(): ExoskeletonApplicationSettings;
     /**
      * Returns the important exoskeleton environment locations. (Current, Settings, Executable)
      * @returns {object} Object containing resolved paths to common locations in Windows and Exoskeleton.
@@ -3983,10 +2728,7 @@ var Exoskeleton = /** @class */ (function () {
      * console.log("location of (active) settings file : " + locations.Settings);
      * console.log("location of (active) exoskeleton executable : " + locations.Executable);
      */
-    Exoskeleton.prototype.getLocations = function () {
-        return JSON.parse(this.exo.GetLocations());
-    };
-    ;
+    getLocations(): ExoskeletonLocations;
     /**
      * Returns the version number for the exoskeleton host you are running in.
      * @returns {string} The version of exoskeleton you are hosted within.
@@ -3996,10 +2738,7 @@ var Exoskeleton = /** @class */ (function () {
      * var version = exoskeleton.getVersion();
      * console.log("host exo version : " + version);
      */
-    Exoskeleton.prototype.getVersion = function () {
-        return this.exo.GetVersion();
-    };
-    ;
+    getVersion(): any;
     /**
      * Registers a javascript function for processing exoskeleton web service requests.
      * This requires enabling web services in your settings file.
@@ -4020,13 +2759,11 @@ var Exoskeleton = /** @class */ (function () {
      *
      * exoskeleton.registerServiceProcessor(myServiceProcessor);
      */
-    Exoskeleton.prototype.registerServiceProcessor = function (processor) {
-        if (typeof processor !== "function") {
-            throw new Error("A call to registerServiceProcessor must be passed a function as a parameter.");
-        }
-        this.serviceProcessors.push(processor);
-    };
-    ;
-    return Exoskeleton;
-}());
-var exoskeleton = new Exoskeleton();
+    registerServiceProcessor(processor: any): void;
+    /**
+     * Initiates shutdown of this exoskeleton app by notifying the container.
+     * @memberOf Exoskeleton
+     */
+    shutdown: () => void;
+}
+declare var exoskeleton: Exoskeleton;

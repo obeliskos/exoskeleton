@@ -1,3 +1,6 @@
+/// <reference path="../definitions/exoskeleton.d.ts" />
+/// <reference path="../node_modules/@types/lokijs/index.d.ts" />
+
 /**
  * Audio Player - Exoskeleton example for treeview, listview and 'MixedUi' app.
  *
@@ -13,140 +16,171 @@
  * support their own menus, toolbars, or status bars.
  */
 
-// event handler to bootstrap after scripts are loaded
-window.addEventListener("load", function load(event) {
-    window.removeEventListener("load", load, false);
+declare var exoskeleton: Exoskeleton;
+declare var loki = Loki;
 
-    // The following delay is long enough that it will not fire twice
-    // if you have the 'WebBrowserRefreshOnFirstLoad' set to true.
-    setTimeout(initializeApp, 100);
-},false);
+class AudioPlayerApp {
+    db?: Loki;
+    defpath = "";
+    audio: HTMLAudioElement | null | undefined;
+    AnchorStyles = ExoskeletonAnchorStyles;
+    locations = exoskeleton.getLocations();
+    imagesPath: string = "";
+    settingsIconPath: string = "";
+    exitIconPath: string = "";
+    imageListPaths : string[] = [];
+    
+    constructor() {
+        // event handler to bootstrap after scripts are loaded
+        window.addEventListener("load", (event) => {
+            setTimeout(this.initializeApp, 100);
+        },false);
+    }
 
-// global vars
-var db, defpath;
-var AnchorStyles = exoskeleton.enums.AnchorStyles;
-var locations = exoskeleton.getLocations();
-var imagesPath = exoskeleton.file.combinePaths([
-    locations.Current,
-    "images"
-]);
-var settingsIconPath = exoskeleton.file.combinePaths([imagesPath, "settings_64.png"]);
-var exitIconPath = exoskeleton.file.combinePaths([imagesPath, "exit.png"]);
-var imageListPaths = exoskeleton.file.combinePathsArray(imagesPath, [
-    "folder.ico",
-    "speaker.ico"
-]);
+    initializeApp() {
+        this.imagesPath = (!exoskeleton.file)?null:exoskeleton.file.combinePaths([
+            this.locations.Current,
+            "images"
+        ]);
 
-// since we automatically play next song in list, 
-// this will abort if we change folders until we select another song
-var allowNext = false;
+        this.settingsIconPath = (!exoskeleton.file)?null:exoskeleton.file.combinePaths([this.imagesPath, "settings_64.png"]);
+        this.exitIconPath = (!exoskeleton.file)?null:exoskeleton.file.combinePaths([this.imagesPath, "exit.png"]);
+        this.imageListPaths = (!exoskeleton.file)?null:exoskeleton.file.combinePathsArray(this.imagesPath, [
+            "folder.ico",
+            "speaker.ico"
+        ]);
+        
+        // set up event handler on audio element which fires when song ends
+        this.audio = document.getElementById("audioPlayer") as HTMLAudioElement;
+        if (this.audio) {
+            this.audio.volume = 0.5;
+            this.audio.addEventListener('ended', playNextFile, false);
+        }
+    
+        if (!exoskeleton.media || !exoskeleton.file || !exoskeleton.form || !exoskeleton.statusbar) {
+            return;
+        }
+
+        exoskeleton.media.createImageList("ImageListSmall", {
+            ImageSize: [32, 32],
+            ColorDepth: 32
+        });
+        exoskeleton.media.loadImageList("ImageListSmall", this.imageListPaths);
+    
+        this.defpath = exoskeleton.file.combinePaths([this.locations.Current, "definitions", "MainForm.json"]);
+    
+        exoskeleton.form.initialize("$host", {
+            Text: "Exoskeleton Audio Player",
+            Font: "Segoe UI, 14pt, style=Bold",
+            Width: 960,
+            Height: 640
+        });
+    
+        exoskeleton.form.loadDefinition("$host", this.defpath);
+        exoskeleton.form.show("$host");
+    
+        exoskeleton.statusbar.initialize();
+        exoskeleton.statusbar.setLeftLabel("Welcome to Exoskeleton audio player!");
+    
+        // If our app was served up from a webserver (selfhost or other), we could 
+        // alternatively use the loki indexeddb adapter for storing in browser storage.
+        this.db = new loki("player-settings.json", {
+            autoload: true,
+            autoloadCallback: initializeDatabase,
+            autosave: true,
+            adapter: exoskeleton.keystore,
+            serializationMethod: "pretty"
+        });
+    
+        exoskeleton.events.on("multicast.shutdown", () => {
+            if (this.db) this.db.close();
+        });
+    
+        exoskeleton.events.on("SourcesForm.SaveButton.Click", function () {
+            if (exoskeleton.form) exoskeleton.form.close("SourcesForm");
+            refreshSourcesList();
+        });
+    
+        exoskeleton.events.on("$host.DirTreeView.AfterSelect", function (data) {
+            refreshFileList(data.Tag);
+            expandTreeNode(data);
+        });
+    
+        exoskeleton.events.on("$host.FileListView.Click", fileClickHandler);
+    
+        exoskeleton.events.on("SettingsForm.SourcesListBox.SelectedIndexChanged", SettingsForm.listitemSelected);
+        exoskeleton.events.on("SettingsForm.AddSourceButton.Click", SettingsForm.addSource);
+        exoskeleton.events.on("SettingsForm.EditSourceButton.Click", SettingsForm.editSource);
+        exoskeleton.events.on("SettingsForm.DeleteSourceButton.Click", SettingsForm.deleteSource);
+        exoskeleton.events.on("SettingsForm.SaveSourceButton.Click", SettingsForm.saveSource);
+        exoskeleton.events.on("SettingsForm.SaveButton.Click", SettingsForm.saveSettings);
+        exoskeleton.events.on("SettingsForm.CancelButton.Click", SettingsForm.cancel);
+    
+        document.body.style.zoom = "100%";
+
+        if (exoskeleton.main) exoskeleton.main.switchToMixedUi("AudioPanel");
+    
+        initializeToolbar();
+    
+        // If this was sent an audio file path on the url (via shell:sendto)
+        if (exoskeleton.system) {
+            var si = exoskeleton.system.getSystemInfo();
+            if (si.CommandLineArguments.length > 1) {
+                var filename = si.CommandLineArguments[si.CommandLineArguments.length - 1];
+                var ext = exoskeleton.file.getExtension(filename).toLowerCase();
+        
+                if (exoskeleton.file.getExtension(filename).toLowerCase() === ".mp3") {
+                    playFile(filename);
+                }
+                }
+        }
+    }
+
+    initializeDatabase() {
+        var sources = db.getCollection('sources');
+    
+        if (sources === null) {
+            sources = db.addCollection('sources');
+        }
+    
+        var settings = db.getCollection('settings');
+        if (settings === null) {
+            settings = db.addCollection('settings');
+            // ie 11 audio element seems to support these extensions ok
+            settings.insert({ name: "file-extensions", value: ".mp3,.mp4,.m4a" });
+        }
+    
+        if (sources.count() === 0) {
+            if (!exoskeleton.dialog || !exoskeleton.form) return;
+    
+            var dr = exoskeleton.dialog.showMessageBox(
+              "You have no sources configured, do you wish to configure them now",
+              "Missing music source locations",
+              "YesNo",
+              "Question"
+            );
+    
+            if (dr == "Yes") {
+                SettingsForm.show();
+    
+                exoskeleton.form.applyControlProperties("SettingsForm", {
+                    SourceNameTextBox: { Text: "My Music (User)", Enabled: true },
+                    SourceLocationTextBox: { Text: locations.Music, Enabled: true }
+                });
+            }
+        }
+        else {
+            refreshSourcesList();
+        }
+    }
+}
+
+let app = new AudioPlayerApp();
 
 /**
  * Loads a javascript JSON database and handles saving changes.
  * If the database does not yet exist on disk, we will initialize a new default one.
  */
-function initializeDatabase() {
-    var sources = db.getCollection('sources');
-
-    if (sources === null) {
-        sources = db.addCollection('sources');
-    }
-
-    var settings = db.getCollection('settings');
-    if (settings === null) {
-        settings = db.addCollection('settings');
-        // ie 11 audio element seems to support these extensions ok
-        settings.insert({ name: "file-extensions", value: ".mp3,.mp4,.m4a" });
-    }
-
-    if (sources.count() === 0) {
-        var dr = exoskeleton.dialog.showMessageBox(
-          "You have no sources configured, do you wish to configure them now",
-          "Missing music source locations",
-          "YesNo",
-          "Question"
-        );
-
-        if (dr == "Yes") {
-            SettingsForm.show();
-
-            exoskeleton.form.applyControlProperties("SettingsForm", {
-                SourceNameTextBox: { Text: "My Music (User)", Enabled: true },
-                SourceLocationTextBox: { Text: locations.Music, Enabled: true }
-            });
-        }
-    }
-    else {
-        refreshSourcesList();
-    }
-}
-
-function initializeApp() {
-    // set up event handler on audio element which fires when song ends
-    var audio = document.getElementById("audioPlayer");
-    audio.volume = 0.5;
-    audio.addEventListener('ended', playNextFile, false);
-
-    exoskeleton.media.createImageList("ImageListSmall", {
-        ImageSize: [32, 32],
-        ColorDepth: 32
-    });
-    exoskeleton.media.loadImageList("ImageListSmall", imageListPaths);
-
-    defpath = exoskeleton.file.combinePaths([locations.Current, "definitions", "MainForm.json"]);
-
-    exoskeleton.form.initialize("$host", {
-        Text: "Exoskeleton Audio Player",
-        Font: "Segoe UI, 14pt, style=Bold",
-        Width: 960,
-        Height: 640
-    });
-
-    exoskeleton.form.loadDefinition("$host", defpath);
-    exoskeleton.form.show("$host");
-
-    exoskeleton.statusbar.initialize();
-    exoskeleton.statusbar.setLeftLabel("Welcome to Exoskeleton audio player!");
-
-    // If our app was served up from a webserver (selfhost or other), we could 
-    // alternatively use the loki indexeddb adapter for storing in browser storage.
-    db = new loki("player-settings.json", {
-        autoload: true,
-        autoloadCallback: initializeDatabase,
-        autosave: true,
-        adapter: exoskeleton.keystore,
-        serializationMethod: "pretty"
-    });
-
-    exoskeleton.events.on("multicast.shutdown", function () {
-        db.close();
-    });
-
-    exoskeleton.events.on("SourcesForm.SaveButton.Click", function () {
-        exoskeleton.form.close("SourcesForm");
-        refreshSourcesList();
-    });
-
-    exoskeleton.events.on("$host.DirTreeView.AfterSelect", function (data) {
-        refreshFileList(data.Tag);
-        expandTreeNode(data);
-    });
-
-    exoskeleton.events.on("$host.FileListView.Click", fileClickHandler);
-
-    exoskeleton.events.on("SettingsForm.SourcesListBox.SelectedIndexChanged", SettingsForm.listitemSelected);
-    exoskeleton.events.on("SettingsForm.AddSourceButton.Click", SettingsForm.addSource);
-    exoskeleton.events.on("SettingsForm.EditSourceButton.Click", SettingsForm.editSource);
-    exoskeleton.events.on("SettingsForm.DeleteSourceButton.Click", SettingsForm.deleteSource);
-    exoskeleton.events.on("SettingsForm.SaveSourceButton.Click", SettingsForm.saveSource);
-    exoskeleton.events.on("SettingsForm.SaveButton.Click", SettingsForm.saveSettings);
-    exoskeleton.events.on("SettingsForm.CancelButton.Click", SettingsForm.cancel);
-
-    document.body.style = "zoom:100%";
-    exoskeleton.main.switchToMixedUi("AudioPanel");
-
-    initializeToolbar();
-}
 
 function initializeToolbar() {
     exoskeleton.toolbar.initialize();

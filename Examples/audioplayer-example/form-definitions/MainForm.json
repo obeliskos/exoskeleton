@@ -1,20 +1,8 @@
 {
-  "LeftPanel": {
+  "MainPanel": {
     "Type": "Panel",
     "Properties": {
       "Dock": "Fill",
-      "BackColor": "64,64,64",
-      "ForeColor": "White",
-      "Height": 20,
-      "Width": 200,
-      "Top": 100,
-      "Left": 10
-    }
-  },
-  "RightPanel": {
-    "Type": "Panel",
-    "Properties": {
-      "Dock": "Right",
       "BackColor": "64,64,64",
       "ForeColor": "White",
       "Height": 20,
@@ -23,20 +11,9 @@
       "Left": 10
     }
   },
-  "DirTreeView": {
-    "Type": "TreeView",
-    "Parent": "LeftPanel",
-    "EmitEvents": true,
-    "Payload": {
-      "ImageList": "ImageListSmall",
-    },
-    "Properties": {
-      "Dock": "Fill"
-    }
-  },
   "FileListView": {
     "Type": "ListView",
-    "Parent": "RightPanel",
+    "Parent": "MainPanel",
     "EmitEvents": true,
     "Payload": {
       "LargeImageList": "ImageListSmall",
@@ -51,7 +28,7 @@
   },
   "AudioPanel": {
     "Type": "Panel",
-    "Parent": "RightPanel",
+    "Parent": "MainPanel",
     "Properties": {
       "Dock": "Bottom",
       "Height": 80,

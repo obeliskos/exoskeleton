@@ -1732,7 +1732,7 @@
 
         File.prototype.filePathToUri = function (filepath) {
             return this.exoFile.FilePathToUri(filepath);
-        }
+        };
 
         /**
          * Gets subdirectory names of a parent directory.
@@ -1865,6 +1865,18 @@
          */
         File.prototype.getFileName = function (path) {
             return this.exoFile.GetFileName(path);
+        };
+
+        /**
+         * Resolves an absolute path from a path containing inner relative paths 
+         * @param {any} path A path containing possible inner relative paths
+         * @returns {string} The computed absolute path
+         * @example
+         * console.log(exoskeleton.file.getFullPath("d:\archives\january\..\march\test.txt");
+         * // logs : "d:\archives\march\test.txt"
+         */
+        File.prototype.getFullPath = function (path) {
+            return this.exoFile.GetFullPath(path);
         };
 
         /**
